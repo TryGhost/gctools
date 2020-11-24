@@ -10,7 +10,7 @@
     "**/node_modules/**"
   ],
   "scripts": {
-    "collect": "node lib/collect",
+    "split": "node split",
     "test": "NODE_ENV=testing mocha './test/**/*.test.js'",
     "lint": "eslint . --ext .js --cache"
   },
@@ -22,7 +22,10 @@
     "sinon": "9.2.0"
   },
   "dependencies": {
+    "@tryghost/pretty-cli": "1.2.11",
     "@tryghost/zip": "1.1.6",
-    "fs-extra": "9.0.1"
+    "archiver": "5.1.0",
+    "fs-extra": "9.0.1",
+    "glob": "7.1.6"
   }
 }
