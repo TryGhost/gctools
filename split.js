@@ -92,9 +92,9 @@ async function chunkFiles(input, chunkMaxSize) {
     return chunks;
 }
 
-// Create multiple zips from the array of chunks
-async function createZips(chunks) {
-    chunks.forEach((chunk, index) => {
+// Create a single zips from the the given chunk of files
+async function createZip(chunk, index) {
+    return new Promise((resolve) => {
         const zipFileParts = path.parse(zipFile);
         const zipName = `${zipFileParts.name}_${index}.zip`;
 
@@ -111,10 +111,40 @@ async function createZips(chunks) {
             });
         });
 
+        // A very noisy progress output
+        // archive.on("progress", progress => {
+        //     console.log(progress);
+        // });
+
         archive.finalize();
+
+        archive.on('end', () => {
+            ui.log.debug(`Created ${zipName}`);
+            resolve(chunk);
+        });
     });
+}
+
+// Create multiple zips from the array of chunks
+async function createZips(chunks) {
+    await Promise.all(
+        chunks.map((chunk, index) => {
+            return createZip(chunk, index);
+        })
+    );
 
     return chunks;
+}
+
+// Create multiple zips from the array of chunks
+async function cleanup(pathToClean) {
+    try {
+        await fs.remove(pathToClean);
+        ui.log.info(`Cleaning up…`);
+        return true;
+    } catch (err) {
+        ui.log.error(`Could not empty ${pathToClean}`, err);
+    }
 }
 
 (async function main() {
@@ -130,7 +160,11 @@ async function createZips(chunks) {
 
         await Promise.all([theZip, hydratedFiles, chunks, newZips]);
 
-        ui.log.info(`Created ${newZips.length} zips`);
+        ui.log.info(`FINAL Created ${newZips.length} zips`);
+
+        await cleanup(destPath);
+
+        ui.log.info(`And done`);
     } catch (err) {
         ui.log.error('Could not unzip file', err);
         process.exit(1);
