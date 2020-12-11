@@ -105,36 +105,37 @@ class zipSplit {
 
     // Create a single zips from the the given chunk of files
     async createZip(chunk, index) {
-        return new Promise((resolve) => {
-            const zipFileParts = path.parse(this.zipFile);
-            const zipName = `${zipFileParts.name}_${index}.zip`;
-            const output = fs.createWriteStream(this.fileCache.zipDir + '/' + zipName);
-            const archive = archiver('zip');
+        const zipFileParts = path.parse(this.zipFile);
+        const zipName = `${zipFileParts.name}_${index}.zip`;
 
-            archive.pipe(output);
-
-            chunk.forEach((item) => {
-                let filePath = item.path;
-                let fileName = filePath.replace(this.dir + 'temp/', '');
-                archive.file(filePath, {
-                    name: fileName
-                });
-            });
-
-            archive.finalize();
-
-            archive.on('end', () => {
-                ui.log.debug(`Created ${zipName}`);
-                resolve(chunk);
-            });
-        });
+        fsUtils.zip.write(this.fileCache.zipDir, chunk, zipName);
     }
 
     // Create multiple zips from the array of chunks
     async createZips(chunks) {
+        let chunkDirs = glob.sync(`${this.fileCache.zipDir}/chunks/*`);
+
+        await Promise.all(chunkDirs.map((dir, index) => {
+            return this.createZip(dir, index);
+        }));
+
+        return chunks;
+    }
+
+    // Create a directory for each chunk
+    async createChunkDir(chunks) {
         await Promise.all(
-            chunks.map((chunk, index) => {
-                return this.createZip(chunk, index);
+            chunks.map(async (chunk, index) => {
+                let tmpDir = this.fileCache.tmpDir;
+                let zipDir = this.fileCache.zipDir;
+
+                await Promise.all(chunk.map(async (file) => {
+                    let filePathNoBase = file.path.replace(tmpDir, '');
+                    let newLocal = path.join(zipDir, `chunks/chunk_${index}`, filePathNoBase);
+                    await fs.move(file.path, newLocal, {
+                        overwrite: true
+                    });
+                }));
             })
         );
 
@@ -147,7 +148,9 @@ class zipSplit {
 
         await Promise.all(filePaths.map(async (filePath) => {
             let fileName = path.basename(filePath);
-            await fs.move(filePath, `${this.destDir}/${fileName}`);
+            await fs.move(filePath, `${this.destDir}/${fileName}`, {
+                overwrite: true
+            });
         }));
 
         return true;
@@ -155,7 +158,7 @@ class zipSplit {
 
     // Remove temp files from the cache
     async cleanup() {
-        let pathToClean = this.fileCache.tmpDir;
+        let pathToClean = this.fileCache.cacheDir;
 
         try {
             await fs.remove(pathToClean);
@@ -168,7 +171,7 @@ class zipSplit {
 
     // Run the whole shebang
     async run() {
-        ui.log.info(`Workspace initialised at ${this.fileCache.cacheDir}`);
+        ui.log.debug(`Workspace initialised at ${this.fileCache.cacheDir}`);
 
         ui.log.info(`Converting ${this.zipFile} into ${this.sizeInMb}MB chunks`);
 
@@ -178,9 +181,10 @@ class zipSplit {
             let theZip = await this.unzipIntoDir();
             let hydratedFiles = await this.hydrateFiles(theFiles);
             let chunks = await this.chunkFiles(hydratedFiles);
+            let dirs = await this.createChunkDir(chunks);
             let newZips = await this.createZips(chunks);
 
-            await Promise.all([theZip, hydratedFiles, chunks, newZips]);
+            await Promise.all([theZip, hydratedFiles, chunks, dirs, newZips]);
 
             ui.log.info(`Created ${newZips.length} zips`);
 
