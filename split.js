@@ -7,10 +7,17 @@ const path = require('path');
 
 const dir = path.join(process.argv[1], '../');
 const zipFile = process.argv[2];
-const zipFilePath = path.join(dir, zipFile);
+
+// TODO: If the below const is used, this only works if the zip is in the same dir as the code itself
+// const zipFilePath = path.join(dir, zipFile);
+// And this const works no matter where the zip is
+const zipFilePath = zipFile;
+
 const sizeInMb = process.argv[3];
 const sizeInBytes = (sizeInMb * (1024 * 1024));
-const destPath = path.join(dir, '/temp');
+const tempDir = path.join(dir, '/temp');
+
+const destDir = path.dirname(zipFile);
 
 // Take a zip file, and unzips into a specific directory
 // Returns the path of the unzipped files
@@ -98,7 +105,8 @@ async function createZip(chunk, index) {
         const zipFileParts = path.parse(zipFile);
         const zipName = `${zipFileParts.name}_${index}.zip`;
 
-        const output = fs.createWriteStream(__dirname + '/' + zipName);
+        // const output = fs.createWriteStream(__dirname + '/' + zipName);
+        const output = fs.createWriteStream(destDir + '/' + zipName);
         const archive = archiver('zip');
 
         archive.pipe(output);
@@ -153,16 +161,16 @@ async function cleanup(pathToClean) {
     try {
         let theFiles = [];
 
-        let theZip = await unzipIntoDir(zipFilePath, destPath);
-        let hydratedFiles = await hydrateFiles(destPath, theFiles);
+        let theZip = await unzipIntoDir(zipFilePath, tempDir);
+        let hydratedFiles = await hydrateFiles(tempDir, theFiles);
         let chunks = await chunkFiles(hydratedFiles, sizeInBytes);
         let newZips = await createZips(chunks);
 
         await Promise.all([theZip, hydratedFiles, chunks, newZips]);
 
-        ui.log.info(`FINAL Created ${newZips.length} zips`);
+        ui.log.info(`Created ${newZips.length} zips`);
 
-        await cleanup(destPath);
+        await cleanup(tempDir);
 
         ui.log.info(`And done`);
     } catch (err) {
