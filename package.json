@@ -1,15 +1,20 @@
 {
-  "name": "@tryghost/zip-splitter",
+  "name": "@tryghost/gctools",
   "version": "0.1.0",
   "description": "tbc",
-  "repository": "https://github.com/TryGhost/zip-splitter",
+  "repository": "https://github.com/TryGhost/gctools",
   "author": "Ghost Foundation",
   "main": "index.js",
   "license": "MIT",
+  "bin": {
+    "gctools": "./bin/cli.js"
+  },
   "eslintIgnore": [
     "**/node_modules/**"
   ],
   "scripts": {
+    "dev": "gctools",
+    "gctools": "gctools",
     "split": "node split",
     "test": "NODE_ENV=testing mocha './test/**/*.test.js'",
     "lint": "eslint . --ext .js --cache"
