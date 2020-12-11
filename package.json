@@ -27,6 +27,7 @@
     "sinon": "9.2.0"
   },
   "dependencies": {
+    "@tryghost/mg-fs-utils": "0.7.4",
     "@tryghost/pretty-cli": "1.2.11",
     "@tryghost/zip": "1.1.6",
     "archiver": "5.1.0",

@@ -1,3 +1,4 @@
+const fsUtils = require('@tryghost/mg-fs-utils');
 const ui = require('@tryghost/pretty-cli').ui;
 const zip = require('@tryghost/zip');
 const archiver = require('archiver');
@@ -11,11 +12,16 @@ class zipSplit {
         this.zipFile = args.zipFile;
         this.sizeInMb = args.sizeInMb;
         this.sizeInBytes = (args.sizeInMb * (1024 * 1024));
-        this.tempDir = args.tempDir;
+        this.fileCache = new fsUtils.FileCache('zip_split');
         this.destDir = args.destDir;
     }
 
-    async unzipIntoDir(src, dest) {
+    // Take a zip file, and unzips into a specific directory
+    // Returns the path of the unzipped files
+    async unzipIntoDir() {
+        let src = this.zipFile;
+        let dest = this.fileCache.tmpDir;
+
         ui.log.info('Decompressing file…');
 
         try {
@@ -27,6 +33,7 @@ class zipSplit {
         }
     }
 
+    // Gets the required file info for a given path
     async hydrateFile(src) {
         let stats = await fs.stat(src);
         let data = {
@@ -36,7 +43,11 @@ class zipSplit {
         return data;
     }
 
-    async hydrateFiles(src, theFiles) {
+    // Loops over all the files in the temp directory, and creates an array of files, with the file size
+    // Returns an array of files
+    async hydrateFiles(theFiles) {
+        let src = this.fileCache.tmpDir;
+
         ui.log.info('Getting file sizes…');
 
         let filePaths = glob.sync(`${src}/**/*`, {
@@ -52,7 +63,10 @@ class zipSplit {
         return theFiles;
     }
 
-    async chunkFiles(input, chunkMaxSize) {
+    // Splits an array into smaller arrays based on the `size` property of each object
+    async chunkFiles(input) {
+        let chunkMaxSize = this.sizeInBytes;
+
         ui.log.info('Calculating smaller sets of images');
 
         let chunks = [];
@@ -89,12 +103,12 @@ class zipSplit {
         return chunks;
     }
 
+    // Create a single zips from the the given chunk of files
     async createZip(chunk, index) {
         return new Promise((resolve) => {
             const zipFileParts = path.parse(this.zipFile);
             const zipName = `${zipFileParts.name}_${index}.zip`;
-
-            const output = fs.createWriteStream(this.destDir + '/' + zipName);
+            const output = fs.createWriteStream(this.fileCache.zipDir + '/' + zipName);
             const archive = archiver('zip');
 
             archive.pipe(output);
@@ -107,11 +121,6 @@ class zipSplit {
                 });
             });
 
-            // A very noisy progress output
-            // archive.on("progress", progress => {
-            //     console.log(progress);
-            // });
-
             archive.finalize();
 
             archive.on('end', () => {
@@ -121,6 +130,7 @@ class zipSplit {
         });
     }
 
+    // Create multiple zips from the array of chunks
     async createZips(chunks) {
         await Promise.all(
             chunks.map((chunk, index) => {
@@ -131,7 +141,22 @@ class zipSplit {
         return chunks;
     }
 
-    async cleanup(pathToClean) {
+    // Move zips from the cache to their final destination
+    async moveZips() {
+        let filePaths = glob.sync(`${this.fileCache.zipDir}/*.zip`);
+
+        await Promise.all(filePaths.map(async (filePath) => {
+            let fileName = path.basename(filePath);
+            await fs.move(filePath, `${this.destDir}/${fileName}`);
+        }));
+
+        return true;
+    }
+
+    // Remove temp files from the cache
+    async cleanup() {
+        let pathToClean = this.fileCache.tmpDir;
+
         try {
             await fs.remove(pathToClean);
             ui.log.info(`Cleaning up…`);
@@ -141,22 +166,27 @@ class zipSplit {
         }
     }
 
+    // Run the whole shebang
     async run() {
+        ui.log.info(`Workspace initialised at ${this.fileCache.cacheDir}`);
+
         ui.log.info(`Converting ${this.zipFile} into ${this.sizeInMb}MB chunks`);
 
         try {
             let theFiles = [];
 
-            let theZip = await this.unzipIntoDir(this.zipFile, this.tempDir);
-            let hydratedFiles = await this.hydrateFiles(this.tempDir, theFiles);
-            let chunks = await this.chunkFiles(hydratedFiles, this.sizeInBytes);
+            let theZip = await this.unzipIntoDir();
+            let hydratedFiles = await this.hydrateFiles(theFiles);
+            let chunks = await this.chunkFiles(hydratedFiles);
             let newZips = await this.createZips(chunks);
 
             await Promise.all([theZip, hydratedFiles, chunks, newZips]);
 
             ui.log.info(`Created ${newZips.length} zips`);
 
-            await this.cleanup(this.tempDir);
+            await this.moveZips();
+
+            await this.cleanup();
 
             ui.log.info(`And done. The new zips are at: ${this.destDir}`);
         } catch (err) {
@@ -164,7 +194,6 @@ class zipSplit {
             process.exit(1);
         }
     }
-
 }
 
 module.exports = zipSplit;
