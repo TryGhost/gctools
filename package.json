@@ -1,9 +1,9 @@
 {
-  "name": "@tryghost/gctools",
+  "name": "gctools",
   "version": "0.1.0",
-  "description": "tbc",
-  "repository": "https://github.com/TryGhost/gctools",
-  "author": "Ghost Foundation",
+  "description": "Command line utilities for working with Ghost content",
+  "repository": "https://github.com/pauladamdavis/gctools",
+  "author": "Paul Davis",
   "main": "index.js",
   "license": "MIT",
   "bin": {
