@@ -22,7 +22,7 @@ class zipSplit {
         let src = this.zipFile;
         let dest = this.fileCache.tmpDir;
 
-        ui.log.info('Decompressing file…');
+        ui.log.info('Decompressing file');
 
         try {
             let res = await zip.extract(src, dest);
@@ -47,8 +47,6 @@ class zipSplit {
     // Returns an array of files
     async hydrateFiles(theFiles) {
         let src = this.fileCache.tmpDir;
-
-        ui.log.info('Getting file sizes…');
 
         let filePaths = glob.sync(`${src}/**/*`, {
             dot: false,

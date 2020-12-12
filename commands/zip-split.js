@@ -47,11 +47,10 @@ exports.run = async (argv) => {
 
     try {
         const run = new zipSplit(args);
-        run.run();
+        await run.run();
+        // Report success
+        ui.log.ok(`Completed in ${Date.now() - timer}ms.`);
     } catch (error) {
-        ui.log.info('There were errors', context.errors);
+        ui.log.error('There were errors', context.errors);
     }
-
-    // Report success
-    ui.log.ok(`Completed in ${Date.now() - timer}ms.`);
 };
