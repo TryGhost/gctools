@@ -13,12 +13,7 @@ prettyCLI.style({
 });
 
 prettyCLI.groupOrder([
-    'Sources:',
-    'Utilities:',
-    'Commands:',
-    'Arguments:',
-    'Required Options:',
-    'Options:',
+    'Tools:',
     'Global Options:'
 ]);
 

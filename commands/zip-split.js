@@ -1,11 +1,10 @@
 const zipSplit = require('../tools/zip-split');
-const path = require('path');
 const ui = require('@tryghost/pretty-cli').ui;
 
 // Internal ID in case we need one.
 exports.id = 'zip-split';
 
-exports.group = 'Sources:';
+exports.group = 'Tools:';
 
 // The command to run and any params
 exports.flags = 'zip-split <zipFile>';
@@ -33,24 +32,21 @@ exports.run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
-    if (argv.verbose) {
-        ui.log.info(`Migrating from Ghost at ${argv.url}`);
-    }
-
-    let args = {
-        options: argv,
-        dir: process.cwd(),
-        zipFile: argv.zipFile,
-        sizeInMb: argv.maxSize,
-        destDir: path.dirname(argv.zipFile)
-    };
-
     try {
-        const run = new zipSplit(args);
-        await run.run();
-        // Report success
-        ui.log.ok(`Completed in ${Date.now() - timer}ms.`);
+        // Fetch the tasks, configured correctly according to the options passed in
+        let zipSpliter = zipSplit.getTaskRunner(argv);
+
+        // Run the migration
+        await zipSpliter.run(context);
+
+        if (argv.verbose) {
+            // ui.log.info('Done', require('util').inspect(context.result.data, false, 2));
+            ui.log.info('Done');
+        }
     } catch (error) {
-        ui.log.error('There were errors', context.errors);
+        ui.log.error('Done with errors', context.errors);
     }
+
+    // Report success
+    ui.log.ok(`Successfully split zip in ${Date.now() - timer}ms.`);
 };
