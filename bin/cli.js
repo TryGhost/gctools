@@ -1,7 +1,5 @@
 #!/usr/bin/env node
 
-// console.log("Hello world");
-
 const prettyCLI = require('@tryghost/pretty-cli');
 
 prettyCLI.preface('Command line utilities for working with Ghost content');
