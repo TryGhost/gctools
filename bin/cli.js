@@ -12,6 +12,7 @@ prettyCLI.style({
 
 prettyCLI.groupOrder([
     'Tools:',
+    'Content:',
     'Global Options:'
 ]);
 
