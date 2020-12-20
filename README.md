@@ -36,6 +36,8 @@ gctools zip-split /path/to/big-file.zip --M 50
 
 ### random-posts
 
+Insert a set number of random posts.
+
 See all available options:
 
 ```sh
@@ -54,6 +56,40 @@ Create and insert 3000 random draft posts with 2 tags visible to members only, w
 gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tags '#random,New World' --status draft --visibility members --userEmail person@dummyemail.com
 ```
 
+
+### delete-posts
+
+Delete all content or content with a specific set of filters, which can be combined.
+
+See all available options:
+
+```sh
+gctools delete-posts --help
+```
+
+Delete all posts (⛔️ dangerous!)
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey>
+```
+
+Delete all posts with a specific tag
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey> --tag '#testing'
+```
+
+Delete all posts by a specific author
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user'
+```
+
+Delete all posts by a specific author with a specific tag
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
+```
 
 # Copyright & License
 
