@@ -9,7 +9,8 @@ async function createRandomPost(options) {
     let titleLength = Math.floor(Math.random() * (options.titleMaxLength - options.titleMinLength + 1)) + options.titleMinLength;
 
     let post = {
-        status: 'published',
+        status: options.status,
+        visibility: options.visibility,
         title: loremIpsum({
             count: titleLength,
             units: 'words'
@@ -37,11 +38,40 @@ async function createRandomPost(options) {
         meta_description: loremIpsum({
             count: 2,
             units: 'sentences'
-        }),
-        tags: ["#gctools"],
+        })
     };
 
     post.title = titleCase(post.title);
+
+    if (options.userEmail) {
+        post.authors = [options.userEmail];
+    }
+
+    if (options.tags) {
+        post.tags = options.tags.split(',');
+    }
+
+    if (options.dateRange) {
+        let dateParts = options.dateRange.split(',');
+
+        let startDate = new Date();
+        let startDateParts = dateParts[0].split('-');
+        startDate.setDate(startDateParts[0]);
+        startDate.setMonth((startDateParts[1] - 1));
+        startDate.setYear(startDateParts[2]);
+
+        let endDate = new Date();
+        let endDateParts = dateParts[1].split('-');
+        endDate.setDate(endDateParts[0]);
+        endDate.setMonth((endDateParts[1] - 1));
+        endDate.setYear(endDateParts[2]);
+
+        const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
+
+        post.created_at = randomDate;
+        post.updated_at = randomDate;
+        post.published_at = randomDate;
+    }
 
     return post;
 }

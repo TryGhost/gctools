@@ -61,15 +61,29 @@ exports.setup = (sywac) => {
         defaultValue: 15,
         desc: 'Max. number of words per sentence'
     });
+    sywac.string('--userEmail', {
+        defaultValue: false,
+        desc: 'The assigned author. Defaults to who created the API key'
+    });
+    sywac.string('--tags', {
+        defaultValue: '#gctools',
+        desc: 'Comma separated list of tags'
+    });
+    sywac.enumeration('--status', {
+        defaultValue: 'published',
+        choices: ['public', 'draft', 'scheduled'],
+        desc: 'Post status'
+    });
+    sywac.enumeration('--visibility', {
+        defaultValue: 'public',
+        choices: ['public', 'members', 'paid'],
+        desc: 'Post visibility'
+    });
+    sywac.string('--dateRange', {
+        defaultValue: false,
+        desc: '2 dates that all posts will fall between (eg: 25-12-2019,14-02-2020). Defaults to today'
+    });
 
-    // tag(s) (by name, probably)
-    // author (somehow)
-    // status
-    // visibility
-    // date range
-    // add excerpt?
-    // add meta title?
-    // add meta description?
     // random unsplash image?
 
     sywac.number('--delayBetweenCalls', {
