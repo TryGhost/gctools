@@ -84,8 +84,6 @@ exports.setup = (sywac) => {
         desc: '2 dates that all posts will fall between (eg: 25-12-2019,14-02-2020). Defaults to today'
     });
 
-    // random unsplash image?
-
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'
@@ -98,7 +96,7 @@ exports.run = async (argv) => {
     let context = {errors: []};
 
     try {
-        // // Fetch the tasks, configured correctly according to the options passed in
+        // Fetch the tasks, configured correctly according to the options passed in
         let runner = randomPosts.getTaskRunner(argv);
 
         // Run the migration
