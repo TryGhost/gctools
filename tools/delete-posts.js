@@ -13,10 +13,7 @@ const options = [
     {
         type: 'input',
         name: 'tag',
-        message: 'Delete content with this tag slug? (leave blank to skip)',
-        default: function () {
-            return false;
-        },
+        message: 'Filter by tag (comma separated list of tags):',
         filter: function (val) {
             return val.replace(/#/g, 'hash-');
         }
@@ -24,7 +21,7 @@ const options = [
     {
         type: 'input',
         name: 'author',
-        message: 'Delete content with this author slug? (leave blank to skip)',
+        message: 'Filter by author (single author slug):',
         default: function () {
             return false;
         }

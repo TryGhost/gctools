@@ -11,7 +11,7 @@ const options = [
     {
         type: 'input',
         name: 'zipFile',
-        message: 'Enter the path for the zip file (drag file into this window)',
+        message: 'Path to zip file (drag file into this window):',
         filter: function (val) {
             return val.trim();
         }
@@ -19,7 +19,7 @@ const options = [
     {
         type: 'number',
         name: 'maxSize',
-        message: 'Max zip size, in MB',
+        message: 'Maximum zip size (in MB):',
         default: function () {
             return 50;
         }

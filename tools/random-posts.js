@@ -13,7 +13,7 @@ const options = [
     {
         type: 'input',
         name: 'count',
-        message: 'Set number of posts to create',
+        message: 'Number of posts to create:',
         default: function () {
             return 10;
         }
@@ -21,7 +21,7 @@ const options = [
     {
         type: 'rawlist',
         name: 'status',
-        message: 'Select post status',
+        message: 'Status:',
         choices: [
             {
                 name: 'Published',
@@ -36,7 +36,7 @@ const options = [
     {
         type: 'rawlist',
         name: 'visibility',
-        message: 'Select post visibility',
+        message: 'Visibility:',
         choices: [
             {
                 name: 'Public',
@@ -55,7 +55,7 @@ const options = [
     {
         type: 'input',
         name: 'tags',
-        message: 'Set the post tag(s)',
+        message: 'Tags (comma separated list):',
         default: function () {
             return '#gctools';
         }
@@ -63,7 +63,7 @@ const options = [
     {
         type: 'input',
         name: 'userEmail',
-        message: 'Set the post author email (leave blank to use the API key creators user)'
+        message: 'Author email (leave blank to use the API key creators user):'
     }
 ];
 
