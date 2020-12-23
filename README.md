@@ -83,25 +83,42 @@ gctools delete-posts --help
 Delete all posts (⛔️ dangerous!)
 
 ```sh
-gctools random-posts <apiURL> <adminAPIKey>
+gctools delete-posts <apiURL> <adminAPIKey>
 ```
 
 Delete all posts with a specific tag
 
 ```sh
-gctools random-posts <apiURL> <adminAPIKey> --tag '#testing'
+gctools delete-posts <apiURL> <adminAPIKey> --tag '#testing'
 ```
 
 Delete all posts by a specific author
 
 ```sh
-gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user'
+gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user'
 ```
 
 Delete all posts by a specific author with a specific tag
 
 ```sh
-gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
+gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
+```
+
+
+### delete-tags
+
+Delete tags, but not the content that uses that tag
+
+See all available options:
+
+```sh
+gctools delete-tags --help
+```
+
+Delete a specific tag or multiple tags
+
+```sh
+gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
 ```
 
 
@@ -109,7 +126,7 @@ gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testi
 
 * `commands` handles the traditional CLI input
 * `tools` handles the interactive CLI input
-* `tasks` is the tasks that the CLI or interactive tools use to get the job done
+* `tasks` is the tasks run by both the CLI and interactive tool
 
 
 # Copyright & License

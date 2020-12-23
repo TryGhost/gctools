@@ -1,16 +1,16 @@
-const deletePosts = require('../tasks/delete-posts');
+const deleteTags = require('../tasks/delete-tags');
 const ui = require('@tryghost/pretty-cli').ui;
 
 // Internal ID in case we need one.
-exports.id = 'delete-posts';
+exports.id = 'delete-tags';
 
 exports.group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'delete-posts <apiURL> <adminAPIKey>';
+exports.flags = 'delete-tags <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Delete posts in Ghost';
+exports.desc = 'Delete tags in Ghost';
 
 // Descriptions for the individual params
 exports.paramsDesc = [
@@ -28,18 +28,10 @@ exports.setup = (sywac) => {
         defaultValue: null,
         desc: 'Delete content with this tag slug'
     });
-    sywac.string('--author', {
-        defaultValue: null,
-        desc: 'Delete content with this author slug'
-    });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'
     });
-
-    // by date range
-    // by visibility
-    // by status
 };
 
 // What to do when this command is executed
@@ -49,7 +41,7 @@ exports.run = async (argv) => {
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = deletePosts.getTaskRunner(argv);
+        let runner = deleteTags.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);
@@ -58,5 +50,5 @@ exports.run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully deleted ${context.deleted.length} posts in ${Date.now() - timer}ms.`);
+    ui.log.ok(`Successfully deleted ${context.deleted.length} tags in ${Date.now() - timer}ms.`);
 };
