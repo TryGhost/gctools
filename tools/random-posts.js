@@ -1,5 +1,6 @@
 const inquirer = require('inquirer');
 const randomPosts = require('../tasks/random-posts');
+const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
 const choice = {
@@ -8,22 +9,7 @@ const choice = {
 };
 
 const options = [
-    {
-        type: 'input',
-        name: 'apiURL',
-        message: 'Enter the URL to your Ghost API',
-        filter: function (val) {
-            return val.trim();
-        }
-    },
-    {
-        type: 'input',
-        name: 'adminAPIKey',
-        message: 'Enter the Admin API key',
-        filter: function (val) {
-            return val.trim();
-        }
-    },
+    ...ghostAPICreds,
     {
         type: 'input',
         name: 'count',
@@ -81,10 +67,10 @@ const options = [
     }
 ];
 
-function run() {
+async function run() {
     let opts = {};
 
-    inquirer.prompt(options).then(async (answers) => {
+    await inquirer.prompt(options).then(async (answers) => {
         Object.assign(opts, answers);
 
         let timer = Date.now();

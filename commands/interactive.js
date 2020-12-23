@@ -44,13 +44,24 @@ exports.run = async () => {
         ]
     };
 
-    inquirer.prompt(toolsPrompt).then((answers) => {
-        if (answers.tool === 'abort') {
-            ui.log.info('Aborted');
-            process.exit(1);
-        }
+    function mainMenu() {
+        inquirer.prompt(toolsPrompt).then(async (answers) => {
+            if (answers.tool === 'abort') {
+                ui.log.info('Aborted');
+                process.exit(1);
+            }
 
-        let thisTool = _.filter(tasks, x => x.choice.value === answers.tool);
-        thisTool[0].run();
-    });
+            try {
+                let thisTask = _.filter(tasks, x => x.choice.value === answers.tool);
+                await thisTask[0].run();
+
+                // When the task is run, return to the main menu
+                mainMenu();
+            } catch (error) {
+                ui.log.warn(`There was a problem`, error);
+            }
+        });
+    }
+
+    mainMenu();
 };

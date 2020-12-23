@@ -26,10 +26,10 @@ const options = [
     }
 ];
 
-function run() {
+async function run() {
     let opts = {};
 
-    inquirer.prompt(options).then(async (answers) => {
+    await inquirer.prompt(options).then(async (answers) => {
         Object.assign(opts, answers);
 
         let timer = Date.now();
