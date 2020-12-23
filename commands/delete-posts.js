@@ -1,4 +1,4 @@
-const deletePosts = require('../tools/delete-posts');
+const deletePosts = require('../tasks/delete-posts');
 const ui = require('@tryghost/pretty-cli').ui;
 
 // Internal ID in case we need one.

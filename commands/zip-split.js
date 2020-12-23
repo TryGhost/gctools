@@ -1,4 +1,4 @@
-const zipSplit = require('../tools/zip-split');
+const zipSplit = require('../tasks/zip-split');
 const ui = require('@tryghost/pretty-cli').ui;
 
 // Internal ID in case we need one.

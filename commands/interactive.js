@@ -1,5 +1,5 @@
 const inquirer = require('inquirer');
-const tasks = require('../tasks');
+const tasks = require('../tools');
 const _ = require('lodash');
 const ui = require('@tryghost/pretty-cli').ui;
 

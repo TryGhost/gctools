@@ -1,4 +1,4 @@
-const randomPosts = require('../tools/random-posts');
+const randomPosts = require('../tasks/random-posts');
 const ui = require('@tryghost/pretty-cli').ui;
 
 // Internal ID in case we need one.

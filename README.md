@@ -105,6 +105,13 @@ gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testi
 ```
 
 
+## Develop
+
+* `commands` handles the traditional CLI input
+* `tools` handles the interactive CLI input
+* `tasks` is the tasks that the CLI or interactive tools use to get the job done
+
+
 # Copyright & License
 
 Copyright (c) 2013-2020 Ghost Foundation - Released under the [MIT license](LICENSE).

@@ -1,50 +1,212 @@
-const inquirer = require('inquirer');
-const zipSplit = require('../tools/zip-split');
-const ui = require('@tryghost/pretty-cli').ui;
+const fsUtils = require('@tryghost/mg-fs-utils');
+const zip = require('@tryghost/zip');
+const fs = require('fs-extra');
+const glob = require('glob');
+const path = require('path');
+const makeTaskRunner = require('../lib/task-runner');
 
-const choice = {
-    name: 'Zip Split',
-    value: 'zipSplit'
-};
-
-const options = [
-    {
-        type: 'input',
-        name: 'zipFile',
-        message: 'Enter the path for the zip file (drag file into this window)',
-        filter: function (val) {
-            return val.trim();
-        }
-    },
-    {
-        type: 'number',
-        name: 'maxSize',
-        message: 'Max zip size, in MB',
-        default: function () {
-            return 50;
-        }
-    }
-];
-
-function run() {
-    let opts = {};
-
-    inquirer.prompt(options).then(async (answers) => {
-        Object.assign(opts, answers);
-
-        let timer = Date.now();
-        let context = {errors: []};
-
-        try {
-            let runner = zipSplit.getTaskRunner(opts);
-            await runner.run(context);
-            ui.log.ok(`Successfully split zip in ${Date.now() - timer}ms.`);
-        } catch (error) {
-            ui.log.error('Done with errors', context.errors);
-        }
-    });
+async function hydrateFile(filePath) {
+    let stats = await fs.stat(filePath);
+    let data = {
+        path: filePath,
+        size: stats.size
+    };
+    return data;
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+async function chunkFiles(ctx) {
+    let input = ctx.theFiles;
+    let chunkMaxSize = ctx.options.sizeInBytes;
+
+    let chunks = [];
+    let currentChunkSize = 0;
+    let currentChunkIndex = 0;
+
+    if (!input || input.length === 0 || chunkMaxSize <= 0) {
+        return chunks;
+    }
+
+    for (let obj of input) {
+        const objSize = obj.size;
+        const fitsIntoLastChunk = (currentChunkSize + objSize) <= chunkMaxSize;
+
+        if (fitsIntoLastChunk) {
+            if (!Array.isArray(chunks[currentChunkIndex])) {
+                chunks[currentChunkIndex] = [];
+            }
+
+            chunks[currentChunkIndex].push(obj);
+            currentChunkSize += objSize;
+        } else {
+            if (chunks[currentChunkIndex]) {
+                currentChunkIndex = (currentChunkIndex + 1);
+                currentChunkSize = 0;
+            }
+
+            chunks[currentChunkIndex] = [];
+            chunks[currentChunkIndex].push(obj);
+            currentChunkSize += objSize;
+        }
+    }
+
+    return chunks;
+}
+
+async function createZip(chunk, index, ctx) {
+    const zipFileParts = path.parse(ctx.options.zipFile);
+    const zipName = `${zipFileParts.name}_${index}.zip`;
+
+    fsUtils.zip.write(ctx.fileCache.zipDir, chunk, zipName);
+}
+
+module.exports.initialise = (options) => {
+    return {
+        title: 'Initialising Workspace',
+        task: (ctx, task) => {
+            ctx.options = options;
+
+            ctx.fileCache = new fsUtils.FileCache('zip_split');
+            ctx.theFiles = [];
+            ctx.chunks = [];
+            ctx.options.sizeInBytes = (options.maxSize * (1024 * 1024));
+            ctx.options.destDir = path.dirname(options.zipFile);
+
+            if (options.verbose) {
+                task.output = `Workspace initialised at ${ctx.fileCache.cacheDir}`;
+            }
+        }
+    };
+};
+
+module.exports.getFullTaskList = (options) => {
+    return [
+        this.initialise(options),
+        {
+            title: 'Unzipping file',
+            task: async (ctx) => {
+                // 1. Unzip the file
+                try {
+                    let res = await zip.extract(ctx.options.zipFile, ctx.fileCache.tmpDir);
+                    return res;
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Getting image sizes',
+            task: async (ctx) => {
+                // 2. Get the size for each image that was just unzipped
+                try {
+                    let filePaths = glob.sync(`${ctx.fileCache.tmpDir}/**/*`, {
+                        dot: false,
+                        nodir: true
+                    });
+
+                    await Promise.all(filePaths.map(async (filePath) => {
+                        let hydrated = await hydrateFile(filePath);
+                        ctx.theFiles.push(hydrated);
+                    }));
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Chunking files',
+            task: async (ctx) => {
+                // 3. Chunk the files into smaller groups
+                try {
+                    ctx.chunks = await chunkFiles(ctx);
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Creating chunk directories',
+            task: async (ctx) => {
+                // 4. Create a directory for each chunk and move its images into it
+                try {
+                    await Promise.all(
+                        ctx.chunks.map(async (chunk, index) => {
+                            let tmpDir = ctx.fileCache.tmpDir;
+                            let zipDir = ctx.fileCache.zipDir;
+
+                            await Promise.all(chunk.map(async (file) => {
+                                let filePathNoBase = file.path.replace(tmpDir, '');
+                                let newLocal = path.join(zipDir, `chunks/chunk_${index}`, filePathNoBase);
+                                await fs.move(file.path, newLocal, {
+                                    overwrite: true
+                                });
+                            }));
+                        })
+                    );
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Zipping chunks',
+            task: async (ctx) => {
+                // 5. Zip each of those new chunk directories
+                try {
+                    let chunkDirs = glob.sync(`${ctx.fileCache.zipDir}/chunks/*`);
+
+                    await Promise.all(chunkDirs.map((dir, index) => {
+                        return createZip(dir, index, ctx);
+                    }));
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Moving zips',
+            task: async (ctx) => {
+                // 6. Move each new zip to the desired destination path
+                try {
+                    let filePaths = glob.sync(`${ctx.fileCache.zipDir}/*.zip`);
+
+                    await Promise.all(filePaths.map(async (filePath) => {
+                        let fileName = path.basename(filePath);
+                        let folderName = path.basename(ctx.options.zipFile).replace('.zip', '');
+                        await fs.move(filePath, `${ctx.options.destDir}/${folderName}_zip_chunks/${fileName}`, {
+                            overwrite: true
+                        });
+                    }));
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Cleaning up',
+            task: async (ctx) => {
+                // 7. Remove the cached data
+                try {
+                    await fs.remove(ctx.fileCache.cacheDir);
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        }
+    ];
+};
+
+module.exports.getTaskRunner = (options) => {
+    let tasks = [];
+
+    tasks = this.getFullTaskList(options);
+
+    // Configure a new Listr task manager, we can use different renderers for different configs
+    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
