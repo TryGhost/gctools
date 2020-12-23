@@ -80,6 +80,25 @@ module.exports.initialise = (options) => {
     return {
         title: 'Initialising API connection',
         task: (ctx, task) => {
+            var defaults = {
+                verbose: false,
+                count: 10,
+                titleMinLength: 3,
+                titleMaxLength: 8,
+                contentUnit: 'paragraphs',
+                contentCount: 10,
+                paragraphLowerBound: 3,
+                paragraphUpperBound: 7,
+                sentenceLowerBound: 3,
+                sentenceUpperBound: 15,
+                userEmail: false,
+                tags: '#gctools',
+                status: 'published',
+                visibility: 'public',
+                dateRange: false,
+                delayBetweenCalls: 50
+            };
+
             const url = options.apiURL;
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
@@ -88,7 +107,7 @@ module.exports.initialise = (options) => {
                 version: 'v2'
             });
 
-            ctx.options = options;
+            ctx.options = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.posts = [];
             ctx.inserted = [];
@@ -104,8 +123,8 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Creating random posts',
             task: async (ctx) => {
-                _.times(options.count, () => {
-                    let post = createRandomPost(options);
+                _.times(ctx.options.count, () => {
+                    let post = createRandomPost(ctx.options);
                     ctx.posts.push(post);
                 });
             }
@@ -124,7 +143,7 @@ module.exports.getFullTaskList = (options) => {
                                     source: 'html'
                                 });
                                 ctx.inserted.push(result.url);
-                                return Promise.delay(options.delayBetweenCalls).return(result);
+                                return Promise.delay(ctx.options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
                                     title: post.title
@@ -136,7 +155,7 @@ module.exports.getFullTaskList = (options) => {
                     });
                 });
 
-                let taskOptions = options;
+                let taskOptions = ctx.options;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
             }

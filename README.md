@@ -18,6 +18,16 @@ To see all available tools:
 gctools
 ```
 
+### Interactive Mode
+
+GCTools has an interactive CLI which walks you through each tool, without needing to add multiple option flags.
+
+```sh
+gctools i
+```
+
+Each of the tools also has a traditional CLI counterpart with more options, detailed below.
+
 
 ### zip-split
 
