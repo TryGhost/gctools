@@ -45,16 +45,12 @@ const options = [
 ];
 
 async function run() {
-    let opts = {};
-
     await inquirer.prompt(options).then(async (answers) => {
-        Object.assign(opts, answers);
-
         let timer = Date.now();
         let context = {errors: []};
 
         try {
-            let runner = deleteTags.getTaskRunner(opts);
+            let runner = deleteTags.getTaskRunner(answers);
             await runner.run(context);
             ui.log.ok(`Successfully deleted ${context.deleted.length} tags in ${Date.now() - timer}ms.`);
         } catch (error) {

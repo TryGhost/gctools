@@ -4,11 +4,6 @@ const batchGhostDiscover = require('../lib/batch-ghost-discover');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
-const choice = {
-    name: 'Delete posts',
-    value: 'deletePosts'
-};
-
 async function getGhostTags() {
     const url = process.env.GC_TOOLS_apiURL;
     const key = process.env.GC_TOOLS_adminAPIKey;
@@ -53,6 +48,11 @@ async function getGhostAuthors() {
     return users;
 }
 
+const choice = {
+    name: 'Delete posts',
+    value: 'deletePosts'
+};
+
 const options = [
     ...ghostAPICreds,
     {
@@ -96,16 +96,12 @@ const options = [
 ];
 
 async function run() {
-    let opts = {};
-
     await inquirer.prompt(options).then(async (answers) => {
-        Object.assign(opts, answers);
-
         let timer = Date.now();
         let context = {errors: []};
 
         try {
-            let runner = deletePosts.getTaskRunner(opts);
+            let runner = deletePosts.getTaskRunner(answers);
             await runner.run(context);
             ui.log.ok(`Successfully deleted ${context.deleted.length} posts in ${Date.now() - timer}ms.`);
         } catch (error) {
