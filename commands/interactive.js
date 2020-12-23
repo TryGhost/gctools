@@ -24,16 +24,16 @@ exports.setup = (sywac) => {
 
 // What to do when this command is executed
 exports.run = async () => {
-    const map = new Map(Object.entries(tasks));
+    const tasksMap = new Map(Object.entries(tasks));
     const choices = [];
-    for (let value of map.values()) {
+    for (let value of tasksMap.values()) {
         choices.push(value.choice);
     }
 
-    var toolsPrompt = {
+    var tasksPrompt = {
         type: 'rawlist',
-        name: 'tool',
-        message: 'Which tool would you like to go?',
+        name: 'task',
+        message: 'Which tool would you like to use?',
         choices: [
             ...choices,
             new inquirer.Separator(),
@@ -45,14 +45,14 @@ exports.run = async () => {
     };
 
     function mainMenu() {
-        inquirer.prompt(toolsPrompt).then(async (answers) => {
-            if (answers.tool === 'abort') {
+        inquirer.prompt(tasksPrompt).then(async (answers) => {
+            if (answers.task === 'abort') {
                 ui.log.info('Aborted');
                 process.exit(1);
             }
 
             try {
-                let thisTask = _.filter(tasks, x => x.choice.value === answers.tool);
+                let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
                 await thisTask[0].run();
 
                 // When the task is run, return to the main menu
