@@ -18,6 +18,7 @@ To see all available tools:
 gctools
 ```
 
+
 ### Interactive Mode
 
 GCTools has an interactive CLI which walks you through each tool, without needing to add multiple option flags.
@@ -30,6 +31,8 @@ Each of the tools also has a traditional CLI counterpart with more options, deta
 
 
 ### zip-split
+
+Split a zip file into smaller zip files of a defined maximum size, while maintaining the directory structure.
 
 See all available options:
 
@@ -45,6 +48,8 @@ gctools zip-split /path/to/big-file.zip --M 50
 
 
 ### random-posts
+
+Insert a number of posts with random content.
 
 See all available options:
 
@@ -62,6 +67,41 @@ Create and insert 3000 random draft posts with 2 tags visible to members only, w
 
 ```sh
 gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tags '#random,New World' --status draft --visibility members --userEmail person@dummyemail.com
+```
+
+
+### delete-posts
+
+Delete all content or content with a specific set of filters, which can be combined.
+
+See all available options:
+
+```sh
+gctools delete-posts --help
+```
+
+Delete all posts (⛔️ dangerous!)
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey>
+```
+
+Delete all posts with a specific tag
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey> --tag '#testing'
+```
+
+Delete all posts by a specific author
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user'
+```
+
+Delete all posts by a specific author with a specific tag
+
+```sh
+gctools random-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
 ```
 
 

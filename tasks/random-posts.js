@@ -77,7 +77,7 @@ const options = [
     {
         type: 'input',
         name: 'userEmail',
-        message: 'Set the post author (leave blank to use the API key creators user)'
+        message: 'Set the post author email (leave blank to use the API key creators user)'
     }
 ];
 
