@@ -1,35 +1,9 @@
 const inquirer = require('inquirer');
 const randomPosts = require('../tasks/random-posts');
-const batchGhostDiscover = require('../lib/batch-ghost-discover');
+const {getAPITags} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 const _ = require('lodash');
-
-async function getGhostTags(additionalOpts) {
-    const url = process.env.GC_TOOLS_apiURL;
-    const key = process.env.GC_TOOLS_adminAPIKey;
-
-    let apiTags = await batchGhostDiscover({
-        type: 'tags',
-        url: url,
-        key: key
-    });
-
-    let tags = [];
-
-    apiTags.forEach(function (tag){
-        tags.push({
-            name: `${tag.name} (${tag.count.posts} posts)`,
-            value: tag.slug
-        });
-    });
-
-    if (additionalOpts) {
-        tags.push(...additionalOpts);
-    }
-
-    return tags;
-}
 
 const choice = {
     name: 'Add random posts',
@@ -85,7 +59,7 @@ const options = [
         name: 'tags',
         message: 'Tags (comma separated list):',
         choices: function () {
-            return Object.assign(getGhostTags([{
+            return Object.assign(getAPITags([{
                 name: 'Custom tag',
                 value: 'gctools_new_tag'
             }]));

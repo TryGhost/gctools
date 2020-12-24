@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const deleteTags = require('../tasks/delete-tags');
-const batchGhostDiscover = require('../lib/batch-ghost-discover');
+const {getAPITags} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
@@ -8,28 +8,6 @@ const choice = {
     name: 'Delete tags',
     value: 'deleteTags'
 };
-
-async function getGhostTags() {
-    const url = process.env.GC_TOOLS_apiURL;
-    const key = process.env.GC_TOOLS_adminAPIKey;
-
-    let apiTags = await batchGhostDiscover({
-        type: 'tags',
-        url: url,
-        key: key
-    });
-
-    let tags = [];
-
-    apiTags.forEach(function (tag){
-        tags.push({
-            name: `${tag.name} (${tag.count.posts} posts)`,
-            value: tag.name
-        });
-    });
-
-    return tags;
-}
 
 const options = [
     ...ghostAPICreds,
@@ -39,7 +17,7 @@ const options = [
         message: 'Filter by tag:',
         pageSize: 20,
         choices: function () {
-            return getGhostTags();
+            return getAPITags();
         }
     }
 ];

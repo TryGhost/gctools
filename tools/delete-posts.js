@@ -1,52 +1,8 @@
 const inquirer = require('inquirer');
 const deletePosts = require('../tasks/delete-posts');
-const batchGhostDiscover = require('../lib/batch-ghost-discover');
+const {getAPIAuthors, getAPITags} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
-
-async function getGhostTags() {
-    const url = process.env.GC_TOOLS_apiURL;
-    const key = process.env.GC_TOOLS_adminAPIKey;
-
-    let apiTags = await batchGhostDiscover({
-        type: 'tags',
-        url: url,
-        key: key
-    });
-
-    let tags = [];
-
-    apiTags.forEach(function (tag){
-        tags.push({
-            name: `${tag.name} (${tag.count.posts} posts)`,
-            value: tag.slug
-        });
-    });
-
-    return tags;
-}
-
-async function getGhostAuthors() {
-    const url = process.env.GC_TOOLS_apiURL;
-    const key = process.env.GC_TOOLS_adminAPIKey;
-
-    let apiUsers = await batchGhostDiscover({
-        type: 'users',
-        url: url,
-        key: key
-    });
-
-    let users = [];
-
-    apiUsers.forEach(function (author){
-        users.push({
-            name: `${author.name} (${author.count.posts} posts)`,
-            value: author.slug
-        });
-    });
-
-    return users;
-}
 
 const choice = {
     name: 'Delete posts',
@@ -76,7 +32,7 @@ const options = [
         message: 'Filter by tag:',
         pageSize: 20,
         choices: function () {
-            return getGhostTags();
+            return getAPITags();
         },
         when: function (answers) {
             return answers.delete_by === 'delete_by_tag';
@@ -87,7 +43,7 @@ const options = [
         name: 'author',
         message: 'Filter by author:',
         choices: function () {
-            return getGhostAuthors();
+            return getAPIAuthors();
         },
         when: function (answers) {
             return answers.delete_by === 'delete_by_author';
