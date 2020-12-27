@@ -61,11 +61,11 @@ exports.setup = (sywac) => {
         defaultValue: 15,
         desc: 'Max. number of words per sentence'
     });
-    sywac.string('--userEmail', {
+    sywac.string('--author', {
         defaultValue: false,
-        desc: 'The assigned author. Defaults to who created the API key'
+        desc: 'The assigned author email address. Defaults to who created the API key'
     });
-    sywac.string('--tags', {
+    sywac.string('--tag', {
         defaultValue: '#gctools',
         desc: 'Comma separated list of tags'
     });

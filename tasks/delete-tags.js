@@ -2,6 +2,7 @@ const Promise = require('bluebird');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
+// const discover = require('../lib/discover');
 
 async function discover(ctx) {
     let response = null;
@@ -63,8 +64,18 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Fetch tags from Ghost API',
             task: async (ctx, task) => {
-                ctx.tags = await discover(ctx);
-                task.output = `Found ${ctx.tags.length} posts`;
+                if (typeof ctx.options.tag === 'object' && ctx.options.tag[0].id) {
+                    ctx.tags = ctx.options.tag;
+                } else {
+                    ctx.tags = await discover(ctx);
+                }
+
+                if (ctx.tags.length < 1) {
+                    ctx.errors.push(`No tags found for ${ctx.options.tag}`);
+                    throw 'No tags found';
+                }
+
+                task.output = `Found ${ctx.tags.length} tags`;
             }
         },
         {

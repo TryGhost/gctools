@@ -66,7 +66,7 @@ gctools random-posts <apiURL> <adminAPIKey>
 Create and insert 3000 random draft posts with 2 tags visible to members only, written by a specific author:
 
 ```sh
-gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tags '#random,New World' --status draft --visibility members --userEmail person@dummyemail.com
+gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tag '#random,New World' --status draft --visibility members --userEmail person@dummyemail.com
 ```
 
 

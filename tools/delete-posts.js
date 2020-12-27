@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const deletePosts = require('../tasks/delete-posts');
-const {getAPIAuthors, getAPITags} = require('../lib/ghost-api-choices.js');
+const {getAPIAuthorsObj, getAPITagsObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
@@ -32,7 +32,7 @@ const options = [
         message: 'Filter by tag:',
         pageSize: 20,
         choices: function () {
-            return getAPITags();
+            return getAPITagsObj();
         },
         when: function (answers) {
             return answers.delete_by === 'delete_by_tag';
@@ -43,7 +43,7 @@ const options = [
         name: 'author',
         message: 'Filter by author:',
         choices: function () {
-            return getAPIAuthors();
+            return getAPIAuthorsObj();
         },
         when: function (answers) {
             return answers.delete_by === 'delete_by_author';

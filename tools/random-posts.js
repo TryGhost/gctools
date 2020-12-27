@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const randomPosts = require('../tasks/random-posts');
-const {getAPITags, getAPIAuthorsEmails} = require('../lib/ghost-api-choices.js');
+const {getAPIAuthorsObj, getAPITagsObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 const _ = require('lodash');
@@ -56,13 +56,13 @@ const options = [
     },
     {
         type: 'checkbox',
-        name: 'tags',
+        name: 'tag',
         message: 'Tags (comma separated list):',
         choices: function () {
-            return Object.assign(getAPITags([{
+            return getAPITagsObj({
                 name: 'Custom tag',
                 value: 'gctools_new_tag'
-            }]));
+            });
         }
     },
     {
@@ -70,38 +70,28 @@ const options = [
         name: 'new_tag',
         message: 'Custom tag (comma separated list):',
         when: function (answers) {
-            return answers.tags.includes('gctools_new_tag');
+            return answers.tag.includes('gctools_new_tag');
         }
     },
     {
         type: 'checkbox',
-        name: 'userEmail',
+        name: 'author',
         message: 'Author:',
         choices: function () {
-            return getAPIAuthorsEmails();
+            return getAPIAuthorsObj();
         }
     }
-    // },
-    // {
-    //     type: 'input',
-    //     name: 'userEmail',
-    //     message: 'Author email (leave blank to use the API key creators user):'
-    // }
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         // Handle the case where a new tag is wanted
         if (answers.new_tag) {
-            var tagsArray = answers.new_tag.split(',').map(function (item) {
-                return item.trim();
+            var newTagsArray = answers.new_tag.split(',').map(function (item) {
+                return {name: item.trim()};
             });
-            _.remove(answers.tags, function (tag) {
-                return tag === 'gctools_new_tag';
-            });
-            answers.tags.push(...tagsArray);
-            answers.tags = answers.tags.join(',');
-            delete answers.new_tag;
+            answers.tag.pop();
+            answers.tag.push(...newTagsArray);
         }
 
         let timer = Date.now();

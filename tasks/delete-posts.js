@@ -2,37 +2,8 @@ const Promise = require('bluebird');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
-
-async function discover(ctx) {
-    let response = null;
-    let page = 0;
-    let results = [];
-
-    let filterStringParts = new Array();
-
-    if (ctx.tags) {
-        filterStringParts.push(`tag:[${ctx.tags}]`);
-    }
-
-    if (ctx.authors) {
-        filterStringParts.push(`author:[${ctx.authors}]`);
-    }
-
-    const filterString = filterStringParts.join('+');
-
-    do {
-        response = await ctx.api.posts.browse({
-            fields: 'id,title,url',
-            limit: 15,
-            page: page,
-            filter: filterString
-        });
-        results = results.concat(response);
-        page = response.meta.pagination.next;
-    } while (response.meta.pagination.next);
-
-    return await results;
-}
+const {transformToCommaString} = require('../lib/utils');
+const discover = require('../lib/discover');
 
 module.exports.initialise = (options) => {
     return {
@@ -55,8 +26,6 @@ module.exports.initialise = (options) => {
 
             ctx.options = _.mergeWith(defaults, options);
             ctx.api = api;
-            ctx.tags = [];
-            ctx.authors = [];
             ctx.posts = [];
             ctx.deleted = [];
 
@@ -72,16 +41,12 @@ module.exports.getFullTaskList = (options) => {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
                 try {
-                    if (typeof ctx.options.tag === 'object') {
-                        ctx.tags = ctx.options.tag.join(',');
-                    } else {
-                        ctx.tags = ctx.options.tag;
+                    if (ctx.options.tag) {
+                        ctx.options.tag = transformToCommaString(ctx.options.tag, 'slug');
                     }
 
-                    if (typeof ctx.options.author === 'object') {
-                        ctx.authors = ctx.options.author.join(',');
-                    } else {
-                        ctx.authors = ctx.options.author;
+                    if (ctx.options.author) {
+                        ctx.options.author = transformToCommaString(ctx.options.author, 'slug');
                     }
 
                     ctx.posts = await discover(ctx);

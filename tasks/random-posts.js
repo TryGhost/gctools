@@ -4,6 +4,7 @@ const {titleCase} = require('title-case');
 const _ = require('lodash');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
+const {maybeStringToArray, transformToCommaString} = require('../lib/utils');
 
 async function createRandomPost(options) {
     let titleLength = Math.floor(Math.random() * (options.titleMaxLength - options.titleMinLength + 1)) + options.titleMinLength;
@@ -43,20 +44,12 @@ async function createRandomPost(options) {
 
     post.title = titleCase(post.title);
 
-    if (options.userEmail) {
-        if (typeof options.userEmail === 'string') {
-            post.authors = options.userEmail.split(',');
-        } else if (typeof options.userEmail === 'object') {
-            post.authors = options.userEmail;
-        }
+    if (options.author) {
+        post.authors = maybeStringToArray(options.author);
     }
 
-    if (options.tags) {
-        if (typeof options.tags === 'string') {
-            post.tags = options.tags.split(',');
-        } else if (typeof options.tags === 'object') {
-            post.tags = options.tags;
-        }
+    if (options.tag) {
+        post.tags = maybeStringToArray(options.tag);
     }
 
     if (options.dateRange) {
@@ -132,6 +125,16 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Creating random posts',
             task: async (ctx) => {
+                console.log(ctx.options.author);
+                console.log(ctx.options.tag);
+                if (ctx.options.tag) {
+                    ctx.options.tag = transformToCommaString(ctx.options.tag, 'name');
+                }
+
+                if (ctx.options.author) {
+                    ctx.options.author = transformToCommaString(ctx.options.author, 'email');
+                }
+
                 _.times(ctx.options.count, () => {
                     let post = createRandomPost(ctx.options);
                     ctx.posts.push(post);
