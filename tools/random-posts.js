@@ -3,7 +3,6 @@ const randomPosts = require('../tasks/random-posts');
 const {getAPIAuthorsObj, getAPITagsObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
-const _ = require('lodash');
 
 const choice = {
     name: 'Add random posts',

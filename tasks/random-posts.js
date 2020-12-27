@@ -125,8 +125,6 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Creating random posts',
             task: async (ctx) => {
-                console.log(ctx.options.author);
-                console.log(ctx.options.tag);
                 if (ctx.options.tag) {
                     ctx.options.tag = transformToCommaString(ctx.options.tag, 'name');
                 }
