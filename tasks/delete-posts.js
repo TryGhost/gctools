@@ -10,12 +10,12 @@ async function discover(ctx) {
 
     let filterStringParts = new Array();
 
-    if (ctx.options.tag) {
-        filterStringParts.push(`tag:[${ctx.options.tag}]`);
+    if (ctx.tags) {
+        filterStringParts.push(`tag:[${ctx.tags}]`);
     }
 
-    if (ctx.options.author) {
-        filterStringParts.push(`author:${ctx.options.author}`);
+    if (ctx.authors) {
+        filterStringParts.push(`author:[${ctx.authors}]`);
     }
 
     const filterString = filterStringParts.join('+');
@@ -55,6 +55,8 @@ module.exports.initialise = (options) => {
 
             ctx.options = _.mergeWith(defaults, options);
             ctx.api = api;
+            ctx.tags = [];
+            ctx.authors = [];
             ctx.posts = [];
             ctx.deleted = [];
 
@@ -69,8 +71,25 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
-                ctx.posts = await discover(ctx);
-                task.output = `Found ${ctx.posts.length} posts`;
+                try {
+                    if (typeof ctx.options.tag === 'object') {
+                        ctx.tags = ctx.options.tag.join(',');
+                    } else {
+                        ctx.tags = ctx.options.tag;
+                    }
+
+                    if (typeof ctx.options.author === 'object') {
+                        ctx.authors = ctx.options.author.join(',');
+                    } else {
+                        ctx.authors = ctx.options.author;
+                    }
+
+                    ctx.posts = await discover(ctx);
+                    task.output = `Found ${ctx.posts.length} posts`;
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
             }
         },
         {

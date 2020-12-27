@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const randomPosts = require('../tasks/random-posts');
-const {getAPITags} = require('../lib/ghost-api-choices.js');
+const {getAPITags, getAPIAuthorsEmails} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 const _ = require('lodash');
@@ -74,10 +74,19 @@ const options = [
         }
     },
     {
-        type: 'input',
+        type: 'checkbox',
         name: 'userEmail',
-        message: 'Author email (leave blank to use the API key creators user):'
+        message: 'Author:',
+        choices: function () {
+            return getAPIAuthorsEmails();
+        }
     }
+    // },
+    // {
+    //     type: 'input',
+    //     name: 'userEmail',
+    //     message: 'Author email (leave blank to use the API key creators user):'
+    // }
 ];
 
 async function run() {

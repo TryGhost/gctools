@@ -44,11 +44,19 @@ async function createRandomPost(options) {
     post.title = titleCase(post.title);
 
     if (options.userEmail) {
-        post.authors = [options.userEmail];
+        if (typeof options.userEmail === 'string') {
+            post.authors = options.userEmail.split(',');
+        } else if (typeof options.userEmail === 'object') {
+            post.authors = options.userEmail;
+        }
     }
 
     if (options.tags) {
-        post.tags = options.tags.split(',');
+        if (typeof options.tags === 'string') {
+            post.tags = options.tags.split(',');
+        } else if (typeof options.tags === 'object') {
+            post.tags = options.tags;
+        }
     }
 
     if (options.dateRange) {
@@ -95,6 +103,7 @@ module.exports.initialise = (options) => {
                 tags: '#gctools',
                 status: 'published',
                 visibility: 'public',
+                // dateRange: '25-12-2019,24-12-2020',
                 dateRange: false,
                 delayBetweenCalls: 50
             };
