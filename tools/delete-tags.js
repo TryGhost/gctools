@@ -1,6 +1,5 @@
 const inquirer = require('inquirer');
 const deleteTags = require('../tasks/delete-tags');
-// const {getAPITags} = require('../lib/ghost-api-choices.js');
 const {getAPITagsObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
