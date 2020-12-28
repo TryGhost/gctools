@@ -49,7 +49,7 @@ module.exports.getFullTaskList = (options) => {
                         ctx.options.author = transformToCommaString(ctx.options.author, 'slug');
                     }
 
-                    ctx.posts = await discover(ctx);
+                    ctx.posts = await discover('posts', ctx);
                     task.output = `Found ${ctx.posts.length} posts`;
                 } catch (error) {
                     ctx.errors.push(error);

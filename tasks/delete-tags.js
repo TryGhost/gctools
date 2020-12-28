@@ -2,33 +2,7 @@ const Promise = require('bluebird');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
-// const discover = require('../lib/discover');
-
-async function discover(ctx) {
-    let response = null;
-    let page = 0;
-    let results = [];
-
-    do {
-        response = await ctx.api.tags.browse({
-            fields: 'id,name,slug,url',
-            limit: 15,
-            page: page
-        });
-        results = results.concat(response);
-        page = response.meta.pagination.next;
-    } while (response.meta.pagination.next);
-
-    if (typeof ctx.options.tag === 'object') {
-        return results.filter(item => ctx.options.tag.includes(item.name));
-    } else {
-        var tagsArray = ctx.options.tag.split(',').map(function (item) {
-            return item.trim();
-        });
-        let newResults = results.filter(item => tagsArray.includes(item.name));
-        return await newResults;
-    }
-}
+const discover = require('../lib/discover');
 
 module.exports.initialise = (options) => {
     return {
@@ -67,11 +41,11 @@ module.exports.getFullTaskList = (options) => {
                 if (typeof ctx.options.tag === 'object' && ctx.options.tag[0].id) {
                     ctx.tags = ctx.options.tag;
                 } else {
-                    ctx.tags = await discover(ctx);
+                    ctx.tags = await discover('tags', ctx);
                 }
 
                 if (ctx.tags.length < 1) {
-                    ctx.errors.push(`No tags found for ${ctx.options.tag}`);
+                    ctx.errors.push(`No tags found for "${ctx.options.tag}"`);
                     throw 'No tags found';
                 }
 
