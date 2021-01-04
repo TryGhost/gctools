@@ -51,20 +51,23 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Finding matches',
             task: async (ctx) => {
-                let tasks = [];
-
                 await Promise.mapSeries(ctx.posts, async (post) => {
-                    let matches = post.mobiledoc.match(ctx.regex);
+                    let matches = [];
 
-                    if (matches) {
+                    ctx.options.where.forEach((key) => {
+                        if (post[key]) {
+                            let match = post[key].match(ctx.regex);
+                            if (match) {
+                                matches.push(...match);
+                            }
+                        }
+                    });
+
+                    if (matches.length > 0) {
                         post.matches = matches;
                         ctx.toUpdate.push(post);
                     }
                 });
-
-                let taskOptions = options;
-                taskOptions.concurrent = 10;
-                return makeTaskRunner(tasks, taskOptions);
             }
         },
         {
@@ -76,7 +79,11 @@ module.exports.getFullTaskList = (options) => {
                     tasks.push({
                         title: `Replacing ${post.matches.length} matches in "${post.title}": ${post.url}`,
                         task: async () => {
-                            post.mobiledoc = post.mobiledoc.replace(ctx.regex, ctx.options.replace);
+                            ctx.options.where.forEach((key) => {
+                                post[key] = post[key].replace(ctx.regex, ctx.options.replace);
+                            });
+
+                            // Delete the matches object or else the request gets denied
                             delete post.matches;
 
                             try {

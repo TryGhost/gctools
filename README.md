@@ -122,6 +122,44 @@ gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
 ```
 
 
+### find-replace
+
+Delete tags, but not the content that uses that tag
+Find & replace strings of text within Ghost posts
+
+See all available options:
+
+```sh
+gctools find-replace --help
+```
+
+Replace a string but only in the `mobiledoc` and `title`:
+
+```sh
+gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --where mobiledoc,title
+```
+
+Replace a string in all available fields:
+
+```sh
+gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --where all
+```
+
+Available `where` fields are:
+
+* `all`
+* `mobiledoc` (default)
+* `title`
+* `slug`
+* `custom_excerpt`
+* `meta_title`
+* `meta_description`
+* `twitter_title`
+* `twitter_description`
+* `og_title`
+* `og_description`
+
+
 ## Develop
 
 * `commands` handles the traditional CLI input

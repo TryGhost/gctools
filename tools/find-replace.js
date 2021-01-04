@@ -23,12 +23,12 @@ const options = [
     {
         type: 'checkbox',
         name: 'where',
-        message: 'In these locations (IMPLEMENT ME):',
+        message: 'In these locations:',
         pageSize: 20,
         choices: [
             {
                 name: 'Content',
-                value: 'content',
+                value: 'mobiledoc',
                 checked: true
             },
             {
@@ -36,12 +36,12 @@ const options = [
                 value: 'title'
             },
             {
-                name: 'URL',
-                value: 'url'
+                name: 'Slug',
+                value: 'slug'
             },
             {
-                name: 'Excerpt',
-                value: 'excerpt'
+                name: 'Custom Excerpt',
+                value: 'custom_excerpt'
             },
             {
                 name: 'Meta Title',
@@ -60,16 +60,12 @@ const options = [
                 value: 'twitter_description'
             },
             {
-                name: 'Facebook Title',
-                value: 'facebook_title'
+                name: 'Open Graph Title',
+                value: 'og_title'
             },
             {
-                name: 'Facebook Description',
-                value: 'facebook_description'
-            },
-            {
-                name: 'Email Subject',
-                value: 'email_subject'
+                name: 'Open Graph Description',
+                value: 'og_description'
             }
         ]
     }
