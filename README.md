@@ -21,11 +21,20 @@ gctools
 
 ### Interactive Mode
 
-GCTools has an interactive CLI which walks you through each tool, without needing to add multiple option flags.
+GCTools has an interactive mode which walks you through each tool, without needing to manually type multiple option flags.
 
 ```sh
 gctools i
 ```
+
+Available tools include:
+
+* `zip-split`
+* `random-posts`
+* `delete-posts`
+* `delete-tags`
+* `find-replace`
+* `change-author`
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -158,6 +167,22 @@ Available `where` fields are:
 * `twitter_description`
 * `og_title`
 * `og_description`
+
+
+### change-author
+
+Change the author assigned to a post
+
+See all available options:
+
+```sh
+gctools change-author --help
+```
+
+Change the posts written by `richard` and assign to `michael`
+
+```sh
+gctools change-author <apiURL> <adminAPIKey> --author `richard` --new_author `michael`
 
 
 ## Develop
