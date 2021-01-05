@@ -35,6 +35,7 @@ Available tools include:
 * `delete-tags`
 * `find-replace`
 * `change-author`
+* `delete-members`
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -144,6 +145,19 @@ gctools change-author --help
 
 # Change the posts written by `richard` and assign to `michael`
 gctools change-author <apiURL> <adminAPIKey> --author `richard` --new_author `michael`
+```
+
+
+### delete-members
+
+Delete all members
+
+```sh
+# See all available options
+gctools delete-members --help
+
+# Change the posts written by `richard` and assign to `michael`
+gctools delete-members <apiURL> <adminAPIKey>
 ```
 
 
