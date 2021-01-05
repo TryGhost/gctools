@@ -96,20 +96,20 @@
     form-data "^3.0.0"
     jsonwebtoken "^8.4.0"
 
-"@tryghost/errors@^0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-0.2.5.tgz#4ae49130ec60350dca5a66001605a0e9188d87e3"
-  integrity sha512-97ZfqMlFkSQZHHbIq4uGvUc/1otFutgw1pvfPAFXZhEbHqfz6rf2cRToTHtaGLhebKgnzrBIzeVmGwAL63Qxzw==
+"@tryghost/errors@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-0.2.6.tgz#4554c97a1666e4db323d8c664a4df5a714f77452"
+  integrity sha512-hhCAijjK24jeuHbeT0KILSX+6nDOldgxvFfnIGJMdjThuWQGkwHhGaD9hkUXe7F8QgAvTL0J8FVG/f6fs5TwrA==
   dependencies:
     ghost-ignition "4.2.4"
     lodash "4.17.20"
 
-"@tryghost/image-transform@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.0.5.tgz#4225697c3ac3b2a447f171ac342703ade6d79a21"
-  integrity sha512-BUiGipN9ODrHNb13LnLoE/eHASsXJfWVOFsTIRYVSFS5zW3ibkc2eChkl380YwNCqmS3ocyvK5maqtxCaBwg9Q==
+"@tryghost/image-transform@1.0.6":
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.0.6.tgz#1e1458535aad8e7d63b7b70e443a538552863582"
+  integrity sha512-7NGBvoMCrXFUzAQy37AgAG/zhWUtoiD/ktCip8VRtfzEo6VgT/qZ+BeALGFm+gn9qLIEIRCSfXOpJ3QQtTP5BQ==
   dependencies:
-    "@tryghost/errors" "^0.2.5"
+    "@tryghost/errors" "^0.2.6"
     bluebird "3.7.2"
     fs-extra "9.0.1"
   optionalDependencies:
@@ -129,18 +129,18 @@
     log-update "^4.0.0"
     strip-ansi "^6.0.0"
 
-"@tryghost/mg-fs-utils@0.7.4":
-  version "0.7.4"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.7.4.tgz#ed229b057079c6f9263348201a85c04ee94b6680"
-  integrity sha512-SLdHW2a/pPjF9ruhqyw3X69GonzWjl1S+AXSBC71pbLp5wuxsk0dPPk3htCsm7cymofFgUAcqYqU0ZJNAjJItw==
+"@tryghost/mg-fs-utils@0.7.5":
+  version "0.7.5"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.7.5.tgz#c69a8bcd085428859aca3f4ec419ec88ab3175ce"
+  integrity sha512-iZkfW7/dcx2rfkCfkSBQ5+vX5vOcQ9Wq7T34FUReOXyIUx4W3v8mabUb9BXt5exNR9SU8zN07ohILoZCLrD4Vw==
   dependencies:
-    "@tryghost/image-transform" "1.0.5"
-    adm-zip "0.4.16"
-    csv-parse "4.14.1"
+    "@tryghost/image-transform" "1.0.6"
+    adm-zip "0.5.1"
+    csv-parse "4.14.2"
     date-fns "2.16.1"
     fs-extra "9.0.1"
     lodash "4.17.20"
-    sharp "0.26.3"
+    sharp "0.27.0"
 
 "@tryghost/pretty-cli@1.2.11":
   version "1.2.11"
@@ -187,10 +187,10 @@ acorn@^7.1.1, acorn@^7.4.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-7.4.1.tgz#feaed255973d2e77555b83dbc08851a6c63520fa"
   integrity sha512-nQyp0o1/mNdbTO1PO6kHkwSrmgZ0MT/jCCpNiwbUjGoRN4dlBhqJtoQuCnEOKzgTVwg0ZWiCoQy6SxMebQVh8A==
 
-adm-zip@0.4.16:
-  version "0.4.16"
-  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.4.16.tgz#cf4c508fdffab02c269cbc7f471a875f05570365"
-  integrity sha512-TFi4HBKSGfIKsK5YCkKaaFG2m4PEDyViZmEwof3MTIgzimHLto6muaHVpbrljdIvIrFZzEq/p4nafOeLcYegrg==
+adm-zip@0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.5.1.tgz#32e51c6fe88370f4389b424567b78a345e79ebc6"
+  integrity sha512-a5ABmIFUJ9OxHV5zrXM9Q41JzpRIflFtdgpL4UQM9DsTHHxQzPRaeyAdnMW7kxL0NRWm/NHafJdj6pO+ty7L2g==
 
 ajv@^6.10.0, ajv@^6.10.2, ajv@^6.12.3, ajv@^6.12.4:
   version "6.12.6"
@@ -736,10 +736,10 @@ cross-spawn@^7.0.2:
     shebang-command "^2.0.0"
     which "^2.0.1"
 
-csv-parse@4.14.1:
-  version "4.14.1"
-  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.14.1.tgz#b6b3736508fb94682fa6d450fe1755237221d291"
-  integrity sha512-4wmcO7QbWtDAncGFaBwlWFPhEN4Akr64IbM4zvDwEOFekI8blLc04Nw7XjQjtSNy+3AUAgBgtUa9nWo5Cq89Xg==
+csv-parse@4.14.2:
+  version "4.14.2"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-4.14.2.tgz#c1329cff95a99b8773a92c4e62f8bff114b34726"
+  integrity sha512-YE2xlTKtM035/94llhgsp9qFQxGi47EkQJ1pZ+mLT/98GpIsbjkMGAb7Rmu9hNxVfYFOLf10hP+rPVqnoccLgw==
 
 dashdash@^1.12.0:
   version "1.14.1"
@@ -2151,6 +2151,11 @@ node-addon-api@^3.0.2:
   resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.0.2.tgz#04bc7b83fd845ba785bb6eae25bc857e1ef75681"
   integrity sha512-+D4s2HCnxPd5PjjI0STKwncjXTUKKqm74MDMz9OPXavjsGmjkvwgLtA5yoxJUdmpj52+2u+RrXgPipahKczMKg==
 
+node-addon-api@^3.1.0:
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-3.1.0.tgz#98b21931557466c6729e51cb77cd39c965f42239"
+  integrity sha512-flmrDNB06LIl5lywUz7YlNGZH/5p0M7W28k8hzd9Lshtdh1wshD2Y+U4h9LD6KObOy1f+fEVdgprPrEymjM5uw==
+
 node-loggly-bulk@^2.2.4:
   version "2.2.4"
   resolved "https://registry.yarnpkg.com/node-loggly-bulk/-/node-loggly-bulk-2.2.4.tgz#bdd8638d97c43ecf1e1831ca98b250968fa6dee9"
@@ -2621,7 +2626,7 @@ semver@^7.2.1:
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.2.tgz#604962b052b81ed0786aae84389ffba70ffd3938"
   integrity sha512-OrOb32TeeambH6UrhtShmF7CRDqhL6/5XpPNp2DuRH6+9QLw/orhp72j87v8Qa1ScDkvrrBNpZcDejAirJmfXQ==
 
-semver@^7.3.2:
+semver@^7.3.2, semver@^7.3.4:
   version "7.3.4"
   resolved "https://registry.yarnpkg.com/semver/-/semver-7.3.4.tgz#27aaa7d2e4ca76452f98d3add093a72c943edc97"
   integrity sha512-tCfb2WLjqFAtXn4KEdxIhalnRtoKFN7nAwj0B3ZXCbQloV2tq5eDbcTmT68JJD3nRJq24/XgxtQKFIpQdtvmVw==
@@ -2655,18 +2660,18 @@ sharp@0.26.2:
     tar-fs "^2.1.0"
     tunnel-agent "^0.6.0"
 
-sharp@0.26.3:
-  version "0.26.3"
-  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.26.3.tgz#9de8577a986b22538e6e12ced1f7e8a53f9728de"
-  integrity sha512-NdEJ9S6AMr8Px0zgtFo1TJjMK/ROMU92MkDtYn2BBrDjIx3YfH9TUyGdzPC+I/L619GeYQc690Vbaxc5FPCCWg==
+sharp@0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.27.0.tgz#523fba913ba674985dcc688a6a5237384079d80f"
+  integrity sha512-II+YBCW3JuVWQZdpTEA2IBjJcYXPuoKo3AUqYuW+FK9Um93v2gPE2ihICCsN5nHTUoP8WCjqA83c096e8n//Rw==
   dependencies:
     array-flatten "^3.0.0"
     color "^3.1.3"
     detect-libc "^1.0.3"
-    node-addon-api "^3.0.2"
+    node-addon-api "^3.1.0"
     npmlog "^4.1.2"
     prebuild-install "^6.0.0"
-    semver "^7.3.2"
+    semver "^7.3.4"
     simple-get "^4.0.0"
     tar-fs "^2.1.1"
     tunnel-agent "^0.6.0"
