@@ -43,15 +43,11 @@ Each of the tools also has a traditional CLI counterpart with more options, deta
 
 Split a zip file into smaller zip files of a defined maximum size, while maintaining the directory structure.
 
-See all available options:
-
 ```sh
+# See all available options
 gctools zip-split --help
-```
 
-Split a zip file into as many files needed for them to all be 50mb or below:
-
-```sh
+# Split a zip file into as many files needed for them to all be 50mb or below
 gctools zip-split /path/to/big-file.zip --M 50
 ```
 
@@ -60,21 +56,14 @@ gctools zip-split /path/to/big-file.zip --M 50
 
 Insert a number of posts with random content.
 
-See all available options:
-
 ```sh
+# See all available options
 gctools random-posts --help
-```
 
-Create and insert 10 random posts:
-
-```sh
+# Create and insert 10 random posts
 gctools random-posts <apiURL> <adminAPIKey>
-```
 
-Create and insert 3000 random draft posts with 2 tags visible to members only, written by a specific author:
-
-```sh
+# Create and insert 3000 random draft posts with 2 tags visible to members only, written by a specific author
 gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tag '#random,New World' --status draft --visibility members --userEmail person@dummyemail.com
 ```
 
@@ -83,33 +72,20 @@ gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tag '#random,New Worl
 
 Delete all content or content with a specific set of filters, which can be combined.
 
-See all available options:
-
 ```sh
+# See all available options
 gctools delete-posts --help
-```
 
-Delete all posts (⛔️ dangerous!)
-
-```sh
+# Delete all posts (⛔️ dangerous!)
 gctools delete-posts <apiURL> <adminAPIKey>
-```
 
-Delete all posts with a specific tag
-
-```sh
+# Delete all posts with a specific tag
 gctools delete-posts <apiURL> <adminAPIKey> --tag '#testing'
-```
 
-Delete all posts by a specific author
-
-```sh
+# Delete all posts by a specific author
 gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user'
-```
 
-Delete all posts by a specific author with a specific tag
-
-```sh
+# Delete all posts by a specific author with a specific tag
 gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
 ```
 
@@ -118,15 +94,11 @@ gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testi
 
 Delete tags, but not the content that uses that tag
 
-See all available options:
-
 ```sh
+# See all available options
 gctools delete-tags --help
-```
 
-Delete a specific tag or multiple tags
-
-```sh
+# Delete a specific tag or multiple tags
 gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
 ```
 
@@ -136,21 +108,14 @@ gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
 Delete tags, but not the content that uses that tag
 Find & replace strings of text within Ghost posts
 
-See all available options:
-
 ```sh
+# See all available options
 gctools find-replace --help
-```
 
-Replace a string but only in the `mobiledoc` and `title`:
-
-```sh
+# Replace a string but only in the `mobiledoc` and `title`
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --where mobiledoc,title
-```
 
-Replace a string in all available fields:
-
-```sh
+# Replace a string in all available fields
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --where all
 ```
 
@@ -173,16 +138,13 @@ Available `where` fields are:
 
 Change the author assigned to a post
 
-See all available options:
-
 ```sh
+# See all available options
 gctools change-author --help
-```
 
-Change the posts written by `richard` and assign to `michael`
-
-```sh
+# Change the posts written by `richard` and assign to `michael`
 gctools change-author <apiURL> <adminAPIKey> --author `richard` --new_author `michael`
+```
 
 
 ## Develop
@@ -194,4 +156,4 @@ gctools change-author <apiURL> <adminAPIKey> --author `richard` --new_author `mi
 
 # Copyright & License
 
-Copyright (c) 2013-2020 Ghost Foundation - Released under the [MIT license](LICENSE).
+Copyright (c) 2013-2021 Ghost Foundation - Released under the [MIT license](LICENSE).
