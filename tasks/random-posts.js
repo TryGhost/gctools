@@ -53,19 +53,8 @@ async function createRandomPost(options) {
     }
 
     if (options.dateRange) {
-        let dateParts = options.dateRange.split(',');
-
-        let startDate = new Date();
-        let startDateParts = dateParts[0].split('-');
-        startDate.setDate(startDateParts[0]);
-        startDate.setMonth((startDateParts[1] - 1));
-        startDate.setYear(startDateParts[2]);
-
-        let endDate = new Date();
-        let endDateParts = dateParts[1].split('-');
-        endDate.setDate(endDateParts[0]);
-        endDate.setMonth((endDateParts[1] - 1));
-        endDate.setYear(endDateParts[2]);
+        let startDate = new Date(options.dateRange.start);
+        let endDate = new Date(options.dateRange.end);
 
         const randomDate = new Date(startDate.getTime() + Math.random() * (endDate.getTime() - startDate.getTime()));
 
@@ -96,7 +85,6 @@ module.exports.initialise = (options) => {
                 tags: '#gctools',
                 status: 'published',
                 visibility: 'public',
-                // dateRange: '25-12-2019,24-12-2020',
                 dateRange: false,
                 delayBetweenCalls: 50
             };

@@ -79,11 +79,6 @@ exports.setup = (sywac) => {
         choices: ['public', 'members', 'paid'],
         desc: 'Post visibility'
     });
-    sywac.string('--dateRange', {
-        defaultValue: false,
-        desc: '2 dates that all posts will fall between (eg: 25-12-2019,14-02-2020). Defaults to today'
-    });
-
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'
@@ -99,7 +94,7 @@ exports.run = async (argv) => {
         // Fetch the tasks, configured correctly according to the options passed in
         let runner = randomPosts.getTaskRunner(argv);
 
-        // Run the migration
+        // Run the tool
         await runner.run(context);
     } catch (error) {
         ui.log.error('Done with errors', context.errors);

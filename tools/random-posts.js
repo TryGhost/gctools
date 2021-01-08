@@ -1,8 +1,11 @@
 const inquirer = require('inquirer');
+inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
 const randomPosts = require('../tasks/random-posts');
 const {getAPIAuthorsObj, getAPITagsObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
+
+const dateToday = new Date();
 
 const choice = {
     name: 'Add random posts',
@@ -79,6 +82,51 @@ const options = [
         choices: function () {
             return getAPIAuthorsObj();
         }
+    },
+    {
+        type: 'list',
+        name: 'dateRange',
+        message: 'Date Range:',
+        choices: [
+            {
+                name: `Past year`,
+                value: {
+                    start: new Date(dateToday.getFullYear() - 1, dateToday.getMonth(), dateToday.getDate()),
+                    end: dateToday
+                }
+            },
+            {
+                name: `Past month`,
+                value: {
+                    start: new Date(dateToday.getFullYear(), dateToday.getMonth() - 1, dateToday.getDate()),
+                    end: dateToday
+                }
+            },
+            {
+                name: `Custom`,
+                value: 'custom'
+            }
+        ]
+    },
+    {
+        type: 'datetime',
+        name: 'dateRangeStart',
+        message: 'Start date:',
+        format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
+        initial: new Date(dateToday.getFullYear(), dateToday.getMonth() - 6, dateToday.getDate()),
+        when: function (answers) {
+            return answers.dateRange === 'custom';
+        }
+    },
+    {
+        type: 'datetime',
+        name: 'dateRangeEnd',
+        message: 'End date:',
+        format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
+        initial: dateToday,
+        when: function (answers) {
+            return answers.dateRange === 'custom';
+        }
     }
 ];
 
@@ -91,6 +139,18 @@ async function run() {
             });
             answers.tag.pop();
             answers.tag.push(...newTagsArray);
+        }
+
+        // If we have a custom date, push those values to `dateRange`
+        if (answers.dateRange === 'custom' && answers.dateRangeStart && answers.dateRangeEnd) {
+            answers.dateRange = {
+                start: answers.dateRangeStart,
+                end: answers.dateRangeEnd
+            };
+
+            // We don't need these anymore
+            delete answers.dateRangeStart;
+            delete answers.dateRangeEnd;
         }
 
         let timer = Date.now();
