@@ -80,7 +80,9 @@ module.exports.getFullTaskList = (options) => {
                         title: `Replacing ${post.matches.length} matches in "${post.title}": ${post.url}`,
                         task: async () => {
                             ctx.options.where.forEach((key) => {
-                                post[key] = post[key].replace(ctx.regex, ctx.options.replace);
+                                if (post[key]) {
+                                    post[key] = post[key].replace(ctx.regex, ctx.options.replace);
+                                }
                             });
 
                             // Delete the matches object or else the request gets denied
