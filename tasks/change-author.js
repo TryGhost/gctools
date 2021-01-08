@@ -68,8 +68,15 @@ module.exports.getFullTaskList = (options) => {
                         title: `${post.title}`,
                         task: async () => {
                             try {
-                                post.authors = [ctx.options.new_author];
-                                let result = await ctx.api.posts.edit(post);
+                                // We only want to send minimal data to the API, to reduce the chance of unintentionally changing anything,
+                                // so lets create a slimmed down version with only what we need
+                                let slimPost = {
+                                    authors: [ctx.options.new_author],
+                                    id: post.id,
+                                    updated_at: post.updated_at
+                                };
+
+                                let result = await ctx.api.posts.edit(slimPost);
                                 ctx.changed.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
