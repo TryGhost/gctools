@@ -33,7 +33,7 @@
     "@tryghost/pretty-cli": "1.2.13",
     "@tryghost/zip": "1.1.8",
     "bluebird": "3.7.2",
-    "fs-extra": "9.0.1",
+    "fs-extra": "9.1.0",
     "glob": "7.1.6",
     "inquirer": "7.3.3",
     "inquirer-datepicker-prompt": "0.4.2",
