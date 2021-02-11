@@ -31,7 +31,7 @@
     "@tryghost/listr-smart-renderer": "0.2.1",
     "@tryghost/mg-fs-utils": "0.7.5",
     "@tryghost/pretty-cli": "1.2.14",
-    "@tryghost/zip": "1.1.8",
+    "@tryghost/zip": "1.1.9",
     "bluebird": "3.7.2",
     "fs-extra": "9.1.0",
     "glob": "7.1.6",
