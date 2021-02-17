@@ -106,7 +106,6 @@ gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
 
 ### find-replace
 
-Delete tags, but not the content that uses that tag
 Find & replace strings of text within Ghost posts
 
 ```sh
@@ -133,6 +132,24 @@ Available `where` fields are:
 * `twitter_description`
 * `og_title`
 * `og_description`
+
+
+### change-image-path
+
+Replace the image path in posts, pages, and tags. Useful if you've changed an existing Ghost install to be a subdirectory.
+
+*Note: This does not affect users profile `profile_image` or `cover_image`*
+
+```sh
+# See all available options
+gctools change-image-path --help
+
+# Replace all available paths
+gctools change-image-path <apiURL> <adminAPIKey> --find 'https://example.com/content/images/' --replace 'https://example.com/blog/content/images/'
+
+# Show the number of objects that will be affected by the change with the `--info` flag
+gctools change-image-path <apiURL> <adminAPIKey> --find 'https://example.com/content/images/' --replace 'https://example.com/blog/content/images/' --info
+```
 
 
 ### change-author
