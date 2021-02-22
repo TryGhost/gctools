@@ -38,7 +38,7 @@
     "inquirer": "7.3.3",
     "inquirer-datepicker-prompt": "0.4.2",
     "listr": "0.14.3",
-    "lodash": "4.17.20",
+    "lodash": "4.17.21",
     "lorem-ipsum": "2.0.3",
     "title-case": "3.0.3"
   }
