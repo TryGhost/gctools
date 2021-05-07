@@ -106,7 +106,6 @@ gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
 
 ### find-replace
 
-Delete tags, but not the content that uses that tag
 Find & replace strings of text within Ghost posts
 
 ```sh
