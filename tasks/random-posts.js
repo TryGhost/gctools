@@ -24,7 +24,7 @@ async function createRandomPost(options) {
             count: options.contentCount,
             format: 'html',
             paragraphLowerBound: options.paragraphLowerBound, // Min. number of sentences per paragraph.
-            paragraphUpperBound: options.paragraphUpperBound, // Max. number of sentences per paragarph.
+            paragraphUpperBound: options.paragraphUpperBound, // Max. number of sentences per paragraph.
             random: Math.random,
             sentenceLowerBound: options.sentenceLowerBound, // Min. number of words per sentence.
             sentenceUpperBound: options.sentenceUpperBound, // Max. number of words per sentence.
