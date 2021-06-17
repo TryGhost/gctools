@@ -6,5 +6,6 @@ module.exports = {
     deleteTags: require('./delete-tags'),
     findReplace: require('./find-replace'),
     changeAuthor: require('./change-author'),
+    changeVisibility: require('./change-visibility'),
     deleteMembers: require('./delete-members')
 };

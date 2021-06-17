@@ -36,6 +36,7 @@ Available tools include:
 * `delete-tags`
 * `find-replace`
 * `change-author`
+* `change-visibility`
 * `delete-members`
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
@@ -62,7 +63,7 @@ Split a large JSON file into smaller JSON files of a defined maximum size, while
 # See all available options
 gctools json-split --help
 
-# Split a zip file into as many files needed for them to all be 50mb or below
+# Split a JSON file into as many files needed for them to hax a maximum of 50 posts per file
 gctools json-split /path/to/big-file.json --M 50
 ```
 
@@ -158,6 +159,22 @@ gctools change-author --help
 
 # Change the posts written by `richard` and assign to `michael`
 gctools change-author <apiURL> <adminAPIKey> --author `richard` --new_author `michael`
+```
+
+
+### change-visibility
+
+Change the visibility of posts
+
+```sh
+# See all available options
+gctools change-visibility --help
+
+# Change the posts that are currently public to be members-only
+gctools change-visibility <apiURL> <adminAPIKey> --visibility `public` --new_visibility `members`
+
+# Change the posts that are currently members-only to be paid-members only
+gctools change-visibility <apiURL> <adminAPIKey> --visibility `members` --new_visibility `paid`
 ```
 
 
