@@ -30,6 +30,7 @@ gctools i
 Available tools include:
 
 * `zip-split`
+* `json-split`
 * `random-posts`
 * `delete-posts`
 * `delete-tags`
@@ -50,6 +51,19 @@ gctools zip-split --help
 
 # Split a zip file into as many files needed for them to all be 50mb or below
 gctools zip-split /path/to/big-file.zip --M 50
+```
+
+
+### json-split
+
+Split a large JSON file into smaller JSON files of a defined maximum size, while retaining meta, tag, and author information.
+
+```sh
+# See all available options
+gctools json-split --help
+
+# Split a zip file into as many files needed for them to all be 50mb or below
+gctools json-split /path/to/big-file.json --M 50
 ```
 
 
