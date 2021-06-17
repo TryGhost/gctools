@@ -34,6 +34,7 @@ exports.run = async () => {
         type: 'rawlist',
         name: 'task',
         message: 'Which tool would you like to use?',
+        pageSize: 20,
         choices: [
             ...choices,
             new inquirer.Separator(),
