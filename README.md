@@ -149,6 +149,24 @@ Available `where` fields are:
 * `og_description`
 
 
+### change-image-path
+
+Replace the image path in posts, pages, and tags. Useful if you've changed an existing Ghost install to be a subdirectory.
+
+*Note: This does not affect users profile `profile_image` or `cover_image`*
+
+```sh
+# See all available options
+gctools change-image-path --help
+
+# Replace all available paths
+gctools change-image-path <apiURL> <adminAPIKey> --find 'https://example.com/content/images/' --replace 'https://example.com/blog/content/images/'
+
+# Show the number of objects that will be affected by the change with the `--info` flag
+gctools change-image-path <apiURL> <adminAPIKey> --find 'https://example.com/content/images/' --replace 'https://example.com/blog/content/images/' --info
+```
+
+
 ### change-author
 
 Change the author assigned to a post
