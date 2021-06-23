@@ -30,7 +30,7 @@ exports.run = async () => {
         choices.push(value.choice);
     }
 
-    var tasksPrompt = {
+    let tasksPrompt = {
         type: 'rawlist',
         name: 'task',
         message: 'Which tool would you like to use?',

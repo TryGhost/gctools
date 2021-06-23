@@ -8,7 +8,7 @@ module.exports.initialise = (options) => {
     return {
         title: 'Initialising API connection',
         task: async (ctx, task) => {
-            var defaults = {
+            let defaults = {
                 verbose: false,
                 author: false,
                 delayBetweenCalls: 50

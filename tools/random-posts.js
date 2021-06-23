@@ -134,7 +134,7 @@ async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         // Handle the case where a new tag is wanted
         if (answers.new_tag) {
-            var newTagsArray = answers.new_tag.split(',').map(function (item) {
+            let newTagsArray = answers.new_tag.split(',').map(function (item) {
                 return {name: item.trim()};
             });
             answers.tag.pop();

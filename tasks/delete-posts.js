@@ -9,7 +9,7 @@ module.exports.initialise = (options) => {
     return {
         title: 'Initialising API connection',
         task: (ctx, task) => {
-            var defaults = {
+            let defaults = {
                 verbose: false,
                 tag: false,
                 author: false,
