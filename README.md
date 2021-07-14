@@ -34,6 +34,7 @@ Available tools include:
 * `random-posts`
 * `delete-posts`
 * `delete-tags`
+* `delete-empty-tags`
 * `find-replace`
 * `change-author`
 * `change-visibility`
@@ -116,6 +117,19 @@ gctools delete-tags --help
 
 # Delete a specific tag or multiple tags
 gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
+```
+
+
+### delete-empty-tags
+
+Delete tags that have no associated posts
+
+```sh
+# See all available options
+gctools delete-empty-tags --help
+
+# Delete a specific tag or multiple tags
+gctools delete-empty-tags <apiURL> <adminAPIKey>
 ```
 
 
