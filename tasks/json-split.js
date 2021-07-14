@@ -106,12 +106,20 @@ module.exports.getFullTaskList = (options) => {
                 // 1. Read JSON file and store data
                 try {
                     const jsonFileData = await fs.readJson(options.jsonFile);
-                    ctx.jsonData = jsonFileData.db[0].data;
+                    const json = (jsonFileData.data) ? jsonFileData : jsonFileData.db[0];
+                    ctx.jsonData = (jsonFileData.data) ? json.data : json.data;
 
-                    ctx.options.metaVersion = jsonFileData.db[0].meta.version;
-                    ctx.options.metaExportedOn = jsonFileData.db[0].meta.exported_on;
+                    ctx.options.metaVersion = json.meta.version;
+                    ctx.options.metaExportedOn = json.meta.exported_on;
 
-                    task.output = `Found ${ctx.jsonData.posts.length} posts, ${ctx.jsonData.posts_authors.length} posts_authors, ${ctx.jsonData.posts_meta.length} posts_meta, ${ctx.jsonData.posts_tags.length} posts_tags, ${ctx.jsonData.tags.length} tags, ${ctx.jsonData.users.length} users`;
+                    const postsCount = (ctx.jsonData.posts) ? ctx.jsonData.posts.length : 0;
+                    const postsAuthorsCount = (ctx.jsonData.posts_authors) ? ctx.jsonData.posts_authors.length : 0;
+                    const postsMetaCount = (ctx.jsonData.posts_meta) ? ctx.jsonData.posts_meta.length : 0;
+                    const postsTagsCount = (ctx.jsonData.posts_tags) ? ctx.jsonData.posts_tags.length : 0;
+                    const tagsCount = (ctx.jsonData.tags) ? ctx.jsonData.tags.length : 0;
+                    const usersCount = (ctx.jsonData.users) ? ctx.jsonData.users.length : 0;
+
+                    task.output = `Found ${postsCount} posts, ${postsAuthorsCount} posts_authors, ${postsMetaCount} posts_meta, ${postsTagsCount} posts_tags, ${tagsCount} tags, ${usersCount} users`;
                 } catch (error) {
                     ctx.errors.push(error);
                     throw error;
@@ -156,8 +164,11 @@ module.exports.getFullTaskList = (options) => {
                         newChunk.posts_tags.push(...postTags.posts_tags);
                         newChunk.tags.push(...postTags.tags);
 
-                        const postMeta = getPostMeta(postID, ctx);
-                        newChunk.posts_meta.push(...postMeta.posts_meta);
+                        if (ctx.jsonData.posts_meta) {
+                            const postMeta = getPostMeta(postID, ctx);
+                            newChunk.posts_meta.push(...postMeta.posts_meta);
+                        }
+
                     });
 
                     // Remove duplicates
