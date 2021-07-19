@@ -25,6 +25,7 @@ module.exports.initialise = (options) => {
             ctx.options = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.posts = [];
+            ctx.pages = [];
             ctx.changed = [];
 
             // If the `author` and `new_author` answers are not objects, get an object for each
@@ -51,7 +52,8 @@ module.exports.getFullTaskList = (options) => {
                     }
 
                     ctx.posts = await discover('posts', ctx);
-                    task.output = `Found ${ctx.posts.length} posts`;
+                    ctx.pages = await discover('pages', ctx);
+                    task.output = `Found ${ctx.posts.length} posts and ${ctx.pages.length} pages`;
                 } catch (error) {
                     ctx.errors.push(error);
                     throw error;
@@ -59,7 +61,7 @@ module.exports.getFullTaskList = (options) => {
             }
         },
         {
-            title: 'Updating author',
+            title: 'Updating post authors',
             task: async (ctx) => {
                 let tasks = [];
 
@@ -77,6 +79,45 @@ module.exports.getFullTaskList = (options) => {
                                 };
 
                                 let result = await ctx.api.posts.edit(slimPost);
+
+                                ctx.changed.push(result.url);
+                                return Promise.delay(options.delayBetweenCalls).return(result);
+                            } catch (error) {
+                                error.resource = {
+                                    title: post.title
+                                };
+                                ctx.errors.push(error);
+                                throw error;
+                            }
+                        }
+                    });
+                });
+
+                let taskOptions = options;
+                taskOptions.concurrent = 3;
+                return makeTaskRunner(tasks, taskOptions);
+            }
+        },
+        {
+            title: 'Updating page authors',
+            task: async (ctx) => {
+                let tasks = [];
+
+                await Promise.mapSeries(ctx.pages, async (post) => {
+                    tasks.push({
+                        title: `${post.title}`,
+                        task: async () => {
+                            try {
+                                // We only want to send minimal data to the API, to reduce the chance of unintentionally changing anything,
+                                // so lets create a slimmed down version with only what we need
+                                let slimPost = {
+                                    authors: [ctx.options.new_author],
+                                    id: post.id,
+                                    updated_at: post.updated_at
+                                };
+
+                                let result = await ctx.api.pages.edit(slimPost);
+
                                 ctx.changed.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
