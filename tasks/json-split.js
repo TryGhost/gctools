@@ -168,7 +168,6 @@ module.exports.getFullTaskList = (options) => {
                             const postMeta = getPostMeta(postID, ctx);
                             newChunk.posts_meta.push(...postMeta.posts_meta);
                         }
-
                     });
 
                     // Remove duplicates
