@@ -158,6 +158,8 @@ module.exports.getFullTaskList = (options) => {
                 try {
                     let chunkDirs = glob.sync(`${ctx.fileCache.zipDir}/chunks/*`);
 
+                    // This does not work properly, and is still trying to create the zip file when the tmp dir has been deleted
+                    // When resolved, re-enable the 'Cleaning up' task
                     await Promise.all(chunkDirs.map((dir, index) => {
                         return createZip(dir, index, ctx);
                     }));
@@ -189,6 +191,7 @@ module.exports.getFullTaskList = (options) => {
         },
         {
             title: 'Cleaning up',
+            skip: () => true,
             task: async (ctx) => {
                 // 7. Remove the cached data
                 try {
