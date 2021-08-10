@@ -1,0 +1,34 @@
+[
+  {
+      "created_at": "2020-06-22T14:22:39.000Z",
+      "description": null,
+      "feature_image": null,
+      "id": "6112828c250112092c8f27c0",
+      "meta_description": null,
+      "meta_title": null,
+      "name": "Lorem Ipsum",
+      "slug": "lorem-ipsum",
+      "updated_at": "2020-06-23T19:11:22.000Z",
+      "url": "http://localhost:2368/tag/lorem-ipsum/",
+      "visibility": "public",
+      "count": {
+          "posts": 2
+      }
+  },
+  {
+      "created_at": "2021-08-10T13:43:40.000Z",
+      "description": null,
+      "feature_image": null,
+      "id": "6112828c250112092c8f281e",
+      "meta_description": null,
+      "meta_title": null,
+      "name": "Dolor Simet",
+      "slug": "dolor-simet",
+      "updated_at": "2021-08-14T22:02:25.000Z",
+      "url": "http://localhost:2368/tag/dolor-simet/",
+      "visibility": "public",
+      "count": {
+          "posts": 1
+      }
+  }
+]
