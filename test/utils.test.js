@@ -1,4 +1,3 @@
-// Switch these lines once there are useful utils
 const testUtils = require('./utils');
 
 const {transformToCommaString, maybeStringToArray, maybeArrayToString} = require('../lib/utils');
@@ -54,5 +53,3 @@ describe('Utils (maybeArrayToString)', function () {
         arrayToString.should.eql('lorem-ipsum,dolor-simet');
     });
 });
-
-
