@@ -34,7 +34,7 @@
     "@tryghost/zip": "1.1.15",
     "bluebird": "3.7.2",
     "fs-extra": "10.0.0",
-    "glob": "7.1.7",
+    "glob": "7.2.0",
     "inquirer": "8.1.5",
     "inquirer-datepicker-prompt": "0.4.2",
     "listr": "0.14.3",
