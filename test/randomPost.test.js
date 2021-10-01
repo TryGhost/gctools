@@ -23,8 +23,6 @@ describe('Random post', function () {
 
         randomPost.title.should.be.a.String();
         randomPost.excerpt.should.be.a.String();
-        randomPost.meta_title.should.be.a.String();
-        randomPost.meta_description.should.be.a.String();
 
         // Count number of <p> tags in HTML content
         randomPost.html.match(/<p>/g).length.should.eql(10);
@@ -63,8 +61,6 @@ describe('Random post', function () {
 
         randomPost.title.should.be.a.String();
         randomPost.excerpt.should.be.a.String();
-        randomPost.meta_title.should.be.a.String();
-        randomPost.meta_description.should.be.a.String();
 
         // Count number of <p> tags in HTML content
         randomPost.html.match(/<p>/g).length.should.eql(3);
