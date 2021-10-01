@@ -30,7 +30,7 @@
     "@tryghost/admin-api": "1.4.3",
     "@tryghost/listr-smart-renderer": "0.2.3",
     "@tryghost/mg-fs-utils": "0.7.9",
-    "@tryghost/pretty-cli": "1.2.19",
+    "@tryghost/pretty-cli": "1.2.21",
     "@tryghost/zip": "1.1.15",
     "bluebird": "3.7.2",
     "fs-extra": "10.0.0",
