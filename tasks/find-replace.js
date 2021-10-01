@@ -18,7 +18,7 @@ module.exports.initialise = (options) => {
             const api = new GhostAdminAPI({
                 url,
                 key,
-                version: 'v2'
+                version: 'v4'
             });
 
             ctx.options = _.mergeWith(defaults, options);

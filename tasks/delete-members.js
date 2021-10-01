@@ -18,7 +18,7 @@ module.exports.initialise = (options) => {
             const api = new GhostAdminAPI({
                 url,
                 key,
-                version: 'canary'
+                version: 'v4'
             });
 
             ctx.options = _.mergeWith(defaults, options);
