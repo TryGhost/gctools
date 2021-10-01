@@ -1,7 +1,11 @@
 const inquirer = require('inquirer');
-const tasks = require('../tools');
 const _ = require('lodash');
 const ui = require('@tryghost/pretty-cli').ui;
+const os = require('os');
+const path = require('path');
+const tasks = require('../tools');
+
+const sitesJSONFile = path.join(os.homedir(), '.gctools', 'gctools_sites.json');
 
 // Internal ID in case we need one.
 exports.id = 'i';
@@ -39,6 +43,11 @@ exports.run = async () => {
             ...choices,
             new inquirer.Separator(),
             {
+                name: 'Show saved credentials path',
+                value: 'show_saved_creds_path'
+            },
+            new inquirer.Separator(),
+            {
                 name: 'Abort',
                 value: 'abort'
             }
@@ -47,19 +56,22 @@ exports.run = async () => {
 
     function mainMenu() {
         inquirer.prompt(tasksPrompt).then(async (answers) => {
-            if (answers.task === 'abort') {
+            if (answers.task === 'show_saved_creds_path') {
+                ui.log.info(`Saved credentials: ${sitesJSONFile}`);
+                mainMenu();
+            } else if (answers.task === 'abort') {
                 ui.log.info('Aborted');
                 process.exit(1);
-            }
+            } else {
+                try {
+                    let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
+                    await thisTask[0].run();
 
-            try {
-                let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
-                await thisTask[0].run();
-
-                // When the task is run, return to the main menu
-                mainMenu();
-            } catch (error) {
-                ui.log.warn(`There was a problem`, error);
+                    // When the task is run, return to the main menu
+                    mainMenu();
+                } catch (error) {
+                    ui.log.warn(`There was a problem`, error);
+                }
             }
         });
     }

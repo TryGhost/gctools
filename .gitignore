@@ -68,6 +68,6 @@ typings/
 # OSX
 .DS_Store
 
-# Zip Splitter
+# gctooos
 *.zip
 temp/
