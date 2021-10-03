@@ -22,17 +22,17 @@ module.exports.initialise = (options) => {
                 version: 'v4'
             });
 
-            ctx.options = _.mergeWith(defaults, options);
+            ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.posts = [];
             ctx.pages = [];
             ctx.changed = [];
 
             // If the `author` and `new_author` answers are not objects, get an object for each
-            if (typeof ctx.options.author !== 'object' && typeof ctx.options.new_author !== 'object') {
+            if (typeof ctx.args.author !== 'object' && typeof ctx.args.new_author !== 'object') {
                 let discoveredAuthors = await discover('users', ctx);
-                ctx.options.author = _.find(discoveredAuthors, {slug: ctx.options.author});
-                ctx.options.new_author = _.find(discoveredAuthors, {slug: ctx.options.new_author});
+                ctx.args.author = _.find(discoveredAuthors, {slug: ctx.args.author});
+                ctx.args.new_author = _.find(discoveredAuthors, {slug: ctx.args.new_author});
             }
 
             task.output = `Initialised API connection for ${options.apiURL}`;
@@ -47,8 +47,8 @@ module.exports.getFullTaskList = (options) => {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
                 try {
-                    if (ctx.options.author) {
-                        ctx.options.author = ctx.options.author.slug;
+                    if (ctx.args.author) {
+                        ctx.args.author = ctx.args.author.slug;
                     }
 
                     ctx.posts = await discover('posts', ctx);
@@ -73,7 +73,7 @@ module.exports.getFullTaskList = (options) => {
                                 // We only want to send minimal data to the API, to reduce the chance of unintentionally changing anything,
                                 // so lets create a slimmed down version with only what we need
                                 let slimPost = {
-                                    authors: [ctx.options.new_author],
+                                    authors: [ctx.args.new_author],
                                     id: post.id,
                                     updated_at: post.updated_at
                                 };
@@ -111,7 +111,7 @@ module.exports.getFullTaskList = (options) => {
                                 // We only want to send minimal data to the API, to reduce the chance of unintentionally changing anything,
                                 // so lets create a slimmed down version with only what we need
                                 let slimPost = {
-                                    authors: [ctx.options.new_author],
+                                    authors: [ctx.args.new_author],
                                     id: post.id,
                                     updated_at: post.updated_at
                                 };

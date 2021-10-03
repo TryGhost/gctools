@@ -21,12 +21,12 @@ module.exports.initialise = (options) => {
                 version: 'v4'
             });
 
-            ctx.options = _.mergeWith(defaults, options);
+            ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.posts = [];
             ctx.toUpdate = [];
             ctx.updated = [];
-            ctx.regex = new RegExp(ctx.options.find, 'g');
+            ctx.regex = new RegExp(ctx.args.find, 'g');
 
             task.output = `Initialised API connection for ${options.apiURL}`;
         }
@@ -54,7 +54,7 @@ module.exports.getFullTaskList = (options) => {
                 await Promise.mapSeries(ctx.posts, async (post) => {
                     let matches = [];
 
-                    ctx.options.where.forEach((key) => {
+                    ctx.args.where.forEach((key) => {
                         if (post[key]) {
                             let match = post[key].match(ctx.regex);
                             if (match) {
@@ -79,9 +79,9 @@ module.exports.getFullTaskList = (options) => {
                     tasks.push({
                         title: `Replacing ${post.matches.length} matches in "${post.title}": ${post.url}`,
                         task: async () => {
-                            ctx.options.where.forEach((key) => {
+                            ctx.args.where.forEach((key) => {
                                 if (post[key]) {
-                                    post[key] = post[key].replace(ctx.regex, ctx.options.replace);
+                                    post[key] = post[key].replace(ctx.regex, ctx.args.replace);
                                 }
                             });
 

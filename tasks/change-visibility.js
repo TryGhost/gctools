@@ -22,7 +22,7 @@ module.exports.initialise = (options) => {
                 version: 'v4'
             });
 
-            ctx.options = _.mergeWith(defaults, options);
+            ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.posts = [];
             ctx.changed = [];
@@ -61,7 +61,7 @@ module.exports.getFullTaskList = (options) => {
                                 // so lets create a slimmed down version with only what we need
                                 let slimPost = {
                                     authors: post.authors,
-                                    visibility: ctx.options.new_visibility,
+                                    visibility: ctx.args.new_visibility,
                                     id: post.id,
                                     updated_at: post.updated_at
                                 };

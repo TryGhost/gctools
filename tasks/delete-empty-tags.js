@@ -22,7 +22,7 @@ module.exports.initialise = (options) => {
                 version: 'v4'
             });
 
-            ctx.options = _.mergeWith(defaults, options);
+            ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.tags = [];
             ctx.tagsWithNoPosts = [];

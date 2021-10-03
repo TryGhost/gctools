@@ -22,7 +22,7 @@ module.exports.initialise = (options) => {
                 version: 'v4'
             });
 
-            ctx.options = _.mergeWith(defaults, options);
+            ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.tags = [];
             ctx.deleted = [];
@@ -38,14 +38,14 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Fetch tags from Ghost API',
             task: async (ctx, task) => {
-                if (typeof ctx.options.tag === 'object' && ctx.options.tag[0].id) {
-                    ctx.tags = ctx.options.tag;
+                if (typeof ctx.args.tag === 'object' && ctx.args.tag[0].id) {
+                    ctx.tags = ctx.args.tag;
                 } else {
                     ctx.tags = await discover('tags', ctx);
                 }
 
                 if (ctx.tags.length < 1) {
-                    ctx.errors.push(`No tags found for "${ctx.options.tag}"`);
+                    ctx.errors.push(`No tags found for "${ctx.args.tag}"`);
                     throw 'No tags found';
                 }
 

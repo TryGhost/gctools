@@ -36,7 +36,7 @@ module.exports.initialise = (options) => {
                 version: 'v4'
             });
 
-            ctx.options = _.mergeWith(defaults, options);
+            ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.posts = [];
             ctx.inserted = [];
@@ -52,16 +52,16 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Creating random posts',
             task: async (ctx) => {
-                if (ctx.options.tag) {
-                    ctx.options.tag = transformToCommaString(ctx.options.tag, 'name');
+                if (ctx.args.tag) {
+                    ctx.args.tag = transformToCommaString(ctx.args.tag, 'name');
                 }
 
-                if (ctx.options.author) {
-                    ctx.options.author = transformToCommaString(ctx.options.author, 'email');
+                if (ctx.args.author) {
+                    ctx.args.author = transformToCommaString(ctx.args.author, 'email');
                 }
 
-                _.times(ctx.options.count, () => {
-                    let post = getRandomPostContent(ctx.options);
+                _.times(ctx.args.count, () => {
+                    let post = getRandomPostContent(ctx.args);
                     ctx.posts.push(post);
                 });
             }
@@ -80,7 +80,7 @@ module.exports.getFullTaskList = (options) => {
                                     source: 'html'
                                 });
                                 ctx.inserted.push(result.url);
-                                return Promise.delay(ctx.options.delayBetweenCalls).return(result);
+                                return Promise.delay(ctx.args.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
                                     title: post.title
@@ -92,7 +92,7 @@ module.exports.getFullTaskList = (options) => {
                     });
                 });
 
-                let taskOptions = ctx.options;
+                let taskOptions = ctx.args;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
             }

@@ -16,7 +16,7 @@ async function hydrateFile(filePath) {
 
 async function chunkFiles(ctx) {
     let input = ctx.theFiles;
-    let chunkMaxSize = ctx.options.sizeInBytes;
+    let chunkMaxSize = ctx.args.sizeInBytes;
 
     let chunks = [];
     let currentChunkSize = 0;
@@ -53,7 +53,7 @@ async function chunkFiles(ctx) {
 }
 
 async function createZip(chunk, index, ctx) {
-    const zipFileParts = path.parse(ctx.options.zipFile);
+    const zipFileParts = path.parse(ctx.args.zipFile);
     const zipName = `${zipFileParts.name}_${index}.zip`;
 
     fsUtils.zip.write(ctx.fileCache.zipDir, chunk, zipName);
@@ -63,13 +63,13 @@ module.exports.initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx, task) => {
-            ctx.options = options;
+            ctx.args = options;
 
             ctx.fileCache = new fsUtils.FileCache('zip_split');
             ctx.theFiles = [];
             ctx.chunks = [];
-            ctx.options.sizeInBytes = (options.maxSize * (1024 * 1024));
-            ctx.options.destDir = path.dirname(options.zipFile);
+            ctx.args.sizeInBytes = (options.maxSize * (1024 * 1024));
+            ctx.args.destDir = path.dirname(options.zipFile);
 
             if (options.verbose) {
                 task.output = `Workspace initialised at ${ctx.fileCache.cacheDir}`;
@@ -86,7 +86,7 @@ module.exports.getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 1. Unzip the file
                 try {
-                    let res = await zip.extract(ctx.options.zipFile, ctx.fileCache.tmpDir);
+                    let res = await zip.extract(ctx.args.zipFile, ctx.fileCache.tmpDir);
                     return res;
                 } catch (error) {
                     ctx.errors.push(error);
@@ -178,8 +178,8 @@ module.exports.getFullTaskList = (options) => {
 
                     await Promise.all(filePaths.map(async (filePath) => {
                         let fileName = path.basename(filePath);
-                        let folderName = path.basename(ctx.options.zipFile).replace('.zip', '');
-                        await fs.move(filePath, `${ctx.options.destDir}/${folderName}_zip_chunks/${fileName}`, {
+                        let folderName = path.basename(ctx.args.zipFile).replace('.zip', '');
+                        await fs.move(filePath, `${ctx.args.destDir}/${folderName}_zip_chunks/${fileName}`, {
                             overwrite: true
                         });
                     }));

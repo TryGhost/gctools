@@ -24,7 +24,7 @@ module.exports.initialise = (options) => {
                 version: 'v4'
             });
 
-            ctx.options = _.mergeWith(defaults, options);
+            ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.posts = [];
             ctx.deleted = [];
@@ -41,12 +41,12 @@ module.exports.getFullTaskList = (options) => {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
                 try {
-                    if (ctx.options.tag) {
-                        ctx.options.tag = transformToCommaString(ctx.options.tag, 'slug');
+                    if (ctx.args.tag) {
+                        ctx.args.tag = transformToCommaString(ctx.args.tag, 'slug');
                     }
 
-                    if (ctx.options.author) {
-                        ctx.options.author = transformToCommaString(ctx.options.author, 'slug');
+                    if (ctx.args.author) {
+                        ctx.args.author = transformToCommaString(ctx.args.author, 'slug');
                     }
 
                     ctx.posts = await discover('posts', ctx);

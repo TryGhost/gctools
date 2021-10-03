@@ -8,16 +8,16 @@ module.exports.initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx, task) => {
-            ctx.options = options;
+            ctx.args = options;
 
             ctx.fileCache = new fsUtils.FileCache('json_split');
             ctx.jsonData = [];
             ctx.postChunks = [];
             ctx.newChunks = [];
-            ctx.options.file = path.dirname(options.jsonFile);
-            ctx.options.destDir = path.dirname(options.jsonFile);
-            ctx.options.metaVersion = null;
-            ctx.options.metaExportedOn = null;
+            ctx.args.file = path.dirname(options.jsonFile);
+            ctx.args.destDir = path.dirname(options.jsonFile);
+            ctx.args.metaVersion = null;
+            ctx.args.metaExportedOn = null;
 
             if (options.verbose) {
                 task.output = `Workspace initialised at ${ctx.fileCache.cacheDir}`;
@@ -109,8 +109,8 @@ module.exports.getFullTaskList = (options) => {
                     const json = (jsonFileData.data) ? jsonFileData : jsonFileData.db[0];
                     ctx.jsonData = (jsonFileData.data) ? json.data : json.data;
 
-                    ctx.options.metaVersion = json.meta.version;
-                    ctx.options.metaExportedOn = json.meta.exported_on;
+                    ctx.args.metaVersion = json.meta.version;
+                    ctx.args.metaExportedOn = json.meta.exported_on;
 
                     const postsCount = (ctx.jsonData.posts) ? ctx.jsonData.posts.length : 0;
                     const postsAuthorsCount = (ctx.jsonData.posts_authors) ? ctx.jsonData.posts_authors.length : 0;
@@ -184,7 +184,7 @@ module.exports.getFullTaskList = (options) => {
             // 4. Save each chunk as its own JSON file
             title: 'Save Post files',
             task: async (ctx) => {
-                const destination = `${ctx.options.destDir}/split_json_files`;
+                const destination = `${ctx.args.destDir}/split_json_files`;
                 await fs.ensureDir(destination);
 
                 ctx.newChunks.forEach(async (chunk, i) => {
@@ -197,8 +197,8 @@ module.exports.getFullTaskList = (options) => {
                                     ...chunk
                                 },
                                 meta: {
-                                    exported_on: ctx.options.metaExportedOn,
-                                    version: ctx.options.metaVersion
+                                    exported_on: ctx.args.metaExportedOn,
+                                    version: ctx.args.metaVersion
                                 }
                             }
                         ]
