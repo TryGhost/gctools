@@ -15,6 +15,7 @@ const options = [
         type: 'list',
         name: 'author',
         message: 'Current Author:',
+        pageSize: 20,
         choices: function () {
             return getAPIAuthorsObj();
         }
@@ -23,6 +24,7 @@ const options = [
         type: 'list',
         name: 'new_author',
         message: 'New Author:',
+        pageSize: 20,
         choices: function () {
             return getAPIAuthorsObj();
         }
