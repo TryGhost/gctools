@@ -29,16 +29,17 @@ gctools i
 
 Available tools include:
 
-* `zip-split`
-* `json-split`
-* `random-posts`
-* `delete-posts`
-* `delete-tags`
-* `delete-empty-tags`
-* `find-replace`
-* `change-author`
-* `change-visibility`
-* `delete-members`
+* `Zip Split`
+* `JSON Split`
+* `Add random posts`
+* `Delete posts`
+* `Add tags to posts`
+* `Delete tags`
+* `Delete empty tags`
+* `Find & Replace`
+* `Change Author`
+* `Change Visibility`
+* `Delete Members`
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -104,6 +105,25 @@ gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user'
 
 # Delete all posts by a specific author with a specific tag
 gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
+```
+
+
+## Add tags to posts
+
+Add a tag to specific posts with a specific set of filters
+
+```sh
+# Add a tag of 'Testing' to all posts
+gctools add-tags <apiURL> <adminAPIKey> --new_tags Testing
+
+# Add a tag of 'Testing' to all public posts
+gctools add-tags <apiURL> <adminAPIKey> --visibility public --new_tags Testing
+
+# Add a tag of 'Testing' to all members-only posts that also have a tag of `hello`
+gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag hello --new_tags Testing
+
+# Add a tag of 'Testing' to all members-only posts that also have a tag of `hello`, and are by written by `harry`
+gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag hello --author harry --new_tags Testing
 ```
 
 

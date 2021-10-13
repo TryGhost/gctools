@@ -3,6 +3,7 @@ module.exports = {
     jsonSplit: require('./json-split'),
     randomPosts: require('./random-posts'),
     deletePosts: require('./delete-posts'),
+    addTags: require('./add-tags'),
     deleteTags: require('./delete-tags'),
     deleteEmptyTags: require('./delete-empty-tags'),
     findReplace: require('./find-replace'),
