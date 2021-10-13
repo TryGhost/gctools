@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@tryghost/admin-api": "1.4.3",
-    "@tryghost/listr-smart-renderer": "0.2.3",
+    "@tryghost/listr-smart-renderer": "0.2.4",
     "@tryghost/mg-fs-utils": "0.7.9",
     "@tryghost/pretty-cli": "1.2.21",
     "@tryghost/zip": "1.1.17",
