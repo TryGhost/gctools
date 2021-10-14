@@ -12,10 +12,14 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
-        type: 'checkbox',
+        type: 'list',
         name: 'visibility',
         message: 'Visibility: (Leave blank for all)',
         choices: [
+            {
+                name: 'All',
+                value: 'all'
+            },
             {
                 name: 'Public',
                 value: 'public'

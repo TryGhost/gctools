@@ -42,7 +42,7 @@ module.exports.getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 let discoveryFilter = [];
 
-                if (ctx.args.visibility) {
+                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
                     discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
                 }
 
