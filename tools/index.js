@@ -4,6 +4,7 @@ module.exports = {
     randomPosts: require('./random-posts'),
     deletePosts: require('./delete-posts'),
     addTags: require('./add-tags'),
+    addPreview: require('./add-preview'),
     deleteTags: require('./delete-tags'),
     deleteEmptyTags: require('./delete-empty-tags'),
     findReplace: require('./find-replace'),
