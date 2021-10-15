@@ -1,0 +1,39 @@
+[
+  {
+      "id": "5951f5fca366002ebd5dbef7",
+      "name": "Ghost",
+      "slug": "ghost-user",
+      "email": "info@example.com",
+      "profile_image": "//www.gravatar.com/avatar/2fab21a4c4ed88e76add10650c73bae1?s=250&d=mm&r=x",
+      "cover_image": null,
+      "bio": null,
+      "website": "https://ghost.org",
+      "location": "The Internet",
+      "facebook": "ghost",
+      "twitter": "@ghost",
+      "accessibility": null,
+      "status": "locked",
+      "meta_title": null,
+      "meta_description": null,
+      "tour": null,
+      "last_seen": null,
+      "created_at": "2019-11-26T02:39:32.000Z",
+      "updated_at": "2019-11-26T04:30:57.000Z",
+      "roles": [
+          {
+              "id": "5ddc9063c35e7700383b27e3",
+              "name": "Author",
+              "description": "Authors",
+              "created_at": "2019-11-26T02:39:31.000Z",
+              "updated_at": "2019-11-26T02:39:31.000Z"
+          }
+      ],
+      "url": "https://docs.ghost.io/author/ghost-user/"
+  },
+  {
+      "id": "5951f5fca366002ebd5dbef8",
+      "name": "Sample",
+      "slug": "sample-user",
+      "email": "example@example.com"
+  }
+]
