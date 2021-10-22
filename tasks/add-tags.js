@@ -80,7 +80,8 @@ module.exports.getFullTaskList = (options) => {
                         task: async () => {
                             try {
                                 ctx.args.new_tags.forEach((item) => {
-                                    post.tags.push(item);
+                                    // post.tags.push(item); // Add to end of tags
+                                    post.tags.unshift(item); // Add to start of tags (i.e. make this the new `primary_tag`)
                                 });
 
                                 let result = await ctx.api.posts.edit({
