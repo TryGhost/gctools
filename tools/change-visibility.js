@@ -14,9 +14,41 @@ const options = [
     {
         type: 'list',
         name: 'visibility',
-        message: 'Current Visibility:',
+        message: 'Visibility: (Leave blank for all)',
+        choices: [
+            {
+                name: 'All',
+                value: 'all'
+            },
+            {
+                name: 'Public',
+                value: 'public'
+            },
+            {
+                name: 'Members',
+                value: 'members'
+            },
+            {
+                name: 'Paid',
+                value: 'paid'
+            }
+        ]
+    },
+    {
+        type: 'checkbox',
+        name: 'tag',
+        message: 'Filter by tag: (Leave blank for all)',
+        pageSize: 20,
         choices: function () {
-            return getAPIVisibilityObj();
+            return getAPITagsObj();
+        }
+    },
+    {
+        type: 'checkbox',
+        name: 'author',
+        message: 'Filter by author: (Leave blank for all)',
+        choices: function () {
+            return getAPIAuthorsObj();
         }
     },
     {

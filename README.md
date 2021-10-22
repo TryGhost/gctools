@@ -231,6 +231,12 @@ gctools change-visibility <apiURL> <adminAPIKey> --visibility `public` --new_vis
 
 # Change the posts that are currently members-only to be paid-members only
 gctools change-visibility <apiURL> <adminAPIKey> --visibility `members` --new_visibility `paid`
+
+# Change the posts tagged with 'news' to be paid-members only
+gctools change-visibility <apiURL> <adminAPIKey> --tag `news` --new_visibility `paid`
+
+# Change the posts tagged with 'news', and written by 'jane' to be paid-members only
+gctools change-visibility <apiURL> <adminAPIKey> --tag `news` --author `jane` --new_visibility `paid`
 ```
 
 

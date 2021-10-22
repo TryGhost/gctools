@@ -25,9 +25,17 @@ exports.setup = (sywac) => {
         desc: 'Show verbose output'
     });
     sywac.enumeration('--visibility', {
-        choices: ['public', 'members', 'paid'],
-        defaultValue: 'public',
-        desc: 'Current visibility slug'
+        defaultValue: 'all',
+        choices: ['all', 'public', 'members', 'paid'],
+        desc: 'Post visibility'
+    });
+    sywac.string('--tag', {
+        defaultValue: null,
+        desc: 'Filter by tag'
+    });
+    sywac.string('--author', {
+        defaultValue: null,
+        desc: 'Filter by author'
     });
     sywac.enumeration('--new_visibility', {
         choices: ['public', 'members', 'paid'],

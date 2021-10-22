@@ -2,7 +2,8 @@ const Promise = require('bluebird');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
-const discover = require('../lib/discover');
+const {transformToCommaString} = require('../lib/utils');
+const discover = require('../lib/batch-ghost-discover');
 
 module.exports.initialise = (options) => {
     return {
@@ -38,8 +39,30 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
+                let discoveryFilter = [];
+
+                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                    discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                }
+
+                if (ctx.args.tag && ctx.args.tag.length > 0) {
+                    discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                }
+
+                if (ctx.args.author && ctx.args.author.length > 0) {
+                    discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                }
+
+                let discoveryOptions = {
+                    api: ctx.api,
+                    type: 'posts',
+                    fields: 'id,name,title,slug,url,status,visibility,updated_at',
+                    limit: 50,
+                    filter: discoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
+                };
+
                 try {
-                    ctx.posts = await discover('posts', ctx);
+                    ctx.posts = await discover(discoveryOptions);
                     task.output = `Found ${ctx.posts.length} posts`;
                 } catch (error) {
                     ctx.errors.push(error);
@@ -60,7 +83,6 @@ module.exports.getFullTaskList = (options) => {
                                 // We only want to send minimal data to the API, to reduce the chance of unintentionally changing anything,
                                 // so lets create a slimmed down version with only what we need
                                 let slimPost = {
-                                    authors: post.authors,
                                     visibility: ctx.args.new_visibility,
                                     id: post.id,
                                     updated_at: post.updated_at
