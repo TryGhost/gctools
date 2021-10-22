@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 const changeVisibility = require('../tasks/change-visibility');
-const {getAPIVisibilityObj} = require('../lib/ghost-api-choices.js');
+const {getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
