@@ -1,5 +1,6 @@
 module.exports = {
     zipSplit: require('./zip-split'),
+    zipCreate: require('./zip-create'),
     jsonSplit: require('./json-split'),
     randomPosts: require('./random-posts'),
     deletePosts: require('./delete-posts'),
