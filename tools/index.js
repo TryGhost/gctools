@@ -2,6 +2,7 @@ module.exports = {
     zipSplit: require('./zip-split'),
     zipCreate: require('./zip-create'),
     jsonSplit: require('./json-split'),
+    fetchImages: require('./fetch-images'),
     randomPosts: require('./random-posts'),
     deletePosts: require('./delete-posts'),
     addTags: require('./add-tags'),

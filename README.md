@@ -32,6 +32,7 @@ Available tools include:
 * `Zip Split`
 * `Zip Create`
 * `JSON Split`
+* `Fetch Images`
 * `Add random posts`
 * `Delete posts`
 * `Add tags to posts`
@@ -82,6 +83,19 @@ gctools json-split --help
 
 # Split a JSON file into as many files needed for them to hax a maximum of 50 posts per file
 gctools json-split /path/to/big-file.json --M 50
+```
+
+
+### fetch-images
+
+Download all available images from a valid Ghost JSON file create a JSON file with updated image references
+
+```sh
+# See all available options
+gctools fetch-images --help
+
+# Fetch images from a valid Ghost JSON file, with `https://example.com` as the base URL
+gctools fetch-images /path/to/file.json https://example.com
 ```
 
 
