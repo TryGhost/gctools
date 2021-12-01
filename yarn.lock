@@ -244,6 +244,11 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
+"@kapouer/eslint-plugin-no-return-in-loop@1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@kapouer/eslint-plugin-no-return-in-loop/-/eslint-plugin-no-return-in-loop-1.0.0.tgz#9fdbe83deca12156c0b5fcbfae1f387e9f2baff5"
+  integrity sha512-IXQp8N68L2fkk7p7RckBBhT/KwAX04GooIGjwzmY5THQanQvsmJpYgwC7A1Io2XDXBJzlGelQkP/C1SRM/aq8w==
+
 "@samverschueren/stream-to-observable@^0.3.0":
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@samverschueren/stream-to-observable/-/stream-to-observable-0.3.1.tgz#a21117b19ee9be70c379ec1877537ef2e1c63301"
@@ -1175,11 +1180,12 @@ eslint-plugin-filenames@1.3.2:
     lodash.snakecase "4.1.1"
     lodash.upperfirst "4.3.1"
 
-eslint-plugin-ghost@2.8.0:
-  version "2.8.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-ghost/-/eslint-plugin-ghost-2.8.0.tgz#aaa45539fb5603b8d0b9ee7f6495c05c05c82e37"
-  integrity sha512-fPi3qePZqEY/aeToPNsQ4/an44SWr8s8lEEWObey5+JAsfUvB9ttr7DX/iyJEDNbMjSPEHh3U/P0p4DD04q4mQ==
+eslint-plugin-ghost@2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-ghost/-/eslint-plugin-ghost-2.11.0.tgz#793b6363553ce68a235cde926e27d90fd4ff00ed"
+  integrity sha512-TzoP78VWDY+Sb9IaEmJ9O71P4zdmmjg5xGgFZpqsF4/XN+MJVnxVC0+zHA1B9ZefjDfhyx2r1EsHkfXR466wrw==
   dependencies:
+    "@kapouer/eslint-plugin-no-return-in-loop" "1.0.0"
     eslint-plugin-ember "10.5.7"
     eslint-plugin-filenames "1.3.2"
     eslint-plugin-mocha "7.0.1"
