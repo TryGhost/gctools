@@ -3,7 +3,7 @@ const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
 const {transformToCommaString} = require('../lib/utils');
-const discover = require('../lib/discover');
+const discover = require('../lib/batch-ghost-discover');
 
 module.exports.initialise = (options) => {
     return {
@@ -41,15 +41,22 @@ module.exports.getFullTaskList = (options) => {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
                 try {
-                    if (ctx.args.tag) {
-                        ctx.args.tag = transformToCommaString(ctx.args.tag, 'slug');
+                    let discoveryFilter = [];
+
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
                     }
 
-                    if (ctx.args.author) {
-                        ctx.args.author = transformToCommaString(ctx.args.author, 'slug');
+                    if (ctx.args.author && ctx.args.author.length > 0) {
+                        discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
                     }
 
-                    ctx.posts = await discover('posts', ctx);
+                    ctx.posts = await discover({
+                        api: ctx.api,
+                        type: 'posts',
+                        filter: discoveryFilter.join('+')
+                    });
+
                     task.output = `Found ${ctx.posts.length} posts`;
                 } catch (error) {
                     ctx.errors.push(error);
