@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
-const discover = require('../lib/discover');
+const discover = require('../lib/batch-ghost-discover');
 
 module.exports.initialise = (options) => {
     return {
@@ -53,7 +53,12 @@ module.exports.getFullTaskList = (options) => {
             title: 'Fetching members from Ghost',
             task: async (ctx, task) => {
                 try {
-                    ctx.members = await discover('members', ctx);
+                    ctx.members = await discover({
+                        api: ctx.api,
+                        type: 'members',
+                        fields: 'id,uuid,email,name'
+                    });
+
                     task.output = `Found ${ctx.members.length} members`;
                 } catch (error) {
                     ctx.errors.push(error);
