@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
-const discover = require('../lib/discover');
+const discover = require('../lib/batch-ghost-discover');
 
 module.exports.initialise = (options) => {
     return {
@@ -30,9 +30,16 @@ module.exports.initialise = (options) => {
 
             // If the `author` and `new_author` answers are not objects, get an object for each
             if (typeof ctx.args.author !== 'object' && typeof ctx.args.new_author !== 'object') {
-                let discoveredAuthors = await discover('users', ctx);
+                let discoveredAuthors = await discover({
+                    api: ctx.api,
+                    type: 'users'
+                });
+
                 ctx.args.author = _.find(discoveredAuthors, {slug: ctx.args.author});
                 ctx.args.new_author = _.find(discoveredAuthors, {slug: ctx.args.new_author});
+            } else {
+                ctx.args.author = ctx.args.author.slug;
+                ctx.args.new_author = ctx.args.new_author.slug;
             }
 
             task.output = `Initialised API connection for ${options.apiURL}`;
@@ -47,12 +54,24 @@ module.exports.getFullTaskList = (options) => {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
                 try {
+                    let discoveryFilter = [];
+
                     if (ctx.args.author) {
-                        ctx.args.author = ctx.args.author.slug;
+                        discoveryFilter.push(`author:[${ctx.args.author}]`);
                     }
 
-                    ctx.posts = await discover('posts', ctx);
-                    ctx.pages = await discover('pages', ctx);
+                    ctx.posts = await discover({
+                        api: ctx.api,
+                        type: 'posts',
+                        filter: discoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
+                    });
+
+                    ctx.pages = await discover({
+                        api: ctx.api,
+                        type: 'pages',
+                        filter: discoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
+                    });
+
                     task.output = `Found ${ctx.posts.length} posts and ${ctx.pages.length} pages`;
                 } catch (error) {
                     ctx.errors.push(error);
