@@ -37,9 +37,6 @@ module.exports.initialise = (options) => {
 
                 ctx.args.author = _.find(discoveredAuthors, {slug: ctx.args.author});
                 ctx.args.new_author = _.find(discoveredAuthors, {slug: ctx.args.new_author});
-            } else {
-                ctx.args.author = ctx.args.author.slug;
-                ctx.args.new_author = ctx.args.new_author.slug;
             }
 
             task.output = `Initialised API connection for ${options.apiURL}`;
@@ -57,7 +54,7 @@ module.exports.getFullTaskList = (options) => {
                     let discoveryFilter = [];
 
                     if (ctx.args.author) {
-                        discoveryFilter.push(`author:[${ctx.args.author}]`);
+                        discoveryFilter.push(`author:[${ctx.args.author.slug}]`);
                     }
 
                     ctx.posts = await discover({
