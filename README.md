@@ -127,7 +127,7 @@ gctools delete-posts --help
 gctools delete-posts <apiURL> <adminAPIKey>
 
 # Delete all posts with a specific tag
-gctools delete-posts <apiURL> <adminAPIKey> --tag '#testing'
+gctools delete-posts <apiURL> <adminAPIKey> --tag 'hash-testing'
 
 # Delete all posts by a specific author
 gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user'
