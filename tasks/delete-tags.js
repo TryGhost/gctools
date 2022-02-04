@@ -2,7 +2,7 @@ const Promise = require('bluebird');
 const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
-const discover = require('../lib/discover');
+const discover = require('../lib/batch-ghost-discover');
 
 module.exports.initialise = (options) => {
     return {
@@ -41,7 +41,12 @@ module.exports.getFullTaskList = (options) => {
                 if (typeof ctx.args.tag === 'object' && ctx.args.tag[0].id) {
                     ctx.tags = ctx.args.tag;
                 } else {
-                    ctx.tags = await discover('tags', ctx);
+                    let allTags = await discover({
+                        api: ctx.api,
+                        type: 'tags'
+                    });
+
+                    ctx.tags = [_.find(allTags, {name: ctx.args.tag})];
                 }
 
                 if (ctx.tags.length < 1) {
