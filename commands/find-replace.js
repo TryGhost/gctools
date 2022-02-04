@@ -63,5 +63,5 @@ exports.run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully deleted ${context.deleted.length} tags in ${Date.now() - timer}ms.`);
+    ui.log.ok(`Successfully updated ${context.updated.length} strings in ${Date.now() - timer}ms.`);
 };
