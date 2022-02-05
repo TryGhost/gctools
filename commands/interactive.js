@@ -28,25 +28,75 @@ exports.setup = (sywac) => {
 
 // What to do when this command is executed
 exports.run = async () => {
-    const tasksMap = new Map(Object.entries(tasks));
-    const choices = [];
-    for (let value of tasksMap.values()) {
-        choices.push(value.choice);
-    }
-
     let tasksPrompt = {
         type: 'rawlist',
         name: 'task',
         message: 'Which tool would you like to use?',
-        pageSize: 20,
+        pageSize: 30,
         choices: [
-            ...choices,
-            new inquirer.Separator(),
+            new inquirer.Separator('--- File Utilities -----------'),
+            {
+                name: tasks.zipSplit.choice.name,
+                value: tasks.zipSplit.choice.value
+            },
+            {
+                name: tasks.zipCreate.choice.name,
+                value: tasks.zipCreate.choice.value
+            },
+            {
+                name: tasks.jsonSplit.choice.name,
+                value: tasks.jsonSplit.choice.value
+            },
+            {
+                name: tasks.fetchImages.choice.name,
+                value: tasks.fetchImages.choice.value
+            },
+            new inquirer.Separator('--- API Utilities ------------'),
+            {
+                name: tasks.randomPosts.choice.name,
+                value: tasks.randomPosts.choice.value
+            },
+            {
+                name: tasks.deletePosts.choice.name,
+                value: tasks.deletePosts.choice.value
+            },
+            {
+                name: tasks.addTags.choice.name,
+                value: tasks.addTags.choice.value
+            },
+            {
+                name: tasks.addPreview.choice.name,
+                value: tasks.addPreview.choice.value
+            },
+            {
+                name: tasks.deleteTags.choice.name,
+                value: tasks.deleteTags.choice.value
+            },
+            {
+                name: tasks.deleteEmptyTags.choice.name,
+                value: tasks.deleteEmptyTags.choice.value
+            },
+            {
+                name: tasks.findReplace.choice.name,
+                value: tasks.findReplace.choice.value
+            },
+            {
+                name: tasks.changeAuthor.choice.name,
+                value: tasks.changeAuthor.choice.value
+            },
+            {
+                name: tasks.changeVisibility.choice.name,
+                value: tasks.changeVisibility.choice.value
+            },
+            {
+                name: tasks.deleteMembers.choice.name,
+                value: tasks.deleteMembers.choice.value
+            },
+            new inquirer.Separator('--- Settings -----------------'),
             {
                 name: 'Show saved credentials path',
                 value: 'show_saved_creds_path'
             },
-            new inquirer.Separator(),
             {
                 name: 'Abort',
                 value: 'abort'
