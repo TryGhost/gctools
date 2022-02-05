@@ -111,7 +111,7 @@ exports.run = async () => {
                 mainMenu();
             } else if (answers.task === 'abort') {
                 ui.log.info('Aborted');
-                process.exit(1);
+                process.exit(0);
             } else {
                 try {
                     let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
