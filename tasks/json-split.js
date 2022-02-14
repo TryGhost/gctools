@@ -148,6 +148,8 @@ module.exports.getFullTaskList = (options) => {
                         posts_authors: [],
                         posts_meta: [],
                         posts_tags: [],
+                        roles: ctx.jsonData.roles,
+                        roles_users: ctx.jsonData.roles_users,
                         tags: [],
                         users: []
                     };
