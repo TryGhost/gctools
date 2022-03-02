@@ -57,16 +57,25 @@ exports.run = async () => {
                 value: tasks.randomPosts.choice.value
             },
             {
-                name: tasks.deletePosts.choice.name,
-                value: tasks.deletePosts.choice.value
-            },
-            {
                 name: tasks.addTags.choice.name,
                 value: tasks.addTags.choice.value
             },
             {
                 name: tasks.addPreview.choice.name,
                 value: tasks.addPreview.choice.value
+            },
+            {
+                name: tasks.changeAuthor.choice.name,
+                value: tasks.changeAuthor.choice.value
+            },
+            {
+                name: tasks.changeVisibility.choice.name,
+                value: tasks.changeVisibility.choice.value
+            },
+            new inquirer.Separator('--- Dangerous Utilities ------'),
+            {
+                name: tasks.deletePosts.choice.name,
+                value: tasks.deletePosts.choice.value
             },
             {
                 name: tasks.deleteTags.choice.name,
@@ -77,24 +86,16 @@ exports.run = async () => {
                 value: tasks.deleteEmptyTags.choice.value
             },
             {
-                name: tasks.findReplace.choice.name,
-                value: tasks.findReplace.choice.value
-            },
-            {
-                name: tasks.changeAuthor.choice.name,
-                value: tasks.changeAuthor.choice.value
-            },
-            {
-                name: tasks.changeVisibility.choice.name,
-                value: tasks.changeVisibility.choice.value
-            },
-            {
                 name: tasks.deleteMembers.choice.name,
                 value: tasks.deleteMembers.choice.value
             },
             {
                 name: tasks.deleteStaff.choice.name,
                 value: tasks.deleteStaff.choice.value
+            },
+            {
+                name: tasks.findReplace.choice.name,
+                value: tasks.findReplace.choice.value
             },
             new inquirer.Separator('--- Settings -----------------'),
             {
