@@ -92,6 +92,10 @@ exports.run = async () => {
                 name: tasks.deleteMembers.choice.name,
                 value: tasks.deleteMembers.choice.value
             },
+            {
+                name: tasks.deleteStaff.choice.name,
+                value: tasks.deleteStaff.choice.value
+            },
             new inquirer.Separator('--- Settings -----------------'),
             {
                 name: 'Show saved credentials path',

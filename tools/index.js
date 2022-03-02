@@ -12,5 +12,6 @@ module.exports = {
     findReplace: require('./find-replace'),
     changeAuthor: require('./change-author'),
     changeVisibility: require('./change-visibility'),
-    deleteMembers: require('./delete-members')
+    deleteMembers: require('./delete-members'),
+    deleteStaff: require('./delete-staff')
 };
