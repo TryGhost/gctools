@@ -35,7 +35,7 @@
     "bluebird": "3.7.2",
     "fs-extra": "10.0.1",
     "glob": "7.2.0",
-    "inquirer": "8.2.1",
+    "inquirer": "8.2.2",
     "got": "11.8.3",
     "inquirer-datepicker-prompt": "0.4.2",
     "listr": "0.14.3",
