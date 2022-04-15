@@ -13,5 +13,6 @@ module.exports = {
     changeAuthor: require('./change-author'),
     changeVisibility: require('./change-visibility'),
     deleteMembers: require('./delete-members'),
-    deleteStaff: require('./delete-staff')
+    deleteStaff: require('./delete-staff'),
+    contentStats: require('./content-stats')
 };

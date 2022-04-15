@@ -35,12 +35,13 @@
     "bluebird": "3.7.2",
     "fs-extra": "10.0.1",
     "glob": "7.2.0",
-    "inquirer": "8.2.2",
     "got": "11.8.3",
+    "inquirer": "8.2.2",
     "inquirer-datepicker-prompt": "0.4.2",
     "listr": "0.14.3",
     "lodash": "4.17.21",
     "lorem-ipsum": "2.0.4",
-    "title-case": "3.0.3"
+    "title-case": "3.0.3",
+    "tty-table": "4.1.5"
   }
 }
