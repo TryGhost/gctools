@@ -61,6 +61,8 @@ module.exports.getFullTaskList = (options) => {
                 ctx.users = ctx.users.filter((user) => {
                     if (options.filterRole.includes(user.roles[0].name)) {
                         return true;
+                    } else {
+                        return false;
                     }
                 });
                 task.output = `Found ${ctx.users.length} users with specific roles`;

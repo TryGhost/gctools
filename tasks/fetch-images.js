@@ -141,7 +141,7 @@ const extractImagePaths = (block, blockType, options) => {
     // Remove unsplash images, there can stay as remote resources
     blockImages = blockImages.filter((image) => {
         if (externalUrls.includes(image.fileSrc)) {
-            return;
+            return false;
         } else {
             return image;
         }
