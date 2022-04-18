@@ -109,10 +109,10 @@
   dependencies:
     defer-to-connect "^2.0.0"
 
-"@tryghost/admin-api@1.10.0":
-  version "1.10.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.10.0.tgz#8111b5eb7da84798903fdd03eb0d8c1600d8ffe0"
-  integrity sha512-HwY6vREsEqMXpI1OegB9V+iPv4z/cRIhc67j7cbQyyoSt9wGPLVN8aNADdlR4IQ2KMVuEhCxI2y+TM21GuNGqA==
+"@tryghost/admin-api@1.11.1":
+  version "1.11.1"
+  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.11.1.tgz#dae266a9b2a7edd975a1ff588370e4d5dd429dff"
+  integrity sha512-46xy3QPL1oumTj8XPa8Pu8owVYYWgZb4HINY73HB1KGzZFO3nsQzf7BEWyIhPwJRT3jGp0wnwDzvO+InxncUWA==
   dependencies:
     axios "^0.21.1"
     form-data "^4.0.0"
