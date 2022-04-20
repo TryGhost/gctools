@@ -51,6 +51,10 @@ exports.run = async () => {
                 name: tasks.fetchImages.choice.name,
                 value: tasks.fetchImages.choice.value
             },
+            {
+                name: tasks.dedupeMembersCsv.choice.name,
+                value: tasks.dedupeMembersCsv.choice.value
+            },
             new inquirer.Separator('--- API Utilities ------------'),
             {
                 name: tasks.randomPosts.choice.name,

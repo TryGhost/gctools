@@ -14,5 +14,6 @@ module.exports = {
     changeVisibility: require('./change-visibility'),
     deleteMembers: require('./delete-members'),
     deleteStaff: require('./delete-staff'),
-    contentStats: require('./content-stats')
+    contentStats: require('./content-stats'),
+    dedupeMembersCsv: require('./dedupe-members-csv')
 };

@@ -33,6 +33,7 @@ Available tools include:
 * `Zip Create`
 * `JSON Split`
 * `Fetch Images`
+* `Deduplicate Members CSV`
 * `Add random posts`
 * `Delete posts`
 * `Add tags to posts`
@@ -96,6 +97,18 @@ gctools fetch-images --help
 
 # Fetch images from a valid Ghost JSON file, with `https://example.com` as the base URL
 gctools fetch-images /path/to/file.json https://example.com
+```
+
+
+### dedupe-members-csv
+
+Create new CSV files that only contain new or updated members, by comparing the existing members with the output from the output from [`@tryghost/migrate`](https://github.com/TryGhost/migrate/tree/main/packages/mg-substack-members-csv).
+
+```sh
+# See all available options
+gctools dedupe-members-csv --help
+
+gctools dedupe-members-csv <existing-members> [new-free] [new-comp] [new-paid]
 ```
 
 
