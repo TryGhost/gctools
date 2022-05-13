@@ -156,16 +156,16 @@ Add a tag to specific posts with a specific set of filters
 
 ```sh
 # Add a tag of 'Testing' to all posts
-gctools add-tags <apiURL> <adminAPIKey> --new_tags Testing
+gctools add-tags <apiURL> <adminAPIKey> --new_tags 'Testing'
 
 # Add a tag of 'Testing' to all public posts
-gctools add-tags <apiURL> <adminAPIKey> --visibility public --new_tags Testing
+gctools add-tags <apiURL> <adminAPIKey> --visibility public --new_tags 'Testing'
 
-# Add a tag of 'Testing' to all members-only posts that also have a tag of `hello`
-gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag hello --new_tags Testing
+# Add a tag of 'Testing' to all members-only posts that also have a tag of 'hello'
+gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --new_tags 'Testing'
 
-# Add a tag of 'Testing' to all members-only posts that also have a tag of `hello`, and are by written by `harry`
-gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag hello --author harry --new_tags Testing
+# Add a tag of 'Testing' to all members-only posts that also have a tag of 'hello', and are by written by 'harry'
+gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --author 'harry' --new_tags 'Testing'
 ```
 
 ### Add public preview divider

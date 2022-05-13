@@ -27,15 +27,15 @@ exports.setup = (sywac) => {
     sywac.enumeration('--visibility', {
         defaultValue: 'all',
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Filter by visibility'
+        desc: 'Select posts with this visibility setting'
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Select posts with these tag slug, inside single quotes. i.e. \'existing-tag, newsletter\''
+        desc: 'Select posts with these tag slugs, inside single quotes. i.e. \'existing-tag, newsletter\''
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Delete content with this author slug'
+        desc: 'Select posts with these author slugs, inside single quotes. i.e. \'example-author\''
     });
     sywac.string('--new_tags', {
         desc: 'Comma separated list of tag names to add (not slugs), inside single quotes. i.e. \'New Tag, Podcast\''
