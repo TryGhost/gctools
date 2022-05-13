@@ -147,15 +147,14 @@
   optionalDependencies:
     sharp "^0.30.0"
 
-"@tryghost/listr-smart-renderer@0.2.5":
-  version "0.2.5"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.2.5.tgz#720f0235fb0c0f430bd6a0d9c87057a23b01601a"
-  integrity sha512-S1PQqI7D/iLNa0a3N8c0jHSIOJB5EsiHU7pXgUcH3HzIaCUjbxTYp/o3E3jsZ8phw7RwcIVPPPFXLx4xR8/gkg==
+"@tryghost/listr-smart-renderer@0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.2.7.tgz#b98938d2b1d9b81be8c09a216016859f46f948ea"
+  integrity sha512-5UTQa1KjNIAQ/IsdWT4oKKE5dA9BwoEfzD7PDDBv+gvL96ZGGpEp3JHnXD+pYf3GHD7rmjPnw6ZeTYi7Kw2xqw==
   dependencies:
     chalk "4.1.2"
     cli-truncate "^2.0.0"
     elegant-spinner "^2.0.0"
-    figures "3.2.0"
     indent-string "^4.0.0"
     log-symbols "4.1.0"
     log-update "^4.0.0"
@@ -1370,13 +1369,6 @@ fd-slicer@~1.1.0:
   dependencies:
     pend "~1.2.0"
 
-figures@3.2.0, figures@^3.0.0:
-  version "3.2.0"
-  resolved "https://registry.yarnpkg.com/figures/-/figures-3.2.0.tgz#625c18bd293c604dc4a8ddb2febf0c88341746af"
-  integrity sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==
-  dependencies:
-    escape-string-regexp "^1.0.5"
-
 figures@^1.7.0:
   version "1.7.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-1.7.0.tgz#cbe1e3affcf1cd44b80cadfed28dc793a9701d2e"
@@ -1389,6 +1381,13 @@ figures@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/figures/-/figures-2.0.0.tgz#3ab1a2d2a62c8bfb431a0c94cb797a2fce27c962"
   integrity sha1-OrGi0qYsi/tDGgyUy3l6L84nyWI=
+  dependencies:
+    escape-string-regexp "^1.0.5"
+
+figures@^3.0.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/figures/-/figures-3.2.0.tgz#625c18bd293c604dc4a8ddb2febf0c88341746af"
+  integrity sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==
   dependencies:
     escape-string-regexp "^1.0.5"
 
