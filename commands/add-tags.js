@@ -27,18 +27,18 @@ exports.setup = (sywac) => {
     sywac.enumeration('--visibility', {
         defaultValue: 'all',
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Post visibility'
+        desc: 'Filter by visibility'
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'The tag(s) to be added'
+        desc: 'Select posts with these tag slug, inside single quotes. i.e. \'existing-tag, newsletter\''
     });
     sywac.string('--author', {
         defaultValue: null,
         desc: 'Delete content with this author slug'
     });
     sywac.string('--new_tags', {
-        desc: 'Comma separated list of tags to add'
+        desc: 'Comma separated list of tag names to add (not slugs), inside single quotes. i.e. \'New Tag, Podcast\''
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
