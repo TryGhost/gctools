@@ -1,5 +1,7 @@
 const inquirer = require('inquirer');
+inquirer.registerPrompt('search-checkbox', require('inquirer-search-checkbox'));
 inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
+const chalk = require('chalk');
 const randomPosts = require('../tasks/random-posts');
 const {getAPIAuthorsObj, getAPITagsObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
@@ -57,9 +59,9 @@ const options = [
         ]
     },
     {
-        type: 'checkbox',
+        type: 'search-checkbox',
         name: 'tag',
-        message: 'Tags (comma separated list):',
+        message: `Tags (comma separated list): ${chalk.yellow('[Type to search]')}`,
         choices: function () {
             return getAPITagsObj({
                 name: 'Custom tag',
@@ -76,9 +78,9 @@ const options = [
         }
     },
     {
-        type: 'checkbox',
+        type: 'search-checkbox',
         name: 'author',
-        message: 'Author:',
+        message: `Author: ${chalk.yellow('[Type to search]')}`,
         choices: function () {
             return getAPIAuthorsObj();
         }
