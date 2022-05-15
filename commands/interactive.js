@@ -3,7 +3,7 @@ const _ = require('lodash');
 const ui = require('@tryghost/pretty-cli').ui;
 const os = require('os');
 const path = require('path');
-const tasks = require('../tools');
+const tasks = require('../prompts');
 
 const sitesJSONFile = path.join(os.homedir(), '.gctools', 'gctools_sites.json');
 
