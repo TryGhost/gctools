@@ -3,7 +3,7 @@ const GhostAdminAPI = require('@tryghost/admin-api');
 const makeTaskRunner = require('../lib/task-runner');
 const _ = require('lodash');
 const {transformToCommaString} = require('../lib/utils');
-const discover = require('../lib/batch-ghost-discover');
+const {discover} = require('../lib/batch-ghost-discover');
 
 module.exports.initialise = (options) => {
     return {
