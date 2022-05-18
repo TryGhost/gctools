@@ -41,6 +41,7 @@ module.exports.getFullTaskList = (options) => {
 
                     ctx.jsonData = (jsonFileData.data) ? json.data : json.data;
 
+                    ctx.usersWithNoPosts = [];
                     ctx.usersToUpdate = [];
                 } catch (error) {
                     ctx.errors.push(error);
@@ -53,6 +54,50 @@ module.exports.getFullTaskList = (options) => {
             task: async (ctx) => {
                 delete ctx.jsonData.settings;
                 delete ctx.jsonData.custom_theme_settings;
+            }
+        },
+        {
+            title: 'Remove users with no posts',
+            task: async (ctx, task) => {
+                let siteUsers = [];
+
+                ctx.jsonData.users.forEach((user) => {
+                    let hasPosts = _.find(ctx.jsonData.posts_authors, {author_id: user.id});
+
+                    if (!hasPosts) {
+                        siteUsers.push({
+                            name: `${user.name} - ${user.slug} - ${user.id}`,
+                            value: user
+                        });
+                    }
+                });
+
+                const promptOptions = [
+                    {
+                        type: 'checkbox',
+                        name: 'users',
+                        message: 'Select users to delete:',
+                        pageSize: 20,
+                        choices: siteUsers
+                    }
+                ];
+
+                await inquirer.prompt(promptOptions).then(async (answers) => {
+                    ctx.usersWithNoPosts = answers.users;
+                    task.output = `Selected ${answers.users.length} of ${ctx.jsonData.users.length} users to delete`;
+                });
+            }
+        },
+        {
+            title: 'Deleting users',
+            skip: (ctx) => {
+                return !ctx.usersWithNoPosts.length;
+            },
+            task: async (ctx) => {
+                ctx.usersWithNoPosts.forEach((user) => {
+                    ctx.jsonData.users = _.reject(ctx.jsonData.users, {id: user.id});
+                    ctx.jsonData.roles_users = _.reject(ctx.jsonData.roles_users, {user_id: user.id});
+                });
             }
         },
         {
@@ -81,7 +126,7 @@ module.exports.getFullTaskList = (options) => {
 
                 await inquirer.prompt(promptOptions).then(async (answers) => {
                     ctx.usersToUpdate = answers.users;
-                    task.output = `Selected ${answers.users.length} or ${ctx.jsonData.users.length} users`;
+                    task.output = `Selected ${answers.users.length} of ${ctx.jsonData.users.length} users to update`;
                 });
             }
         },
