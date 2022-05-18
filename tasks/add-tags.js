@@ -57,6 +57,9 @@ module.exports.getFullTaskList = (options) => {
                 let discoveryOptions = {
                     api: ctx.api,
                     type: 'posts',
+                    limit: 100,
+                    include: 'tags',
+                    fields: 'id,title,slug,visibility,updated_at',
                     filter: discoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
