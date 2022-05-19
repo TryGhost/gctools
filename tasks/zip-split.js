@@ -4,6 +4,13 @@ const fs = require('fs-extra');
 const glob = require('glob');
 const path = require('path');
 const makeTaskRunner = require('../lib/task-runner');
+const superbytes = require('superbytes');
+
+function pad(n, width, z) {
+    z = z || '0';
+    n = n + '';
+    return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
 
 async function hydrateFile(filePath) {
     let stats = await fs.stat(filePath);
@@ -52,13 +59,6 @@ async function chunkFiles(ctx) {
     return chunks;
 }
 
-async function createZip(chunk, index, ctx) {
-    const zipFileParts = path.parse(ctx.args.zipFile);
-    const zipName = `${zipFileParts.name}_${index}.zip`;
-
-    fsUtils.zip.write(ctx.fileCache.zipDir, chunk, zipName);
-}
-
 module.exports.initialise = (options) => {
     return {
         title: 'Initialising Workspace',
@@ -83,8 +83,11 @@ module.exports.getFullTaskList = (options) => {
         this.initialise(options),
         {
             title: 'Unzipping file',
-            task: async (ctx) => {
+            task: async (ctx, task) => {
                 // 1. Unzip the file
+                let size = fs.statSync(ctx.args.zipFile);
+                task.output = `Zip file size is ${superbytes(size.size)}`;
+
                 try {
                     let res = await zip.extract(ctx.args.zipFile, ctx.fileCache.tmpDir);
                     return res;
@@ -96,7 +99,7 @@ module.exports.getFullTaskList = (options) => {
         },
         {
             title: 'Getting image sizes',
-            task: async (ctx) => {
+            task: async (ctx, task) => {
                 // 2. Get the size for each image that was just unzipped
                 try {
                     let filePaths = glob.sync(`${ctx.fileCache.tmpDir}/**/*`, {
@@ -112,11 +115,13 @@ module.exports.getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
+
+                task.output = `Found ${ctx.theFiles.length} images`;
             }
         },
         {
             title: 'Chunking files',
-            task: async (ctx) => {
+            task: async (ctx, task) => {
                 // 3. Chunk the files into smaller groups
                 try {
                     ctx.chunks = await chunkFiles(ctx);
@@ -124,6 +129,8 @@ module.exports.getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
+
+                task.output = `Created ${ctx.chunks.length} chunks`;
             }
         },
         {
@@ -155,18 +162,26 @@ module.exports.getFullTaskList = (options) => {
             title: 'Zipping chunks',
             task: async (ctx) => {
                 // 5. Zip each of those new chunk directories
-                try {
-                    let chunkDirs = glob.sync(`${ctx.fileCache.zipDir}/chunks/*`);
+                let tasks = [];
+                let chunkDirs = glob.sync(`${ctx.fileCache.zipDir}/chunks/*`);
 
-                    // This does not work properly, and is still trying to create the zip file when the tmp dir has been deleted
-                    // When resolved, re-enable the 'Cleaning up' task
-                    await Promise.all(chunkDirs.map((dir, index) => {
-                        return createZip(dir, index, ctx);
-                    }));
-                } catch (error) {
-                    ctx.errors.push(error);
-                    throw error;
-                }
+                chunkDirs.forEach((dir, index) => {
+                    const zipFileParts = path.parse(ctx.args.zipFile);
+                    const indexPlus1 = index + 1;
+                    const indexPadded = pad(indexPlus1, chunkDirs.length.toString().length);
+                    const zipName = `${zipFileParts.name}_${indexPadded}.zip`;
+
+                    tasks.push({
+                        title: `Zipping ${zipName}`,
+                        task: async () => {
+                            await fsUtils.zip.write(ctx.fileCache.zipDir, dir, zipName);
+                        }
+                    });
+                });
+
+                let taskOptions = ctx.args;
+                taskOptions.concurrent = 3;
+                return makeTaskRunner(tasks, taskOptions);
             }
         },
         {
@@ -191,7 +206,6 @@ module.exports.getFullTaskList = (options) => {
         },
         {
             title: 'Cleaning up',
-            skip: () => true,
             task: async (ctx) => {
                 // 7. Remove the cached data
                 try {
