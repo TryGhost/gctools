@@ -20,6 +20,15 @@ module.exports.initialise = (options) => {
                 posts: {
                     count: null
                 },
+                public_posts: {
+                    count: null
+                },
+                members_posts: {
+                    count: null
+                },
+                paid_posts: {
+                    count: null
+                },
                 pages: {
                     count: null
                 },
@@ -53,6 +62,27 @@ module.exports.getFullTaskList = (options) => {
             task: async (ctx) => {
                 const postsData = await ctx.api.posts.browse({limit: 1});
                 ctx.stats.posts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting public posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public'});
+                ctx.stats.public_posts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting member posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:members'});
+                ctx.stats.members_posts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting paid posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:paid'});
+                ctx.stats.paid_posts.count = postsData.meta.pagination.total;
             }
         },
         {
@@ -96,7 +126,8 @@ module.exports.getFullTaskList = (options) => {
                 const membersData = await ctx.api.members.browse();
                 ctx.stats.members.count = membersData.meta.pagination.total;
             }
-        },{
+        },
+        {
             title: 'Build stats',
             task: (ctx) => {
                 const statsHeader = [{
@@ -118,6 +149,9 @@ module.exports.getFullTaskList = (options) => {
 
                 const statsRows = [
                     ['Posts', ctx.stats.posts.count],
+                    ['- Public', ctx.stats.public_posts.count],
+                    ['- Members', ctx.stats.members_posts.count],
+                    ['- Paid', ctx.stats.paid_posts.count],
                     ['Pages', ctx.stats.pages.count],
                     ['Tags', ctx.stats.tags.count],
                     ['Users', ctx.stats.users.count],
