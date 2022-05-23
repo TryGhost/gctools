@@ -4,7 +4,7 @@ const ui = require('@tryghost/pretty-cli').ui;
 // Internal ID in case we need one.
 exports.id = 'dedupe-members-csv';
 
-exports.group = 'Content:';
+exports.group = 'Beta:';
 
 // The command to run and any params
 exports.flags = 'dedupe-members-csv <existingMembers> <newFree> [newComp] [newPaid]';

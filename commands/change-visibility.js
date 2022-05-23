@@ -4,7 +4,7 @@ const ui = require('@tryghost/pretty-cli').ui;
 // Internal ID in case we need one.
 exports.id = 'change-visibility';
 
-exports.group = 'Content:';
+exports.group = 'Beta:';
 
 // The command to run and any params
 exports.flags = 'change-visibility <apiURL> <adminAPIKey>';

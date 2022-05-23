@@ -10,7 +10,7 @@ const sitesJSONFile = path.join(os.homedir(), '.gctools', 'gctools_sites.json');
 // Internal ID in case we need one.
 exports.id = 'i';
 
-exports.group = 'Tools:';
+exports.group = 'Beta:';
 
 // The command to run and any params
 exports.flags = 'i';

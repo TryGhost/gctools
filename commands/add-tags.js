@@ -4,7 +4,7 @@ const ui = require('@tryghost/pretty-cli').ui;
 // Internal ID in case we need one.
 exports.id = 'add-tags';
 
-exports.group = 'Content:';
+exports.group = 'Beta:';
 
 // The command to run and any params
 exports.flags = 'add-tags <apiURL> <adminAPIKey>';
