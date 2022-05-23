@@ -5,6 +5,7 @@ module.exports = {
     fetchImages: require('./fetch-images'),
     randomPosts: require('./random-posts'),
     deletePosts: require('./delete-posts'),
+    deletePages: require('./delete-pages'),
     addTags: require('./add-tags'),
     addPreview: require('./add-preview'),
     deleteTags: require('./delete-tags'),

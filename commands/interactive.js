@@ -86,6 +86,10 @@ exports.run = async () => {
                 value: tasks.deletePosts.choice.value
             },
             {
+                name: tasks.deletePages.choice.name,
+                value: tasks.deletePages.choice.value
+            },
+            {
                 name: tasks.deleteTags.choice.name,
                 value: tasks.deleteTags.choice.value
             },
