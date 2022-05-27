@@ -54,6 +54,16 @@ module.exports.getFullTaskList = (options) => {
             task: async (ctx) => {
                 delete ctx.jsonData.settings;
                 delete ctx.jsonData.custom_theme_settings;
+                delete ctx.jsonData.newsletters;
+                delete ctx.jsonData.products;
+                delete ctx.jsonData.offers;
+                delete ctx.jsonData.benefits;
+                delete ctx.jsonData.products_benefits;
+                delete ctx.jsonData.posts_products;
+                delete ctx.jsonData.offer_redemptions;
+                delete ctx.jsonData.stripe_products;
+                delete ctx.jsonData.stripe_prices;
+                delete ctx.jsonData.snippets;
             }
         },
         {
