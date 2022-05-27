@@ -72,6 +72,8 @@ module.exports.getFullTaskList = (options) => {
                     }
                 });
 
+                siteUsers = _.sortBy(siteUsers, ['name']);
+
                 const promptOptions = [
                     {
                         type: 'checkbox',
@@ -113,6 +115,8 @@ module.exports.getFullTaskList = (options) => {
                         }
                     });
                 });
+
+                siteUsers = _.sortBy(siteUsers, ['name']);
 
                 const promptOptions = [
                     {
