@@ -52,6 +52,15 @@ module.exports.getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
+
+                // Filter out the owner role, as this cannot be deleted
+                ctx.users = _.filter(ctx.users, (user) => {
+                    const isOwner = _.find(user.roles, {name: 'Owner'});
+
+                    if (!isOwner) {
+                        return user;
+                    }
+                });
             }
         },
         {
