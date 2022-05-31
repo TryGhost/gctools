@@ -1,16 +1,16 @@
-const deleteStaff = require('../tasks/delete-staff');
+const changeRole = require('../tasks/change-role');
 const ui = require('@tryghost/pretty-cli').ui;
 
 // Internal ID in case we need one.
-exports.id = 'delete-staff';
+exports.id = 'change-role';
 
 exports.group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'delete-staff <apiURL> <adminAPIKey>';
+exports.flags = 'change-role <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Delete posts in Ghost (requires staff token)';
+exports.desc = 'Change user roles in Ghost (requires staff token)';
 
 // Descriptions for the individual params
 exports.paramsDesc = [
@@ -26,15 +26,11 @@ exports.setup = (sywac) => {
     });
     sywac.array('--filterRole', {
         defaultValue: false,
-        desc: 'Comma-separated list of roles to delete'
+        desc: 'Comma-separated list of roles to change'
     });
-    sywac.boolean('--filterNoPosts', {
-        defaultValue: true,
-        desc: 'Delete staff with zero posts'
-    });
-    sywac.number('--maxStaff', {
-        defaultValue: 100,
-        desc: 'THe max number if staff to delete (defaults to 100)'
+    sywac.string('--newRoleID', {
+        defaultValue: false,
+        desc: 'The new role ID'
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 1000,
@@ -49,7 +45,7 @@ exports.run = async (argv) => {
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = deleteStaff.getTaskRunner(argv);
+        let runner = changeRole.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);
@@ -58,5 +54,5 @@ exports.run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully deleted ${context.deleted.length} users in ${Date.now() - timer}ms.`);
+    ui.log.ok(`Successfully updated ${context.updated.length} users in ${Date.now() - timer}ms.`);
 };
