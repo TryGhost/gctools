@@ -147,10 +147,10 @@
   optionalDependencies:
     sharp "^0.30.0"
 
-"@tryghost/listr-smart-renderer@0.2.7":
-  version "0.2.7"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.2.7.tgz#b98938d2b1d9b81be8c09a216016859f46f948ea"
-  integrity sha512-5UTQa1KjNIAQ/IsdWT4oKKE5dA9BwoEfzD7PDDBv+gvL96ZGGpEp3JHnXD+pYf3GHD7rmjPnw6ZeTYi7Kw2xqw==
+"@tryghost/listr-smart-renderer@0.2.8":
+  version "0.2.8"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.2.8.tgz#a6a195f54ddb6a1a9dab9a66b16c8a2c4171885b"
+  integrity sha512-N6AWwSxWB5P50f2EDdOJoXhUFqX+23FxotwQDcpU9kg6Wjbp39LvfquBoOWqGIXY/WrKctebk1VoXpkH9+DqLg==
   dependencies:
     chalk "4.1.2"
     cli-truncate "^2.0.0"
