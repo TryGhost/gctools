@@ -5,7 +5,7 @@ const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
 const choice = {
-    name: 'Change user roles (requires staff token)',
+    name: 'Change user roles (requires staff token) [Ghost >= 5.2.0]',
     value: 'changeRole'
 };
 
@@ -21,13 +21,13 @@ const options = [
         }
     },
     {
-        type: 'input',
-        name: 'newRoleID',
-        message: 'The new role ID:',
-        filter: (val) => {
-            return val.trim();
-        },
-        validate: val => (val.length === 24) || 'Please supply a role ID'
+        type: 'list',
+        name: 'newRole',
+        message: 'The new role name:',
+        pageSize: 20,
+        choices: () => {
+            return getAPIRolesObj();
+        }
     },
     {
         type: 'number',

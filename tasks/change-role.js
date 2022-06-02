@@ -89,11 +89,7 @@ module.exports.getFullTaskList = (options) => {
                             try {
                                 let result = await ctx.api.users.edit({
                                     id: user.id,
-                                    roles: [
-                                        {
-                                            id: ctx.args.newRoleID
-                                        }
-                                    ]
+                                    roles: [ctx.args.newRole]
                                 });
                                 ctx.updated.push(result);
                                 return Promise.delay(options.delayBetweenCalls).return(result);

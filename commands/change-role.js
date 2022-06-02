@@ -10,7 +10,7 @@ exports.group = 'Content:';
 exports.flags = 'change-role <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Change user roles in Ghost (requires staff token)';
+exports.desc = 'Change user roles in Ghost (requires staff token) [Ghost >= 5.2.0]';
 
 // Descriptions for the individual params
 exports.paramsDesc = [
@@ -28,9 +28,10 @@ exports.setup = (sywac) => {
         defaultValue: false,
         desc: 'Comma-separated list of roles to change'
     });
-    sywac.string('--newRoleID', {
+    sywac.enumeration('--newRole', {
         defaultValue: false,
-        desc: 'The new role ID'
+        desc: 'The new role name, e.g. `Editor`',
+        choices: ['Contributor', 'Author', 'Editor', 'Administrator']
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 1000,
