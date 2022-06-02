@@ -29,23 +29,23 @@ gctools i
 
 Available tools include:
 
-* `Zip Split`
-* `Zip Create`
-* `JSON Split`
-* `Fetch Images`
-* `Deduplicate Members CSV`
-* `Add random posts`
-* `Delete posts`
-* `Add tags to posts`
-* `Add public preview divider`
-* `Delete tags`
-* `Delete empty tags`
-* `Find & Replace`
-* `Change Author`
-* `Change Visibility`
-* `Delete Members`
-* `Delete Staff`
-* `Change Role`
+* [`zip-split`](#zip-split)
+* [`zip-create`](#zip-create)
+* [`json-split`](#json-split)
+* [`fetch-images`](#fetch-images)
+* [`dedupe-members-csv`](#dedupe-members-csv)
+* [`random-posts`](#random-posts)
+* [`delete-posts`](#delete-posts)
+* [`add-tags`](#add-tags)
+* [`add-preview`](#add-preview)
+* [`delete-tags`](#delete-tags)
+* [`delete-empty-tags`](#delete-empty-tags)
+* [`find-replace`](#find-replace)
+* [`change-author`](#change-author)
+* [`change-visibility`](#change-visibility)
+* [`delete-members`](#delete-members)
+* [`delete-staff`](#delete-staff)
+* [`change-role`](#change-role)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -152,7 +152,7 @@ gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testi
 ```
 
 
-### Add tags to posts
+### add-tags
 
 Add a tag to specific posts with a specific set of filters
 
@@ -170,7 +170,7 @@ gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --new_
 gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --author 'harry' --new_tags 'Testing'
 ```
 
-### Add public preview divider
+### add-preview
 
 Insert a public preview divider at a specific point, after the `previewPosition` number.
 
@@ -257,7 +257,7 @@ Change the author assigned to a post
 gctools change-author --help
 
 # Change the posts written by `richard` and assign to `michael`
-gctools change-author <apiURL> <adminAPIKey> --author `richard` --new_author `michael`
+gctools change-author <apiURL> <adminAPIKey> --author 'richard' --new_author 'michael'
 ```
 
 
@@ -270,16 +270,16 @@ Change the visibility of posts
 gctools change-visibility --help
 
 # Change the posts that are currently public to be members-only
-gctools change-visibility <apiURL> <adminAPIKey> --visibility `public` --new_visibility `members`
+gctools change-visibility <apiURL> <adminAPIKey> --visibility 'public' --new_visibility 'members'
 
 # Change the posts that are currently members-only to be paid-members only
-gctools change-visibility <apiURL> <adminAPIKey> --visibility `members` --new_visibility `paid`
+gctools change-visibility <apiURL> <adminAPIKey> --visibility 'members' --new_visibility 'paid'
 
 # Change the posts tagged with 'news' to be paid-members only
-gctools change-visibility <apiURL> <adminAPIKey> --tag `news` --new_visibility `paid`
+gctools change-visibility <apiURL> <adminAPIKey> --tag 'news' --new_visibility 'paid'
 
 # Change the posts tagged with 'news', and written by 'jane' to be paid-members only
-gctools change-visibility <apiURL> <adminAPIKey> --tag `news` --author `jane` --new_visibility `paid`
+gctools change-visibility <apiURL> <adminAPIKey> --tag 'news' --author 'jane' --new_visibility 'paid'
 ```
 
 
@@ -334,7 +334,7 @@ gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Auth
 ## Develop
 
 * `commands` handles the traditional CLI input
-* `tools` handles the interactive CLI input
+* `prompts` handles the interactive CLI input
 * `tasks` is the tasks run by both the CLI and interactive tool
 
 
