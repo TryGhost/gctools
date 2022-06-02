@@ -44,6 +44,8 @@ Available tools include:
 * `Change Author`
 * `Change Visibility`
 * `Delete Members`
+* `Delete Staff`
+* `Change Role`
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -291,6 +293,41 @@ gctools delete-members --help
 
 # Change the posts written by `richard` and assign to `michael`
 gctools delete-members <apiURL> <adminAPIKey>
+```
+
+
+### delete-staff
+
+Delete all staff (requires a staff user token)
+
+```sh
+# See all available options
+gctools delete-staff --help
+
+# Delete up to 50 staff users who do not have any posts or pages
+gctools delete-staff <apiURL> <adminAPIKey> --maxStaff 50
+
+# Delete up to 1000 staff users, even if they have posts or pages
+gctools delete-staff <apiURL> <adminAPIKey> --maxStaff 1000 --filterNoPosts false
+
+# Delete up to 200 staff users who have the Editor role, even if they have posts or pages
+gctools delete-staff <apiURL> <adminAPIKey> --filterRole 'Editor' --maxStaff 200 --filterNoPosts false
+```
+
+
+### change-role
+
+Change the staff user role (requires a staff user token) [Ghost >= 5.2.0]
+
+```sh
+# See all available options
+gctools change-role <apiURL> <adminAPIKey> --help
+
+# Change all staff users (except the site owner) to have the Contributor role
+gctools change-role <apiURL> <adminAPIKey> --newRole 'Contributor'
+
+# Change all staff users who are currently the Editor role to have the Author role
+gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Author'
 ```
 
 

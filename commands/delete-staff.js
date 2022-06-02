@@ -30,7 +30,7 @@ exports.setup = (sywac) => {
     });
     sywac.boolean('--filterNoPosts', {
         defaultValue: true,
-        desc: 'Delete staff with zero posts'
+        desc: 'Only delete staff with zero posts'
     });
     sywac.number('--maxStaff', {
         defaultValue: 100,

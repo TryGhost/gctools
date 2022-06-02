@@ -23,7 +23,7 @@ const options = [
     {
         type: 'confirm',
         name: 'filterNoPosts',
-        message: 'Delete staff with zero posts:',
+        message: 'Only delete staff with zero posts:',
         default: true
     },
     {
