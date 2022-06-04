@@ -9,7 +9,7 @@ const {createGetPostsFilter, getPosts} = require('../lib/functions/get-posts.js'
 const {maybeObjectToArray, maybeStringToArray, maybeArrayToString} = require('../lib/utils.js');
 const confirm = require('../lib/prompts/basic/confirm.js');
 
-const {addPosts} = require('../lib/functions/add-posts.js');
+const {editPosts} = require('../lib/functions/edit-posts.js');
 
 // Internal ID in case we need one.
 exports.id = 'change-visibility';
@@ -165,7 +165,7 @@ exports.run = async (argv) => {
     updatedVisibilityPosts = updatedVisibilityPosts.slice(0, 15);
 
     // Upload the changed posts
-    const updatedPosts = await addPosts({
+    const updatedPosts = await editPosts({
         api: argv.api,
         type: 'posts',
         items: updatedVisibilityPosts
