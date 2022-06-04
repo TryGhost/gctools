@@ -162,8 +162,6 @@ exports.run = async (argv) => {
         return post;
     });
 
-    updatedVisibilityPosts = updatedVisibilityPosts.slice(0, 15);
-
     // Upload the changed posts
     const updatedPosts = await editPosts({
         api: argv.api,
