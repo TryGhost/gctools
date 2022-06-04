@@ -11,9 +11,7 @@ module.exports = {
     deleteEmptyTags: require('./delete-empty-tags'),
     findReplace: require('./find-replace'),
     changeAuthor: require('./change-author'),
-    changeVisibility: require('./change-visibility'),
     deleteMembers: require('./delete-members'),
     deleteStaff: require('./delete-staff'),
-    contentStats: require('./content-stats'),
     dedupeMembersCsv: require('./dedupe-members-csv')
 };

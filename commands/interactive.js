@@ -72,14 +72,6 @@ exports.run = async () => {
                 name: tasks.changeAuthor.choice.name,
                 value: tasks.changeAuthor.choice.value
             },
-            {
-                name: tasks.changeVisibility.choice.name,
-                value: tasks.changeVisibility.choice.value
-            },
-            {
-                name: tasks.contentStats.choice.name,
-                value: tasks.contentStats.choice.value
-            },
             new inquirer.Separator('--- Dangerous Utilities ------'),
             {
                 name: tasks.deletePosts.choice.name,
