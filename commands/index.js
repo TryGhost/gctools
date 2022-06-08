@@ -2,7 +2,7 @@ import * as addPreview from './add-preview.js';
 import * as addTags from './add-tags.js';
 import * as changeAuthor from './change-author.js';
 import * as changeRole from './change-role.js';
-// import * as changeVisibility from './change-visibility.js';
+import * as changeVisibility from './change-visibility.js';
 // import * as contentStats from './content-stats.js';
 // import * as dedupeMembersCsv from './dedupe-members-csv.js';
 // import * as deleteEmptyTags from './delete-empty-tags.js';
@@ -24,5 +24,6 @@ export {
     addPreview,
     addTags,
     changeAuthor,
-    changeRole
+    changeRole,
+    changeVisibility
 };
