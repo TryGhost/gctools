@@ -4,6 +4,7 @@
   "description": "Command line utilities for working with Ghost content",
   "repository": "https://github.com/TryGhost/gctools",
   "author": "Ghost Foundation",
+  "type": "module",
   "main": "index.js",
   "license": "MIT",
   "bin": {

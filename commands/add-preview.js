@@ -1,25 +1,25 @@
-const deletePosts = require('../tasks/add-preview');
-const ui = require('@tryghost/pretty-cli').ui;
+import addPreview from '../tasks/add-preview.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'add-preview';
+export const id = 'add-preview';
 
-exports.group = 'Content:';
+export const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'add-preview <apiURL> <adminAPIKey>';
+export const flags = 'add-preview <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Add a public preview to posts';
+export const desc = 'Add a public preview to posts';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+export const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -37,7 +37,7 @@ exports.setup = (sywac) => {
         defaultValue: null,
         desc: 'Delete content with this author slug'
     });
-    sywac.number('-pp --previewPosition', {
+    sywac.number('--previewPosition', {
         defaultValue: 2,
         desc: 'The card position index the public preview should be inserted after'
     });
@@ -48,7 +48,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -69,7 +69,7 @@ exports.run = async (argv) => {
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = deletePosts.getTaskRunner(argv);
+        let runner = addPreview.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);
