@@ -1,5 +1,5 @@
 import * as addPreview from './add-preview.js';
-// import * as addTags from './add-tags.js';
+import * as addTags from './add-tags.js';
 // import * as changeAuthor from './change-author.js';
 // import * as changeRole from './change-role.js';
 // import * as changeVisibility from './change-visibility.js';
@@ -21,5 +21,6 @@ import * as addPreview from './add-preview.js';
 // import * as zipSplit from './zip-split.js';
 
 export {
-    addPreview
+    addPreview,
+    addTags
 };

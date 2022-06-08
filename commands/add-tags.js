@@ -1,25 +1,25 @@
-const deletePosts = require('../tasks/add-tags');
-const ui = require('@tryghost/pretty-cli').ui;
+import addTags from '../tasks/add-tags.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'add-tags';
+export const id = 'add-tags';
 
-exports.group = 'Content:';
+export const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'add-tags <apiURL> <adminAPIKey>';
+export const flags = 'add-tags <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Add tags to posts in Ghost';
+export const desc = 'Add tags to posts in Ghost';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+export const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -47,7 +47,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -68,7 +68,7 @@ exports.run = async (argv) => {
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = deletePosts.getTaskRunner(argv);
+        let runner = addTags.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);
