@@ -1,11 +1,11 @@
-const makeTaskRunner = require('../lib/task-runner');
-const _ = require('lodash');
-const path = require('path');
-const fs = require('fs-extra');
-const parse = require('@tryghost/mg-fs-utils/lib/csv').parse;
-const jsonToCSV = require('@tryghost/mg-fs-utils/lib/csv').jsonToCSV;
+import makeTaskRunner from '../lib/task-runner.js';
+import _ from 'lodash';
+import path from 'path';
+import fs from 'fs-extra';
+import {parse} from '@tryghost/mg-fs-utils/lib/csv';
+import { jsonToCSV } from '@tryghost/mg-fs-utils/lib/csv';
 
-module.exports.determineIfUpdated = (ctx) => {
+const determineIfUpdated = (ctx) => {
     ctx.newCombined.forEach((member) => {
         let foundExistingMember = _.find(ctx.existingMembers, {
             email: member.email
@@ -31,13 +31,11 @@ module.exports.determineIfUpdated = (ctx) => {
     return ctx;
 };
 
-module.exports.splitByStatus = (ctx) => {
+const splitByStatus = (ctx) => {
     ctx.combinedNewMembers.forEach((member) => {
         if (member.complimentary_plan === 'false' && member.stripe_customer_id === '') {
-        // if (member.complimentary_plan === false && member.stripe_customer_id === '') {
             ctx.newFreeMembers.push(member);
         } else if (member.complimentary_plan === 'true') {
-        // } else if (member.complimentary_plan === true) {
             ctx.newCompMembers.push(member);
         } else if (member.stripe_customer_id !== '') {
             ctx.newPaidMembers.push(member);
@@ -53,7 +51,7 @@ module.exports.splitByStatus = (ctx) => {
     return ctx;
 };
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising',
         task: async (ctx, task) => {
@@ -78,13 +76,13 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Finding new members',
             task: async (ctx, task) => {
-                ctx = this.determineIfUpdated(ctx);
+                ctx = determineIfUpdated(ctx);
 
                 task.output = `Found ${ctx.combinedNewMembers.length} new members`;
             }
@@ -92,7 +90,7 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Create separate free, comp, & paid objects',
             task: async (ctx, task) => {
-                ctx = this.splitByStatus(ctx);
+                ctx = splitByStatus(ctx);
 
                 task.output = `Free: ${ctx.newFreeMembers.length}, Comp: ${ctx.newCompMembers.length}, Paid: ${ctx.newPaidMembers.length}`;
             }
@@ -143,10 +141,18 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
 };
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner,
+    determineIfUpdated,
+    splitByStatus
+}

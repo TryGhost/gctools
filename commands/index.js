@@ -4,7 +4,7 @@ import * as changeAuthor from './change-author.js';
 import * as changeRole from './change-role.js';
 import * as changeVisibility from './change-visibility.js';
 import * as contentStats from './content-stats.js';
-// import * as dedupeMembersCsv from './dedupe-members-csv.js';
+import * as dedupeMembersCsv from './dedupe-members-csv.js';
 // import * as deleteEmptyTags from './delete-empty-tags.js';
 // import * as deleteMembers from './delete-members.js';
 // import * as deletePages from './delete-pages.js';
@@ -26,5 +26,6 @@ export {
     changeAuthor,
     changeRole,
     changeVisibility,
-    contentStats
+    contentStats,
+    dedupeMembersCsv
 };

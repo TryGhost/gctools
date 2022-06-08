@@ -1,19 +1,19 @@
-const dedupeMembers = require('../tasks/dedupe-members-csv');
-const ui = require('@tryghost/pretty-cli').ui;
+import dedupeMembers from '../tasks/dedupe-members-csv.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'dedupe-members-csv';
+export const id = 'dedupe-members-csv';
 
-exports.group = 'Content:';
+export const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'dedupe-members-csv <existingMembers> <newFree> [newComp] [newPaid]';
+export const flags = 'dedupe-members-csv <existingMembers> <newFree> [newComp] [newPaid]';
 
 // Description for the top level command
-exports.desc = 'Deduplicate members';
+export const desc = 'Deduplicate members';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+export const paramsDesc = [
     'The current members CSV',
     'New free members CSV',
     'New comp members CSV',
@@ -21,7 +21,7 @@ exports.paramsDesc = [
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -33,7 +33,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
