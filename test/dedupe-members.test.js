@@ -1,11 +1,9 @@
-require('./utils');
-
 const path = require('path');
 const parse = require('@tryghost/mg-fs-utils/lib/csv').parse;
 const {determineIfUpdated, splitByStatus} = require('../tasks/dedupe-members-csv');
 
 describe('Deduplicate posts', function () {
-    it('determines if members have been updated', async function () {
+    test('determines if members have been updated', async function () {
         const existingMembers = await parse(path.join(__dirname, './', 'fixtures', 'existing-members.csv'));
         const updatedMembers = await parse(path.join(__dirname, './', 'fixtures', 'updated-members.csv'));
 
@@ -17,17 +15,18 @@ describe('Deduplicate posts', function () {
 
         const {combinedNewMembers} = determineIfUpdated(ctx);
 
-        combinedNewMembers.should.be.an.Array().with.lengthOf(13);
+        expect(combinedNewMembers).toBeArray();
+        expect(combinedNewMembers).toHaveLength(13);
 
         // Convert it to a string to make sure values do _not_ exist
         const combinedNewMembersString = JSON.stringify(combinedNewMembers);
 
-        combinedNewMembersString.should.not.containEql('"email":"person05@gmail.com"');
-        combinedNewMembersString.should.not.containEql('"stripe_customer_id":"cus_05ABCDEFGABCED"');
-        combinedNewMembersString.should.not.containEql('"email":"person06@gmail.com"');
+        expect(combinedNewMembersString).not.toInclude('"email":"person05@gmail.com"');
+        expect(combinedNewMembersString).not.toInclude('"stripe_customer_id":"cus_05ABCDEFGABCED"');
+        expect(combinedNewMembersString).not.toInclude('"email":"person06@gmail.com"');
     });
 
-    it('splits members by status', async function () {
+    test('splits members by status', async function () {
         const existingMembers = await parse(path.join(__dirname, './', 'fixtures', 'existing-members.csv'));
         const updatedMembers = await parse(path.join(__dirname, './', 'fixtures', 'updated-members.csv'));
 
@@ -46,8 +45,13 @@ describe('Deduplicate posts', function () {
         // And then split by status
         ctx = splitByStatus(ctx);
 
-        ctx.newFreeMembers.should.be.an.Array().with.lengthOf(5);
-        ctx.newCompMembers.should.be.an.Array().with.lengthOf(3);
-        ctx.newPaidMembers.should.be.an.Array().with.lengthOf(5);
+        expect(ctx.newFreeMembers).toBeArray();
+        expect(ctx.newFreeMembers).toHaveLength(5);
+
+        expect(ctx.newCompMembers).toBeArray();
+        expect(ctx.newCompMembers).toHaveLength(3);
+
+        expect(ctx.newPaidMembers).toBeArray();
+        expect(ctx.newPaidMembers).toHaveLength(5);
     });
 });

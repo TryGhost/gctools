@@ -1,10 +1,7 @@
-require('./utils');
-// const testUtils = require('./utils');
-
 const {getRandomPostContent} = require('../lib/random-post');
 
 describe('Random post', function () {
-    it('can create a random post', async function () {
+    test('can create a random post', async function () {
         let startDate = new Date('2011-01-01T12:30:45.000Z');
         let endDate = new Date('2011-12-31T21:30:45.000Z');
 
@@ -15,26 +12,27 @@ describe('Random post', function () {
             }
         });
 
-        randomPost.tags.should.be.an.Array().with.lengthOf(1);
-        randomPost.tags[0].should.eql('#gctools');
+        expect(randomPost.tags).toBeArray();
+        expect(randomPost.tags).toHaveLength(1);
+        expect(randomPost.tags[0]).toEqual('#gctools');
 
-        randomPost.status.should.eql('published');
-        randomPost.visibility.should.eql('public');
+        expect(randomPost.status).toEqual('published');
+        expect(randomPost.visibility).toEqual('public');
 
-        randomPost.title.should.be.a.String();
-        randomPost.excerpt.should.be.a.String();
+        expect(randomPost.title).toBeString();
+        expect(randomPost.excerpt).toBeString();
 
         // Count number of <p> tags in HTML content
-        randomPost.html.match(/<p>/g).length.should.eql(10);
+        expect(randomPost.html.match(/<p>/g)).toHaveLength(10);
 
-        randomPost.created_at.should.be.aboveOrEqual(startDate);
-        randomPost.created_at.should.be.belowOrEqual(endDate);
+        expect(randomPost.created_at).toBeAfterOrEqualTo(startDate);
+        expect(randomPost.created_at).toBeBeforeOrEqualTo(endDate);
 
-        randomPost.updated_at.should.be.belowOrEqual(endDate);
-        randomPost.updated_at.should.be.belowOrEqual(endDate);
+        expect(randomPost.updated_at).toBeBeforeOrEqualTo(endDate);
+        expect(randomPost.updated_at).toBeBeforeOrEqualTo(endDate);
 
-        randomPost.published_at.should.be.belowOrEqual(endDate);
-        randomPost.published_at.should.be.belowOrEqual(endDate);
+        expect(randomPost.published_at).toBeBeforeOrEqualTo(endDate);
+        expect(randomPost.published_at).toBeBeforeOrEqualTo(endDate);
     });
 
     it('can create a random post with specific options', async function () {
@@ -52,17 +50,19 @@ describe('Random post', function () {
             }
         });
 
-        randomPost.tags.should.be.an.Array().with.lengthOf(2);
-        randomPost.tags[0].should.eql('#Test');
-        randomPost.tags[1].should.eql('Hello World');
+        expect(randomPost.tags).toBeArray();
+        expect(randomPost.tags).toHaveLength(2);
 
-        randomPost.status.should.eql('draft');
-        randomPost.visibility.should.eql('paid');
+        expect(randomPost.tags[0]).toEqual('#Test');
+        expect(randomPost.tags[1]).toEqual('Hello World');
 
-        randomPost.title.should.be.a.String();
-        randomPost.excerpt.should.be.a.String();
+        expect(randomPost.status).toEqual('draft');
+        expect(randomPost.visibility).toEqual('paid');
+
+        expect(randomPost.title).toBeString();
+        expect(randomPost.excerpt).toBeString();
 
         // Count number of <p> tags in HTML content
-        randomPost.html.match(/<p>/g).length.should.eql(3);
+        expect(randomPost.html.match(/<p>/g)).toHaveLength(3);
     });
 });

@@ -1,111 +1,107 @@
-require('./utils');
-
 const {requestOptions} = require('../lib/batch-ghost-discover');
 
 describe('Batch Ghost Discover', function () {
-    it('Builds the default query', async function () {
+    test('Builds the default query', async function () {
         const opts = requestOptions();
 
-        Object.keys(opts).should.have.length(2);
-        opts.should.be.an.Object();
-        opts.should.have.properties(['page', 'limit']);
-        opts.page.should.be.an.Number();
-        opts.limit.should.be.an.Number();
+        expect(opts).toBeObject();
+        expect(opts).toContainAllKeys(['page', 'limit']);
+        expect(opts.page).toBeNumber();
+        expect(opts.limit).toBeNumber();
     });
 
-    it('Has different defaults for specific types: tags', async function () {
+    test('Has different defaults for specific types: tags', async function () {
         const opts = requestOptions({
             type: 'tags'
         });
 
-        Object.keys(opts).should.have.length(3);
-        opts.should.be.an.Object();
-        opts.should.have.properties(['page', 'limit', 'include']);
-        opts.page.should.be.an.Number();
-        opts.limit.should.be.an.Number();
-        opts.include.should.eql('count.posts');
+        expect(opts).toBeObject();
+        expect(opts).toContainAllKeys(['page', 'limit', 'include']);
+        expect(opts.page).toBeNumber();
+        expect(opts.limit).toBeNumber();
+        expect(opts.include).toEqual('count.posts');
     });
 
-    it('Has different defaults for specific types: users', async function () {
+    test('Has different defaults for specific types: users', async function () {
         const opts = requestOptions({
             type: 'users'
         });
 
-        Object.keys(opts).should.have.length(3);
-        opts.should.be.an.Object();
-        opts.should.have.properties(['page', 'limit', 'include']);
-        opts.page.should.be.an.Number();
-        opts.limit.should.be.an.Number();
-        opts.include.should.eql('count.posts,roles');
+        expect(opts).toBeObject();
+        expect(opts).toContainAllKeys(['page', 'limit', 'include']);
+        expect(opts.page).toBeNumber();
+        expect(opts.limit).toBeNumber();
+        expect(opts.include).toEqual('count.posts,roles');
     });
 
-    it('Has different defaults for specific types, with a custom limit', async function () {
+    test('Has different defaults for specific types, with a custom limit', async function () {
         const opts = requestOptions({
             type: 'users',
             limit: 100
         });
 
-        opts.limit.should.eql(100);
-        opts.include.should.eql('count.posts,roles');
+        expect(opts.limit).toEqual(100);
+        expect(opts.include).toEqual('count.posts,roles');
     });
 
-    it('Accepts a specific limit (supplied as int)', async function () {
+    test('Accepts a specific limit (supplied as int)', async function () {
         const opts = requestOptions({
             limit: 55
         });
 
-        opts.limit.should.eql(55);
+        expect(opts.limit).toEqual(55);
     });
 
-    it('Accepts a specific limit (supplied as string)', async function () {
+    test('Accepts a specific limit (supplied as string)', async function () {
         const opts = requestOptions({
             limit: '45'
         });
 
-        opts.limit.should.eql(45);
+        expect(opts.limit).toBeNumber();
+        expect(opts.limit).toEqual(45);
     });
 
-    it('Accepts a specific include', async function () {
+    test('Accepts a specific include', async function () {
         const opts = requestOptions({
             include: 'monthly_price,yearly_price,benefits'
         });
 
-        opts.include.should.be.eql('monthly_price,yearly_price,benefits');
+        expect(opts.include).toEqual('monthly_price,yearly_price,benefits');
     });
 
-    it('Accepts a specific filter', async function () {
+    test('Accepts a specific filter', async function () {
         const opts = requestOptions({
             filter: 'tag:getting-started'
         });
 
-        opts.filter.should.be.eql('tag:getting-started');
+        expect(opts.filter).toEqual('tag:getting-started');
     });
 
-    it('Accepts a specific fields', async function () {
+    test('Accepts a specific fields', async function () {
         const opts = requestOptions({
             fields: 'title,url'
         });
 
-        opts.fields.should.be.eql('title,url');
+        expect(opts.fields).toEqual('title,url');
     });
 
-    it('Accepts a specific formats', async function () {
+    test('Accepts a specific formats', async function () {
         const opts = requestOptions({
             formats: 'html,plaintext'
         });
 
-        opts.formats.should.be.eql('html,plaintext');
+        expect(opts.formats).toEqual('html,plaintext');
     });
 
-    it('Accepts a specific order', async function () {
+    test('Accepts a specific order', async function () {
         const opts = requestOptions({
             order: 'monthly_price ASC'
         });
 
-        opts.order.should.be.eql('monthly_price ASC');
+        expect(opts.order).toEqual('monthly_price ASC');
     });
 
-    it('Accepts a combination of parameters', async function () {
+    test('Accepts a combination of parameters', async function () {
         const opts = requestOptions({
             type: 'posts',
             limit: '35',
@@ -113,12 +109,11 @@ describe('Batch Ghost Discover', function () {
             order: 'title DESC'
         });
 
-        Object.keys(opts).should.have.length(4);
-        opts.should.be.an.Object();
-        opts.should.have.properties(['page', 'limit', 'include', 'order']);
-        opts.page.should.be.an.Number();
-        opts.limit.should.be.an.Number();
-        opts.include.should.eql('authors, tags');
-        opts.order.should.eql('title DESC');
+        expect(opts).toBeObject();
+        expect(opts).toContainAllKeys(['page', 'limit', 'include', 'order']);
+        expect(opts.page).toBeNumber();
+        expect(opts.limit).toBeNumber();
+        expect(opts.include).toEqual('authors, tags');
+        expect(opts.order).toEqual('title DESC');
     });
 });

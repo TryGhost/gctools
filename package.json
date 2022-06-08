@@ -16,16 +16,13 @@
     "dev": "gctools",
     "gctools": "gctools",
     "split": "node split",
-    "test": "NODE_ENV=testing mocha './test/**/*.test.js'",
-    "lint_old": "eslint . --ext .js --cache",
+    "test": "NODE_ENV=testing node --expose-gc ./node_modules/jest/bin/jest.js",
     "lint": "eslint -c ./eslint.json . --ext .js --cache"
   },
   "devDependencies": {
     "eslint": "8.17.0",
     "eslint-plugin-ghost": "2.14.0",
-    "mocha": "10.0.0",
-    "should": "13.2.3",
-    "sinon": "14.0.0"
+    "jest-extended": "^2.0.0"
   },
   "dependencies": {
     "@babel/eslint-parser": "7.18.2",
@@ -36,13 +33,13 @@
     "@tryghost/zip": "1.1.26",
     "bluebird": "3.7.2",
     "chalk": "4.1.2",
-    "cross-env": "7.0.3",
     "fs-extra": "10.1.0",
     "glob": "8.0.3",
     "got": "11.8.5",
     "inquirer": "8.2.4",
     "inquirer-datepicker-prompt": "0.4.2",
     "inquirer-search-checkbox": "1.0.0",
+    "jest": "28.1.1",
     "listr": "0.14.3",
     "lodash": "4.17.21",
     "lorem-ipsum": "2.0.4",
