@@ -11,11 +11,11 @@ const getAllImageMatches = (source) => {
     const matches = [];
     source.replace(() => {
         matches.push({
-            match: arguments[0],
-            offset: arguments[arguments.length - 2],
-            groups: Array.prototype.slice.call(arguments, 1, -2)
+            match: arguments[0], // eslint-disable-line no-undef
+            offset: arguments[arguments.length - 2], // eslint-disable-line no-undef
+            groups: Array.prototype.slice.call(arguments, 1, -2) // eslint-disable-line no-undef
         });
-        return arguments[0];
+        return arguments[0]; // eslint-disable-line no-undef
     });
     return matches;
 };

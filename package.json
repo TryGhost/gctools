@@ -17,7 +17,8 @@
     "gctools": "gctools",
     "split": "node split",
     "test": "NODE_ENV=testing mocha './test/**/*.test.js'",
-    "lint": "eslint . --ext .js --cache"
+    "lint_old": "eslint . --ext .js --cache",
+    "lint": "eslint -c ./eslint.json . --ext .js --cache"
   },
   "devDependencies": {
     "eslint": "8.17.0",
@@ -27,6 +28,7 @@
     "sinon": "14.0.0"
   },
   "dependencies": {
+    "@babel/eslint-parser": "7.18.2",
     "@tryghost/admin-api": "1.13.0",
     "@tryghost/listr-smart-renderer": "0.2.8",
     "@tryghost/mg-fs-utils": "0.8.0",
@@ -34,6 +36,7 @@
     "@tryghost/zip": "1.1.26",
     "bluebird": "3.7.2",
     "chalk": "4.1.2",
+    "cross-env": "7.0.3",
     "fs-extra": "10.1.0",
     "glob": "8.0.3",
     "got": "11.8.5",
