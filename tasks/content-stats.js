@@ -1,8 +1,8 @@
-const GhostAdminAPI = require('@tryghost/admin-api');
-const makeTaskRunner = require('../lib/task-runner');
-const Table = require('tty-table');
+import GhostAdminAPI from '@tryghost/admin-api';
+import makeTaskRunner from '../lib/task-runner.js';
+import Table from 'tty-table';
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising API connection',
         task: async (ctx, task) => {
@@ -54,9 +54,9 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Counting posts',
             task: async (ctx) => {
@@ -191,10 +191,16 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
 };
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
+}

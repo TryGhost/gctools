@@ -3,7 +3,7 @@ import * as addTags from './add-tags.js';
 import * as changeAuthor from './change-author.js';
 import * as changeRole from './change-role.js';
 import * as changeVisibility from './change-visibility.js';
-// import * as contentStats from './content-stats.js';
+import * as contentStats from './content-stats.js';
 // import * as dedupeMembersCsv from './dedupe-members-csv.js';
 // import * as deleteEmptyTags from './delete-empty-tags.js';
 // import * as deleteMembers from './delete-members.js';
@@ -25,5 +25,6 @@ export {
     addTags,
     changeAuthor,
     changeRole,
-    changeVisibility
+    changeVisibility,
+    contentStats
 };
