@@ -1,6 +1,5 @@
-const {transformToCommaString, maybeStringToArray, maybeArrayToString, SlugFromStringArrayOrObject, maybeObjectToArray} = require('../lib/utils');
-
-const tagsObject = require('./fixtures/tags.json');
+import {transformToCommaString, maybeStringToArray, maybeArrayToString, SlugFromStringArrayOrObject, maybeObjectToArray} from '../lib/utils.js';
+import tagsObject from './fixtures/tags.json';
 
 describe('Utils (transformToCommaString)', function () {
     test('can extract `name` values from object', function () {

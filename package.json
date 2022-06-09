@@ -17,7 +17,7 @@
     "dev": "gctools",
     "gctools": "gctools",
     "split": "node split",
-    "test": "NODE_ENV=testing node --expose-gc ./node_modules/jest/bin/jest.js",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "lint": "eslint -c ./eslint.json . --ext .js --cache"
   },
   "devDependencies": {

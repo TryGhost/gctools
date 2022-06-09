@@ -1,4 +1,4 @@
-const {getRandomPostContent} = require('../lib/random-post');
+import {getRandomPostContent} from '../lib/random-post.js';
 
 describe('Random post', function () {
     test('can create a random post', async function () {

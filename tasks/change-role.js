@@ -121,4 +121,4 @@ export default {
     initialise,
     getFullTaskList,
     getTaskRunner
-}
+};

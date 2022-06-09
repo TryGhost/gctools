@@ -1,6 +1,9 @@
-const path = require('path');
-const parse = require('@tryghost/mg-fs-utils/lib/csv').parse;
-const {determineIfUpdated, splitByStatus} = require('../tasks/dedupe-members-csv');
+import path from 'path';
+import url from 'url'
+import {parse} from '@tryghost/mg-fs-utils/lib/csv';
+import dedupeMembersCsv from '../tasks/dedupe-members-csv.js';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 describe('Deduplicate posts', function () {
     test('determines if members have been updated', async function () {
@@ -13,7 +16,7 @@ describe('Deduplicate posts', function () {
             combinedNewMembers: []
         };
 
-        const {combinedNewMembers} = determineIfUpdated(ctx);
+        const {combinedNewMembers} = dedupeMembersCsv.determineIfUpdated(ctx);
 
         expect(combinedNewMembers).toBeArray();
         expect(combinedNewMembers).toHaveLength(13);
@@ -40,10 +43,10 @@ describe('Deduplicate posts', function () {
         };
 
         // Find new members
-        ctx = determineIfUpdated(ctx);
+        ctx = dedupeMembersCsv.determineIfUpdated(ctx);
 
         // And then split by status
-        ctx = splitByStatus(ctx);
+        ctx = dedupeMembersCsv.splitByStatus(ctx);
 
         expect(ctx.newFreeMembers).toBeArray();
         expect(ctx.newFreeMembers).toHaveLength(5);

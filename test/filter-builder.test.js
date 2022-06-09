@@ -1,7 +1,6 @@
-const {filterBuilder} = require('../lib/filter-builder');
-
-const tagsObject = require('./fixtures/tags.json');
-const authorsObject = require('./fixtures/authors.json');
+import {filterBuilder} from '../lib/filter-builder.js';
+import tagsObject from './fixtures/tags.json';
+import authorsObject from './fixtures/authors.json';
 
 describe('Filter builder', function () {
     test('Builds exclusive filter from strings', async function () {

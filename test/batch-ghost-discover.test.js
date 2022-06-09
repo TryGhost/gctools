@@ -1,4 +1,4 @@
-const {requestOptions} = require('../lib/batch-ghost-discover');
+import {requestOptions} from '../lib/batch-ghost-discover.js';
 
 describe('Batch Ghost Discover', function () {
     test('Builds the default query', async function () {

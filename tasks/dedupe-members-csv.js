@@ -3,7 +3,7 @@ import _ from 'lodash';
 import path from 'path';
 import fs from 'fs-extra';
 import {parse} from '@tryghost/mg-fs-utils/lib/csv';
-import { jsonToCSV } from '@tryghost/mg-fs-utils/lib/csv';
+import {jsonToCSV} from '@tryghost/mg-fs-utils/lib/csv';
 
 const determineIfUpdated = (ctx) => {
     ctx.newCombined.forEach((member) => {
@@ -155,4 +155,4 @@ export default {
     getTaskRunner,
     determineIfUpdated,
     splitByStatus
-}
+};
