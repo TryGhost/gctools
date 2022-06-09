@@ -29,7 +29,7 @@ export const setup = (sywac) => {
         desc: 'Delete content with this tag slug'
     });
     sywac.number('--delayBetweenCalls', {
-        defaultValue: 2000,
+        defaultValue: 50,
         desc: 'The delay between API calls, in ms'
     });
 };
