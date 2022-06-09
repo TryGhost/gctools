@@ -1,22 +1,22 @@
-const zipSplit = require('../tasks/zip-split');
-const ui = require('@tryghost/pretty-cli').ui;
+import zipSplit from '../tasks/zip-split.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'zip-split';
+export const id = 'zip-split';
 
-exports.group = 'Tools:';
+export const group = 'Tools:';
 
 // The command to run and any params
-exports.flags = 'zip-split <zipFile>';
+export const flags = 'zip-split <zipFile>';
 
 // Description for the top level command
-exports.desc = 'Split a large zip file into smaller zips of a predefined maximum size';
+export const desc = 'Split a large zip file into smaller zips of a predefined maximum size';
 
 // Descriptions for the individual params
-exports.paramsDesc = ['Path to the large zip file'];
+export const paramsDesc = ['Path to the large zip file'];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -28,7 +28,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 

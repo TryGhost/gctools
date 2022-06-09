@@ -18,7 +18,7 @@ import * as jsonClean from './json-clean.js';
 import * as jsonSplit from './json-split.js';
 import * as randomPost from './random-post.js';
 import * as zipCreate from './zip-create.js';
-// import * as zipSplit from './zip-split.js';
+import * as zipSplit from './zip-split.js';
 
 export {
     addPreview,
@@ -39,5 +39,6 @@ export {
     jsonClean,
     jsonSplit,
     randomPost,
-    zipCreate
+    zipCreate,
+    zipSplit
 };

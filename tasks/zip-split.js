@@ -1,10 +1,10 @@
-const fsUtils = require('@tryghost/mg-fs-utils');
-const zip = require('@tryghost/zip');
-const fs = require('fs-extra');
-const glob = require('glob');
-const path = require('path');
-const makeTaskRunner = require('../lib/task-runner');
-const superbytes = require('superbytes');
+import fsUtils from '@tryghost/mg-fs-utils';
+import zip from '@tryghost/zip';
+import fs from 'fs-extra';
+import glob from 'glob';
+import path from 'path';
+import superbytes from 'superbytes';
+import makeTaskRunner from '../lib/task-runner.js';
 
 function pad(n, width, z) {
     z = z || '0';
@@ -59,7 +59,7 @@ async function chunkFiles(ctx) {
     return chunks;
 }
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx, task) => {
@@ -78,9 +78,9 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Unzipping file',
             task: async (ctx, task) => {
@@ -219,11 +219,17 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };
