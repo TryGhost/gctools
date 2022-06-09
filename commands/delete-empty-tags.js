@@ -1,25 +1,25 @@
-const deleteEmptyTags = require('../tasks/delete-empty-tags');
-const ui = require('@tryghost/pretty-cli').ui;
+import deleteEmptyTags from '../tasks/delete-empty-tags.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'delete-empty-tags';
+export const id = 'delete-empty-tags';
 
-exports.group = 'Content:';
+export const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'delete-empty-tags <apiURL> <adminAPIKey>';
+export const flags = 'delete-empty-tags <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Delete tags in Ghost with no associated posts';
+export const desc = 'Delete tags in Ghost with no associated posts';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+export const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -31,7 +31,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
