@@ -1,10 +1,10 @@
-const fsUtils = require('@tryghost/mg-fs-utils');
-const fs = require('fs-extra');
-const path = require('path');
-const _ = require('lodash');
-const makeTaskRunner = require('../lib/task-runner');
+import fsUtils from '@tryghost/mg-fs-utils';
+import fs from 'fs-extra';
+import path from 'path';
+import _ from 'lodash';
+import makeTaskRunner from '../lib/task-runner.js';
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx, task) => {
@@ -97,9 +97,9 @@ async function createChunkFile(dest, data) {
     await fs.writeFile(dest, JSON.stringify(data, null, 4));
 }
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Reading JSON file',
             task: async (ctx, task) => {
@@ -213,11 +213,17 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };

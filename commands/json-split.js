@@ -1,22 +1,22 @@
-const jsonSplit = require('../tasks/json-split');
-const ui = require('@tryghost/pretty-cli').ui;
+import jsonSplit from '../tasks/json-split.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'json-split';
+export const id = 'json-split';
 
-exports.group = 'Tools:';
+export const group = 'Tools:';
 
 // The command to run and any params
-exports.flags = 'json-split <jsonFile>';
+export const flags = 'json-split <jsonFile>';
 
 // Description for the top level command
-exports.desc = 'Split a large Ghost export JSON file into multiple smaller files';
+export const desc = 'Split a large Ghost export JSON file into multiple smaller files';
 
 // Descriptions for the individual params
-exports.paramsDesc = ['Path to the large JSON file'];
+export const paramsDesc = ['Path to the large JSON file'];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -28,7 +28,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 

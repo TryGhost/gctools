@@ -15,7 +15,7 @@ import * as fetchImages from './fetch-images.js';
 import * as findReplace from './find-replace.js';
 // import * as interactive from './interactive.js';
 import * as jsonClean from './json-clean.js';
-// import * as jsonSplit from './json-split.js';
+import * as jsonSplit from './json-split.js';
 // import * as randomPost from './random-post.js';
 // import * as zipCreate from './zip-create.js';
 // import * as zipSplit from './zip-split.js';
@@ -36,5 +36,6 @@ export {
     deleteTags,
     fetchImages,
     findReplace,
-    jsonClean
+    jsonClean,
+    jsonSplit
 };
