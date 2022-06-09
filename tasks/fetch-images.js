@@ -1,9 +1,9 @@
-const fsUtils = require('@tryghost/mg-fs-utils');
-const fs = require('fs-extra');
-const path = require('path');
-const url = require('url');
-const got = require('got');
-const makeTaskRunner = require('../lib/task-runner');
+import fsUtils from '@tryghost/mg-fs-utils';
+import fs from 'fs-extra';
+import path from 'path';
+import url from 'url';
+import got from 'got';
+import makeTaskRunner from '../lib/task-runner.js';
 
 const knownExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.svgz', '.ico', '.webp'];
 
@@ -159,7 +159,7 @@ const extractImagePaths = (block, blockType, options) => {
     return blockImages;
 };
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx) => {
@@ -185,9 +185,9 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Reading JSON file',
             task: async (ctx) => {
@@ -314,11 +314,17 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };
