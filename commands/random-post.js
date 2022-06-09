@@ -1,25 +1,25 @@
-const randomPosts = require('../tasks/random-posts');
-const ui = require('@tryghost/pretty-cli').ui;
+import randomPosts from '../tasks/random-posts.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'random-posts';
+export const id = 'random-posts';
 
-exports.group = 'Content:';
+export const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'random-posts <apiURL> <adminAPIKey>';
+export const flags = 'random-posts <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Insert random posts into Ghost';
+export const desc = 'Insert random posts into Ghost';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+export const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -86,7 +86,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
