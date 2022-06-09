@@ -2,8 +2,10 @@ import makeTaskRunner from '../lib/task-runner.js';
 import _ from 'lodash';
 import path from 'path';
 import fs from 'fs-extra';
-import {parse} from '@tryghost/mg-fs-utils/lib/csv';
-import {jsonToCSV} from '@tryghost/mg-fs-utils/lib/csv';
+import {csv} from '@tryghost/mg-fs-utils';
+
+const csvParse = csv.parse;
+const jsonToCSV = csv.jsonToCSV;
 
 const determineIfUpdated = (ctx) => {
     ctx.newCombined.forEach((member) => {
@@ -33,7 +35,7 @@ const determineIfUpdated = (ctx) => {
 
 const splitByStatus = (ctx) => {
     ctx.combinedNewMembers.forEach((member) => {
-        if (member.complimentary_plan === 'false' && member.stripe_customer_id === '') {
+        if ((member.complimentary_plan === 'false' || member.complimentary_plan === '') && member.stripe_customer_id === '') {
             ctx.newFreeMembers.push(member);
         } else if (member.complimentary_plan === 'true') {
             ctx.newCompMembers.push(member);
@@ -57,11 +59,11 @@ const initialise = (options) => {
         task: async (ctx, task) => {
             ctx.destDir = path.dirname(options.existingMembers);
 
-            ctx.existingMembers = await parse(options.existingMembers);
+            ctx.existingMembers = await csvParse(options.existingMembers);
 
-            ctx.newFree = await parse(options.newFree);
-            ctx.newComp = await parse(options.newComp);
-            ctx.newPaid = await parse(options.newPaid);
+            ctx.newFree = (options.newFree) ? await csvParse(options.newFree) : [];
+            ctx.newComp = (options.newComp) ? await csvParse(options.newComp) : [];
+            ctx.newPaid = (options.newPaid) ? await csvParse(options.newPaid) : [];
 
             ctx.newCombined = [...ctx.newFree, ...ctx.newComp, ...ctx.newPaid];
 
@@ -98,23 +100,37 @@ const getFullTaskList = (options) => {
         {
             title: 'Write new CSVs',
             task: async (ctx) => {
-                let theFiles = [
-                    {
-                        name: 'Free members',
-                        fileName: 'deduped-free-members.csv',
-                        data: jsonToCSV(ctx.newFreeMembers)
-                    },
-                    {
-                        name: 'Comp members',
-                        fileName: 'deduped-comp-members.csv',
-                        data: jsonToCSV(ctx.newCompMembers)
-                    },
-                    {
-                        name: 'Paid members',
-                        fileName: 'deduped-paid-members.csv',
-                        data: jsonToCSV(ctx.newPaidMembers)
-                    }
-                ];
+                let theFiles = [];
+
+                if (ctx.newFreeMembers.length) {
+                    theFiles.push(
+                        {
+                            name: 'Free members',
+                            fileName: 'deduped-free-members.csv',
+                            data: jsonToCSV(ctx.newFreeMembers)
+                        }
+                    );
+                }
+
+                if (ctx.newCompMembers.length) {
+                    theFiles.push(
+                        {
+                            name: 'Comp members',
+                            fileName: 'deduped-comp-members.csv',
+                            data: jsonToCSV(ctx.newCompMembers)
+                        }
+                    );
+                }
+
+                if (ctx.newPaidMembers.length) {
+                    theFiles.push(
+                        {
+                            name: 'Paid members',
+                            fileName: 'deduped-paid-members.csv',
+                            data: jsonToCSV(ctx.newPaidMembers)
+                        }
+                    );
+                }
 
                 let tasks = [];
 
