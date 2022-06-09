@@ -9,7 +9,7 @@ import * as deleteEmptyTags from './delete-empty-tags.js';
 import * as deleteMembers from './delete-members.js';
 import * as deletePages from './delete-pages.js';
 import * as deletePosts from './delete-posts.js';
-// import * as deleteStaff from './delete-staff.js';
+import * as deleteStaff from './delete-staff.js';
 // import * as deleteTags from './delete-tags.js';
 // import * as fetchImages from './fetch-images.js';
 // import * as findReplace from './find-replace.js';
@@ -31,5 +31,6 @@ export {
     deleteEmptyTags,
     deleteMembers,
     deletePages,
-    deletePosts
+    deletePosts,
+    deleteStaff
 };
