@@ -17,7 +17,7 @@ import * as findReplace from './find-replace.js';
 import * as jsonClean from './json-clean.js';
 import * as jsonSplit from './json-split.js';
 import * as randomPost from './random-post.js';
-// import * as zipCreate from './zip-create.js';
+import * as zipCreate from './zip-create.js';
 // import * as zipSplit from './zip-split.js';
 
 export {
@@ -38,5 +38,6 @@ export {
     findReplace,
     jsonClean,
     jsonSplit,
-    randomPost
+    randomPost,
+    zipCreate
 };

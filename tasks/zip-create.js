@@ -1,8 +1,8 @@
-const fsUtils = require('@tryghost/mg-fs-utils');
-const fs = require('fs-extra');
-const glob = require('glob');
-const path = require('path');
-const makeTaskRunner = require('../lib/task-runner');
+import fsUtils from '@tryghost/mg-fs-utils';
+import fs from 'fs-extra';
+import glob from 'glob';
+import path from 'path';
+import makeTaskRunner from '../lib/task-runner.js';
 
 async function hydrateFile(filePath) {
     let stats = await fs.stat(filePath);
@@ -58,7 +58,7 @@ async function createZip(chunk, index, ctx) {
     fsUtils.zip.write(ctx.fileCache.zipDir, chunk, zipName);
 }
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx, task) => {
@@ -77,9 +77,9 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Copying file',
             task: async (ctx) => {
@@ -204,11 +204,17 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };
