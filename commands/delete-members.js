@@ -1,25 +1,25 @@
-const deleteMembers = require('../tasks/delete-members');
-const ui = require('@tryghost/pretty-cli').ui;
+import deleteMembers from '../tasks/delete-members.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'delete-members';
+export const id = 'delete-members';
 
-exports.group = 'Content:';
+export const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'delete-members <apiURL> <adminAPIKey>';
+export const flags = 'delete-members <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Delete members in Ghost';
+export const desc = 'Delete members in Ghost';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+export const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -31,7 +31,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
