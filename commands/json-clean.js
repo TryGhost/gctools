@@ -1,22 +1,22 @@
-const jsonClean = require('../tasks/json-clean');
-const ui = require('@tryghost/pretty-cli').ui;
+import jsonClean from '../tasks/json-clean.js';
+import {ui} from '@tryghost/pretty-cli';
 
 // Internal ID in case we need one.
-exports.id = 'json-clean';
+export const id = 'json-clean';
 
-exports.group = 'Beta:';
+export const group = 'Beta:';
 
 // The command to run and any params
-exports.flags = 'json-clean <jsonFile>';
+export const flags = 'json-clean <jsonFile>';
 
 // Description for the top level command
-exports.desc = 'Clean a JSON file so it only contains content';
+export const desc = 'Clean a JSON file so it only contains content';
 
 // Descriptions for the individual params
-exports.paramsDesc = ['Path to the Ghost JSON file'];
+export const paramsDesc = ['Path to the Ghost JSON file'];
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: true,
         desc: 'Show verbose output'
@@ -24,7 +24,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+export const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
