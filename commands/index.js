@@ -1,3 +1,4 @@
+import * as interactive from './interactive.js';
 import * as addPreview from './add-preview.js';
 import * as addTags from './add-tags.js';
 import * as changeAuthor from './change-author.js';
@@ -13,7 +14,6 @@ import * as deleteStaff from './delete-staff.js';
 import * as deleteTags from './delete-tags.js';
 import * as fetchImages from './fetch-images.js';
 import * as findReplace from './find-replace.js';
-// import * as interactive from './interactive.js';
 import * as jsonClean from './json-clean.js';
 import * as jsonSplit from './json-split.js';
 import * as randomPost from './random-post.js';
@@ -21,6 +21,7 @@ import * as zipCreate from './zip-create.js';
 import * as zipSplit from './zip-split.js';
 
 export {
+    interactive,
     addPreview,
     addTags,
     changeAuthor,

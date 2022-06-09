@@ -1,25 +1,26 @@
-const inquirer = require('inquirer');
-const _ = require('lodash');
-const ui = require('@tryghost/pretty-cli').ui;
-const os = require('os');
-const path = require('path');
-const tasks = require('../prompts');
+import inquirer from 'inquirer';
+import _ from 'lodash';
+import {ui} from '@tryghost/pretty-cli';
+import os from 'os';
+import path from 'path';
+
+import * as allTools from './index.js';
 
 const sitesJSONFile = path.join(os.homedir(), '.gctools', 'gctools_sites.json');
 
 // Internal ID in case we need one.
-exports.id = 'i';
+export const id = 'i';
 
-exports.group = 'Tools:';
+export const group = 'Tools:';
 
 // The command to run and any params
-exports.flags = 'i';
+export const flags = 'i';
 
 // Description for the top level command
-exports.desc = 'An interactive tool to work with Ghost content';
+export const desc = 'An interactive tool to work with Ghost content';
 
 // Configure all the options
-exports.setup = (sywac) => {
+export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -27,116 +28,59 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async () => {
+export const run = async () => {
     let tasksPrompt = {
         type: 'rawlist',
         name: 'task',
         message: 'Which tool would you like to use?',
         pageSize: 30,
-        choices: [
-            new inquirer.Separator('--- File Utilities -----------'),
-            {
-                name: tasks.zipSplit.choice.name,
-                value: tasks.zipSplit.choice.value
-            },
-            {
-                name: tasks.zipCreate.choice.name,
-                value: tasks.zipCreate.choice.value
-            },
-            {
-                name: tasks.jsonSplit.choice.name,
-                value: tasks.jsonSplit.choice.value
-            },
-            {
-                name: tasks.fetchImages.choice.name,
-                value: tasks.fetchImages.choice.value
-            },
-            {
-                name: tasks.dedupeMembersCsv.choice.name,
-                value: tasks.dedupeMembersCsv.choice.value
-            },
-            new inquirer.Separator('--- API Utilities ------------'),
-            {
-                name: tasks.randomPosts.choice.name,
-                value: tasks.randomPosts.choice.value
-            },
-            {
-                name: tasks.addTags.choice.name,
-                value: tasks.addTags.choice.value
-            },
-            {
-                name: tasks.addPreview.choice.name,
-                value: tasks.addPreview.choice.value
-            },
-            {
-                name: tasks.changeAuthor.choice.name,
-                value: tasks.changeAuthor.choice.value
-            },
-            {
-                name: tasks.changeVisibility.choice.name,
-                value: tasks.changeVisibility.choice.value
-            },
-            {
-                name: tasks.contentStats.choice.name,
-                value: tasks.contentStats.choice.value
-            },
-            new inquirer.Separator('--- Dangerous Utilities ------'),
-            {
-                name: tasks.deletePosts.choice.name,
-                value: tasks.deletePosts.choice.value
-            },
-            {
-                name: tasks.deletePages.choice.name,
-                value: tasks.deletePages.choice.value
-            },
-            {
-                name: tasks.deleteTags.choice.name,
-                value: tasks.deleteTags.choice.value
-            },
-            {
-                name: tasks.deleteEmptyTags.choice.name,
-                value: tasks.deleteEmptyTags.choice.value
-            },
-            {
-                name: tasks.deleteMembers.choice.name,
-                value: tasks.deleteMembers.choice.value
-            },
-            {
-                name: tasks.changeRole.choice.name,
-                value: tasks.changeRole.choice.value
-            },
-            {
-                name: tasks.deleteStaff.choice.name,
-                value: tasks.deleteStaff.choice.value
-            },
-            {
-                name: tasks.findReplace.choice.name,
-                value: tasks.findReplace.choice.value
-            },
-            new inquirer.Separator('--- Settings -----------------'),
-            {
-                name: 'Show saved credentials path',
-                value: 'show_saved_creds_path'
-            },
-            {
-                name: 'Abort',
-                value: 'abort'
-            }
-        ]
+        choices: []
     };
+
+    // Filter commands to find tools that have explicity set `interactive` to true
+    const onlyInteractive = _.filter(allTools, {interactive: true});
+
+    // Group tools in the same way they are in the traditional CLI
+    const groupedTools = _.groupBy(onlyInteractive, 'group');
+
+    // For each group
+    _.forEach(groupedTools, (tools, groupName) => {
+        // Push the group separator
+        tasksPrompt.choices.push(new inquirer.Separator(`--- ${groupName} ---`));
+
+        // Push each tool in the group to the list
+        tools.forEach((item) => {
+            tasksPrompt.choices.push({
+                name: item.name || item.id,
+                value: item.id
+            });
+        });
+    });
+
+    tasksPrompt.choices.push(new inquirer.Separator('--- Settings ---'));
+    tasksPrompt.choices.push({
+        name: 'Show saved credentials path',
+        value: 'showSavedCredsPath'
+    });
+    tasksPrompt.choices.push({
+        name: 'Abort',
+        value: 'abort'
+    });
 
     function mainMenu() {
         inquirer.prompt(tasksPrompt).then(async (answers) => {
-            if (answers.task === 'show_saved_creds_path') {
-                ui.log.info(`Saved credentials: ${sitesJSONFile}`);
+            if (answers.task === 'showSavedCredsPath') {
+                ui.log(`Saved credentials: \n${sitesJSONFile}`);
                 mainMenu();
             } else if (answers.task === 'abort') {
-                ui.log.info('Aborted');
+                ui.log('Aborted. Good bye! 👋');
                 process.exit(0);
             } else {
                 try {
-                    let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
-                    await thisTask[0].run();
+                    let thisTask = _.find(onlyInteractive, {id: answers.task});
+                    await thisTask.run({
+                        interactive: true
+                    });
 
                     // When the task is run, return to the main menu
                     mainMenu();
