@@ -12,7 +12,7 @@ import * as deletePosts from './delete-posts.js';
 import * as deleteStaff from './delete-staff.js';
 import * as deleteTags from './delete-tags.js';
 import * as fetchImages from './fetch-images.js';
-// import * as findReplace from './find-replace.js';
+import * as findReplace from './find-replace.js';
 // import * as interactive from './interactive.js';
 // import * as jsonClean from './json-clean.js';
 // import * as jsonSplit from './json-split.js';
@@ -34,5 +34,6 @@ export {
     deletePosts,
     deleteStaff,
     deleteTags,
-    fetchImages
+    fetchImages,
+    findReplace
 };

@@ -1,10 +1,10 @@
-const Promise = require('bluebird');
-const GhostAdminAPI = require('@tryghost/admin-api');
-const makeTaskRunner = require('../lib/task-runner');
-const _ = require('lodash');
-const {discover} = require('../lib/batch-ghost-discover');
+import Promise from 'bluebird';
+import GhostAdminAPI from '@tryghost/admin-api';
+import makeTaskRunner from '../lib/task-runner.js';
+import _ from 'lodash';
+import {discover} from '../lib/batch-ghost-discover.js';
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising API connection',
         task: (ctx, task) => {
@@ -33,9 +33,9 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
@@ -115,10 +115,16 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };
