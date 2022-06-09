@@ -8,7 +8,7 @@ import * as dedupeMembersCsv from './dedupe-members-csv.js';
 import * as deleteEmptyTags from './delete-empty-tags.js';
 import * as deleteMembers from './delete-members.js';
 import * as deletePages from './delete-pages.js';
-// import * as deletePosts from './delete-posts.js';
+import * as deletePosts from './delete-posts.js';
 // import * as deleteStaff from './delete-staff.js';
 // import * as deleteTags from './delete-tags.js';
 // import * as fetchImages from './fetch-images.js';
@@ -30,5 +30,6 @@ export {
     dedupeMembersCsv,
     deleteEmptyTags,
     deleteMembers,
-    deletePages
+    deletePages,
+    deletePosts
 };
