@@ -51,7 +51,7 @@ export const setup = (sywac) => {
     });
     sywac.enumeration('--new_visibility', {
         choices: ['public', 'members', 'paid'],
-        defaultValue: 'members',
+        defaultValue: false,
         desc: 'New visibility slug'
     });
     sywac.number('--delayBetweenCalls', {
@@ -131,7 +131,7 @@ export const run = async (argv) => {
     }
 
     // Select new visibility
-    if (!argv.new_visibility || !argv.new_visibility.length) {
+    if (!argv.new_visibility) {
         argv.new_visibility = await askFor.list({
             message: 'New visibility',
             choices: ['public', 'members', 'paid'],
