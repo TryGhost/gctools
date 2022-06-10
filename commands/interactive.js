@@ -77,7 +77,8 @@ export const run = async () => {
                 process.exit(0);
             } else {
                 try {
-                    let thisTask = _.find(onlyInteractive, {id: answers.task});
+                    const thisTask = _.find(onlyInteractive, {id: answers.task});
+
                     await thisTask.run({
                         interactive: true
                     });
