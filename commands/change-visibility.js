@@ -3,8 +3,7 @@ import {ui} from '@tryghost/pretty-cli';
 import chalk from 'chalk';
 import askFor from '../lib/prompts/index.js';
 import siteCredentials from '../lib/site-credentials.js';
-import {buildParams, buildParamDescriptions, buildArguments} from '../lib/build-sywac-values.js';
-import {createGetPostsFilter, getPostsCount, getPosts} from '../lib/functions/get-posts.js';
+import {createPostsFilter, getPostsCount, getPosts} from '../lib/functions/get-posts.js';
 import {editPosts} from '../lib/functions/edit-posts.js';
 
 // Internal ID in case we need one.
@@ -15,71 +14,53 @@ export const group = 'Content:';
 export const interactive = true;
 export const name = 'Change post visibility';
 
-// Build a list of options that both sywac and inquirer can use
-const options = {
-    params: {
-        apiURL: {
-            required: true,
-            desc: 'URL to your Ghost API'
-        },
-        adminAPIKey: {
-            required: true,
-            desc: 'Admin API key'
-        }
-    },
-    arguments: {
-        visibility: {
-            type: 'array',
-            flags: '--visibility',
-            defaultValue: 'public',
-            choices: ['all', 'public', 'members', 'paid'],
-            desc: 'Post visibility'
-        },
-        tag: {
-            type: 'string',
-            flags: '--tag',
-            defaultValue: null,
-            desc: 'Filter by tag'
-        },
-        author: {
-            type: 'string',
-            flags: '--author',
-            defaultValue: null,
-            desc: 'Filter by author'
-        },
-        new_visibility: {
-            type: 'enumeration',
-            flags: '--new_visibility',
-            choices: ['public', 'members', 'paid'],
-            defaultValue: 'members',
-            desc: 'New visibility slug'
-        },
-        delayBetweenCalls: {
-            type: 'number',
-            flags: '--delayBetweenCalls',
-            defaultValue: 50,
-            desc: 'The delay between API calls, in ms'
-        },
-        verbose: {
-            type: 'boolean',
-            flags: '--verbose -V',
-            defaultValue: false,
-            desc: 'Show verbose output'
-        }
-    }
-};
-
 // The command to run and any params
-export const flags = `change-visibility ${buildParams(options.params)}`;
+export const flags = 'change-visibility <apiURL> <adminAPIKey>';
 
 // Description for the top level command
 export const desc = 'Switch the visibility for posts from one level to another';
 
 // Descriptions for the individual params
-export const paramsDesc = buildParamDescriptions(options.params);
+export const paramsDesc = [
+    'URL to your Ghost API',
+    'Admin API key'
+];
 
-// Configure all the arguments
-export const setup = sywac => buildArguments(sywac, options.arguments);
+// Configure all the options
+export const setup = (sywac) => {
+    sywac.boolean('-V --verbose', {
+        defaultValue: false,
+        desc: 'Show verbose output'
+    });
+    sywac.enumeration('--visibility', {
+        defaultValue: 'all',
+        choices: ['all', 'public', 'members', 'paid'],
+        desc: 'Post visibility'
+    });
+    sywac.string('--tag', {
+        defaultValue: null,
+        desc: 'Filter by tag'
+    });
+    sywac.string('--author', {
+        defaultValue: null,
+        desc: 'Filter by author'
+    });
+    sywac.string('--filter', {
+        defaultValue: null,
+        desc: 'A Ghost-compatible filter - This will override any other filters'
+    });
+    sywac.enumeration('--new_visibility', {
+        choices: ['public', 'members', 'paid'],
+        defaultValue: 'members',
+        desc: 'New visibility slug'
+    });
+    sywac.number('--delayBetweenCalls', {
+        defaultValue: 50,
+        desc: 'The delay between API calls, in ms'
+    });
+};
+
+// visibility:[all]+tags:[beer]+author:[paul]
 
 // What to do when this command is executed
 export const run = async (argv) => {
@@ -105,58 +86,64 @@ export const run = async (argv) => {
         version: 'v5.0'
     });
 
-    // Filter by visibility
-    if (!argv.visibility || !argv.visibility.length) {
-        if (await askFor.confirm({message: 'Filter by visibility?'})) {
-            argv.visibility = await askFor.checkbox({
-                message: options.arguments.visibility.desc,
-                choices: options.arguments.visibility.choices,
-                default: options.arguments.visibility.defaultValue
-            });
+    // If we have no filter defined,
+    if (!argv.filter) {
+        // Filter by visibility
+        if (!argv.visibility || !argv.visibility.length) {
+            if (await askFor.confirm({message: 'Filter by visibility?'})) {
+                argv.visibility = await askFor.checkbox({
+                    message: 'Post visibility',
+                    choices: ['all', 'public', 'members', 'paid'],
+                    default: 'all'
+                });
+
+                if (argv.visibility.includes('all')) {
+                    argv.visibility = false;
+                }
+            }
         }
-    }
 
-    // Filter by tag
-    if (!argv.tag || !argv.tag.length) {
-        if (await askFor.confirm({message: 'Filter by tag?'})) {
-            let getTags = await askFor.tags({
-                api: argv.api,
-                tag: argv.tag,
-                message: `Filter by tag: (Leave blank for all) ${chalk.yellow('[Type to search]')}`
-            });
+        // Filter by tag
+        if (!argv.tag || !argv.tag.length) {
+            if (await askFor.confirm({message: 'Filter by tag?'})) {
+                let getTags = await askFor.tags({
+                    api: argv.api,
+                    tag: argv.tag,
+                    message: `Filter by tag: (Leave blank for all) ${chalk.yellow('[Type to search]')}`
+                });
 
-            argv.tag = getTags.map(tag => tag.slug);
+                argv.tag = getTags.map(tag => tag.slug);
+            }
         }
-    }
 
-    // Filter by author
-    if (!argv.author || !argv.author.length) {
-        if (await askFor.confirm({message: 'Filter by author?'})) {
-            let getAuthors = await askFor.authors({
-                api: argv.api,
-                author: argv.author,
-                message: `Filter by author: (Leave blank for all) ${chalk.yellow('[Type to search]')}`
-            });
+        // Filter by author
+        if (!argv.author || !argv.author.length) {
+            if (await askFor.confirm({message: 'Filter by author?'})) {
+                let getAuthors = await askFor.authors({
+                    api: argv.api,
+                    author: argv.author,
+                    message: `Filter by author: (Leave blank for all) ${chalk.yellow('[Type to search]')}`
+                });
 
-            argv.author = getAuthors.map(author => author.slug);
+                argv.author = getAuthors.map(author => author.slug);
+            }
         }
     }
 
     // Select new visibility
     if (!argv.new_visibility || !argv.new_visibility.length) {
         argv.new_visibility = await askFor.list({
-            message: options.arguments.new_visibility.desc,
-            choices: options.arguments.new_visibility.choices,
-            default: options.arguments.new_visibility.defaultValue
+            message: 'New visibility',
+            choices: ['public', 'members', 'paid'],
+            default: 'members'
         });
     }
 
-    // Find out how many posts will be affected by this change
-    const thePostsFilter = createGetPostsFilter({
+    // Create the filter string
+    const thePostsFilter = argv.filter || createPostsFilter({
         visibility: argv.visibility,
         tag: argv.tag,
-        author: argv.author,
-        new_visibility: argv.new_visibility
+        author: argv.author
     });
 
     // Fetch the number of posts affected by the above filter, _without_ getting all the posts
@@ -170,7 +157,7 @@ export const run = async (argv) => {
         message: `Do you want to change the visibility of ${chalk.yellow(thePostsCount)} posts (${chalk.yellow(thePostsFilter)}) posts to be ${chalk.yellow(`visibility:${argv.new_visibility}`)}?`
     });
 
-    // Edit if denied
+    // Exit if denied
     if (confirmChanges === false) {
         ui.log.ok('No posts visibility changes were made. Bye!');
         process.exit(0); // Exit silently
@@ -179,6 +166,7 @@ export const run = async (argv) => {
     // Start timer
     const timer = Date.now();
 
+    // Fetch all post data from the API
     const thePosts = await getPosts({
         api: argv.api,
         filter: thePostsFilter
