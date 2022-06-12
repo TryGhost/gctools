@@ -34,7 +34,7 @@ const getPostsCount = async (args) => {
 const getPosts = async (args) => {
     const options = {
         api: args.api,
-        type: 'posts',
+        type: args.type || 'posts',
         fields: args.fields || 'id,name,title,slug,url,status,visibility,updated_at',
         limit: args.limit || 50,
         filter: args.filter || null,
@@ -50,7 +50,7 @@ const getPosts = async (args) => {
 const editPosts = async (args) => {
     const options = {
         api: args.api,
-        type: 'posts',
+        type: args.type || 'posts',
         verbose: args.verbose || false,
         items: args.items || []
     };
@@ -63,7 +63,7 @@ const editPosts = async (args) => {
 const deletePosts = async (args) => {
     const options = {
         api: args.api,
-        type: 'posts',
+        type: args.type || 'posts',
         verbose: args.verbose || false,
         items: args.items || []
     };
