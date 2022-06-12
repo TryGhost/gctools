@@ -1,0 +1,35 @@
+{
+  "name": "@tryghost/gc-content-stats",
+  "version": "0.1.0",
+  "repository": "https://github.com/TryGhost/gctools/tree/main/packages/gc-content-stats",
+  "author": "Ghost Foundation",
+  "license": "MIT",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "dev": "echo \"Implement me!\"",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "lint": "eslint -c ./eslint.json . --ext .js --cache"
+  },
+  "files": [
+    "index.js",
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "7.18.2",
+    "eslint": "8.17.0",
+    "eslint-plugin-ghost": "2.14.0",
+    "jest": "28.1.1",
+    "jest-extended": "2.0.0"
+  },
+  "dependencies": {
+    "@tryghost/admin-api": "1.13.0",
+    "@tryghost/pretty-cli": "1.2.28",
+    "chalk": "4.1.2",
+    "title-case": "3.0.3",
+    "tty-table": "4.1.5"
+  }
+}

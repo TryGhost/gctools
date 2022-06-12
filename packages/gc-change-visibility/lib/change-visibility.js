@@ -1,7 +1,7 @@
 import GhostAdminAPI from '@tryghost/admin-api';
 import {ui} from '@tryghost/pretty-cli';
-import chalk from 'chalk';
 import GCUtils from '@tryghost/gc-utils';
+import chalk from 'chalk';
 
 const prompts = GCUtils.prompts;
 const siteCredentials = GCUtils.siteCredentials;

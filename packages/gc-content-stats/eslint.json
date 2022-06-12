@@ -1,0 +1,12 @@
+{
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "plugins": ["ghost"],
+  "extends": ["plugin:ghost/node"],
+  "ignorePatterns": ["**/*.test.js"]
+}
