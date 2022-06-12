@@ -165,8 +165,61 @@ const editResources = async (args) => {
     return updatedItems;
 };
 
+const deleteResources = async (args) => {
+    const type = args.type || 'posts';
+    const items = args.items || [];
+    const verbose = args.verbose;
+
+    let api = null;
+
+    if (args.api) {
+        api = args.api;
+    } else {
+        api = new GhostAdminAPI({
+            url: args.url,
+            key: args.key,
+            version: 'v5.0'
+        });
+    }
+
+    ui.log.info(`Deleting ${items.length} ${type} items`);
+
+    let tasks = [];
+    let deletedItems = [];
+
+    items.forEach((item) => {
+        tasks.push({
+            title: `${item.title}`,
+            task: async () => {
+                try {
+                    let result = await api[type].delete(item);
+                    deletedItems.push(result);
+                    return result;
+                } catch (error) {
+                    error.resource = {
+                        title: item.title
+                    };
+                    throw error;
+                }
+            }
+        });
+    });
+
+    const doPostChange = makeTaskRunner(tasks, {
+        concurrent: 3,
+        maxFullTasks: 3,
+        verbose: verbose
+    });
+
+    // Do the changes
+    await doPostChange.run();
+
+    return deletedItems;
+};
+
 export {
     requestOptions,
     getResources,
-    editResources
+    editResources,
+    deleteResources
 };

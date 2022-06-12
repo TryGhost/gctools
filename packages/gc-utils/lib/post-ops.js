@@ -1,4 +1,4 @@
-import {getResources, editResources} from './batch-ops.js';
+import {getResources, editResources, deleteResources} from './batch-ops.js';
 import {maybeArrayToString} from './utils.js';
 
 const createPostsFilter = (args) => {
@@ -52,7 +52,7 @@ const editPosts = async (args) => {
         api: args.api,
         type: 'posts',
         verbose: args.verbose || false,
-        items: args.items
+        items: args.items || []
     };
 
     const updatedPosts = await editResources(options);
@@ -60,9 +60,23 @@ const editPosts = async (args) => {
     return updatedPosts;
 };
 
+const deletePosts = async (args) => {
+    const options = {
+        api: args.api,
+        type: 'posts',
+        verbose: args.verbose || false,
+        items: args.items || []
+    };
+
+    const deletedPosts = await deleteResources(options);
+
+    return deletedPosts;
+};
+
 export {
     createPostsFilter,
     getPostsCount,
     getPosts,
-    editPosts
+    editPosts,
+    deletePosts
 };

@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "@tryghost/admin-api": "1.13.0",
+    "@tryghost/gc-utils": "0.1.0",
     "@tryghost/pretty-cli": "1.2.28",
     "chalk": "4.1.2",
     "inquirer": "8.2.4"
