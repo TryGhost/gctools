@@ -2,7 +2,7 @@ import {
     transformToCommaString,
     maybeStringToArray,
     maybeArrayToString,
-    SlugFromStringArrayOrObject,
+    getSlugFromObject,
     maybeObjectToArray
 } from '../lib/utils.js';
 import tagsObject from './fixtures/tags.json';
@@ -80,34 +80,30 @@ describe('Utils (maybeArrayToString)', function () {
         expect(arrayToString).toEqual('lorem-ipsum,dolor-simet');
     });
 
-    test('wil not convert string', function () {
+    test('will trim space from the start & end of array items before joining', function () {
+        let arrayToString = maybeArrayToString(['lorem-ipsum', ' dolor-simet ']);
+        expect(arrayToString).toEqual('lorem-ipsum,dolor-simet');
+    });
+
+    test('will not convert list string', function () {
         let arrayToString = maybeArrayToString('lorem-ipsum,dolor-simet');
+        expect(arrayToString).toEqual('lorem-ipsum,dolor-simet');
+    });
+
+    test('will trim spaces from a list string', function () {
+        let arrayToString = maybeArrayToString('lorem-ipsum , dolor-simet ');
         expect(arrayToString).toEqual('lorem-ipsum,dolor-simet');
     });
 });
 
-describe('Utils (SlugFromStringArrayOrObject)', function () {
-    test('can convert an object to list array', function () {
-        let tagSlugs = SlugFromStringArrayOrObject(tagsObject);
-        expect(tagSlugs).toHaveLength(2);
-        expect(tagSlugs).toBeArray(2);
-        expect(tagSlugs[0]).toEqual('lorem-ipsum');
-        expect(tagSlugs[1]).toEqual('dolor-simet');
+describe('Utils (getSlugFromObject)', function () {
+    test('will return a trimmed string, if a string is supplied', function () {
+        let tagSlug = getSlugFromObject(' this-is-a-slug');
+        expect(tagSlug).toEqual('this-is-a-slug');
     });
 
-    test('can convert an string to list array', function () {
-        let tagSlugs = SlugFromStringArrayOrObject('lorem-ipsum, dolor-simet');
-        expect(tagSlugs).toHaveLength(2);
-        expect(tagSlugs).toBeArray(2);
-        expect(tagSlugs[0]).toEqual('lorem-ipsum');
-        expect(tagSlugs[1]).toEqual('dolor-simet');
-    });
-
-    test('wil not convert list to list', function () {
-        let tagSlugs = SlugFromStringArrayOrObject(['lorem-ipsum', 'dolor-simet']);
-        expect(tagSlugs).toHaveLength(2);
-        expect(tagSlugs).toBeArray(2);
-        expect(tagSlugs[0]).toEqual('lorem-ipsum');
-        expect(tagSlugs[1]).toEqual('dolor-simet');
+    test('will return a trimmed slug string, if an object is supplied', function () {
+        let tagSlug = getSlugFromObject(tagsObject[0]);
+        expect(tagSlug).toEqual('lorem-ipsum');
     });
 });

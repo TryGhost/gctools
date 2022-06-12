@@ -21,6 +21,13 @@ gctools
 gctools i
 ```
 
+### Usage notes
+
+When filtering posts, either with the traditional CLI or interactive prompts, each parameter is inclusive. For example, adding `--tag 'article, podcast'`, it will find items that have _both_ tags.
+
+If you want any other form of filter, use the `--filter` flag, such as `--filter 'tag:[article, podcast]'` which includes items with the tag `article` _or_ `podcast`.
+
+
 ## Tools
 
 Docs to come

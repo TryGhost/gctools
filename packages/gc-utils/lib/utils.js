@@ -31,7 +31,7 @@ const maybeObjectToArray = (input, type = null) => {
 // Converts a string to an array, if it isn't already
 const maybeStringToArray = (input) => {
     if (typeof input === 'string') {
-        return input.split(',').map(function (item) {
+        return input.split(',').map((item) => {
             return item.trim();
         });
     } else if (typeof input === 'object') {
@@ -42,22 +42,24 @@ const maybeStringToArray = (input) => {
 // Converts an array to a string, if it isn't already
 const maybeArrayToString = (input) => {
     if (typeof input === 'object') {
-        return input.join(',');
+        const trimmed = input.map((item) => {
+            return item.trim();
+        });
+        return trimmed.join(',');
     } else {
-        return input;
+        const split = input.split(',');
+        const trimmed = split.map((item) => {
+            return item.trim();
+        });
+        return trimmed.join(',');
     }
 };
 
-const SlugFromStringArrayOrObject = (input) => {
+const getSlugFromObject = (input) => {
     if (typeof input === 'string') {
-        // If is string, convert to array/list
-        return maybeStringToArray(input);
-    } else if (input[0].slug) {
-        // If is Ghost object
-        return maybeObjectToArray(input, 'slug');
-    } else {
-        // Else, is an array/list — no change needed
-        return input;
+        return input.trim();
+    } else if (typeof input === 'object') {
+        return input.slug.trim();
     }
 };
 
@@ -66,5 +68,5 @@ export {
     maybeObjectToArray,
     maybeStringToArray,
     maybeArrayToString,
-    SlugFromStringArrayOrObject
+    getSlugFromObject
 };

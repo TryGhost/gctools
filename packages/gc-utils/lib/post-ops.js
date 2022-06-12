@@ -1,19 +1,38 @@
+import errors from '@tryghost/errors';
 import {getResources, editResources, deleteResources} from './batch-ops.js';
-import {maybeArrayToString} from './utils.js';
+import {getSlugFromObject} from './utils.js';
 
 const createPostsFilter = (args) => {
     let discoveryFilter = [];
 
+    if (args.visibility && !Array.isArray(args.visibility)) {
+        throw new errors.IncorrectUsageError({message: `visibility should be supplied as an array`});
+    }
+
+    if (args.tag && !Array.isArray(args.tag)) {
+        throw new errors.IncorrectUsageError({message: `tag should be supplied as an array`});
+    }
+
+    if (args.author && !Array.isArray(args.author)) {
+        throw new errors.IncorrectUsageError({message: `author should be supplied as an array`});
+    }
+
     if (args.visibility && args.visibility.length > 0) {
-        discoveryFilter.push(`visibility:[${maybeArrayToString(args.visibility)}]`);
+        args.visibility.forEach((item) => {
+            discoveryFilter.push(`visibility:${item.trim()}`);
+        });
     }
 
     if (args.tag && args.tag.length > 0) {
-        discoveryFilter.push(`tags:[${maybeArrayToString(args.tag, 'slug')}]`);
+        args.tag.forEach((item) => {
+            discoveryFilter.push(`tag:${getSlugFromObject(item)}`);
+        });
     }
 
     if (args.author && args.author.length > 0) {
-        discoveryFilter.push(`author:[${maybeArrayToString(args.author, 'slug')}]`);
+        args.author.forEach((item) => {
+            discoveryFilter.push(`author:${getSlugFromObject(item)}`);
+        });
     }
 
     const filterString = discoveryFilter.join('+'); // Combine filters, so it's posts by author AND tag, not posts by author OR tag
