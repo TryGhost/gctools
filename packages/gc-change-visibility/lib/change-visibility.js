@@ -69,6 +69,13 @@ export const setup = (sywac) => {
     });
 };
 
+export const setVisibility = (items, visibility = null) => {
+    return items.map((item) => {
+        item.visibility = visibility || item.visibility;
+        return item;
+    });
+};
+
 // What to do when this command is executed
 export const run = async (argv) => {
     // let context = {errors: []};
@@ -180,10 +187,7 @@ export const run = async (argv) => {
     });
 
     // Change the visibility of returned data
-    let updatedVisibilityPosts = thePosts.map((post) => {
-        post.visibility = argv.newVisibility;
-        return post;
-    });
+    let updatedVisibilityPosts = setVisibility(thePosts, argv.visibility);
 
     // Upload the changed posts
     const updatedPosts = await editPosts({
