@@ -101,7 +101,7 @@ export const run = async (argv) => {
     });
 
     // If we have no filter defined,
-    if (!argv.filter) {
+    if (!argv.filter && isInteractive) {
         // Filter by visibility
         if (!argv.visibility || !argv.visibility.length) {
             if (await prompts.confirm({message: 'Filter by visibility?'})) {
