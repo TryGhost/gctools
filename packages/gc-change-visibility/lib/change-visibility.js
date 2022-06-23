@@ -39,7 +39,6 @@ export const setup = (sywac) => {
     });
     sywac.array('--visibility', {
         defaultValue: null,
-        choices: ['public', 'members', 'paid'],
         desc: 'Post visibility'
     });
     sywac.array('--tag', {
