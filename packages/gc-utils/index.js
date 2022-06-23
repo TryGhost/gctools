@@ -3,11 +3,13 @@ import siteCredentials from './lib/site-credentials.js';
 import * as postOps from './lib/post-ops.js';
 import * as batchOps from './lib/batch-ops.js';
 import * as stats from './lib/stats.js';
+import * as transform from './lib/transform.js';
 
 export default {
     prompts,
     siteCredentials,
     postOps,
     batchOps,
-    stats
+    stats,
+    transform
 };

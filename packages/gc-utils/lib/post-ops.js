@@ -1,6 +1,6 @@
 import errors from '@tryghost/errors';
-import {getResources, editResources, deleteResources} from './batch-ops.js';
-import {getSlugFromObject} from './utils.js';
+import {getResources, editResources, addResources, deleteResources} from './batch-ops.js';
+import {getSlugFromObject} from './transform.js';
 
 const createPostsFilter = (args) => {
     let discoveryFilter = [];
@@ -79,6 +79,19 @@ const editPosts = async (args) => {
     return updatedPosts;
 };
 
+const addPosts = async (args) => {
+    const options = {
+        api: args.api,
+        type: args.type || 'posts',
+        verbose: args.verbose || false,
+        items: args.items || []
+    };
+
+    const addedPosts = await addResources(options);
+
+    return addedPosts;
+};
+
 const deletePosts = async (args) => {
     const options = {
         api: args.api,
@@ -97,5 +110,6 @@ export {
     getPostsCount,
     getPosts,
     editPosts,
+    addPosts,
     deletePosts
 };

@@ -165,6 +165,65 @@ const editResources = async (args) => {
     return updatedItems;
 };
 
+const addResources = async (args) => {
+    const type = args.type || 'posts';
+    const items = args.items || [];
+    const verbose = args.verbose;
+
+    let api = null;
+
+    if (args.api) {
+        api = args.api;
+    } else {
+        api = new GhostAdminAPI({
+            url: args.url,
+            key: args.key,
+            version: 'v5.0'
+        });
+    }
+
+    ui.log.info(`Creating ${items.length} ${type} items`);
+
+    let tasks = [];
+    let addedItems = [];
+
+    items.forEach((item) => {
+        let options = {};
+
+        // If the item has a `html` value, tell the API client to acceot HTML as a source
+        if (item.html) {
+            options.source = 'html';
+        }
+
+        tasks.push({
+            title: `${item.title}`,
+            task: async () => {
+                try {
+                    let result = await api[type].add(item, options);
+                    addedItems.push(result);
+                    return result;
+                } catch (error) {
+                    error.resource = {
+                        title: item.title
+                    };
+                    throw error;
+                }
+            }
+        });
+    });
+
+    const doPostChange = makeTaskRunner(tasks, {
+        concurrent: 3,
+        maxFullTasks: 3,
+        verbose: verbose
+    });
+
+    // Do the changes
+    await doPostChange.run();
+
+    return addedItems;
+};
+
 const deleteResources = async (args) => {
     const type = args.type || 'posts';
     const items = args.items || [];
@@ -221,5 +280,6 @@ export {
     requestOptions,
     getResources,
     editResources,
+    addResources,
     deleteResources
 };
