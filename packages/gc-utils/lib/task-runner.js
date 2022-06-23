@@ -1,4 +1,4 @@
-import Listr from 'listr';
+import {Listr} from 'listr2';
 import smartRenderer from '@tryghost/listr-smart-renderer';
 
 export default (tasks, options = {}) => {
