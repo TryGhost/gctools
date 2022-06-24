@@ -4,6 +4,8 @@ import elegantSpinner from 'elegant-spinner';
 
 const pointer = chalk.yellow('›');
 const skipped = chalk.yellow('↓');
+const error = chalk.red('✖');
+const success = chalk.green('✔');
 
 export const isDefined = x => x !== null && x !== undefined;
 
@@ -21,11 +23,11 @@ export const getSymbol = (task, options) => {
     }
 
     if (task.isCompleted()) {
-        return chalk.green('✔');
+        return success;
     }
 
     if (task.hasFailed()) {
-        return task.subtasks.length > 0 ? pointer : chalk.red('✖');
+        return (task.subtasks && task.subtasks.length > 0) ? pointer : error;
     }
 
     if (task.isSkipped()) {

@@ -5,7 +5,7 @@ import {loremIpsum} from 'lorem-ipsum';
 
 const {maybeStringToArray} = GCUtils.transform;
 
-const getRandomPostContent = (options) => {
+const getRandomPostContent = (options, unsplashImages = []) => {
     const args = _.defaultsDeep(options, {
         titleMinLength: 3,
         titleMaxLength: 8,
@@ -81,6 +81,13 @@ const getRandomPostContent = (options) => {
         post.created_at = dateNow;
         post.updated_at = dateNow;
         post.published_at = dateNow;
+    }
+
+    if (options.featureImage) {
+        const item = unsplashImages[Math.floor(Math.random() * unsplashImages.length)];
+        post.feature_image = item.urls.regular;
+        post.feature_image_alt = item.alt_description && item.alt_description.substring(0, 124) || item.description && item.description.substring(0, 124) || null;
+        post.feature_image_caption = `Photo by <a href="${item.links.html}">${item.user.name}</a> / <a href="https://unsplash.com/?utm_medium=referral&utm_campaign=api-credit">Unsplash</a>`;
     }
 
     return post;

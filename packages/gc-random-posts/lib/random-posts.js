@@ -2,6 +2,12 @@ import GhostAdminAPI from '@tryghost/admin-api';
 import {ui} from '@tryghost/pretty-cli';
 import GCUtils from '@tryghost/gc-utils';
 import chalk from 'chalk';
+import fs from 'fs';
+import url from 'url';
+import path from 'path';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const unsplashImages = JSON.parse(fs.readFileSync(path.join(__dirname, './unsplash-images.json')));
 
 import {getRandomPostContent} from './generate.js';
 
@@ -94,6 +100,18 @@ export const setup = (sywac) => {
         choices: ['public', 'members', 'paid'],
         desc: 'Post visibility'
     });
+    sywac.string('--startDate', {
+        defaultValue: null,
+        desc: 'START DATE'
+    });
+    sywac.string('--endDate', {
+        defaultValue: null,
+        desc: 'END DATE'
+    });
+    sywac.boolean('--featureImage', {
+        defaultValue: true,
+        desc: 'Add random feature images'
+    });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'
@@ -101,16 +119,6 @@ export const setup = (sywac) => {
     sywac.boolean('--confirm', {
         defaultValue: true,
         desc: 'Ask for confirmation before changing visibility'
-    });
-
-    sywac.string('--startDate', {
-        defaultValue: null,
-        desc: 'START DATE'
-    });
-
-    sywac.string('--endDate', {
-        defaultValue: null,
-        desc: 'END DATE'
     });
 };
 
@@ -146,21 +154,18 @@ export const run = async (argv) => {
             });
         }
 
-        // status
         argv.status = await prompts.list({
             message: 'Post status',
             choices: ['published', 'draft'],
             default: 'published'
         });
 
-        // visibility
         argv.visibility = await prompts.list({
             message: 'Post visibility',
             choices: ['public', 'members', 'paid'],
             default: 'public'
         });
 
-        // Filter by tag
         if (!argv.tag || !argv.tag.length) {
             let getTags = await prompts.tags({
                 api: argv.api,
@@ -172,7 +177,6 @@ export const run = async (argv) => {
             argv.tag = getTags.map(tag => tag.name);
         }
 
-        // Filter by author
         if (!argv.author || !argv.author.length) {
             let getAuthors = await prompts.authors({
                 api: argv.api,
@@ -211,6 +215,11 @@ export const run = async (argv) => {
                 initial: new Date(yearNow, monthNow, dayNow)
             });
         }
+
+        argv.featureImage = await prompts.confirm({
+            message: `Do you want feature images on these posts?`,
+            default: true
+        });
     }
 
     // Optionally prompt to confirm the changes
@@ -229,8 +238,8 @@ export const run = async (argv) => {
 
     let newPosts = [];
 
-    [...Array(argv.count)].forEach(() => {
-        newPosts.push(getRandomPostContent(argv));
+    [...Array(argv.count)].forEach(async () => {
+        newPosts.push(getRandomPostContent(argv, unsplashImages));
     });
 
     // Upload the changed pages
