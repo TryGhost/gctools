@@ -4,10 +4,10 @@ import {
     maybeArrayToString,
     getSlugFromObject,
     maybeObjectToArray
-} from '../lib/utils.js';
+} from '../lib/transform.js';
 import tagsObject from './fixtures/tags.json';
 
-describe('Utils (transformToCommaString)', function () {
+describe('Transform (transformToCommaString)', function () {
     test('can extract `name` values from object', function () {
         let tagNames = transformToCommaString(tagsObject, 'name');
         expect(tagNames).toEqual('Lorem Ipsum,Dolor Simet');
@@ -29,7 +29,7 @@ describe('Utils (transformToCommaString)', function () {
     });
 });
 
-describe('Utils (maybeObjectToArray)', function () {
+describe('Transform (maybeObjectToArray)', function () {
     test('can extract `name` values from object', function () {
         let tagNames = maybeObjectToArray(tagsObject, 'name');
 
@@ -56,7 +56,7 @@ describe('Utils (maybeObjectToArray)', function () {
     });
 });
 
-describe('Utils (maybeStringToArray)', function () {
+describe('Transform (maybeStringToArray)', function () {
     test('can convert comma-separated string to an array', function () {
         let stringToArray = maybeStringToArray('lorem-ipsum,  dolor-simet');
         expect(stringToArray).toHaveLength(2);
@@ -74,7 +74,7 @@ describe('Utils (maybeStringToArray)', function () {
     });
 });
 
-describe('Utils (maybeArrayToString)', function () {
+describe('Transform (maybeArrayToString)', function () {
     test('can convert an array to a comma-separated string', function () {
         let arrayToString = maybeArrayToString(['lorem-ipsum', 'dolor-simet']);
         expect(arrayToString).toEqual('lorem-ipsum,dolor-simet');
@@ -96,7 +96,7 @@ describe('Utils (maybeArrayToString)', function () {
     });
 });
 
-describe('Utils (getSlugFromObject)', function () {
+describe('Transform (getSlugFromObject)', function () {
     test('will return a trimmed string, if a string is supplied', function () {
         let tagSlug = getSlugFromObject(' this-is-a-slug');
         expect(tagSlug).toEqual('this-is-a-slug');

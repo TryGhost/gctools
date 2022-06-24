@@ -3,6 +3,7 @@ import number from './basic/number.js';
 import confirm from './basic/confirm.js';
 import list from './basic/list.js';
 import checkbox from './basic/checkbox.js';
+import datetime from './basic/datetime.js';
 
 import tags from './api/tags.js';
 import authors from './api/authors.js';
@@ -13,6 +14,7 @@ export default {
     confirm,
     list,
     checkbox,
+    datetime,
     tags,
     authors
 };

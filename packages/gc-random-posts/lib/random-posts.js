@@ -138,6 +138,81 @@ export const run = async (argv) => {
         version: 'v5.0'
     });
 
+    if (isInteractive) {
+        if (!argv.count) {
+            argv.count = await prompts.number({
+                default: 10,
+                message: `How manu posts to create`
+            });
+        }
+
+        // status
+        argv.status = await prompts.list({
+            message: 'Post status',
+            choices: ['published', 'draft'],
+            default: 'published'
+        });
+
+        // visibility
+        argv.visibility = await prompts.list({
+            message: 'Post visibility',
+            choices: ['public', 'members', 'paid'],
+            default: 'public'
+        });
+
+        // Filter by tag
+        if (!argv.tag || !argv.tag.length) {
+            let getTags = await prompts.tags({
+                api: argv.api,
+                tag: argv.tag,
+                message: `Filter by tag: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
+                addNew: true
+            });
+
+            argv.tag = getTags.map(tag => tag.name);
+        }
+
+        // Filter by author
+        if (!argv.author || !argv.author.length) {
+            let getAuthors = await prompts.authors({
+                api: argv.api,
+                author: argv.author,
+                message: `Filter by author: (Leave blank for all) ${chalk.yellow('[Type to search]')}`
+            });
+
+            argv.author = getAuthors.map(author => author.slug);
+        }
+
+        const dateRangeChoice = await prompts.list({
+            message: 'Date range',
+            choices: ['Past year', 'Past month', 'Custom'],
+            default: 'Past year'
+        });
+
+        const dateNow = new Date();
+        const yearNow = dateNow.getFullYear();
+        const monthNow = dateNow.getMonth();
+        const dayNow = dateNow.getDate();
+
+        if (dateRangeChoice === 'Past year') {
+            argv.startDate = new Date(yearNow, monthNow - 12, dayNow);
+            argv.endDate = new Date(yearNow, monthNow, dayNow);
+        } else if (dateRangeChoice === 'Past month') {
+            argv.startDate = new Date(yearNow, monthNow - 1, dayNow);
+            argv.endDate = new Date(yearNow, monthNow, dayNow);
+        } else {
+            argv.startDate = await prompts.datetime({
+                message: 'Start at',
+                initial: new Date(yearNow, monthNow - 12, dayNow)
+            });
+
+            argv.endDate = await prompts.datetime({
+                message: 'End at',
+                initial: new Date(yearNow, monthNow, dayNow)
+            });
+        }
+    }
+
     // Optionally prompt to confirm the changes
     const confirmChanges = (!argv.confirm && !isInteractive) || await prompts.confirm({
         message: `Do you want to add ${chalk.red(argv.count)} new random posts?`
