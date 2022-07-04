@@ -37,6 +37,7 @@
     "fs-extra": "10.1.0",
     "glob": "8.0.3",
     "got": "11.8.5",
+    "imastify": "1.0.5",
     "inquirer": "8.2.4",
     "inquirer-datepicker-prompt": "0.4.2",
     "inquirer-search-checkbox": "1.0.0",

@@ -1690,6 +1690,13 @@ ignore@^5.1.1, ignore@^5.2.0:
   resolved "https://registry.yarnpkg.com/ignore/-/ignore-5.2.0.tgz#6d3bac8fa7fe0d45d9f9be7bac2fc279577e345a"
   integrity sha512-CmxgYGiEPCLhfLnpPp1MoRmifwEIOgjcHXxOBjv7mY96c+eWScsOP9c112ZyLdWHi0FxHjI+4uVhKYp/gcdRmQ==
 
+imastify@1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/imastify/-/imastify-1.0.5.tgz#74923ae4af9805ceba18d6a553b9fbfcd997ecf1"
+  integrity sha512-usS+GVzCRmo/MtjkD0d6vSN+5JRbXLNslzZMy0mNFHNZn7j6HObN8K6fITefTLNXGDGjUSs7CPVT5JI+2qcLRg==
+  dependencies:
+    sharp "^0.30.4"
+
 import-fresh@^3.0.0, import-fresh@^3.2.1:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.3.0.tgz#37162c25fcb9ebaa2e6e53d5b4d88ce17d9e0c2b"
@@ -3005,7 +3012,7 @@ sharp@0.30.4:
     tar-fs "^2.1.1"
     tunnel-agent "^0.6.0"
 
-sharp@^0.30.0:
+sharp@^0.30.0, sharp@^0.30.4:
   version "0.30.7"
   resolved "https://registry.yarnpkg.com/sharp/-/sharp-0.30.7.tgz#7862bda98804fdd1f0d5659c85e3324b90d94c7c"
   integrity sha512-G+MY2YW33jgflKPTXXptVO28HvNOo9G3j0MybYAHeEmby+QuD2U98dT6ueht9cv/XDqZspSpIhoSW+BAKJ7Hig==

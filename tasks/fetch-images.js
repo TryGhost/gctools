@@ -2,7 +2,7 @@ const fsUtils = require('@tryghost/mg-fs-utils');
 const fs = require('fs-extra');
 const path = require('path');
 const url = require('url');
-const got = require('got');
+const {ImagesPayload} = require('imastify');
 const makeTaskRunner = require('../lib/task-runner');
 
 const knownExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.svgz', '.ico', '.webp'];
@@ -21,14 +21,10 @@ const getAllImageMatches = (source) => {
 };
 
 const fetchImage = async (src) => {
-    // Timeout after 20 seconds
-    let response = await got(src, {
-        responseType: 'buffer',
-        encoding: 'binary',
-        timeout: 20000
-    });
+    const payload = new ImagesPayload();
+    const downloaded = await payload.request(src);
 
-    return response;
+    return downloaded;
 };
 
 const changeExtension = (string, ext) => {
@@ -246,24 +242,15 @@ module.exports.getFullTaskList = (options) => {
 
                                 let response = await fetchImage(theImgToGet);
 
-                                // Get the file extension from `src`
-                                // Will return then last `.` with anything after if, eg `.`, `.png`
-                                let extension = path.extname(theImgToGet);
+                                let newExt = '.' + response.type;
 
-                                // If we have an extension of 2 or less characters
-                                if (extension.length <= 2) {
-                                    // Get the content type from response headers and convert to extension
-                                    let contentTypeParts = response.headers['content-type'].split('/');
-                                    let newExt = '.' + contentTypeParts[1];
-
-                                    if (knownExtensions.includes(newExt)) {
-                                        imageOptions.filename = changeExtension(imageOptions.filename, newExt);
-                                        imageOptions.storagePath = changeExtension(imageOptions.storagePath, newExt);
-                                        imageOptions.outputPath = changeExtension(imageOptions.outputPath, newExt);
-                                    }
+                                if (knownExtensions.includes(newExt)) {
+                                    imageOptions.filename = changeExtension(imageOptions.filename, newExt);
+                                    imageOptions.storagePath = changeExtension(imageOptions.storagePath, newExt);
+                                    imageOptions.outputPath = changeExtension(imageOptions.outputPath, newExt);
                                 }
 
-                                await ctx.fileCache.writeImageFile(response.body, imageOptions);
+                                await ctx.fileCache.writeImageFile(response.image.source, imageOptions);
                             }
 
                             ctx.images[i].newSrc = imageOptions.outputPath;
@@ -271,7 +258,10 @@ module.exports.getFullTaskList = (options) => {
                     });
                 });
 
-                return makeTaskRunner(tasks, options);
+                let downloadImageOpts = options;
+                downloadImageOpts.concurrent = 1;
+
+                return makeTaskRunner(tasks, downloadImageOpts);
             }
         },
         {
