@@ -2,13 +2,6 @@ import GhostAdminAPI from '@tryghost/admin-api';
 import {ui} from '@tryghost/pretty-cli';
 import GCUtils from '@tryghost/gc-utils';
 import chalk from 'chalk';
-import fs from 'fs';
-import url from 'url';
-import path from 'path';
-
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-const unsplashImages = JSON.parse(fs.readFileSync(path.join(__dirname, './unsplash-images.json')));
-
 import {getRandomPostContent} from './generate.js';
 
 const prompts = GCUtils.prompts;
@@ -239,7 +232,7 @@ export const run = async (argv) => {
     let newPosts = [];
 
     [...Array(argv.count)].forEach(async () => {
-        newPosts.push(getRandomPostContent(argv, unsplashImages));
+        newPosts.push(getRandomPostContent(argv));
     });
 
     // Upload the changed pages
