@@ -33,6 +33,7 @@ Available tools include:
 * [`zip-create`](#zip-create)
 * [`json-split`](#json-split)
 * [`fetch-images`](#fetch-images)
+* [`api-import`](#api-import)
 * [`dedupe-members-csv`](#dedupe-members-csv)
 * [`random-posts`](#random-posts)
 * [`delete-posts`](#delete-posts)
@@ -100,6 +101,22 @@ gctools fetch-images --help
 # Fetch images from a valid Ghost JSON file, with `https://example.com` as the base URL
 gctools fetch-images /path/to/file.json https://example.com
 ```
+
+
+### api-import
+
+Import the content from a valid Ghost JSON file using the Admin API.
+
+```sh
+# See all available options
+gctools api-import --help
+
+# Import a valid Ghost JSON file, with 1 concurrent request and a 100ms delay between calls
+gctools api-import <apiURL> <adminAPIKey> /path/to/file.json
+
+
+# Import a valid Ghost JSON file, with 1 concurrent request, a 1000ms delay between calls, and NOT checking for duplicated slugs (thus potentially duplicating posts)
+gctools api-import <apiURL> <adminAPIKey> /path/to/file.json --delayBetweenCalls 1000 --check_duplicates false
 
 
 ### dedupe-members-csv

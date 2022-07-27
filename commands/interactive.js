@@ -52,6 +52,10 @@ exports.run = async () => {
                 value: tasks.fetchImages.choice.value
             },
             {
+                name: tasks.apiImport.choice.name,
+                value: tasks.apiImport.choice.value
+            },
+            {
                 name: tasks.dedupeMembersCsv.choice.name,
                 value: tasks.dedupeMembersCsv.choice.value
             },

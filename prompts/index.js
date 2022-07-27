@@ -3,6 +3,7 @@ module.exports = {
     zipCreate: require('./zip-create'),
     jsonSplit: require('./json-split'),
     fetchImages: require('./fetch-images'),
+    apiImport: require('./api-import'),
     randomPosts: require('./random-posts'),
     deletePosts: require('./delete-posts'),
     deletePages: require('./delete-pages'),
