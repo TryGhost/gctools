@@ -22,7 +22,7 @@ const options = [
     {
         type: 'input',
         name: 'onlyForLabelSlug',
-        message: 'Only remove subsections from members with this label slug:',
+        message: 'Only remove subscriptions from members with this label slug:',
         filter: function (val) {
             return val.trim();
         }
