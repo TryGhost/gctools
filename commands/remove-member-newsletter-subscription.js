@@ -25,6 +25,10 @@ exports.setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.string('--onlyForLabelSlug', {
+        defaultValue: false,
+        desc: 'Optional label to filter members'
+    });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 100,
         desc: 'The delay between API calls, in ms'

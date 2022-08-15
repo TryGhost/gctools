@@ -46,6 +46,7 @@ Available tools include:
 * [`delete-members`](#delete-members)
 * [`delete-staff`](#delete-staff)
 * [`change-role`](#change-role)
+* [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -328,6 +329,18 @@ gctools change-role <apiURL> <adminAPIKey> --newRole 'Contributor'
 
 # Change all staff users who are currently the Editor role to have the Author role
 gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Author'
+```
+
+### remove-member-newsletter-subscription
+
+Remove subscriptions for a specific newsletter
+
+```sh
+# Remove all subscriptions
+gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
+
+# Remove all subscriptions for a filtered set of members by label
+gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug '';
 ```
 
 

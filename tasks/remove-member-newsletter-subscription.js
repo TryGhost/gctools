@@ -60,10 +60,18 @@ module.exports.getFullTaskList = (options) => {
                     throw error;
                 }
 
+                let discoveryFilter = [];
+
+                discoveryFilter.push(`newsletters:[${thisNewsletterSlug}]`);
+
+                if (options.onlyForLabelSlug) {
+                    discoveryFilter.push(`label:[${options.onlyForLabelSlug}]`);
+                }
+
                 let discoveryOptions = {
                     api: ctx.api,
                     type: 'members',
-                    filter: `newsletters:${thisNewsletterSlug}`
+                    filter: discoveryFilter.join('+')
                 };
 
                 try {

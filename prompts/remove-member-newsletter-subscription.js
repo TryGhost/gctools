@@ -20,6 +20,14 @@ const options = [
         }
     },
     {
+        type: 'input',
+        name: 'onlyForLabelSlug',
+        message: 'Only remove subsections from members with this label slug:',
+        filter: function (val) {
+            return val.trim();
+        }
+    },
+    {
         type: 'number',
         name: 'delayBetweenCalls',
         message: 'The delay between API calls, in ms:',
