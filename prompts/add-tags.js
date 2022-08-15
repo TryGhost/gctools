@@ -7,12 +7,27 @@ const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
 const choice = {
-    name: 'Add tags to posts',
+    name: 'Add tags to posts and pages',
     value: 'addTags'
 };
 
 const options = [
     ...ghostAPICreds,
+    {
+        type: 'checkbox',
+        name: 'type',
+        message: 'Type of content to add tags to:',
+        choices: [
+            {
+                name: 'Posts',
+                value: 'posts'
+            },
+            {
+                name: 'Pages',
+                value: 'pages'
+            }
+        ]
+    },
     {
         type: 'list',
         name: 'visibility',

@@ -155,19 +155,28 @@ gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testi
 
 ### add-tags
 
-Add a tag to specific posts with a specific set of filters
+Add a tag to specific posts and pages with a specific set of filters
 
 ```sh
-# Add a tag of 'Testing' to all posts
+# Add a tag of 'Testing' to all posts and pages
 gctools add-tags <apiURL> <adminAPIKey> --new_tags 'Testing'
 
-# Add a tag of 'Testing' to all public posts
+# Add a tag of 'Testing' to all posts and pages (same result as above)
+gctools add-tags <apiURL> <adminAPIKey> --new_tags 'Testing' --type posts pages
+
+# Add a tag of 'Testing' to all posts only
+gctools add-tags <apiURL> <adminAPIKey> --new_tags 'Testing' --type posts
+
+# Add a tag of 'Testing' to all pages only
+gctools add-tags <apiURL> <adminAPIKey> --new_tags 'Testing' --type pages
+
+# Add a tag of 'Testing' to all public posts and pages
 gctools add-tags <apiURL> <adminAPIKey> --visibility public --new_tags 'Testing'
 
-# Add a tag of 'Testing' to all members-only posts that also have a tag of 'hello'
+# Add a tag of 'Testing' to all members-only posts and pages that also have a tag of 'hello'
 gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --new_tags 'Testing'
 
-# Add a tag of 'Testing' to all members-only posts that also have a tag of 'hello', and are by written by 'harry'
+# Add a tag of 'Testing' to all members-only posts and pages that also have a tag of 'hello', and are by written by 'harry'
 gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --author 'harry' --new_tags 'Testing'
 ```
 

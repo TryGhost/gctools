@@ -10,7 +10,7 @@ exports.group = 'Content:';
 exports.flags = 'add-tags <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Add tags to posts in Ghost';
+exports.desc = 'Add tags to posts and pages in Ghost';
 
 // Descriptions for the individual params
 exports.paramsDesc = [
@@ -23,6 +23,11 @@ exports.setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
+    });
+    sywac.array('--type', {
+        defaultValue: 'all',
+        choices: ['all', 'posts', 'pages'],
+        desc: 'Content type'
     });
     sywac.enumeration('--visibility', {
         defaultValue: 'all',
