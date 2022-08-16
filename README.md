@@ -60,7 +60,7 @@ Split a zip file into smaller zip files of a defined maximum size, while maintai
 gctools zip-split --help
 
 # Split a zip file into as many files needed for them to all be 50mb or below
-gctools zip-split /path/to/big-file.zip --M 50
+gctools zip-split /path/to/big-file.zip -M 50
 ```
 
 
@@ -73,7 +73,7 @@ Split a large directory into smaller directories of a defined maximum size and z
 gctools zip-create --help
 
 # Split a large directory into as many files needed for them to all be 50mb or below
-gctools zip-create /path/to/big-directory --M 50
+gctools zip-create /path/to/big-directory -M 50
 ```
 
 
