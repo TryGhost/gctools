@@ -15,6 +15,7 @@ module.exports = {
     changeVisibility: require('./change-visibility'),
     deleteMembers: require('./delete-members'),
     changeRole: require('./change-role'),
+    addMemberNewsletterSubscription: require('./add-member-newsletter-subscription'),
     removeMemberNewsletterSubscription: require('./remove-member-newsletter-subscription'),
     deleteStaff: require('./delete-staff'),
     contentStats: require('./content-stats'),

@@ -46,6 +46,7 @@ Available tools include:
 * [`delete-members`](#delete-members)
 * [`delete-staff`](#delete-staff)
 * [`change-role`](#change-role)
+* [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
@@ -340,6 +341,19 @@ gctools change-role <apiURL> <adminAPIKey> --newRole 'Contributor'
 gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Author'
 ```
 
+### add-member-newsletter-subscription
+
+Remove subscriptions for a specific newsletter
+
+```sh
+# Remove all subscriptions
+gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
+
+# Remove all subscriptions for a filtered set of members by label
+gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium';
+```
+
+
 ### remove-member-newsletter-subscription
 
 Remove subscriptions for a specific newsletter
@@ -349,7 +363,7 @@ Remove subscriptions for a specific newsletter
 gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 
 # Remove all subscriptions for a filtered set of members by label
-gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug '';
+gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium';
 ```
 
 

@@ -1,12 +1,12 @@
 const inquirer = require('inquirer');
-const removeMemberNewsletterSubscription = require('../tasks/remove-member-newsletter-subscription');
+const addMemberNewsletterSubscription = require('../tasks/add-member-newsletter-subscription');
 const {getAPINewslettersObj} = require('../lib/ghost-api-choices.js');
 const ghostAPICreds = require('../lib/ghost-api-creds');
 const ui = require('@tryghost/pretty-cli').ui;
 
 const choice = {
-    name: 'Remove member newsletter subscription',
-    value: 'removeMemberNewsletterSubscription'
+    name: 'Add member newsletter subscription',
+    value: 'addMemberNewsletterSubscription'
 };
 
 const options = [
@@ -14,7 +14,7 @@ const options = [
     {
         type: 'list',
         name: 'newsletterID',
-        message: 'Newsletter to be unsubscribed from:',
+        message: 'Newsletter to be subscribed from:',
         choices: () => {
             return getAPINewslettersObj();
         }
@@ -22,7 +22,7 @@ const options = [
     {
         type: 'input',
         name: 'onlyForLabelSlug',
-        message: 'Only remove subscriptions from members with this label slug:',
+        message: 'Only add subscriptions from members with this label slug:',
         filter: function (val) {
             return val.trim();
         }
@@ -41,9 +41,9 @@ async function run() {
         let context = {errors: []};
 
         try {
-            let runner = removeMemberNewsletterSubscription.getTaskRunner(answers);
+            let runner = addMemberNewsletterSubscription.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully removed ${context.deleted.length} subscriptions in ${Date.now() - timer}ms.`);
+            ui.log.ok(`Successfully added ${context.deleted.length} subscriptions in ${Date.now() - timer}ms.`);
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
