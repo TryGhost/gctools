@@ -350,7 +350,7 @@ Remove subscriptions for a specific newsletter
 gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 
 # Remove all subscriptions for a filtered set of members by label
-gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium';
+gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium'
 ```
 
 
@@ -363,7 +363,7 @@ Remove subscriptions for a specific newsletter
 gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 
 # Remove all subscriptions for a filtered set of members by label
-gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium';
+gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium'
 ```
 
 
