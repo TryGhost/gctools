@@ -37,6 +37,7 @@ Available tools include:
 * [`random-posts`](#random-posts)
 * [`delete-posts`](#delete-posts)
 * [`add-tags`](#add-tags)
+* [`combine-tags`](#combine-tags)
 * [`add-preview`](#add-preview)
 * [`delete-tags`](#delete-tags)
 * [`delete-empty-tags`](#delete-empty-tags)
@@ -180,6 +181,37 @@ gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --new_
 # Add a tag of 'Testing' to all members-only posts and pages that also have a tag of 'hello', and are by written by 'harry'
 gctools add-tags <apiURL> <adminAPIKey> --visibility public --tag 'hello' --author 'harry' --new_tags 'Testing'
 ```
+
+### combine-tags
+
+Combine tags by adding the `target` tag to all posts that hav any of the `incorporate` tags. For example, posts with the `posts`, `newsletter`, and `blogs` tags will have the `articles` added to it.
+
+```sh
+gctools combine-tags <apiURL> <adminAPIKey> <jsonFile>
+```
+
+The `<jsonFile>` file needs to follow the format below, with slugs used as the values.
+
+```json
+[
+    {
+        "target": "articles",
+        "incorporate": [
+            "posts",
+            "newsletter",
+            "blogs"
+        ]
+    },
+    {
+        "target": "media",
+        "incorporate": [
+            "podcasts",
+            "video"
+        ]
+    }
+]
+```
+
 
 ### add-preview
 

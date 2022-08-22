@@ -65,6 +65,10 @@ exports.run = async () => {
                 value: tasks.addTags.choice.value
             },
             {
+                name: tasks.combineTags.choice.name,
+                value: tasks.combineTags.choice.value
+            },
+            {
                 name: tasks.addPreview.choice.name,
                 value: tasks.addPreview.choice.value
             },

@@ -7,6 +7,7 @@ module.exports = {
     deletePosts: require('./delete-posts'),
     deletePages: require('./delete-pages'),
     addTags: require('./add-tags'),
+    combineTags: require('./combine-tags'),
     addPreview: require('./add-preview'),
     deleteTags: require('./delete-tags'),
     deleteEmptyTags: require('./delete-empty-tags'),
