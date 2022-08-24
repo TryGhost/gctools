@@ -44,6 +44,7 @@ Available tools include:
 * [`find-replace`](#find-replace)
 * [`change-author`](#change-author)
 * [`change-visibility`](#change-visibility)
+* [`change-status`](#change-status)
 * [`delete-members`](#delete-members)
 * [`delete-staff`](#delete-staff)
 * [`change-role`](#change-role)
