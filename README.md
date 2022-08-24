@@ -244,7 +244,7 @@ Delete tags, but not the content that uses that tag
 gctools delete-tags --help
 
 # Delete a specific tag or multiple tags
-gctools delete-tags <apiURL> <adminAPIKey> --tag '#gctools, Test 1'
+gctools delete-tags <apiURL> <adminAPIKey> --tags hash-gctools, test 1
 ```
 
 

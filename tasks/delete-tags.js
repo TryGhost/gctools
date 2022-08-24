@@ -38,20 +38,24 @@ module.exports.getFullTaskList = (options) => {
         {
             title: 'Fetch tags from Ghost API',
             task: async (ctx, task) => {
-                if (typeof ctx.args.tag === 'object' && ctx.args.tag[0].id) {
-                    ctx.tags = ctx.args.tag;
+                // If `ctx.args.tags` is an array of tag objects
+                if (ctx.args.tags[0].id) {
+                    ctx.tags = ctx.args.tags;
                 } else {
                     let allTags = await discover({
                         api: ctx.api,
                         type: 'tags'
                     });
 
-                    ctx.tags = [_.find(allTags, {name: ctx.args.tag})];
-                }
+                    ctx.args.tags.forEach((tag) => {
+                        let tagObject = _.find(allTags, {slug: tag});
 
-                if (ctx.tags.length < 1) {
-                    ctx.errors.push(`No tags found for "${ctx.args.tag}"`);
-                    throw 'No tags found';
+                        if (tagObject) {
+                            ctx.tags.push(tagObject);
+                        } else {
+                            ctx.errors.push(`No tag found for "${tag}"`);
+                        }
+                    });
                 }
 
                 task.output = `Found ${ctx.tags.length} tags`;
@@ -59,12 +63,15 @@ module.exports.getFullTaskList = (options) => {
         },
         {
             title: 'Deleting tags from Ghost',
+            skip: (ctx) => {
+                return ctx.tags.length === 0;
+            },
             task: async (ctx) => {
                 let tasks = [];
 
                 await Promise.mapSeries(ctx.tags, async (tag) => {
                     tasks.push({
-                        title: `${tag.name}`,
+                        title: `Delete tag ${tag.name} (${tag.slug})`,
                         task: async () => {
                             try {
                                 let result = await ctx.api.tags.delete({id: tag.id});
@@ -74,6 +81,7 @@ module.exports.getFullTaskList = (options) => {
                                 error.resource = {
                                     name: tag.name
                                 };
+                                error.object = tag;
                                 ctx.errors.push(error);
                                 throw error;
                             }

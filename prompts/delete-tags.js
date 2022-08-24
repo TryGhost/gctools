@@ -15,8 +15,8 @@ const options = [
     ...ghostAPICreds,
     {
         type: 'search-checkbox',
-        name: 'tag',
-        message: `Filter by tag: ${chalk.yellow('[Type to search]')}`,
+        name: 'tags',
+        message: `Select tags: ${chalk.yellow('[Type to search]')}`,
         pageSize: 20,
         choices: function () {
             return getAPITagsObj();

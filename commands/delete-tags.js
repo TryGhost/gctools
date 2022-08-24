@@ -24,9 +24,9 @@ exports.setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
-    sywac.string('--tag', {
+    sywac.array('--tags', {
         defaultValue: null,
-        desc: 'Delete content with this tag slug'
+        desc: 'Delete content with these tag slugs'
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
