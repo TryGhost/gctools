@@ -14,6 +14,7 @@ module.exports = {
     findReplace: require('./find-replace'),
     changeAuthor: require('./change-author'),
     changeVisibility: require('./change-visibility'),
+    changeStatus: require('./change-status'),
     deleteMembers: require('./delete-members'),
     changeRole: require('./change-role'),
     addMemberNewsletterSubscription: require('./add-member-newsletter-subscription'),

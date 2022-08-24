@@ -326,6 +326,22 @@ gctools change-visibility <apiURL> <adminAPIKey> --tag 'news' --author 'jane' --
 ```
 
 
+### change-status
+
+Change the status of posts
+
+```sh
+# See all available options
+gctools change-status --help
+
+# Change the posts that are currently drafts to be public
+gctools change-status <apiURL> <adminAPIKey> --status 'draft' --new_status 'published'
+
+# Change the posts that are currently drafts with the tag `news` to be public
+gctools change-status <apiURL> <adminAPIKey> --status 'draft' --tag 'news' --new_status 'published'
+```
+
+
 ### delete-members
 
 Delete all members

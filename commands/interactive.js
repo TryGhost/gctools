@@ -81,6 +81,10 @@ exports.run = async () => {
                 value: tasks.changeVisibility.choice.value
             },
             {
+                name: tasks.changeStatus.choice.name,
+                value: tasks.changeStatus.choice.value
+            },
+            {
                 name: tasks.contentStats.choice.name,
                 value: tasks.contentStats.choice.value
             },
