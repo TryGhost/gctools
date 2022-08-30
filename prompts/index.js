@@ -19,7 +19,6 @@ module.exports = {
     changeRole: require('./change-role'),
     addMemberNewsletterSubscription: require('./add-member-newsletter-subscription'),
     removeMemberNewsletterSubscription: require('./remove-member-newsletter-subscription'),
-    deleteStaff: require('./delete-staff'),
     contentStats: require('./content-stats'),
     dedupeMembersCsv: require('./dedupe-members-csv')
 };

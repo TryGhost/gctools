@@ -122,10 +122,6 @@ exports.run = async () => {
                 value: tasks.changeRole.choice.value
             },
             {
-                name: tasks.deleteStaff.choice.name,
-                value: tasks.deleteStaff.choice.value
-            },
-            {
                 name: tasks.findReplace.choice.name,
                 value: tasks.findReplace.choice.value
             },

@@ -46,7 +46,6 @@ Available tools include:
 * [`change-visibility`](#change-visibility)
 * [`change-status`](#change-status)
 * [`delete-members`](#delete-members)
-* [`delete-staff`](#delete-staff)
 * [`change-role`](#change-role)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
@@ -353,25 +352,6 @@ gctools delete-members --help
 
 # Change the posts written by `richard` and assign to `michael`
 gctools delete-members <apiURL> <adminAPIKey>
-```
-
-
-### delete-staff
-
-Delete all staff (requires a staff user token)
-
-```sh
-# See all available options
-gctools delete-staff --help
-
-# Delete up to 50 staff users who do not have any posts or pages
-gctools delete-staff <apiURL> <adminAPIKey> --maxStaff 50
-
-# Delete up to 1000 staff users, even if they have posts or pages
-gctools delete-staff <apiURL> <adminAPIKey> --maxStaff 1000 --filterNoPosts false
-
-# Delete up to 200 staff users who have the Editor role, even if they have posts or pages
-gctools delete-staff <apiURL> <adminAPIKey> --filterRole 'Editor' --maxStaff 200 --filterNoPosts false
 ```
 
 
