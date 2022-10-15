@@ -1,7 +1,7 @@
-import MgAssetScraper from '@tryghost/mg-assetscraper';
 import {dirname} from 'node:path';
-import fsUtils from '@tryghost/mg-fs-utils';
 import fs from 'fs-extra';
+import MgAssetScraper from '@tryghost/mg-assetscraper';
+import fsUtils from '@tryghost/mg-fs-utils';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
 const initialise = (options) => {
@@ -50,7 +50,7 @@ const getFullTaskList = (options) => {
             }
         },
         {
-            title: 'Fetch images via AssetScraper',
+            title: 'Fetch assets via AssetScraper',
             skip: (ctx) => {
                 return [ctx.allowScrape.images, ctx.allowScrape.media, ctx.allowScrape.files].every(element => element === false);
             },
@@ -66,7 +66,7 @@ const getFullTaskList = (options) => {
             title: 'Create JSON file',
             task: async (ctx) => {
                 await ctx.fileCache.writeGhostImportFile(ctx.result, {
-                    filename: 'ghost-import-correct-images.json'
+                    filename: 'ghost-import-correct-assets.json'
                 });
             }
         },

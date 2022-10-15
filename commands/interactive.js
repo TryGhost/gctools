@@ -48,8 +48,8 @@ const run = async () => {
                 value: tasks.jsonSplit.choice.value
             },
             {
-                name: tasks.fetchImages.choice.name,
-                value: tasks.fetchImages.choice.value
+                name: tasks.fetchAssets.choice.name,
+                value: tasks.fetchAssets.choice.value
             },
             {
                 name: tasks.dedupeMembersCsv.choice.name,

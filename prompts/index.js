@@ -1,7 +1,7 @@
 import zipSplit from './zip-split.js';
 import zipCreate from './zip-create.js';
 import jsonSplit from './json-split.js';
-import fetchImages from './fetch-images.js';
+import fetchAssets from './fetch-assets.js';
 import randomPosts from './random-posts.js';
 import deletePosts from './delete-posts.js';
 import deletePages from './delete-pages.js';
@@ -25,7 +25,7 @@ export default {
     zipSplit,
     zipCreate,
     jsonSplit,
-    fetchImages,
+    fetchAssets,
     randomPosts,
     deletePosts,
     deletePages,
