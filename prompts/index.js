@@ -44,4 +44,4 @@ export default {
     removeMemberNewsletterSubscription,
     contentStats,
     dedupeMembersCsv
-}
+};

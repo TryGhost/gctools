@@ -1,21 +1,20 @@
-const testUtils = require('./utils');
-const {filterBuilder} = require('../lib/filter-builder');
+import {filterBuilder} from '../lib/filter-builder.js';
 
-const tagsObject = testUtils.fixtures.readSync('tags.json');
-const authorsObject = testUtils.fixtures.readSync('authors.json');
+import tagsObject from './fixtures/tags.json';
+import authorsObject from './fixtures/authors.json';
 
 describe('Filter builder', function () {
-    it('Builds exclusive filter from strings', async function () {
+    test('Builds exclusive filter from strings', async function () {
         const filter = filterBuilder({
             author: 'harry,ron',
             tag: 'newsletter,blog',
             visibility: 'member,paid'
         });
 
-        filter.should.eql('author:[harry, ron], tag:[newsletter, blog], visibility:[member, paid]');
+        expect(filter).toEqual('author:[harry, ron], tag:[newsletter, blog], visibility:[member, paid]');
     });
 
-    it('Builds exclusive filter from strings with no visibility', async function () {
+    test('Builds exclusive filter from strings with no visibility', async function () {
         // CASE: The `all` in `visibility` takes priority, so no visibility filter is actually needed
         const filter = filterBuilder({
             author: 'harry,ron',
@@ -23,10 +22,10 @@ describe('Filter builder', function () {
             visibility: 'member,paid,all'
         });
 
-        filter.should.eql('author:[harry, ron], tag:[newsletter, blog]');
+        expect(filter).toEqual('author:[harry, ron], tag:[newsletter, blog]');
     });
 
-    it('Builds inclusive filter from strings', async function () {
+    test('Builds inclusive filter from strings', async function () {
         const filter = filterBuilder({
             author: 'harry,ron',
             tag: 'newsletter,blog',
@@ -34,36 +33,36 @@ describe('Filter builder', function () {
             joinSeparator: '+'
         });
 
-        filter.should.eql('author:[harry+ron]+tag:[newsletter+blog]+visibility:[member+paid]');
+        expect(filter).toEqual('author:[harry+ron]+tag:[newsletter+blog]+visibility:[member+paid]');
     });
 
-    it('Builds exclusive filter from arrays', async function () {
+    test('Builds exclusive filter from arrays', async function () {
         const filter = filterBuilder({
             author: ['harry', 'ron'],
             tag: ['newsletter', 'blog'],
             visibility: ['member', 'paid']
         });
 
-        filter.should.eql('author:[harry, ron], tag:[newsletter, blog], visibility:[member, paid]');
+        expect(filter).toEqual('author:[harry, ron], tag:[newsletter, blog], visibility:[member, paid]');
     });
 
-    it('Builds filter from objects', async function () {
+    test('Builds filter from objects', async function () {
         const filter = filterBuilder({
             author: authorsObject,
             tag: tagsObject,
             visibility: ['members', 'paid']
         });
 
-        filter.should.eql('author:[ghost-user, sample-user], tag:[lorem-ipsum, dolor-simet], visibility:[members, paid]');
+        expect(filter).toEqual('author:[ghost-user, sample-user], tag:[lorem-ipsum, dolor-simet], visibility:[members, paid]');
     });
 
-    it('Builds filter from strings, arrays, and objects', async function () {
+    test('Builds filter from strings, arrays, and objects', async function () {
         const filter = filterBuilder({
             author: 'harry',
             tag: tagsObject,
             visibility: ['members', 'paid']
         });
 
-        filter.should.eql('author:[harry], tag:[lorem-ipsum, dolor-simet], visibility:[members, paid]');
+        expect(filter).toEqual('author:[harry], tag:[lorem-ipsum, dolor-simet], visibility:[members, paid]');
     });
 });

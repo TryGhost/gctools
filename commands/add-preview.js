@@ -86,6 +86,7 @@ export default {
     group,
     flags,
     desc,
+    paramsDesc,
     setup,
     run
 };
