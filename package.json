@@ -29,7 +29,8 @@
   "dependencies": {
     "@tryghost/admin-api": "1.13.1",
     "@tryghost/listr-smart-renderer": "0.4.0",
-    "@tryghost/mg-fs-utils": "0.8.0",
+    "@tryghost/mg-assetscraper": "0.2.1",
+    "@tryghost/mg-fs-utils": "0.10.1",
     "@tryghost/pretty-cli": "1.2.31",
     "@tryghost/zip": "1.1.29",
     "bluebird": "3.7.2",
@@ -37,7 +38,6 @@
     "fs-extra": "10.1.0",
     "glob": "8.0.3",
     "got": "11.8.5",
-    "imastify": "1.0.5",
     "inquirer": "8.2.4",
     "inquirer-datepicker-prompt": "0.4.2",
     "inquirer-search-checkbox": "1.0.0",

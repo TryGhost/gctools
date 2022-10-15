@@ -21,6 +21,15 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.array('-s --scrape', {
+        choices: ['all', 'img', 'web', 'media', 'files', 'none'],
+        defaultValue: 'all',
+        desc: 'Configure scraping tasks'
+    });
+    sywac.number('--sizeLimit', {
+        defaultValue: false,
+        desc: 'Assets larger than this size (defined in MB) will be ignored'
+    });
     sywac.boolean('--zip', {
         defaultValue: true,
         desc: 'Create a zip file (set to false to skip)'
@@ -51,7 +60,7 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully fetched ${context.images.length} images in ${Date.now() - timer}ms.`);
+    ui.log.ok(`Successfully fetched assets in ${Date.now() - timer}ms.`);
 };
 
 export default {
