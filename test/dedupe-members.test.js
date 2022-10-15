@@ -8,8 +8,8 @@ const __dirname = new URL('.', import.meta.url).pathname;
 
 describe('Deduplicate posts', function () {
     test('determines if members have been updated', async function () {
-        const existingMembers = await fsUtils.csv.parse(join(__dirname, './', 'fixtures', 'existing-members.csv'));
-        const updatedMembers = await fsUtils.csv.parse(join(__dirname, './', 'fixtures', 'updated-members.csv'));
+        const existingMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'existing-members.csv'));
+        const updatedMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'updated-members.csv'));
 
         let ctx = {
             existingMembers: existingMembers,
@@ -30,8 +30,8 @@ describe('Deduplicate posts', function () {
     });
 
     test('splits members by status', async function () {
-        const existingMembers = await fsUtils.csv.parse(join(__dirname, './', 'fixtures', 'existing-members.csv'));
-        const updatedMembers = await fsUtils.csv.parse(join(__dirname, './', 'fixtures', 'updated-members.csv'));
+        const existingMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'existing-members.csv'));
+        const updatedMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'updated-members.csv'));
 
         let ctx = {
             existingMembers: existingMembers,

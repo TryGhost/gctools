@@ -58,11 +58,11 @@ const initialise = (options) => {
         task: async (ctx, task) => {
             ctx.destDir = dirname(options.existingMembers);
 
-            ctx.existingMembers = await fsUtils.csv.parse(options.existingMembers);
+            ctx.existingMembers = await fsUtils.csv.parseCSV(options.existingMembers);
 
-            ctx.newFree = await fsUtils.csv.parse(options.newFree);
-            ctx.newComp = await fsUtils.csv.parse(options.newComp);
-            ctx.newPaid = await fsUtils.csv.parse(options.newPaid);
+            ctx.newFree = await fsUtils.csv.parseCSV(options.newFree);
+            ctx.newComp = await fsUtils.csv.parseCSV(options.newComp);
+            ctx.newPaid = await fsUtils.csv.parseCSV(options.newPaid);
 
             ctx.newCombined = [...ctx.newFree, ...ctx.newComp, ...ctx.newPaid];
 

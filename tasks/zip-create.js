@@ -1,7 +1,7 @@
-import fsUtils from '@tryghost/mg-fs-utils';
+import {parse, dirname, join, basename} from 'node:path';
 import fs from 'fs-extra';
 import glob from 'glob';
-import {parse, dirname, join, basename} from 'path';
+import fsUtils from '@tryghost/mg-fs-utils';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
 async function hydrateFile(filePath) {
