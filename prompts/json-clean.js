@@ -1,6 +1,6 @@
-const inquirer = require('inquirer');
-const jsonClean = require('../tasks/json-clean');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import jsonClean from '../tasks/json-clean.js';
 
 const choice = {
     name: 'JSON Clean',
@@ -37,6 +37,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

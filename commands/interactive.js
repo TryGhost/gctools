@@ -1,25 +1,25 @@
-const inquirer = require('inquirer');
-const _ = require('lodash');
-const ui = require('@tryghost/pretty-cli').ui;
-const os = require('os');
-const path = require('path');
-const tasks = require('../prompts');
+import {join} from 'node:path';
+import {homedir} from 'node:os';
+import inquirer from 'inquirer';
+import _ from 'lodash';
+import {ui} from '@tryghost/pretty-cli';
+import tasks from '../prompts/index.js';
 
-const sitesJSONFile = path.join(os.homedir(), '.gctools', 'gctools_sites.json');
+const sitesJSONFile = join(homedir(), '.gctools', 'gctools_sites.json');
 
 // Internal ID in case we need one.
-exports.id = 'i';
+const id = 'i';
 
-exports.group = 'Tools:';
+const group = 'Tools:';
 
 // The command to run and any params
-exports.flags = 'i';
+const flags = 'i';
 
 // Description for the top level command
-exports.desc = 'An interactive tool to work with Ghost content';
+const desc = 'An interactive tool to work with Ghost content';
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -27,7 +27,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async () => {
+const run = async () => {
     let tasksPrompt = {
         type: 'rawlist',
         name: 'task',
@@ -160,4 +160,13 @@ exports.run = async () => {
     }
 
     mainMenu();
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    setup,
+    run
 };

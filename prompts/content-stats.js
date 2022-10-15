@@ -1,7 +1,7 @@
-const inquirer = require('inquirer');
-const contentStats = require('../tasks/content-stats');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import contentStats from '../tasks/content-stats.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Content Stats',
@@ -33,6 +33,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

@@ -1,10 +1,11 @@
-const inquirer = require('inquirer');
-inquirer.registerPrompt('search-checkbox', require('inquirer-search-checkbox'));
-const chalk = require('chalk');
-const addPreview = require('../tasks/add-preview');
-const {getAPIAuthorsObj, getAPITagsObj} = require('../lib/ghost-api-choices.js');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import inquirerCearchCheckbox from 'inquirer-search-checkbox';
+inquirer.registerPrompt('search-checkbox', inquirerCearchCheckbox);
+import chalk from 'chalk';
+import addPreview from '../tasks/add-preview.js';
+import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
+import {ui} from '@tryghost/pretty-cli';
 
 const choice = {
     name: 'Add public preview divider',
@@ -76,6 +77,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

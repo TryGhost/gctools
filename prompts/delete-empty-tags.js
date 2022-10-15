@@ -1,7 +1,7 @@
-const inquirer = require('inquirer');
-const deleteEmptyTags = require('../tasks/delete-empty-tags');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import deleteEmptyTags from '../tasks/delete-empty-tags.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Delete empty tags',
@@ -27,6 +27,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

@@ -1,25 +1,25 @@
-const contentStats = require('../tasks/content-stats');
-const ui = require('@tryghost/pretty-cli').ui;
+import {ui} from '@tryghost/pretty-cli';
+import contentStats from '../tasks/content-stats.js';
 
 // Internal ID in case we need one.
-exports.id = 'content-stats';
+const id = 'content-stats';
 
-exports.group = 'Content:';
+const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'content-stats <apiURL> <adminAPIKey>';
+const flags = 'content-stats <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'See stats on how mich content your Ghost site has';
+const desc = 'See stats on how mich content your Ghost site has';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -27,7 +27,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -47,4 +47,14 @@ exports.run = async (argv) => {
     } catch (error) {
         ui.log.error('There were errors', context.errors);
     }
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    paramsDesc,
+    setup,
+    run
 };

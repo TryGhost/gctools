@@ -1,24 +1,47 @@
-module.exports = {
-    zipSplit: require('./zip-split'),
-    zipCreate: require('./zip-create'),
-    jsonSplit: require('./json-split'),
-    fetchImages: require('./fetch-images'),
-    randomPosts: require('./random-posts'),
-    deletePosts: require('./delete-posts'),
-    deletePages: require('./delete-pages'),
-    addTags: require('./add-tags'),
-    combineTags: require('./combine-tags'),
-    addPreview: require('./add-preview'),
-    deleteTags: require('./delete-tags'),
-    deleteEmptyTags: require('./delete-empty-tags'),
-    findReplace: require('./find-replace'),
-    changeAuthor: require('./change-author'),
-    changeVisibility: require('./change-visibility'),
-    changeStatus: require('./change-status'),
-    deleteMembers: require('./delete-members'),
-    changeRole: require('./change-role'),
-    addMemberNewsletterSubscription: require('./add-member-newsletter-subscription'),
-    removeMemberNewsletterSubscription: require('./remove-member-newsletter-subscription'),
-    contentStats: require('./content-stats'),
-    dedupeMembersCsv: require('./dedupe-members-csv')
-};
+import zipSplit from './zip-split.js';
+import zipCreate from './zip-create.js';
+import jsonSplit from './json-split.js';
+import fetchImages from './fetch-images.js';
+import randomPosts from './random-posts.js';
+import deletePosts from './delete-posts.js';
+import deletePages from './delete-pages.js';
+import addTags from './add-tags.js';
+import combineTags from './combine-tags.js';
+import addPreview from './add-preview.js';
+import deleteTags from './delete-tags.js';
+import deleteEmptyTags from './delete-empty-tags.js';
+import findReplace from './find-replace.js';
+import changeAuthor from './change-author.js';
+import changeVisibility from './change-visibility.js';
+import changeStatus from './change-status.js';
+import deleteMembers from './delete-members.js';
+import changeRole from './change-role.js';
+import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
+import removeMemberNewsletterSubscription from './remove-member-newsletter-subscription.js';
+import contentStats from './content-stats.js';
+import dedupeMembersCsv from './dedupe-members-csv.js';
+
+export default {
+    zipSplit,
+    zipCreate,
+    jsonSplit,
+    fetchImages,
+    randomPosts,
+    deletePosts,
+    deletePages,
+    addTags,
+    combineTags,
+    addPreview,
+    deleteTags,
+    deleteEmptyTags,
+    findReplace,
+    changeAuthor,
+    changeVisibility,
+    changeStatus,
+    deleteMembers,
+    changeRole,
+    addMemberNewsletterSubscription,
+    removeMemberNewsletterSubscription,
+    contentStats,
+    dedupeMembersCsv
+}

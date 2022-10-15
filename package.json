@@ -5,6 +5,7 @@
   "repository": "https://github.com/TryGhost/gctools",
   "author": "Ghost Foundation",
   "main": "index.js",
+  "type": "module",
   "license": "MIT",
   "bin": {
     "gctools": "./bin/cli.js"
@@ -28,7 +29,7 @@
   },
   "dependencies": {
     "@tryghost/admin-api": "1.13.1",
-    "@tryghost/listr-smart-renderer": "0.2.8",
+    "@tryghost/listr-smart-renderer": "0.4.0",
     "@tryghost/mg-fs-utils": "0.8.0",
     "@tryghost/pretty-cli": "1.2.31",
     "@tryghost/zip": "1.1.29",

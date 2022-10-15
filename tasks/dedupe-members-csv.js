@@ -1,11 +1,10 @@
-const makeTaskRunner = require('../lib/task-runner');
-const _ = require('lodash');
-const path = require('path');
-const fs = require('fs-extra');
-const parse = require('@tryghost/mg-fs-utils/lib/csv').parse;
-const jsonToCSV = require('@tryghost/mg-fs-utils/lib/csv').jsonToCSV;
+import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import _ from 'lodash';
+import {join, dirname} from 'node:path';
+import fs from 'fs-extra';
+import fsUtils from '@tryghost/mg-fs-utils';
 
-module.exports.determineIfUpdated = (ctx) => {
+const determineIfUpdated = (ctx) => {
     ctx.newCombined.forEach((member) => {
         let foundExistingMember = _.find(ctx.existingMembers, {
             email: member.email
@@ -31,7 +30,7 @@ module.exports.determineIfUpdated = (ctx) => {
     return ctx;
 };
 
-module.exports.splitByStatus = (ctx) => {
+const splitByStatus = (ctx) => {
     ctx.combinedNewMembers.forEach((member) => {
         if (member.complimentary_plan === 'false' && member.stripe_customer_id === '') {
         // if (member.complimentary_plan === false && member.stripe_customer_id === '') {
@@ -53,17 +52,17 @@ module.exports.splitByStatus = (ctx) => {
     return ctx;
 };
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising',
         task: async (ctx, task) => {
-            ctx.destDir = path.dirname(options.existingMembers);
+            ctx.destDir = dirname(options.existingMembers);
 
-            ctx.existingMembers = await parse(options.existingMembers);
+            ctx.existingMembers = await fsUtils.csv.parse(options.existingMembers);
 
-            ctx.newFree = await parse(options.newFree);
-            ctx.newComp = await parse(options.newComp);
-            ctx.newPaid = await parse(options.newPaid);
+            ctx.newFree = await fsUtils.csv.parse(options.newFree);
+            ctx.newComp = await fsUtils.csv.parse(options.newComp);
+            ctx.newPaid = await fsUtils.csv.parse(options.newPaid);
 
             ctx.newCombined = [...ctx.newFree, ...ctx.newComp, ...ctx.newPaid];
 
@@ -78,9 +77,9 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Finding new members',
             task: async (ctx, task) => {
@@ -104,17 +103,17 @@ module.exports.getFullTaskList = (options) => {
                     {
                         name: 'Free members',
                         fileName: 'deduped-free-members.csv',
-                        data: jsonToCSV(ctx.newFreeMembers)
+                        data: fsUtils.csv.jsonToCSV(ctx.newFreeMembers)
                     },
                     {
                         name: 'Comp members',
                         fileName: 'deduped-comp-members.csv',
-                        data: jsonToCSV(ctx.newCompMembers)
+                        data: fsUtils.csv.jsonToCSV(ctx.newCompMembers)
                     },
                     {
                         name: 'Paid members',
                         fileName: 'deduped-paid-members.csv',
-                        data: jsonToCSV(ctx.newPaidMembers)
+                        data: fsUtils.csv.jsonToCSV(ctx.newPaidMembers)
                     }
                 ];
 
@@ -125,7 +124,7 @@ module.exports.getFullTaskList = (options) => {
                         title: `Writing ${file.fileName}`,
                         task: async () => {
                             try {
-                                const dest = path.join(ctx.destDir, file.fileName);
+                                const dest = join(ctx.destDir, file.fileName);
                                 await fs.writeFile(dest, file.data);
                             } catch (error) {
                                 ctx.errors.push(error);
@@ -143,10 +142,18 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    determineIfUpdated,
+    splitByStatus,
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };

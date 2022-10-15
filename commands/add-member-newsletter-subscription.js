@@ -1,26 +1,26 @@
-const addMemberNewsletterSubscription = require('../tasks/add-member-newsletter-subscription');
-const ui = require('@tryghost/pretty-cli').ui;
+import {ui} from '@tryghost/pretty-cli';
+import addMemberNewsletterSubscription from '../tasks/add-member-newsletter-subscription.js';
 
 // Internal ID in case we need one.
-exports.id = 'add-member-newsletter-subscription';
+const id = 'add-member-newsletter-subscription';
 
-exports.group = 'Content:';
+const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>';
+const flags = 'add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>';
 
 // Description for the top level command
-exports.desc = 'Add member newsletter subscription';
+const desc = 'Add member newsletter subscription';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key',
     'Newsletter ID to be subscribed from'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -36,7 +36,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -52,4 +52,14 @@ exports.run = async (argv) => {
 
     // Report success
     ui.log.ok(`Successfully added ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`);
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    paramsDesc,
+    setup,
+    run
 };

@@ -1,6 +1,6 @@
-const inquirer = require('inquirer');
-const zipCreate = require('../tasks/zip-create');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import zipCreate from '../tasks/zip-create.js';
 
 const choice = {
     name: 'Zip Create',
@@ -45,6 +45,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

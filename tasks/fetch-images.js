@@ -1,9 +1,9 @@
-const fsUtils = require('@tryghost/mg-fs-utils');
-const fs = require('fs-extra');
-const path = require('path');
-const url = require('url');
-const {ImagesPayload} = require('imastify');
-const makeTaskRunner = require('../lib/task-runner');
+import {join, dirname, basename, extname} from 'node:path';
+import url from 'node:url';
+import fsUtils from '@tryghost/mg-fs-utils';
+import fs from 'fs-extra';
+import {ImagesPayload} from 'imastify';
+import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
 const knownExtensions = ['.jpg', '.jpeg', '.gif', '.png', '.svg', '.svgz', '.ico', '.webp'];
 
@@ -28,7 +28,7 @@ const fetchImage = async (src) => {
 };
 
 const changeExtension = (string, ext) => {
-    return path.join(path.dirname(string), path.basename(string, path.extname(string)) + ext);
+    return join(dirname(string), basename(string, extname(string)) + ext);
 };
 
 const extractImagePaths = (block, blockType, options) => {
@@ -155,7 +155,7 @@ const extractImagePaths = (block, blockType, options) => {
     return blockImages;
 };
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx) => {
@@ -176,14 +176,14 @@ module.exports.initialise = (options) => {
                 data: {}
             };
 
-            ctx.options.file = path.dirname(options.jsonFile);
+            ctx.options.file = dirname(options.jsonFile);
         }
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Reading JSON file',
             task: async (ctx) => {
@@ -232,7 +232,7 @@ module.exports.getFullTaskList = (options) => {
                         optimize: true
                     });
 
-                    imageOptions.filename = path.basename(image.remoteSrc);
+                    imageOptions.filename = basename(image.remoteSrc);
 
                     tasks.push({
                         title: `${image.remoteSrc}`,
@@ -304,11 +304,17 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };

@@ -1,7 +1,7 @@
-const inquirer = require('inquirer');
-const findReplace = require('../tasks/find-replace');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import findReplace from '../tasks/find-replace.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Find & Replace',
@@ -88,6 +88,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

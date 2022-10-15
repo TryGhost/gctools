@@ -1,25 +1,25 @@
-const changeVisibility = require('../tasks/change-visibility');
-const ui = require('@tryghost/pretty-cli').ui;
+import {ui} from '@tryghost/pretty-cli';
+import changeVisibility from '../tasks/change-visibility.js';
 
 // Internal ID in case we need one.
-exports.id = 'change-visibility';
+const id = 'change-visibility';
 
-exports.group = 'Content:';
+const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'change-visibility <apiURL> <adminAPIKey>';
+const flags = 'change-visibility <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Switch the visibility for posts from one level to another';
+const desc = 'Switch the visibility for posts from one level to another';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -49,7 +49,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -65,4 +65,14 @@ exports.run = async (argv) => {
 
     // Report success
     ui.log.ok(`Successfully changed the visibility of ${context.changed.length} posts in ${Date.now() - timer}ms.`);
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    paramsDesc,
+    setup,
+    run
 };

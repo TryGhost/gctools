@@ -1,8 +1,8 @@
-const fsUtils = require('@tryghost/mg-fs-utils');
-const fs = require('fs-extra');
-const glob = require('glob');
-const path = require('path');
-const makeTaskRunner = require('../lib/task-runner');
+import fsUtils from '@tryghost/mg-fs-utils';
+import fs from 'fs-extra';
+import glob from 'glob';
+import {parse, dirname, join, basename} from 'path';
+import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
 async function hydrateFile(filePath) {
     let stats = await fs.stat(filePath);
@@ -52,13 +52,13 @@ async function chunkFiles(ctx) {
 }
 
 async function createZip(chunk, index, ctx) {
-    const zipFileParts = path.parse(ctx.args.dirPath);
+    const zipFileParts = parse(ctx.args.dirPath);
     const zipName = `${zipFileParts.name}_${index}.zip`;
 
     fsUtils.zip.write(ctx.fileCache.zipDir, chunk, zipName);
 }
 
-module.exports.initialise = (options) => {
+const initialise = (options) => {
     return {
         title: 'Initialising Workspace',
         task: (ctx, task) => {
@@ -68,7 +68,7 @@ module.exports.initialise = (options) => {
             ctx.theFiles = [];
             ctx.chunks = [];
             ctx.args.sizeInBytes = (options.maxSize * (1024 * 1024));
-            ctx.args.destDir = path.dirname(options.dirPath);
+            ctx.args.destDir = dirname(options.dirPath);
 
             if (options.verbose) {
                 task.output = `Workspace initialised at ${ctx.fileCache.cacheDir}`;
@@ -77,9 +77,9 @@ module.exports.initialise = (options) => {
     };
 };
 
-module.exports.getFullTaskList = (options) => {
+const getFullTaskList = (options) => {
     return [
-        this.initialise(options),
+        initialise(options),
         {
             title: 'Copying file',
             task: async (ctx) => {
@@ -137,7 +137,7 @@ module.exports.getFullTaskList = (options) => {
 
                             await Promise.all(chunk.map(async (file) => {
                                 let filePathNoBase = file.path.replace(tmpDir, '');
-                                let newLocal = path.join(zipDir, `chunks/chunk_${index}`, filePathNoBase);
+                                let newLocal = join(zipDir, `chunks/chunk_${index}`, filePathNoBase);
                                 await fs.move(file.path, newLocal, {
                                     overwrite: true
                                 });
@@ -176,8 +176,8 @@ module.exports.getFullTaskList = (options) => {
                     let filePaths = glob.sync(`${ctx.fileCache.zipDir}/*.zip`);
 
                     await Promise.all(filePaths.map(async (filePath) => {
-                        let fileName = path.basename(filePath);
-                        let folderName = path.basename(ctx.args.dirPath).replace('.zip', '');
+                        let fileName = basename(filePath);
+                        let folderName = basename(ctx.args.dirPath).replace('.zip', '');
                         await fs.move(filePath, `${ctx.args.destDir}/${folderName}_zip_chunks/${fileName}`, {
                             overwrite: true
                         });
@@ -204,11 +204,17 @@ module.exports.getFullTaskList = (options) => {
     ];
 };
 
-module.exports.getTaskRunner = (options) => {
+const getTaskRunner = (options) => {
     let tasks = [];
 
-    tasks = this.getFullTaskList(options);
+    tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+};
+
+export default {
+    initialise,
+    getFullTaskList,
+    getTaskRunner
 };

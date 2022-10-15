@@ -1,25 +1,25 @@
-const findReplace = require('../tasks/find-replace');
-const ui = require('@tryghost/pretty-cli').ui;
+import {ui} from '@tryghost/pretty-cli';
+import findReplace from '../tasks/find-replace.js';
 
 // Internal ID in case we need one.
-exports.id = 'find-replace';
+const id = 'find-replace';
 
-exports.group = 'Content:';
+const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'find-replace <apiURL> <adminAPIKey>';
+const flags = 'find-replace <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Find & replace text in Ghost';
+const desc = 'Find & replace text in Ghost';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -44,7 +44,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -64,4 +64,14 @@ exports.run = async (argv) => {
 
     // Report success
     ui.log.ok(`Successfully updated ${context.updated.length} strings in ${Date.now() - timer}ms.`);
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    paramsDesc,
+    setup,
+    run
 };

@@ -1,8 +1,8 @@
-const inquirer = require('inquirer');
-const changeAuthor = require('../tasks/change-author');
-const {getAPIAuthorsObj} = require('../lib/ghost-api-choices.js');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import changeAuthor from '../tasks/change-author.js';
+import {getAPIAuthorsObj} from '../lib/ghost-api-choices.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Change Author',
@@ -46,6 +46,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

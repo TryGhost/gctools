@@ -1,11 +1,13 @@
-const inquirer = require('inquirer');
-inquirer.registerPrompt('search-checkbox', require('inquirer-search-checkbox'));
-inquirer.registerPrompt('datetime', require('inquirer-datepicker-prompt'));
-const chalk = require('chalk');
-const randomPosts = require('../tasks/random-posts');
-const {getAPIAuthorsObj, getAPITagsObj} = require('../lib/ghost-api-choices.js');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import inquirerSearchCheckbox from 'inquirer-search-checkbox';
+inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
+import inquirerDatepickerPrompt from 'inquirer-datepicker-prompt';
+inquirer.registerPrompt('datetime', inquirerDatepickerPrompt);
+import chalk from 'chalk';
+import randomPosts from '../tasks/random-posts.js';
+import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
+import {ui} from '@tryghost/pretty-cli';
 
 const dateToday = new Date();
 
@@ -168,6 +170,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

@@ -1,22 +1,22 @@
-const fetchImages = require('../tasks/fetch-images');
-const ui = require('@tryghost/pretty-cli').ui;
+import {ui} from '@tryghost/pretty-cli';
+import fetchImages from '../tasks/fetch-images.js';
 
 // Internal ID in case we need one.
-exports.id = 'fetch-images';
+const id = 'fetch-images';
 
-exports.group = 'Tools:';
+const group = 'Tools:';
 
 // The command to run and any params
-exports.flags = 'fetch-images <jsonFile> <url>';
+const flags = 'fetch-images <jsonFile> <url>';
 
 // Description for the top level command
-exports.desc = 'Fetch the images referenced inb a Ghost JSON file';
+const desc = 'Fetch the images referenced inb a Ghost JSON file';
 
 // Descriptions for the individual params
-exports.paramsDesc = ['Path to the Ghost JSON file file', 'Provide a URL (without trailing slash) to scrape images from'];
+const paramsDesc = ['Path to the Ghost JSON file file', 'Provide a URL (without trailing slash) to scrape images from'];
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -28,7 +28,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -52,4 +52,14 @@ exports.run = async (argv) => {
 
     // Report success
     ui.log.ok(`Successfully fetched ${context.images.length} images in ${Date.now() - timer}ms.`);
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    paramsDesc,
+    setup,
+    run
 };

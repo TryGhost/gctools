@@ -1,25 +1,25 @@
-const changeRole = require('../tasks/change-role');
-const ui = require('@tryghost/pretty-cli').ui;
+import {ui} from '@tryghost/pretty-cli';
+import changeRole from '../tasks/change-role.js';
 
 // Internal ID in case we need one.
-exports.id = 'change-role';
+const id = 'change-role';
 
-exports.group = 'Content:';
+const group = 'Content:';
 
 // The command to run and any params
-exports.flags = 'change-role <apiURL> <adminAPIKey>';
+const flags = 'change-role <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-exports.desc = 'Change user roles in Ghost (requires staff token) [Ghost >= 5.2.0]';
+const desc = 'Change user roles in Ghost (requires staff token) [Ghost >= 5.2.0]';
 
 // Descriptions for the individual params
-exports.paramsDesc = [
+const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key'
 ];
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -40,7 +40,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -56,4 +56,14 @@ exports.run = async (argv) => {
 
     // Report success
     ui.log.ok(`Successfully updated ${context.updated.length} users in ${Date.now() - timer}ms.`);
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    paramsDesc,
+    setup,
+    run
 };

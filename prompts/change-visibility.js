@@ -1,10 +1,11 @@
-const inquirer = require('inquirer');
-inquirer.registerPrompt('search-checkbox', require('inquirer-search-checkbox'));
-const chalk = require('chalk');
-const changeVisibility = require('../tasks/change-visibility');
-const {getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj} = require('../lib/ghost-api-choices.js');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import inquirerSearchCheckbox from 'inquirer-search-checkbox';
+inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
+import chalk from 'chalk';
+import {ui} from '@tryghost/pretty-cli';
+import changeVisibility from '../tasks/change-visibility.js';
+import {getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj} from '../lib/ghost-api-choices.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Change Visibility',
@@ -78,6 +79,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

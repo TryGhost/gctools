@@ -1,6 +1,6 @@
-const inquirer = require('inquirer');
-const dedupeMembersCsv = require('../tasks/dedupe-members-csv');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import dedupeMembersCsv from '../tasks/dedupe-members-csv.js';
 
 const choice = {
     name: 'Dedupe Members Csv',
@@ -57,6 +57,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

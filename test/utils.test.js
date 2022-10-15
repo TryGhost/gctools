@@ -1,6 +1,6 @@
 const testUtils = require('./utils');
 
-const {transformToCommaString, maybeStringToArray, maybeArrayToString, SlugFromStringArrayOrObject, maybeObjectToArray} = require('../lib/utils');
+import {transformToCommaString, maybeStringToArray, maybeArrayToString, SlugFromStringArrayOrObject, maybeObjectToArray} from '../lib/utils.js';
 
 const tagsObject = testUtils.fixtures.readSync('tags.json');
 

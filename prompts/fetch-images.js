@@ -1,6 +1,6 @@
-const inquirer = require('inquirer');
-const fetchImages = require('../tasks/fetch-images');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import fetchImages from '../tasks/fetch-images.js';
 
 const choice = {
     name: 'Fetch images',
@@ -55,6 +55,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

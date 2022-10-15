@@ -1,22 +1,22 @@
-const zipCreate = require('../tasks/zip-create');
-const ui = require('@tryghost/pretty-cli').ui;
+import {ui} from '@tryghost/pretty-cli';
+import zipCreate from '../tasks/zip-create.js';
 
 // Internal ID in case we need one.
-exports.id = 'zip-create';
+const id = 'zip-create';
 
-exports.group = 'Tools:';
+const group = 'Tools:';
 
 // The command to run and any params
-exports.flags = 'zip-create <dirPath>';
+const flags = 'zip-create <dirPath>';
 
 // Description for the top level command
-exports.desc = 'Create multiple zip files of a predefined maximum size from a source directory';
+const desc = 'Create multiple zip files of a predefined maximum size from a source directory';
 
 // Descriptions for the individual params
-exports.paramsDesc = ['Path to the large directory'];
+const paramsDesc = ['Path to the large directory'];
 
 // Configure all the options
-exports.setup = (sywac) => {
+const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
@@ -28,7 +28,7 @@ exports.setup = (sywac) => {
 };
 
 // What to do when this command is executed
-exports.run = async (argv) => {
+const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
@@ -49,4 +49,14 @@ exports.run = async (argv) => {
 
     // Report success
     ui.log.ok(`Successfully split zip in ${Date.now() - timer}ms.`);
+};
+
+export default {
+    id,
+    group,
+    flags,
+    desc,
+    paramsDesc,
+    setup,
+    run
 };

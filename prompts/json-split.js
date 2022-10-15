@@ -1,6 +1,6 @@
-const inquirer = require('inquirer');
-const jsonSplit = require('../tasks/json-split');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import jsonSplit from '../tasks/json-split.js';
 
 const choice = {
     name: 'JSON Split',
@@ -45,6 +45,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};

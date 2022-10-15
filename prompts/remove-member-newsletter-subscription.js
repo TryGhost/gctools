@@ -1,8 +1,8 @@
-const inquirer = require('inquirer');
-const removeMemberNewsletterSubscription = require('../tasks/remove-member-newsletter-subscription');
-const {getAPINewslettersObj} = require('../lib/ghost-api-choices.js');
-const ghostAPICreds = require('../lib/ghost-api-creds');
-const ui = require('@tryghost/pretty-cli').ui;
+import inquirer from 'inquirer';
+import {ui} from '@tryghost/pretty-cli';
+import removeMemberNewsletterSubscription from '../tasks/remove-member-newsletter-subscription.js';
+import {getAPINewslettersObj} from '../lib/ghost-api-choices.js';
+import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Remove member newsletter subscription',
@@ -50,6 +50,8 @@ async function run() {
     });
 }
 
-module.exports.choice = choice;
-module.exports.doit = options;
-module.exports.run = run;
+export default {
+    choice,
+    options,
+    run
+};
