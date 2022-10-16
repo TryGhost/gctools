@@ -58,9 +58,12 @@ prettyCLI.style({
 });
 
 prettyCLI.groupOrder([
+    'Interactive:',
     'Tools:',
     'Content:',
-    'Global Options:'
+    'Members:',
+    'Global Options:',
+    'Beta:'
 ]);
 
 prettyCLI.parseAndExit();

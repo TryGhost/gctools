@@ -4,7 +4,7 @@ import addMemberNewsletterSubscription from '../tasks/add-member-newsletter-subs
 // Internal ID in case we need one.
 const id = 'add-member-newsletter-subscription';
 
-const group = 'Content:';
+const group = 'Members:';
 
 // The command to run and any params
 const flags = 'add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>';

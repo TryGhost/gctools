@@ -4,7 +4,7 @@ import dedupeMembers from '../tasks/dedupe-members-csv.js';
 // Internal ID in case we need one.
 const id = 'dedupe-members-csv';
 
-const group = 'Content:';
+const group = 'Members:';
 
 // The command to run and any params
 const flags = 'dedupe-members-csv <existingMembers> <newFree> [newComp] [newPaid]';

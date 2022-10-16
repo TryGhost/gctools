@@ -4,7 +4,7 @@ import deleteMembers from '../tasks/delete-members.js';
 // Internal ID in case we need one.
 const id = 'delete-members';
 
-const group = 'Content:';
+const group = 'Members:';
 
 // The command to run and any params
 const flags = 'delete-members <apiURL> <adminAPIKey>';

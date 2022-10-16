@@ -4,7 +4,7 @@ import removeMemberNewsletterSubscription from '../tasks/remove-member-newslette
 // Internal ID in case we need one.
 const id = 'remove-member-newsletter-subscription';
 
-const group = 'Content:';
+const group = 'Members:';
 
 // The command to run and any params
 const flags = 'remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>';

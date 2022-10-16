@@ -10,7 +10,7 @@ const sitesJSONFile = join(homedir(), '.gctools', 'gctools_sites.json');
 // Internal ID in case we need one.
 const id = 'i';
 
-const group = 'Tools:';
+const group = 'Interactive:';
 
 // The command to run and any params
 const flags = 'i';
