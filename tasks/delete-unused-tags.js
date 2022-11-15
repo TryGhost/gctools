@@ -53,7 +53,7 @@ const getFullTaskList = (options) => {
                 ctx.tagsToDelete = ctx.tags.filter((item) => {
                     return item.count.posts <= options.maxPostCount;
                 });
-                task.output = `Found ${ctx.tagsToDelete.length} tags with no posts`;
+                task.output = `Found ${ctx.tagsToDelete.length} tags with low or no posts`;
             }
         },
         {
