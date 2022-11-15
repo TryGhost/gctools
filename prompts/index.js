@@ -9,7 +9,7 @@ import addTags from './add-tags.js';
 import combineTags from './combine-tags.js';
 import addPreview from './add-preview.js';
 import deleteTags from './delete-tags.js';
-import deleteEmptyTags from './delete-empty-tags.js';
+import deleteUnusedTags from './delete-unused-tags.js';
 import findReplace from './find-replace.js';
 import changeAuthor from './change-author.js';
 import changeVisibility from './change-visibility.js';
@@ -33,7 +33,7 @@ export default {
     combineTags,
     addPreview,
     deleteTags,
-    deleteEmptyTags,
+    deleteUnusedTags,
     findReplace,
     changeAuthor,
     changeVisibility,

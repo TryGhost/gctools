@@ -1,15 +1,21 @@
 import inquirer from 'inquirer';
 import {ui} from '@tryghost/pretty-cli';
-import deleteEmptyTags from '../tasks/delete-empty-tags.js';
+import deleteEmptyTags from '../tasks/delete-unused-tags.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
-    name: 'Delete empty tags',
-    value: 'deleteEmptyTags'
+    name: 'Delete unused tags',
+    value: 'deleteUnusedTags'
 };
 
 const options = [
-    ...ghostAPICreds
+    ...ghostAPICreds,
+    {
+        type: 'number',
+        name: 'maxPostCount',
+        message: 'Maximum number of associated posts a tag can have for it to be deleted:',
+        default: 0
+    }
 ];
 
 async function run() {

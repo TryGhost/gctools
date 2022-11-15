@@ -25,7 +25,7 @@ const initialise = (options) => {
             ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
             ctx.tags = [];
-            ctx.tagsWithNoPosts = [];
+            ctx.tagsToDelete = [];
             ctx.deleted = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
@@ -50,10 +50,10 @@ const getFullTaskList = (options) => {
         {
             title: 'Finding tags with no posts',
             task: async (ctx, task) => {
-                ctx.tagsWithNoPosts = ctx.tags.filter((item) => {
-                    return item.count.posts === 0;
+                ctx.tagsToDelete = ctx.tags.filter((item) => {
+                    return item.count.posts <= options.maxPostCount;
                 });
-                task.output = `Found ${ctx.tagsWithNoPosts.length} tags with no posts`;
+                task.output = `Found ${ctx.tagsToDelete.length} tags with no posts`;
             }
         },
         {
@@ -61,7 +61,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 let tasks = [];
 
-                await Promise.mapSeries(ctx.tagsWithNoPosts, async (tag) => {
+                await Promise.mapSeries(ctx.tagsToDelete, async (tag) => {
                     tasks.push({
                         title: `${tag.name}`,
                         task: async () => {

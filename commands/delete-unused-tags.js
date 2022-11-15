@@ -1,5 +1,5 @@
 import {ui} from '@tryghost/pretty-cli';
-import deleteEmptyTags from '../tasks/delete-empty-tags.js';
+import deleteEmptyTags from '../tasks/delete-unused-tags.js';
 
 // Internal ID in case we need one.
 const id = 'delete-empty-tags';
@@ -23,6 +23,10 @@ const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
         desc: 'Show verbose output'
+    });
+    sywac.number('--maxPostCount', {
+        defaultValue: 0,
+        desc: 'Maximum number of associated posts a tag can have for it to be deleted (i.e. `2` will select tags with 2 or less associated posts)'
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
