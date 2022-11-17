@@ -57,6 +57,11 @@ const getFullTaskList = (options) => {
                     discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
                 }
 
+                if (ctx.args.dateRange === 'custom') {
+                    discoveryFilter.push(`published_at:>='${ctx.args.dateRangeStart.toISOString().substring(0, 10)}'`);
+                    discoveryFilter.push(`published_at:<='${ctx.args.dateRangeEnd.toISOString().substring(0, 10)}'`);
+                }
+
                 let discoveryOptions = {
                     api: ctx.api,
                     type: 'posts',

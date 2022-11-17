@@ -1,11 +1,15 @@
 import inquirer from 'inquirer';
 import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
+import inquirerDatepickerPrompt from 'inquirer-datepicker-prompt';
+inquirer.registerPrompt('datetime', inquirerDatepickerPrompt);
 import chalk from 'chalk';
 import {ui} from '@tryghost/pretty-cli';
 import changeStatus from '../tasks/change-status.js';
 import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
+
+const dateToday = new Date();
 
 const choice = {
     name: 'Change Status',
@@ -71,6 +75,41 @@ const options = [
         message: `Filter by author: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
         choices: function () {
             return getAPIAuthorsObj();
+        }
+    },
+    {
+        type: 'list',
+        name: 'dateRange',
+        message: 'Date Range:',
+        choices: [
+            {
+                name: `All`,
+                value: 'all'
+            },
+            {
+                name: `Custom`,
+                value: 'custom'
+            }
+        ]
+    },
+    {
+        type: 'datetime',
+        name: 'dateRangeStart',
+        message: 'Start date:',
+        format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
+        initial: new Date(dateToday.getFullYear(), dateToday.getMonth() - 6, dateToday.getDate()),
+        when: function (answers) {
+            return answers.dateRange === 'custom';
+        }
+    },
+    {
+        type: 'datetime',
+        name: 'dateRangeEnd',
+        message: 'End date:',
+        format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
+        initial: dateToday,
+        when: function (answers) {
+            return answers.dateRange === 'custom';
         }
     },
     {
