@@ -67,7 +67,7 @@ const initialise = (options) => {
             ctx.fileCache = new fsUtils.FileCache(`${ctx.args.dirPath}_zip_create`);
             ctx.theFiles = [];
             ctx.chunks = [];
-            ctx.args.sizeInBytes = (options.maxSize * (1024 * 1024));
+            ctx.args.sizeInBytes = (options.maxSize * 1000000);
             ctx.args.destDir = dirname(options.dirPath);
 
             if (options.verbose) {
