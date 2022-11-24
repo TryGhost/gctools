@@ -1,3 +1,4 @@
+import path from 'node:path';
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
@@ -64,6 +65,10 @@ const getFullTaskList = (options) => {
                 task.output = `Found ${ctx.csvData.length} posts in CSV`;
 
                 ctx.csvData = ctx.csvData.map((item) => {
+                    const myURL = new URL(item.url);
+                    const parsedPathname = path.parse(myURL.pathname);
+                    item.slug = parsedPathname.name;
+
                     item.delete_tags = maybeStringToArray(item.delete_tags);
                     item.add_tags = maybeStringToArray(item.add_tags);
                     return item;
@@ -74,7 +79,7 @@ const getFullTaskList = (options) => {
             title: 'Filter content',
             task: async (ctx, task) => {
                 ctx.csvData.forEach((csvPost) => {
-                    let foundInGhost = _.find(ctx.posts, {url: csvPost.url});
+                    let foundInGhost = _.find(ctx.posts, {slug: csvPost.slug});
 
                     if (foundInGhost) {
                         ctx.selectedPosts.push({
