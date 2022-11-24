@@ -27,6 +27,7 @@ import randomPostCommands from '../commands/random-post.js';
 import removeMemberNewsletterSubscriptionCommands from '../commands/remove-member-newsletter-subscription.js';
 import zipCreateCommands from '../commands/zip-create.js';
 import zipSplitCommands from '../commands/zip-split.js';
+import changeTags from '../commands/change-tags.js';
 
 prettyCLI.command(addMemberNewsletterSubscriptionCommands);
 prettyCLI.command(addPreviewCommands);
@@ -52,6 +53,7 @@ prettyCLI.command(randomPostCommands);
 prettyCLI.command(removeMemberNewsletterSubscriptionCommands);
 prettyCLI.command(zipCreateCommands);
 prettyCLI.command(zipSplitCommands);
+prettyCLI.command(changeTags);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'

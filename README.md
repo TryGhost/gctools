@@ -49,6 +49,7 @@ Available tools include:
 * [`change-role`](#change-role)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
+* [`change-tags`](#change-tags)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -397,6 +398,31 @@ gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletter
 # Remove all subscriptions for a filtered set of members by label
 gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium'
 ```
+
+
+### change-tags
+
+Takes a CSV file of URLs, tags to add, and tags to delete. For each URL in there, it will delete and add specific tags. 
+
+```sh
+# Will add the tags to the end of the tag list
+gctools change-tags <apiURL> <adminAPIKey> <csvFile>
+
+# Will use the first tag in the `add_tags` list as the primary tag
+gctools change-tags <apiURL> <adminAPIKey> <csvFile> --addAsPrimaryTag true
+```
+
+The CSV must follow a specific format:
+
+```csv
+url,delete_tags,add_tags
+https://example.com/my-post-slug/,Newsletter,"News, Blogs"
+... as many rows as needed
+```
+
+In this CSV, the first post will have 'Newsletter` removed, and both 'News' & 'Blogs' added to the end the tag list.
+
+If `--addAsPrimaryTag true` is set, 'News' & 'Blogs' will be added to the start of the tag list, making 'News' the new primary tag.
 
 
 ## Develop
