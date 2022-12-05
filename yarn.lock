@@ -1080,6 +1080,16 @@
     extract-zip "^2.0.1"
     fs-extra "^10.0.0"
 
+"@tryghost/zip@1.1.30":
+  version "1.1.30"
+  resolved "https://registry.yarnpkg.com/@tryghost/zip/-/zip-1.1.30.tgz#3c291c7b5da58485b2a5f53980290b002cd38259"
+  integrity sha512-zxXLGIdWfyLsjTw8qjRw3wJDYzdUCmEahwY8x9JPmAU4YaW0lWBcQ+h/yP4RU68buhHZIAJa5D2l2SPyq+cbeQ==
+  dependencies:
+    archiver "^5.0.0"
+    bluebird "^3.7.2"
+    extract-zip "^2.0.1"
+    fs-extra "^10.0.0"
+
 "@types/babel__core@^7.1.14":
   version "7.1.19"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.19.tgz#7b497495b7d1b4812bdb9d02804d0576f43ee460"
