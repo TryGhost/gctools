@@ -110,7 +110,7 @@ const getFullTaskList = (options) => {
                 });
 
                 let taskOptions = options;
-                taskOptions.concurrent = 3;
+                taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
             }
         },
@@ -148,7 +148,7 @@ const getFullTaskList = (options) => {
                 });
 
                 let taskOptions = options;
-                taskOptions.concurrent = 3;
+                taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
             }
         }
