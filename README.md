@@ -149,8 +149,8 @@ gctools delete-posts <apiURL> <adminAPIKey>
 # Delete all posts with a specific tag
 gctools delete-posts <apiURL> <adminAPIKey> --tag 'hash-testing'
 
-# Delete all public posts
-gctools delete-posts <apiURL> <adminAPIKey> --status 'public'
+# Delete all published posts
+gctools delete-posts <apiURL> <adminAPIKey> --status 'published'
 
 # Delete all draft posts
 gctools delete-posts <apiURL> <adminAPIKey> --status 'draft'
@@ -177,8 +177,8 @@ gctools delete-pages <apiURL> <adminAPIKey>
 # Delete all pages with a specific tag
 gctools delete-pages <apiURL> <adminAPIKey> --tag 'hash-testing'
 
-# Delete all public pages
-gctools delete-pages <apiURL> <adminAPIKey> --status 'public'
+# Delete all published pages
+gctools delete-pages <apiURL> <adminAPIKey> --status 'published'
 
 # Delete all draft pages
 gctools delete-pages <apiURL> <adminAPIKey> --status 'draft'
