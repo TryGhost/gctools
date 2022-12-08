@@ -32,6 +32,11 @@ const setup = (sywac) => {
         defaultValue: null,
         desc: 'Delete content with this author slug'
     });
+    sywac.enumeration('--status', {
+        defaultValue: 'all',
+        choices: ['all', 'draft', 'published'],
+        desc: 'Post visibility'
+    });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'

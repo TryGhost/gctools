@@ -36,6 +36,7 @@ Available tools include:
 * [`dedupe-members-csv`](#dedupe-members-csv)
 * [`random-posts`](#random-posts)
 * [`delete-posts`](#delete-posts)
+* [`delete-pages`](#delete-pages)
 * [`add-tags`](#add-tags)
 * [`combine-tags`](#combine-tags)
 * [`add-preview`](#add-preview)
@@ -148,11 +149,45 @@ gctools delete-posts <apiURL> <adminAPIKey>
 # Delete all posts with a specific tag
 gctools delete-posts <apiURL> <adminAPIKey> --tag 'hash-testing'
 
+# Delete all public posts
+gctools delete-posts <apiURL> <adminAPIKey> --status 'public'
+
+# Delete all draft posts
+gctools delete-posts <apiURL> <adminAPIKey> --status 'draft'
+
 # Delete all posts by a specific author
 gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user'
 
 # Delete all posts by a specific author with a specific tag
 gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
+```
+
+
+### delete-pages
+
+Delete all content or content with a specific set of filters, which can be combined.
+
+```sh
+# See all available options
+gctools delete-pages --help
+
+# Delete all pages (⛔️ dangerous!)
+gctools delete-pages <apiURL> <adminAPIKey>
+
+# Delete all pages with a specific tag
+gctools delete-pages <apiURL> <adminAPIKey> --tag 'hash-testing'
+
+# Delete all public pages
+gctools delete-pages <apiURL> <adminAPIKey> --status 'public'
+
+# Delete all draft pages
+gctools delete-pages <apiURL> <adminAPIKey> --status 'draft'
+
+# Delete all pages by a specific author
+gctools delete-pages <apiURL> <adminAPIKey> --author 'sample-user'
+
+# Delete all pages by a specific author with a specific tag
+gctools delete-pages <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
 ```
 
 

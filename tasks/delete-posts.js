@@ -43,6 +43,10 @@ const getFullTaskList = (options) => {
                 try {
                     let discoveryFilter = [];
 
+                    if (ctx.args.status && ctx.args.status !== 'all') {
+                        discoveryFilter.push(`status:[${ctx.args.status}]`);
+                    }
+
                     if (ctx.args.tag && ctx.args.tag.length > 0) {
                         discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
                     }

@@ -16,6 +16,25 @@ const options = [
     ...ghostAPICreds,
     {
         type: 'list',
+        name: 'status',
+        message: 'Status: (Leave blank for all)',
+        choices: [
+            {
+                name: 'All',
+                value: 'all'
+            },
+            {
+                name: 'Draft',
+                value: 'draft'
+            },
+            {
+                name: 'Published',
+                value: 'published'
+            }
+        ]
+    },
+    {
+        type: 'list',
         name: 'delete_by',
         message: 'Delete content by:',
         choices: [
