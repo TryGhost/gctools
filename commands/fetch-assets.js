@@ -56,7 +56,7 @@ const run = async (argv) => {
     }
 
     if (argv.zip) {
-        ui.log.ok(`Zip file (${(context.outputFile.size / (1024 * 1024)).toFixed(2)}MB) saved at: ${context.outputFile.path}`);
+        ui.log.ok(`Zip file (${(context.outputFile.size / (1000 * 1000)).toFixed(2)}MB) saved at: ${context.outputFile.path}`);
     }
 
     // Report success

@@ -1,14 +1,29 @@
-import {dirname} from 'node:path';
+import {URL} from 'node:url';
+import {join, dirname} from 'node:path';
 import fs from 'fs-extra';
 import MgAssetScraper from '@tryghost/mg-assetscraper';
 import fsUtils from '@tryghost/mg-fs-utils';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import {GhostLogger} from '@tryghost/logging';
+
+const __dirname = new URL('.', import.meta.url).pathname;
 
 const initialise = (options) => {
     return {
         title: 'Initialising Workspace',
-        task: (ctx) => {
+        task: async (ctx) => {
+            // Ensure log dir exists
+            const logDir = join(__dirname, '../logs/');
+            await fs.ensureDir(logDir);
+
             ctx.options = options;
+            ctx.logging = new GhostLogger({
+                domain: 'gctools_fetch_assets', // This can be unique per migration
+                mode: 'long',
+                transports: ['file'],
+                path: logDir
+            });
+
             ctx.allowScrape = {
                 all: ctx.options.scrape.includes('all'),
                 images: ctx.options.scrape.includes('img') || ctx.options.scrape.includes('all'),
@@ -23,8 +38,8 @@ const initialise = (options) => {
                 allowImages: ctx.allowScrape.images,
                 allowMedia: ctx.allowScrape.media,
                 allowFiles: ctx.allowScrape.files,
-                baseDomain: options.url || null
-            });
+                baseDomain: ctx.options.url || null
+            }, ctx);
 
             ctx.options.file = dirname(options.jsonFile);
         }
@@ -37,7 +52,6 @@ const getFullTaskList = (options) => {
         {
             title: 'Reading JSON file',
             task: async (ctx) => {
-                // 1. Read JSON file and store data
                 try {
                     const jsonFileData = await fs.readJson(options.jsonFile);
 
@@ -55,11 +69,13 @@ const getFullTaskList = (options) => {
                 return [ctx.allowScrape.images, ctx.allowScrape.media, ctx.allowScrape.files].every(element => element === false);
             },
             task: async (ctx) => {
-                // 6. Format the data as a valid Ghost JSON file
-                let tasks = ctx.assetScraper.fetch(ctx);
-                let assetScraperOptions = JSON.parse(JSON.stringify(options)); // Clone the options object
-                assetScraperOptions.concurrent = false;
-                return makeTaskRunner(tasks, assetScraperOptions);
+                let assetScraperTasks = ctx.assetScraper.fetch(ctx);
+                return makeTaskRunner(assetScraperTasks, {
+                    verbose: options.verbose,
+                    exitOnError: false,
+                    concurrent: false,
+                    topLevel: false
+                });
             }
         },
         {

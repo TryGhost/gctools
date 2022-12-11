@@ -41,7 +41,8 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
+                checked: true
             },
             {
                 name: 'Images',
@@ -58,9 +59,9 @@ const options = [
         ]
     },
     {
-        type: 'input',
+        type: 'number',
         name: 'sizeLimit',
-        message: 'Maximum asset size in MB (Larger will be ignored):',
+        message: 'Maximum asset size in MB (Larger files will be skipped):',
         default: function () {
             return null;
         }
@@ -88,7 +89,7 @@ async function run() {
             ui.log.ok(`Successfully fetched assets in ${Date.now() - timer}ms.`);
 
             if (opts.zip) {
-                ui.log.ok(`Zip file (${(context.outputFile.size / (1024 * 1024)).toFixed(2)}MB) saved at: ${context.outputFile.path}`);
+                ui.log.ok(`Zip file (${(context.outputFile.size / (1000 * 1000)).toFixed(2)}MB) saved at: ${context.outputFile.path}`);
             }
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
