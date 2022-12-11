@@ -17,7 +17,7 @@ const options = [
     {
         type: 'list',
         name: 'visibility',
-        message: 'Visibility: (Leave blank for all)',
+        message: 'Visibility:',
         choices: [
             {
                 name: 'All',

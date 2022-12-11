@@ -32,7 +32,7 @@ const options = [
     {
         type: 'list',
         name: 'visibility',
-        message: 'Filter by visibility: (Leave blank for all)',
+        message: 'Filter by visibility:',
         choices: [
             {
                 name: 'All',

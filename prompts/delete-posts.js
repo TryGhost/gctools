@@ -17,7 +17,7 @@ const options = [
     {
         type: 'list',
         name: 'status',
-        message: 'Status: (Leave blank for all)',
+        message: 'Status:',
         choices: [
             {
                 name: 'All',
