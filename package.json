@@ -30,7 +30,7 @@
     "@tryghost/admin-api": "1.13.2",
     "@tryghost/listr-smart-renderer": "0.4.5",
     "@tryghost/logging": "2.3.5",
-    "@tryghost/mg-assetscraper": "0.2.12",
+    "@tryghost/mg-assetscraper": "0.2.13",
     "@tryghost/mg-fs-utils": "0.11.5",
     "@tryghost/pretty-cli": "1.2.32",
     "@tryghost/zip": "1.1.30",

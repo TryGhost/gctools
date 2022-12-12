@@ -1115,10 +1115,10 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper@0.2.12":
-  version "0.2.12"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.2.12.tgz#e1a0a84bc895fd4c6ab32dfccd7b721ddce2ea32"
-  integrity sha512-QWBHv3Q9P01Rc/X4NAozn+/AYZ85XNApZtO+MOpLUwcSWNwDce2UAGxHuMHaO16tgDwm5giZSBUMvNLMvPD53Q==
+"@tryghost/mg-assetscraper@0.2.13":
+  version "0.2.13"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.2.13.tgz#df8cc2577701c23635e2b6bd77c9120f16024e85"
+  integrity sha512-HxXbKbAXpPXkPyrJVRrpf8t8ibtpCOBVoy1okFxVqonfrvE/OTU2pqvMCJhpA0AGNKkx+4wjdQlZT17aTo73gQ==
   dependencies:
     "@tryghost/errors" "1.2.19"
     "@tryghost/listr-smart-renderer" "^0.4.5"
