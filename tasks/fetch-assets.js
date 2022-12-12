@@ -55,7 +55,14 @@ const getFullTaskList = (options) => {
                 try {
                     const jsonFileData = await fs.readJson(options.jsonFile);
 
+                    const jsonMeta = (jsonFileData.meta) ? jsonFileData.meta : jsonFileData.db[0].meta;
                     const jsonData = (jsonFileData.data) ? jsonFileData.data : jsonFileData.db[0].data;
+
+                    ctx.meta = {
+                        exported_on: jsonMeta.exported_on,
+                        version: jsonMeta.version
+                    };
+
                     ctx.result = jsonData;
                 } catch (error) {
                     ctx.errors.push(error);
@@ -81,7 +88,19 @@ const getFullTaskList = (options) => {
         {
             title: 'Create JSON file',
             task: async (ctx) => {
-                await ctx.fileCache.writeGhostImportFile(ctx.result, {
+                let result = {
+                    db: [
+                        {
+                            meta: {
+                                exported_on: ctx.meta.exported_on,
+                                version: ctx.meta.version
+                            },
+                            data: ctx.result
+                        }
+                    ]
+                };
+
+                await ctx.fileCache.writeGhostImportFile(result, {
                     filename: 'ghost-import-correct-assets.json'
                 });
             }
