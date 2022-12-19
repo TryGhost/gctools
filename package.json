@@ -32,7 +32,7 @@
     "@tryghost/logging": "2.3.6",
     "@tryghost/mg-assetscraper": "0.2.13",
     "@tryghost/mg-fs-utils": "0.11.5",
-    "@tryghost/pretty-cli": "1.2.32",
+    "@tryghost/pretty-cli": "1.2.33",
     "@tryghost/zip": "1.1.30",
     "bluebird": "3.7.2",
     "chalk": "5.2.0",
