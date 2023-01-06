@@ -417,8 +417,9 @@ Remove subscriptions for a specific newsletter
 # Remove all subscriptions
 gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 
-# Remove all subscriptions for a filtered set of members by label
-gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium'
+# Remove all subscriptions for a filtered set of members with the labels 'Premium Blog' & 'News'
+# Note: Slugs are not the same as names. You can get the label slug by filtering members and checking the URL
+gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlugs 'premium-blog,news'
 ```
 
 
@@ -430,8 +431,9 @@ Remove subscriptions for a specific newsletter
 # Remove all subscriptions
 gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 
-# Remove all subscriptions for a filtered set of members by label
-gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium'
+# Remove all subscriptions for a filtered set of members with the label 'Premium Blog'
+# Note: Slugs are not the same as names. You can get the label slug by filtering members and checking the URL
+gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium-blog'
 ```
 
 

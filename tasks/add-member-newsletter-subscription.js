@@ -66,8 +66,8 @@ const getFullTaskList = (options) => {
 
                 discoveryFilter.push(`newsletters:-[${thisNewsletterSlug}]`);
 
-                if (options.onlyForLabelSlug) {
-                    discoveryFilter.push(`label:[${options.onlyForLabelSlug}]`);
+                if (options.onlyForLabelSlugs) {
+                    discoveryFilter.push(`label:[${options.onlyForLabelSlugs.join(',')}]`);
                 }
 
                 let discoveryOptions = {
@@ -100,8 +100,6 @@ const getFullTaskList = (options) => {
                             };
 
                             newMemberObject.newsletters.push(ctx.newsletterObj);
-
-                            // console.log(newMemberObject);
 
                             try {
                                 let result = await ctx.api.members.edit(newMemberObject);

@@ -1,7 +1,9 @@
 import inquirer from 'inquirer';
+import inquirerSearchCheckbox from 'inquirer-search-checkbox';
+inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import {ui} from '@tryghost/pretty-cli';
 import addMemberNewsletterSubscription from '../tasks/add-member-newsletter-subscription.js';
-import {getAPINewslettersObj} from '../lib/ghost-api-choices.js';
+import {getAPINewslettersObj, getAPIMemberLabels} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
@@ -14,17 +16,17 @@ const options = [
     {
         type: 'list',
         name: 'newsletterID',
-        message: 'Newsletter to be subscribed from:',
+        message: 'Newsletter to be subscribed to:',
         choices: () => {
             return getAPINewslettersObj();
         }
     },
     {
-        type: 'input',
-        name: 'onlyForLabelSlug',
-        message: 'Only add subscriptions from members with this label slug:',
-        filter: function (val) {
-            return val.trim();
+        type: 'search-checkbox',
+        name: 'onlyForLabelSlugs',
+        message: 'Only add subscriptions from members with these labels:',
+        choices: () => {
+            return getAPIMemberLabels();
         }
     },
     {

@@ -16,7 +16,7 @@ const desc = 'Add member newsletter subscription';
 const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key',
-    'Newsletter ID to be subscribed from'
+    'Newsletter ID to be subscribed to'
 ];
 
 // Configure all the options
@@ -25,8 +25,8 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
-    sywac.string('--onlyForLabelSlug', {
-        defaultValue: false,
+    sywac.array('--onlyForLabelSlugs', {
+        defaultValue: null,
         desc: 'Optional label to filter members'
     });
     sywac.number('--delayBetweenCalls', {
