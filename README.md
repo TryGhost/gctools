@@ -409,20 +409,6 @@ gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 ```
 
 
-### remove-member-newsletter-subscription
-
-Remove subscriptions for a specific newsletter
-
-```sh
-# Remove all subscriptions
-gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
-
-# Remove all subscriptions for a filtered set of members with the label 'Premium Blog'
-# Note: Slugs are not the same as names. You can get the label slug by filtering members and checking the URL
-gctools remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlug 'premium-blog'
-```
-
-
 ### change-tags
 
 Takes a CSV file of URLs, tags to add, and tags to delete. For each URL in there, it will delete and add specific tags. 

@@ -16,7 +16,6 @@ import changeVisibility from './change-visibility.js';
 import changeStatus from './change-status.js';
 import changeRole from './change-role.js';
 import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
-import removeMemberNewsletterSubscription from './remove-member-newsletter-subscription.js';
 import contentStats from './content-stats.js';
 import dedupeMembersCsv from './dedupe-members-csv.js';
 
@@ -39,7 +38,6 @@ export default {
     changeStatus,
     changeRole,
     addMemberNewsletterSubscription,
-    removeMemberNewsletterSubscription,
     contentStats,
     dedupeMembersCsv
 };

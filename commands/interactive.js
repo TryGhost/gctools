@@ -110,10 +110,6 @@ const run = async () => {
                 value: tasks.addMemberNewsletterSubscription.choice.value
             },
             {
-                name: tasks.removeMemberNewsletterSubscription.choice.name,
-                value: tasks.removeMemberNewsletterSubscription.choice.value
-            },
-            {
                 name: tasks.changeRole.choice.name,
                 value: tasks.changeRole.choice.value
             },
