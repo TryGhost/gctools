@@ -66,7 +66,7 @@ const getFullTaskList = (options) => {
 
                 discoveryFilter.push(`newsletters:-[${thisNewsletterSlug}]`);
 
-                if (options.onlyForLabelSlugs) {
+                if (options.onlyForLabelSlugs.length) {
                     discoveryFilter.push(`label:[${options.onlyForLabelSlugs.join(',')}]`);
                 }
 
