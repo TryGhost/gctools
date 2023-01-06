@@ -1039,7 +1039,7 @@
     "@tryghost/root-utils" "^0.3.19"
     debug "^4.3.1"
 
-"@tryghost/elasticsearch@^3.0.7", "@tryghost/elasticsearch@^3.0.8":
+"@tryghost/elasticsearch@^3.0.8":
   version "3.0.8"
   resolved "https://registry.yarnpkg.com/@tryghost/elasticsearch/-/elasticsearch-3.0.8.tgz#cc39d7781140403c66b760233b87793a6cecb29a"
   integrity sha512-CDLDsvwLMHVOorS19m2bUwSbHagDZR00Rc8x4yKhtpihetOXXdFbwRu/0eYjenTDZfd+94JeQAyoEwK9RsrHPg==
@@ -1047,15 +1047,6 @@
     "@elastic/elasticsearch" "8.5.0"
     "@tryghost/debug" "^0.1.21"
     split2 "4.1.0"
-
-"@tryghost/errors@1.2.19":
-  version "1.2.19"
-  resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-1.2.19.tgz#626f14e54f97def2468cee4029dcad224350300f"
-  integrity sha512-9Yh6cwPVXfWpqwVyCTJIhkfHca70V61wQuNmHUOaxV8KTKIgHbykx9KZ70oIQuNUPrRcdkb2a7oNlPXtmDiBOA==
-  dependencies:
-    "@stdlib/utils" "^0.0.12"
-    lodash "^4.17.21"
-    uuid "^9.0.0"
 
 "@tryghost/errors@1.2.20", "@tryghost/errors@^1.2.1", "@tryghost/errors@^1.2.20":
   version "1.2.20"
@@ -1066,7 +1057,7 @@
     lodash "^4.17.21"
     uuid "^9.0.0"
 
-"@tryghost/http-stream@^0.1.15", "@tryghost/http-stream@^0.1.16":
+"@tryghost/http-stream@^0.1.16":
   version "0.1.16"
   resolved "https://registry.yarnpkg.com/@tryghost/http-stream/-/http-stream-0.1.16.tgz#4200cc785d39862f08b75d31b497d7f7af3a328e"
   integrity sha512-/W60TawqGK2IN1tMCNH3V4SLMpMHeUMEyG7PQfZXpK2VZUXkD4Puyz/45C79J71uftSUlIDN7XtruBKxZRvB+w==
@@ -1085,7 +1076,7 @@
   optionalDependencies:
     sharp "^0.30.0"
 
-"@tryghost/listr-smart-renderer@0.4.6", "@tryghost/listr-smart-renderer@^0.4.5":
+"@tryghost/listr-smart-renderer@0.4.6", "@tryghost/listr-smart-renderer@^0.4.6":
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.4.6.tgz#5f5c0a4a2be586c65609fb1990dc762ad6b2a467"
   integrity sha512-BU9Vs4ke0SORzUdb+pCbp4I3HYkh00Jz+S6QB94D5SqFGSfCiPbP0YjgzpaP90KckMWjIS/W8nyBnVKEaIarQw==
@@ -1098,23 +1089,6 @@
     log-symbols "5.1.0"
     log-update "5.0.1"
     strip-ansi "7.0.1"
-
-"@tryghost/logging@2.3.5":
-  version "2.3.5"
-  resolved "https://registry.yarnpkg.com/@tryghost/logging/-/logging-2.3.5.tgz#76806c21190d43008750dfb3e88cbe3558145511"
-  integrity sha512-/rZ4CrBG1mi/WZXT86cXUadGOkTbdio4mo1csDft8SUfA/NYC7jm8TlfApeUn/O3CWiEO4vuTFeVlM8i4k4log==
-  dependencies:
-    "@tryghost/bunyan-rotating-filestream" "^0.0.7"
-    "@tryghost/elasticsearch" "^3.0.7"
-    "@tryghost/http-stream" "^0.1.15"
-    "@tryghost/pretty-stream" "^0.1.14"
-    "@tryghost/root-utils" "^0.3.18"
-    bunyan "^1.8.15"
-    bunyan-loggly "^1.4.2"
-    fs-extra "^10.0.0"
-    gelf-stream "^1.1.1"
-    json-stringify-safe "^5.0.1"
-    lodash "^4.17.21"
 
 "@tryghost/logging@2.3.6":
   version "2.3.6"
@@ -1133,19 +1107,19 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper@0.2.13":
-  version "0.2.13"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.2.13.tgz#df8cc2577701c23635e2b6bd77c9120f16024e85"
-  integrity sha512-HxXbKbAXpPXkPyrJVRrpf8t8ibtpCOBVoy1okFxVqonfrvE/OTU2pqvMCJhpA0AGNKkx+4wjdQlZT17aTo73gQ==
+"@tryghost/mg-assetscraper@0.2.14":
+  version "0.2.14"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.2.14.tgz#563680966ae38762eb56532632a06508555f527f"
+  integrity sha512-qMMvcORQNkTQGZOT3X7oWyigVA/WXUgvZItOD+WJkDXU+HwzQ/2XVotkLPDch/GY6+meQDUoMlUQsnOwnKkKyg==
   dependencies:
-    "@tryghost/errors" "1.2.19"
-    "@tryghost/listr-smart-renderer" "^0.4.5"
-    "@tryghost/logging" "2.3.5"
+    "@tryghost/errors" "1.2.20"
+    "@tryghost/listr-smart-renderer" "^0.4.6"
+    "@tryghost/logging" "2.3.6"
     "@tryghost/string" "0.2.2"
     cheerio "1.0.0-rc.12"
     file-type "18.0.0"
     fs-extra "11.1.0"
-    got "11.8.5"
+    got "11.8.6"
     listr "0.14.3"
     markdown-it "13.0.1"
     pretty-bytes "6.0.0"
@@ -1176,7 +1150,7 @@
     chalk "^4.1.0"
     sywac "^1.3.0"
 
-"@tryghost/pretty-stream@^0.1.14", "@tryghost/pretty-stream@^0.1.15":
+"@tryghost/pretty-stream@^0.1.15":
   version "0.1.15"
   resolved "https://registry.yarnpkg.com/@tryghost/pretty-stream/-/pretty-stream-0.1.15.tgz#4f74cb322294a2ddc3ebfe68bf64a8bcbb45599d"
   integrity sha512-QG9hXe+0JxL81MbC2s3SanR/a1UjgavHdKnBkkQhEDFL8P+V/aAcPPbN//sImtVZfCNrrY9d5d8N47G4PqHlKg==
@@ -1196,7 +1170,7 @@
     got "9.6.0"
     lodash "^4.17.21"
 
-"@tryghost/root-utils@^0.3.18", "@tryghost/root-utils@^0.3.19":
+"@tryghost/root-utils@^0.3.19":
   version "0.3.19"
   resolved "https://registry.yarnpkg.com/@tryghost/root-utils/-/root-utils-0.3.19.tgz#714e67fdea080efc97d12f477b62cc89a66ade74"
   integrity sha512-Ehdg5208QHMz4+Btwt7DRYlqvvZ9Wbfqr1FG8MRD2GT9e7mc3+YqysizVAF1hQN4b4yQZw5mn92ezw8JPojpYQ==
@@ -3219,10 +3193,10 @@ gopd@^1.0.1:
   dependencies:
     get-intrinsic "^1.1.3"
 
-got@11.8.5:
-  version "11.8.5"
-  resolved "https://registry.yarnpkg.com/got/-/got-11.8.5.tgz#ce77d045136de56e8f024bebb82ea349bc730046"
-  integrity sha512-o0Je4NvQObAuZPHLFoRSkdG2lTgtcynqymzg2Vupdx6PorhaT5MCbIyXG6d4D94kk8ZG57QeosgdiqfJWhEhlQ==
+got@11.8.6:
+  version "11.8.6"
+  resolved "https://registry.yarnpkg.com/got/-/got-11.8.6.tgz#276e827ead8772eddbcfc97170590b841823233a"
+  integrity sha512-6tfZ91bOr7bOXnK7PRDCGBLa1H4U080YHNaAQ2KsMGlLEzRbk44nsZF2E1IeRc3vtJHPVbKCYgdFbaGO2ljd8g==
   dependencies:
     "@sindresorhus/is" "^4.0.0"
     "@szmarczak/http-timer" "^4.0.5"
