@@ -14,7 +14,6 @@ import findReplace from './find-replace.js';
 import changeAuthor from './change-author.js';
 import changeVisibility from './change-visibility.js';
 import changeStatus from './change-status.js';
-import deleteMembers from './delete-members.js';
 import changeRole from './change-role.js';
 import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
 import removeMemberNewsletterSubscription from './remove-member-newsletter-subscription.js';
@@ -38,7 +37,6 @@ export default {
     changeAuthor,
     changeVisibility,
     changeStatus,
-    deleteMembers,
     changeRole,
     addMemberNewsletterSubscription,
     removeMemberNewsletterSubscription,

@@ -46,7 +46,6 @@ Available tools include:
 * [`change-author`](#change-author)
 * [`change-visibility`](#change-visibility)
 * [`change-status`](#change-status)
-* [`delete-members`](#delete-members)
 * [`change-role`](#change-role)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
@@ -378,19 +377,6 @@ gctools change-status <apiURL> <adminAPIKey> --status 'draft' --new_status 'publ
 
 # Change the posts that are currently drafts with the tag `news` to be public
 gctools change-status <apiURL> <adminAPIKey> --status 'draft' --tag 'news' --new_status 'published'
-```
-
-
-### delete-members
-
-Delete all members
-
-```sh
-# See all available options
-gctools delete-members --help
-
-# Change the posts written by `richard` and assign to `michael`
-gctools delete-members <apiURL> <adminAPIKey>
 ```
 
 
