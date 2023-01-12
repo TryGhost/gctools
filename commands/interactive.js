@@ -125,6 +125,11 @@ const run = async () => {
             {
                 name: 'Abort',
                 value: 'abort'
+            },
+            new inquirer.Separator('--- Beta -----------------'),
+            {
+                name: tasks.addMemberNewsletterSubscriptionBeta.choice.name,
+                value: tasks.addMemberNewsletterSubscriptionBeta.choice.value
             }
         ]
     };

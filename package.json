@@ -27,6 +27,7 @@
     "jest-extended": "3.2.1"
   },
   "dependencies": {
+    "@inquirer/confirm": "0.0.28-alpha.0",
     "@tryghost/admin-api": "1.13.2",
     "@tryghost/listr-smart-renderer": "0.4.6",
     "@tryghost/logging": "2.3.6",
@@ -37,6 +38,7 @@
     "axios": "1.2.2",
     "bluebird": "3.7.2",
     "chalk": "5.2.0",
+    "cli-progress": "3.11.2",
     "fs-extra": "10.1.0",
     "glob": "8.0.3",
     "inquirer": "9.1.4",

@@ -22,6 +22,11 @@ describe('Utils (transformToCommaString)', function () {
         let tagNames = transformToCommaString('Lorem Ipsum,Dolor Simet');
         expect(tagNames).toEqual('Lorem Ipsum,Dolor Simet');
     });
+
+    test('will use supplied seperator', function () {
+        let tagSlugs = transformToCommaString(tagsObject, 'slug', ' - ');
+        expect(tagSlugs).toEqual('lorem-ipsum - dolor-simet');
+    });
 });
 
 describe('Utils (maybeObjectToArray)', function () {
