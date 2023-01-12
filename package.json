@@ -30,7 +30,7 @@
     "@inquirer/confirm": "0.0.28-alpha.0",
     "@tryghost/admin-api": "1.13.2",
     "@tryghost/listr-smart-renderer": "0.4.6",
-    "@tryghost/logging": "2.3.6",
+    "@tryghost/logging": "2.4.0",
     "@tryghost/mg-assetscraper": "0.2.14",
     "@tryghost/mg-fs-utils": "0.11.6",
     "@tryghost/pretty-cli": "1.2.33",
