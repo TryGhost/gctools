@@ -81,6 +81,10 @@ const run = async () => {
                 value: tasks.changeVisibility.choice.value
             },
             {
+                name: tasks.changeVisibilityPages.choice.name,
+                value: tasks.changeVisibilityPages.choice.value
+            },
+            {
                 name: tasks.changeStatus.choice.name,
                 value: tasks.changeStatus.choice.value
             },

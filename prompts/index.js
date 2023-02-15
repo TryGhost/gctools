@@ -13,6 +13,7 @@ import deleteUnusedTags from './delete-unused-tags.js';
 import findReplace from './find-replace.js';
 import changeAuthor from './change-author.js';
 import changeVisibility from './change-visibility.js';
+import changeVisibilityPages from './change-visibility-pages.js';
 import changeStatus from './change-status.js';
 import changeRole from './change-role.js';
 import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
@@ -36,6 +37,7 @@ export default {
     findReplace,
     changeAuthor,
     changeVisibility,
+    changeVisibilityPages,
     changeStatus,
     changeRole,
     addMemberNewsletterSubscription,
