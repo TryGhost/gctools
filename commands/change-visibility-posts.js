@@ -1,13 +1,13 @@
 import {ui} from '@tryghost/pretty-cli';
-import changeVisibility from '../tasks/change-visibility.js';
+import changeVisibilityPosts from '../tasks/change-visibility-posts.js';
 
 // Internal ID in case we need one.
-const id = 'change-visibility';
+const id = 'change-visibility-posts';
 
 const group = 'Content:';
 
 // The command to run and any params
-const flags = 'change-visibility <apiURL> <adminAPIKey>';
+const flags = 'change-visibility-posts <apiURL> <adminAPIKey>';
 
 // Description for the top level command
 const desc = 'Switch the visibility for posts from one level to another';
@@ -55,7 +55,7 @@ const run = async (argv) => {
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = changeVisibility.getTaskRunner(argv);
+        let runner = changeVisibilityPosts.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);

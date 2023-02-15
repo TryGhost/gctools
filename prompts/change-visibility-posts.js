@@ -3,13 +3,13 @@ import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import chalk from 'chalk';
 import {ui} from '@tryghost/pretty-cli';
-import changeVisibility from '../tasks/change-visibility.js';
+import changeVisibilityPosts from '../tasks/change-visibility-posts.js';
 import {getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
-    name: 'Change Visibility',
-    value: 'changeVisibility'
+    name: 'Change Visibility for Posts',
+    value: 'changeVisibilityPosts'
 };
 
 const options = [
@@ -70,7 +70,7 @@ async function run() {
         let context = {errors: []};
 
         try {
-            let runner = changeVisibility.getTaskRunner(answers);
+            let runner = changeVisibilityPosts.getTaskRunner(answers);
             await runner.run(context);
             ui.log.ok(`Successfully changed ${context.changed.length} posts in ${Date.now() - timer}ms.`);
         } catch (error) {

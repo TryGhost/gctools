@@ -44,7 +44,8 @@ Available tools include:
 * [`delete-unused-tags`](#delete-unused-tags)
 * [`find-replace`](#find-replace)
 * [`change-author`](#change-author)
-* [`change-visibility`](#change-visibility)
+* [`change-visibility-posts`](#change-visibility-posts)
+* [`change-visibility-pages`](#change-visibility-pages)
 * [`change-status`](#change-status)
 * [`change-role`](#change-role)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
@@ -342,25 +343,47 @@ gctools change-author <apiURL> <adminAPIKey> --author 'richard' --new_author 'mi
 ```
 
 
-### change-visibility
+### change-visibility-posts
 
 Change the visibility of posts
 
 ```sh
 # See all available options
-gctools change-visibility --help
+gctools change-visibility-posts --help
 
 # Change the posts that are currently public to be members-only
-gctools change-visibility <apiURL> <adminAPIKey> --visibility 'public' --new_visibility 'members'
+gctools change-visibility-posts <apiURL> <adminAPIKey> --visibility 'public' --new_visibility 'members'
 
 # Change the posts that are currently members-only to be paid-members only
-gctools change-visibility <apiURL> <adminAPIKey> --visibility 'members' --new_visibility 'paid'
+gctools change-visibility-posts <apiURL> <adminAPIKey> --visibility 'members' --new_visibility 'paid'
 
 # Change the posts tagged with 'news' to be paid-members only
-gctools change-visibility <apiURL> <adminAPIKey> --tag 'news' --new_visibility 'paid'
+gctools change-visibility-posts <apiURL> <adminAPIKey> --tag 'news' --new_visibility 'paid'
 
 # Change the posts tagged with 'news', and written by 'jane' to be paid-members only
-gctools change-visibility <apiURL> <adminAPIKey> --tag 'news' --author 'jane' --new_visibility 'paid'
+gctools change-visibility-posts <apiURL> <adminAPIKey> --tag 'news' --author 'jane' --new_visibility 'paid'
+```
+
+
+### change-visibility-pages
+
+Change the visibility of pages
+
+```sh
+# See all available options
+gctools change-visibility-pages --help
+
+# Change the pages that are currently public to be members-only
+gctools change-visibility-pages <apiURL> <adminAPIKey> --visibility 'public' --new_visibility 'members'
+
+# Change the pages that are currently members-only to be paid-members only
+gctools change-visibility-pages <apiURL> <adminAPIKey> --visibility 'members' --new_visibility 'paid'
+
+# Change the pages tagged with 'news' to be paid-members only
+gctools change-visibility-pages <apiURL> <adminAPIKey> --tag 'news' --new_visibility 'paid'
+
+# Change the pages tagged with 'news', and written by 'jane' to be paid-members only
+gctools change-visibility-pages <apiURL> <adminAPIKey> --tag 'news' --author 'jane' --new_visibility 'paid'
 ```
 
 
