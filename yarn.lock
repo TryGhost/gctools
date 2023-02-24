@@ -1286,6 +1286,15 @@
     extract-zip "^2.0.1"
     fs-extra "^10.0.0"
 
+"@tryghost/zip@1.1.32":
+  version "1.1.32"
+  resolved "https://registry.yarnpkg.com/@tryghost/zip/-/zip-1.1.32.tgz#687fded0901a8e6a4f8af6fbaaf6619991145602"
+  integrity sha512-sc+xsK2DK/H3csl4AmYZvCxewa2p4kHbDibpoyPGmKH5pX0+1DyeO2PUy86RtQe7aSKhZJINuRFkVIfDhoz4gA==
+  dependencies:
+    archiver "^5.0.0"
+    extract-zip "^2.0.1"
+    fs-extra "^10.0.0"
+
 "@types/babel__core@^7.1.14":
   version "7.1.20"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.1.20.tgz#e168cdd612c92a2d335029ed62ac94c95b362359"
