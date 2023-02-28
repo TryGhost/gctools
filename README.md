@@ -32,7 +32,7 @@ Available tools include:
 * [`zip-split`](#zip-split)
 * [`zip-create`](#zip-create)
 * [`json-split`](#json-split)
-* [`fetch-images`](#fetch-images)
+* [`fetch-assets`](#fetch-assets)
 * [`dedupe-members-csv`](#dedupe-members-csv)
 * [`random-posts`](#random-posts)
 * [`delete-posts`](#delete-posts)
@@ -94,16 +94,16 @@ gctools json-split /path/to/big-file.json --M 50
 ```
 
 
-### fetch-images
+### fetch-assets
 
-Download all available images from a valid Ghost JSON file create a JSON file with updated image references
+Download all available assets from a valid Ghost JSON file create a JSON file with updated image references
 
 ```sh
 # See all available options
-gctools fetch-images --help
+gctools fetch-assets --help
 
-# Fetch images from a valid Ghost JSON file, with `https://example.com` as the base URL
-gctools fetch-images /path/to/file.json https://example.com
+# Fetch assets from a valid Ghost JSON file, with `https://example.com` as the base URL
+gctools fetch-assets /path/to/file.json https://example.com
 ```
 
 
