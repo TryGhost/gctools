@@ -46,16 +46,20 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 let postDiscoveryFilter = [];
 
-                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
-                    postDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
-                }
+                if (options.customFilter) {
+                    postDiscoveryFilter.push(options.customFilter);
+                } else {
+                    if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                        postDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                    }
 
-                if (ctx.args.tag && ctx.args.tag.length > 0) {
-                    postDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
-                }
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        postDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                    }
 
-                if (ctx.args.author && ctx.args.author.length > 0) {
-                    postDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    if (ctx.args.author && ctx.args.author.length > 0) {
+                        postDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    }
                 }
 
                 let postDiscoveryOptions = {
@@ -84,16 +88,20 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 let pageDiscoveryFilter = [];
 
-                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
-                    pageDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
-                }
+                if (options.customFilter) {
+                    pageDiscoveryFilter.push(options.customFilter);
+                } else {
+                    if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                        pageDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                    }
 
-                if (ctx.args.tag && ctx.args.tag.length > 0) {
-                    pageDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
-                }
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        pageDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                    }
 
-                if (ctx.args.author && ctx.args.author.length > 0) {
-                    pageDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    if (ctx.args.author && ctx.args.author.length > 0) {
+                        pageDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    }
                 }
 
                 let pageDiscoveryOptions = {

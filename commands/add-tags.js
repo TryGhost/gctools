@@ -42,6 +42,10 @@ const setup = (sywac) => {
         defaultValue: null,
         desc: 'Select posts with these author slugs, inside single quotes. i.e. \'example-author\''
     });
+    sywac.string('--customFilter', {
+        defaultValue: null,
+        desc: 'Custom Ghost filter query'
+    });
     sywac.string('--new_tags', {
         desc: 'Comma separated list of tag names to add (not slugs), inside single quotes. i.e. \'New Tag, Podcast\''
     });
