@@ -1130,13 +1130,12 @@
     "@tryghost/errors" "^1.2.21"
     "@tryghost/request" "^0.1.36"
 
-"@tryghost/image-transform@1.2.3":
-  version "1.2.3"
-  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.2.3.tgz#6814a6b6a2c9c1965d82ff87fd5a686a6e7dfc1d"
-  integrity sha512-kXkDIZPdhTjatvKC2zuVkWnHaLXAbAJMe30k8qauiZjUoQDce2Pe7wdgOWGH2ojNZbq2x+zzsP2vPPzJBCGHiA==
+"@tryghost/image-transform@1.2.4":
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.2.4.tgz#3e0f7fbee4c85449ea38f27f824ae789340fef16"
+  integrity sha512-WYiwJff/Fnl8ylJzUea8pGQpC4tsjHQDc72Jl0XAYcXItv+bSDePdp5BjfwcHExQBpgJ3OwPpdVbAlhB3GMNdQ==
   dependencies:
     "@tryghost/errors" "^1.2.1"
-    bluebird "^3.7.2"
     fs-extra "^10.0.0"
   optionalDependencies:
     sharp "^0.30.0"
@@ -1208,19 +1207,21 @@
     srcset "5.0.0"
     string.prototype.replaceall "1.0.7"
 
-"@tryghost/mg-fs-utils@0.11.6":
-  version "0.11.6"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.11.6.tgz#0d4f2f946d9ef559fcf33afe0f299fd6f72c62d3"
-  integrity sha512-sAIt/jHl0lvuQRpW7G8nFxroR4VKTiJGefGKLbXsma6udrbL1drco8yQ0rMYovyiIVF3vhxLh1cas73L0WLInA==
+"@tryghost/mg-fs-utils@0.12.6":
+  version "0.12.6"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.12.6.tgz#015ecd0986c4017ee00bf0421dadd476eb1fa0d2"
+  integrity sha512-MD2mqa8ITbb7e5D9HeGB9xYhIA6h5brHsV53uB34ntv1VgKp+G9qWlItdbxeQF4sIVJyiDBV+dgTTgyFgPShZQ==
   dependencies:
     "@tryghost/errors" "1.2.20"
-    "@tryghost/image-transform" "1.2.3"
-    "@tryghost/zip" "1.1.31"
+    "@tryghost/image-transform" "1.2.4"
+    "@tryghost/string" "0.2.3"
+    "@tryghost/zip" "1.1.32"
     adm-zip "0.5.10"
-    csv-parse "5.3.3"
+    csv-parse "5.3.6"
     date-fns "2.29.3"
     fs-extra "11.1.0"
     lodash "4.17.21"
+    node-stream-zip "1.15.0"
     sharp "0.31.3"
     transliteration "2.3.5"
 
@@ -1267,6 +1268,13 @@
   dependencies:
     unidecode "^0.1.8"
 
+"@tryghost/string@0.2.3":
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.3.tgz#59e89c47128f166ff959ea9f377e01c08c86703b"
+  integrity sha512-e/L5xi+AzIzk91W8YXQ9AecG66BBCbFovJkhNnJE+KjAU5XJ5ypr0Qy5QJGlR9y+wABWCxxMxEVImzygXx4J3A==
+  dependencies:
+    unidecode "^0.1.8"
+
 "@tryghost/tpl@^0.1.22":
   version "0.1.22"
   resolved "https://registry.yarnpkg.com/@tryghost/tpl/-/tpl-0.1.22.tgz#1f29c481fcd65a8687c11b6c14951af3269b25e1"
@@ -1292,16 +1300,6 @@
   dependencies:
     "@tryghost/root-utils" "^0.3.20"
     semver "^7.3.5"
-
-"@tryghost/zip@1.1.31":
-  version "1.1.31"
-  resolved "https://registry.yarnpkg.com/@tryghost/zip/-/zip-1.1.31.tgz#a85097d20bebe0caf19b380742763f0453268100"
-  integrity sha512-1gaCUATzTBBV7tVGnblPiaAxWe9FJlMpxrtKxlOkObrAzzV03uWIUEkZaF+rXBv7QcIplITpQZip/1v6criVIQ==
-  dependencies:
-    archiver "^5.0.0"
-    bluebird "^3.7.2"
-    extract-zip "^2.0.1"
-    fs-extra "^10.0.0"
 
 "@tryghost/zip@1.1.32":
   version "1.1.32"
@@ -1760,7 +1758,7 @@ bl@^5.0.0:
     inherits "^2.0.4"
     readable-stream "^3.4.0"
 
-bluebird@3.7.2, bluebird@^3.7.2:
+bluebird@3.7.2:
   version "3.7.2"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
   integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
@@ -2306,10 +2304,10 @@ csv-generate@^3.4.3:
   resolved "https://registry.yarnpkg.com/csv-generate/-/csv-generate-3.4.3.tgz#bc42d943b45aea52afa896874291da4b9108ffff"
   integrity sha512-w/T+rqR0vwvHqWs/1ZyMDWtHHSJaN06klRqJXBEpDJaM/+dZkso0OKh1VcuuYvK3XM53KysVNq8Ko/epCK8wOw==
 
-csv-parse@5.3.3:
-  version "5.3.3"
-  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.3.3.tgz#3b75d2279e2edb550cbc54c65b25cbbf3d0033ad"
-  integrity sha512-kEWkAPleNEdhFNkHQpFHu9RYPogsFj3dx6bCxL847fsiLgidzWg0z/O0B1kVWMJUc5ky64zGp18LX2T3DQrOfw==
+csv-parse@5.3.6:
+  version "5.3.6"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.3.6.tgz#181d7c12300a60684bb51261ea9a5c3135ba8688"
+  integrity sha512-WI330GjCuEioK/ii8HM2YE/eV+ynpeLvU+RXw4R8bRU8R0laK5zO3fDsc4gH8s472e3Ga38rbIjCAiQh+tEHkw==
 
 csv-parse@^4.16.3:
   version "4.16.3"
@@ -4892,6 +4890,11 @@ node-releases@^2.0.6:
   version "2.0.8"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-2.0.8.tgz#0f349cdc8fcfa39a92ac0be9bc48b7706292b9ae"
   integrity sha512-dFSmB8fFHEH/s81Xi+Y/15DQY6VHW81nXRj86EMSL3lmuTmK1e+aT4wrFCkTbm+gSwkw4KpX+rT/pMM2c1mF+A==
+
+node-stream-zip@1.15.0:
+  version "1.15.0"
+  resolved "https://registry.yarnpkg.com/node-stream-zip/-/node-stream-zip-1.15.0.tgz#158adb88ed8004c6c49a396b50a6a5de3bca33ea"
+  integrity sha512-LN4fydt9TqhZhThkZIVQnF9cwjU3qmUH9h78Mx/K7d3VvfRqqwthLwJEUOEL0QPZ0XQmNN7be5Ggit5+4dq3Bw==
 
 normalize-package-data@^2.5.0:
   version "2.5.0"
