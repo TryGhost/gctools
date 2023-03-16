@@ -9,7 +9,7 @@ const initialise = (options) => {
             const url = options.apiURL;
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
