@@ -60,6 +60,11 @@ const getFullTaskList = (options) => {
                     if (ctx.args.author && ctx.args.author.length > 0) {
                         postDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
                     }
+
+                    if (ctx.args.dateFilterStart && ctx.args.dateFilterEnd) {
+                        postDiscoveryFilter.push(`published_at:>='${ctx.args.dateFilterStart.toISOString()}'`);
+                        postDiscoveryFilter.push(`published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`);
+                    }
                 }
 
                 let postDiscoveryOptions = {
@@ -67,7 +72,7 @@ const getFullTaskList = (options) => {
                     type: 'posts',
                     limit: 100,
                     include: 'tags',
-                    fields: 'id,title,slug,visibility,updated_at',
+                    fields: 'id,title,slug,visibility,updated_at,published_at',
                     filter: postDiscoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
@@ -101,6 +106,11 @@ const getFullTaskList = (options) => {
 
                     if (ctx.args.author && ctx.args.author.length > 0) {
                         pageDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    }
+
+                    if (ctx.args.dateFilterStart && ctx.args.dateFilterEnd) {
+                        pageDiscoveryFilter.push(`published_at:>='${ctx.args.dateFilterStart.toISOString()}'`);
+                        pageDiscoveryFilter.push(`published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`);
                     }
                 }
 
