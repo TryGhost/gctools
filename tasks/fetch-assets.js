@@ -4,25 +4,15 @@ import fs from 'fs-extra';
 import MgAssetScraper from '@tryghost/mg-assetscraper';
 import fsUtils from '@tryghost/mg-fs-utils';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import {GhostLogger} from '@tryghost/logging';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
-const initialise = (options) => {
+const initialise = (options, logger) => {
     return {
         title: 'Initialising Workspace',
         task: async (ctx) => {
-            // Ensure log dir exists
-            const logDir = join(__dirname, '../logs/');
-            await fs.ensureDir(logDir);
-
             ctx.options = options;
-            ctx.logging = new GhostLogger({
-                domain: 'gctools_fetch_assets', // This can be unique per migration
-                mode: 'long',
-                transports: ['file'],
-                path: logDir
-            });
+            ctx.logger = logger;
 
             ctx.allowScrape = {
                 all: ctx.options.scrape.includes('all'),
@@ -46,9 +36,9 @@ const initialise = (options) => {
     };
 };
 
-const getFullTaskList = (options) => {
+const getFullTaskList = (options, logger) => {
     return [
-        initialise(options),
+        initialise(options, logger),
         {
             title: 'Reading JSON file',
             task: async (ctx) => {
@@ -115,10 +105,10 @@ const getFullTaskList = (options) => {
     ];
 };
 
-const getTaskRunner = (options) => {
+const getTaskRunner = (options, logger) => {
     let tasks = [];
 
-    tasks = getFullTaskList(options);
+    tasks = getFullTaskList(options, logger);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
     return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
