@@ -1,41 +1,35 @@
-import {dirname} from 'node:path';
 import fs from 'fs-extra';
 import MgAssetScraper from '@tryghost/mg-assetscraper';
 import fsUtils from '@tryghost/mg-fs-utils';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import SmartRenderer from '@tryghost/listr-smart-renderer';
+import {Listr} from 'listr2';
 
-const initialise = (options, logger) => {
-    return {
-        title: 'Initialising Workspace',
-        task: async (ctx) => {
-            ctx.options = options;
-            ctx.logger = logger;
+const getTaskRunner = (options, logger) => {
+    let tasks = [
+        {
+            title: 'Initialising Workspace',
+            task: async (ctx) => {
+                ctx.options = options;
+                ctx.logger = logger;
 
-            ctx.allowScrape = {
-                all: ctx.options.scrape.includes('all'),
-                images: ctx.options.scrape.includes('img') || ctx.options.scrape.includes('all'),
-                media: ctx.options.scrape.includes('media') || ctx.options.scrape.includes('all'),
-                files: ctx.options.scrape.includes('files') || ctx.options.scrape.includes('all')
-            };
+                ctx.allowScrape = {
+                    all: ctx.options.scrape.includes('all'),
+                    images: ctx.options.scrape.includes('img') || ctx.options.scrape.includes('all'),
+                    media: ctx.options.scrape.includes('media') || ctx.options.scrape.includes('all'),
+                    files: ctx.options.scrape.includes('files') || ctx.options.scrape.includes('all')
+                };
 
-            ctx.fileCache = new fsUtils.FileCache(`${options.jsonFile}`);
+                ctx.fileCache = new fsUtils.FileCache(`${options.jsonFile}`);
 
-            ctx.assetScraper = new MgAssetScraper(ctx.fileCache, {
-                sizeLimit: ctx.options.sizeLimit,
-                allowImages: ctx.allowScrape.images,
-                allowMedia: ctx.allowScrape.media,
-                allowFiles: ctx.allowScrape.files,
-                baseDomain: ctx.options.url || null
-            }, ctx);
-
-            ctx.options.file = dirname(options.jsonFile);
-        }
-    };
-};
-
-const getFullTaskList = (options, logger) => {
-    return [
-        initialise(options, logger),
+                ctx.assetScraper = new MgAssetScraper(ctx.fileCache, {
+                    sizeLimit: ctx.options.sizeLimit,
+                    allowImages: ctx.allowScrape.images,
+                    allowMedia: ctx.allowScrape.media,
+                    allowFiles: ctx.allowScrape.files,
+                    baseDomain: ctx.options.url || null
+                }, ctx);
+            }
+        },
         {
             title: 'Reading JSON file',
             task: async (ctx) => {
@@ -62,13 +56,13 @@ const getFullTaskList = (options, logger) => {
             skip: (ctx) => {
                 return [ctx.allowScrape.images, ctx.allowScrape.media, ctx.allowScrape.files].every(element => element === false);
             },
-            task: async (ctx) => {
+            task: async (ctx, task) => {
                 let assetScraperTasks = ctx.assetScraper.fetch(ctx);
-                return makeTaskRunner(assetScraperTasks, {
+
+                return task.newListr(assetScraperTasks, {
                     verbose: options.verbose,
                     exitOnError: false,
-                    concurrent: false,
-                    topLevel: false
+                    concurrent: false
                 });
             }
         },
@@ -100,19 +94,11 @@ const getFullTaskList = (options, logger) => {
             }
         }
     ];
-};
-
-const getTaskRunner = (options, logger) => {
-    let tasks = [];
-
-    tasks = getFullTaskList(options, logger);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return new Listr(tasks, {renderer: (options.verbose) ? 'verbose' : SmartRenderer});
 };
 
 export default {
-    initialise,
-    getFullTaskList,
     getTaskRunner
 };
