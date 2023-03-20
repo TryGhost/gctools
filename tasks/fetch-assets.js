@@ -1,11 +1,8 @@
-import {URL} from 'node:url';
-import {join, dirname} from 'node:path';
+import {dirname} from 'node:path';
 import fs from 'fs-extra';
 import MgAssetScraper from '@tryghost/mg-assetscraper';
 import fsUtils from '@tryghost/mg-fs-utils';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-
-const __dirname = new URL('.', import.meta.url).pathname;
 
 const initialise = (options, logger) => {
     return {
