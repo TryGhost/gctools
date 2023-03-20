@@ -1141,7 +1141,21 @@
   optionalDependencies:
     sharp "^0.30.0"
 
-"@tryghost/listr-smart-renderer@0.4.6", "@tryghost/listr-smart-renderer@^0.4.6":
+"@tryghost/listr-smart-renderer@0.5.3":
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.5.3.tgz#f05e291d061fb54d1212d74f5592f50ada0517b5"
+  integrity sha512-jlKe7BJEOJNCTJk+XRCioWzEQGCtJQQDPHpAX1JDXzM667CYwjFisL5pJrSprX7fAIn76XCHsIMUisdhKsu8Jw==
+  dependencies:
+    chalk "5.2.0"
+    cli-truncate "3.1.0"
+    elegant-spinner "3.0.0"
+    indent-string "^5.0.0"
+    listr2 "5.0.8"
+    log-symbols "5.1.0"
+    log-update "5.0.1"
+    strip-ansi "7.0.1"
+
+"@tryghost/listr-smart-renderer@^0.4.6":
   version "0.4.6"
   resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.4.6.tgz#5f5c0a4a2be586c65609fb1990dc762ad6b2a467"
   integrity sha512-BU9Vs4ke0SORzUdb+pCbp4I3HYkh00Jz+S6QB94D5SqFGSfCiPbP0YjgzpaP90KckMWjIS/W8nyBnVKEaIarQw==
@@ -4445,6 +4459,20 @@ listr2@5.0.6:
     through "^2.3.8"
     wrap-ansi "^7.0.0"
 
+listr2@5.0.8:
+  version "5.0.8"
+  resolved "https://registry.yarnpkg.com/listr2/-/listr2-5.0.8.tgz#a9379ffeb4bd83a68931a65fb223a11510d6ba23"
+  integrity sha512-mC73LitKHj9w6v30nLNGPetZIlfpUniNSsxxrbaPcWOjDb92SHPzJPi/t+v1YC/lxKz/AJ9egOjww0qUuFxBpA==
+  dependencies:
+    cli-truncate "^2.1.0"
+    colorette "^2.0.19"
+    log-update "^4.0.0"
+    p-map "^4.0.0"
+    rfdc "^1.3.0"
+    rxjs "^7.8.0"
+    through "^2.3.8"
+    wrap-ansi "^7.0.0"
+
 listr@0.14.3:
   version "0.14.3"
   resolved "https://registry.yarnpkg.com/listr/-/listr-0.14.3.tgz#2fea909604e434be464c50bddba0d496928fa586"
@@ -5539,7 +5567,7 @@ rxjs@^6.3.3:
   dependencies:
     tslib "^1.9.0"
 
-rxjs@^7.5.7:
+rxjs@^7.5.7, rxjs@^7.8.0:
   version "7.8.0"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-7.8.0.tgz#90a938862a82888ff4c7359811a595e14e1e09a4"
   integrity sha512-F2+gxDshqmIub1KdvZkaEfGDwLNpPvk9Fs6LD/MyQxNgMds/WH9OdDDXOmxUZpME+iSK3rQCctkL0DYyytUqMg==
