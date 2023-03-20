@@ -1095,7 +1095,7 @@
     "@tryghost/root-utils" "^0.3.20"
     debug "^4.3.1"
 
-"@tryghost/elasticsearch@^3.0.10", "@tryghost/elasticsearch@^3.0.8":
+"@tryghost/elasticsearch@^3.0.10":
   version "3.0.10"
   resolved "https://registry.yarnpkg.com/@tryghost/elasticsearch/-/elasticsearch-3.0.10.tgz#7d0417749193afba9688834e5de35409770c7fac"
   integrity sha512-/oi/rqYq2Q5fEYOcGKdCTem0+cKTpHdCO3ws0F2jUq7I99pPMJcafdHQXq71A4y0veUvqAKIGbaAEzMoZ4LyMQ==
@@ -1122,7 +1122,7 @@
     lodash "^4.17.21"
     uuid "^9.0.0"
 
-"@tryghost/http-stream@^0.1.16", "@tryghost/http-stream@^0.1.18":
+"@tryghost/http-stream@^0.1.18":
   version "0.1.18"
   resolved "https://registry.yarnpkg.com/@tryghost/http-stream/-/http-stream-0.1.18.tgz#1705f447206764112b112ea9088d879936dba570"
   integrity sha512-Dc+8SI7AlaWKzDqgPw3CftRKxHmyBCWzC19teC4ybCBcaxAZYrNjNVhvLLh9tQT8FbKv/RYw58/uDomKFamKCg==
@@ -1140,7 +1140,7 @@
   optionalDependencies:
     sharp "^0.30.0"
 
-"@tryghost/listr-smart-renderer@0.5.3":
+"@tryghost/listr-smart-renderer@0.5.3", "@tryghost/listr-smart-renderer@^0.5.3":
   version "0.5.3"
   resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.5.3.tgz#f05e291d061fb54d1212d74f5592f50ada0517b5"
   integrity sha512-jlKe7BJEOJNCTJk+XRCioWzEQGCtJQQDPHpAX1JDXzM667CYwjFisL5pJrSprX7fAIn76XCHsIMUisdhKsu8Jw==
@@ -1153,37 +1153,6 @@
     log-symbols "5.1.0"
     log-update "5.0.1"
     strip-ansi "7.0.1"
-
-"@tryghost/listr-smart-renderer@^0.4.6":
-  version "0.4.6"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.4.6.tgz#5f5c0a4a2be586c65609fb1990dc762ad6b2a467"
-  integrity sha512-BU9Vs4ke0SORzUdb+pCbp4I3HYkh00Jz+S6QB94D5SqFGSfCiPbP0YjgzpaP90KckMWjIS/W8nyBnVKEaIarQw==
-  dependencies:
-    chalk "5.2.0"
-    cli-truncate "3.1.0"
-    elegant-spinner "3.0.0"
-    indent-string "^5.0.0"
-    listr2 "5.0.6"
-    log-symbols "5.1.0"
-    log-update "5.0.1"
-    strip-ansi "7.0.1"
-
-"@tryghost/logging@2.3.6":
-  version "2.3.6"
-  resolved "https://registry.yarnpkg.com/@tryghost/logging/-/logging-2.3.6.tgz#7faab8f43bf934e2276c16d8e9bec638e930a355"
-  integrity sha512-PkxFwwlOgvn6hkkANYj6E/NZa8bJ82CbeNdSYd87FjgMNSuLXUcQuQSRbs/89ZF20NO1P4PUQTSs6cPoZHP54Q==
-  dependencies:
-    "@tryghost/bunyan-rotating-filestream" "^0.0.7"
-    "@tryghost/elasticsearch" "^3.0.8"
-    "@tryghost/http-stream" "^0.1.16"
-    "@tryghost/pretty-stream" "^0.1.15"
-    "@tryghost/root-utils" "^0.3.19"
-    bunyan "^1.8.15"
-    bunyan-loggly "^1.4.2"
-    fs-extra "^10.0.0"
-    gelf-stream "^1.1.1"
-    json-stringify-safe "^5.0.1"
-    lodash "^4.17.21"
 
 "@tryghost/logging@2.4.1":
   version "2.4.1"
@@ -1202,24 +1171,23 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper@0.2.14":
-  version "0.2.14"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.2.14.tgz#563680966ae38762eb56532632a06508555f527f"
-  integrity sha512-qMMvcORQNkTQGZOT3X7oWyigVA/WXUgvZItOD+WJkDXU+HwzQ/2XVotkLPDch/GY6+meQDUoMlUQsnOwnKkKyg==
+"@tryghost/mg-assetscraper@0.3.4":
+  version "0.3.4"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.3.4.tgz#3538118cc28c33fa7dff67b5edf17c7b24bac145"
+  integrity sha512-Cv/dTbJ+yeK2N5AcyJmQ/2H1RyrIqMy8XfhXcuA9nMZWiTRIyOiscsg1ZF9uIs1Eqo3NDvOzGib4LUUiNgFlQg==
   dependencies:
-    "@tryghost/errors" "1.2.20"
-    "@tryghost/listr-smart-renderer" "^0.4.6"
-    "@tryghost/logging" "2.3.6"
+    "@tryghost/listr-smart-renderer" "^0.5.3"
+    "@tryghost/logging" "2.4.1"
     "@tryghost/string" "0.2.2"
     cheerio "1.0.0-rc.12"
-    file-type "18.0.0"
+    fast-replaceall "1.0.2"
+    file-type "18.2.1"
     fs-extra "11.1.0"
     got "11.8.6"
     listr "0.14.3"
     markdown-it "13.0.1"
-    pretty-bytes "6.0.0"
+    pretty-bytes "6.1.0"
     srcset "5.0.0"
-    string.prototype.replaceall "1.0.7"
 
 "@tryghost/mg-fs-utils@0.12.6":
   version "0.12.6"
@@ -1247,7 +1215,7 @@
     chalk "^4.1.0"
     sywac "^1.3.0"
 
-"@tryghost/pretty-stream@^0.1.15", "@tryghost/pretty-stream@^0.1.16":
+"@tryghost/pretty-stream@^0.1.16":
   version "0.1.16"
   resolved "https://registry.yarnpkg.com/@tryghost/pretty-stream/-/pretty-stream-0.1.16.tgz#e11ba791b1eee3d7f73297a6f034ac5843b81c9b"
   integrity sha512-gvwge1djDB2rifudWk4dsbkuiOt2iizelU/XPvG5P6tjoI4qSuyMT7nVAvfiY9yCHicZ7eB0R7YeYyyKzZUlJA==
@@ -1267,7 +1235,7 @@
     got "9.6.0"
     lodash "^4.17.21"
 
-"@tryghost/root-utils@^0.3.19", "@tryghost/root-utils@^0.3.20":
+"@tryghost/root-utils@^0.3.20":
   version "0.3.20"
   resolved "https://registry.yarnpkg.com/@tryghost/root-utils/-/root-utils-0.3.20.tgz#4d4ed9189932cb189046f4357b6eb9ff57857850"
   integrity sha512-Uyx6Xf/ACKAiGLCpsn463TP+/mGZ93MskCFQC8ccTMXP9y5N70AY/tRG9MBreNo5CmN+sVKLQPwYIOG7cnXb+w==
@@ -1957,6 +1925,11 @@ caseless@~0.12.0:
   version "0.12.0"
   resolved "https://registry.yarnpkg.com/caseless/-/caseless-0.12.0.tgz#1b681c21ff84033c826543090689420d187151dc"
   integrity sha512-4tYFyifaFfGacoiObjJegolkwSU4xQNGbVgUiNYVUxbQ2x2lUsFvY4hVgVzGiIe6WLOPqycWXA40l+PWsxthUw==
+
+celia@^8.0.2:
+  version "8.0.4"
+  resolved "https://registry.yarnpkg.com/celia/-/celia-8.0.4.tgz#501b4d9f91147979ebfff81fab16acbcf2823d4d"
+  integrity sha512-XwPKQgxQ5Dr+lIbsFSBzf9U/u9vnh5pPLbbEEeFPPS7Jgw0bMXmuKUs2sJvAlr/noLeaDIYVLnGi8fsjATP7gg==
 
 chalk@5.2.0, chalk@^5.0.0, chalk@^5.1.2:
   version "5.2.0"
@@ -2982,6 +2955,13 @@ fast-levenshtein@^2.0.6:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==
 
+fast-replaceall@1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/fast-replaceall/-/fast-replaceall-1.0.2.tgz#0318755df9dcbf81a82b806fb2e3a249fb2d302a"
+  integrity sha512-m0bqgZM0aR22nbRG2Lh2w9rR/jlpC8xHizCTkvgZq8uZ1BrVzcVNWX/Jl+PLbcti0Cxb4AAB3Gz1YUntkeX/2A==
+  dependencies:
+    celia "^8.0.2"
+
 fastq@^1.6.0:
   version "1.14.0"
   resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.14.0.tgz#107f69d7295b11e0fccc264e1fc6389f623731ce"
@@ -3033,10 +3013,10 @@ file-entry-cache@^6.0.1:
   dependencies:
     flat-cache "^3.0.4"
 
-file-type@18.0.0:
-  version "18.0.0"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-18.0.0.tgz#7a39378f8657ddc02807a0c62cb77cb4dc318197"
-  integrity sha512-jjMwFpnW8PKofLE/4ohlhqwDk5k0NC6iy0UHAJFKoY1fQeGMN0GDdLgHQrvCbSpMwbqzoCZhRI5dETCZna5qVA==
+file-type@18.2.1:
+  version "18.2.1"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-18.2.1.tgz#6d8f1fa3b079606f6ecf89483346f55fcd2c671b"
+  integrity sha512-Yw5MtnMv7vgD2/6Bjmmuegc8bQEVA9GmAyaR18bMYWKqsWDG9wgYZ1j4I6gNMF5Y5JBDcUcjRQqNQx7Y8uotcg==
   dependencies:
     readable-web-to-node-stream "^3.0.2"
     strtok3 "^7.0.0"
@@ -4443,20 +4423,6 @@ listr-verbose-renderer@^0.5.0:
     date-fns "^1.27.2"
     figures "^2.0.0"
 
-listr2@5.0.6:
-  version "5.0.6"
-  resolved "https://registry.yarnpkg.com/listr2/-/listr2-5.0.6.tgz#3c61153383869ffaad08a8908d63edfde481dff8"
-  integrity sha512-u60KxKBy1BR2uLJNTWNptzWQ1ob/gjMzIJPZffAENzpZqbMZ/5PrXXOomDcevIS/+IB7s1mmCEtSlT2qHWMqag==
-  dependencies:
-    cli-truncate "^2.1.0"
-    colorette "^2.0.19"
-    log-update "^4.0.0"
-    p-map "^4.0.0"
-    rfdc "^1.3.0"
-    rxjs "^7.5.7"
-    through "^2.3.8"
-    wrap-ansi "^7.0.0"
-
 listr2@5.0.8:
   version "5.0.8"
   resolved "https://registry.yarnpkg.com/listr2/-/listr2-5.0.8.tgz#a9379ffeb4bd83a68931a65fb223a11510d6ba23"
@@ -5228,10 +5194,10 @@ prepend-http@^2.0.0:
   resolved "https://registry.yarnpkg.com/prepend-http/-/prepend-http-2.0.0.tgz#e92434bfa5ea8c19f41cdfd401d741a3c819d897"
   integrity sha512-ravE6m9Atw9Z/jjttRUZ+clIXogdghyZAuWJ3qEzjT+jI/dL1ifAqhZeC5VHzQp1MSt1+jxKkFNemj/iO7tVUA==
 
-pretty-bytes@6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-6.0.0.tgz#928be2ad1f51a2e336add8ba764739f9776a8140"
-  integrity sha512-6UqkYefdogmzqAZWzJ7laYeJnaXDy2/J+ZqiiMtS7t7OfpXWTlaeGMwX8U6EFvPV/YWWEKRkS8hKS4k60WHTOg==
+pretty-bytes@6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/pretty-bytes/-/pretty-bytes-6.1.0.tgz#1d1cc9aae1939012c74180b679da6684616bf804"
+  integrity sha512-Rk753HI8f4uivXi4ZCIYdhmG1V+WKzvRMg/X+M42a6t7D07RcmopXJMDNk6N++7Bl75URRGsb40ruvg7Hcp2wQ==
 
 pretty-format@^29.5.0:
   version "29.5.0"
@@ -5911,18 +5877,6 @@ string-width@^5.0.0, string-width@^5.0.1, string-width@^5.1.2:
     eastasianwidth "^0.2.0"
     emoji-regex "^9.2.2"
     strip-ansi "^7.0.1"
-
-string.prototype.replaceall@1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/string.prototype.replaceall/-/string.prototype.replaceall-1.0.7.tgz#6cf36b20bcb12d55653e1119ddf5bc1d6363103d"
-  integrity sha512-xB2WV2GlSCSJT5dMGdhdH1noMPiAB91guiepwTYyWY9/0Vq/TZ7RPmnOSUGAEvry08QIK7EMr28aAii+9jC6kw==
-  dependencies:
-    call-bind "^1.0.2"
-    define-properties "^1.1.4"
-    es-abstract "^1.20.4"
-    get-intrinsic "^1.1.3"
-    has-symbols "^1.0.3"
-    is-regex "^1.1.4"
 
 string.prototype.trimend@^1.0.6:
   version "1.0.6"
