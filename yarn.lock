@@ -1130,10 +1130,10 @@
     "@tryghost/errors" "^1.2.22"
     "@tryghost/request" "^0.1.37"
 
-"@tryghost/image-transform@1.2.4":
-  version "1.2.4"
-  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.2.4.tgz#3e0f7fbee4c85449ea38f27f824ae789340fef16"
-  integrity sha512-WYiwJff/Fnl8ylJzUea8pGQpC4tsjHQDc72Jl0XAYcXItv+bSDePdp5BjfwcHExQBpgJ3OwPpdVbAlhB3GMNdQ==
+"@tryghost/image-transform@1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.2.5.tgz#cd5353cf7757bba48dddf1c35da1bfab1d9f7728"
+  integrity sha512-Hevzi+1YN/1PqodytCiV3UWLreJL1PC6F7R4dIzI1f5+eNKKyGMjXPWscaLSQK0/Dx+yahDR4WluMS/OfW9gCA==
   dependencies:
     "@tryghost/errors" "^1.2.1"
     fs-extra "^10.0.0"
@@ -1188,10 +1188,10 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper@0.3.4":
-  version "0.3.4"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.3.4.tgz#3538118cc28c33fa7dff67b5edf17c7b24bac145"
-  integrity sha512-Cv/dTbJ+yeK2N5AcyJmQ/2H1RyrIqMy8XfhXcuA9nMZWiTRIyOiscsg1ZF9uIs1Eqo3NDvOzGib4LUUiNgFlQg==
+"@tryghost/mg-assetscraper@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.3.5.tgz#ce7655b508703aa509e4968813f6f7ce6a98b0ad"
+  integrity sha512-AebqR5501gS/JCV3mND2/cLl2rjRQ5/xbPQTK1yIJ9dBqC7E1fAiLZ7T755/LRWcYDa2U+7bPsDGGbmvPef+mw==
   dependencies:
     "@tryghost/listr-smart-renderer" "^0.5.3"
     "@tryghost/logging" "2.4.1"
@@ -1199,26 +1199,26 @@
     cheerio "1.0.0-rc.12"
     fast-replaceall "1.0.2"
     file-type "18.2.1"
-    fs-extra "11.1.0"
+    fs-extra "11.1.1"
     got "11.8.6"
     listr "0.14.3"
     markdown-it "13.0.1"
     pretty-bytes "6.1.0"
     srcset "5.0.0"
 
-"@tryghost/mg-fs-utils@0.12.6":
-  version "0.12.6"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.12.6.tgz#015ecd0986c4017ee00bf0421dadd476eb1fa0d2"
-  integrity sha512-MD2mqa8ITbb7e5D9HeGB9xYhIA6h5brHsV53uB34ntv1VgKp+G9qWlItdbxeQF4sIVJyiDBV+dgTTgyFgPShZQ==
+"@tryghost/mg-fs-utils@0.12.7":
+  version "0.12.7"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.12.7.tgz#bbc5c0755bada481735dd3a53305d99f4eb6ca23"
+  integrity sha512-VFta40Xtbtsf39vWizlTwYsx7lJItWNKs38+zfwnFio/MbAZCBi5xf1caj48QmWElAjppbbiRrjDabwmShCy4A==
   dependencies:
     "@tryghost/errors" "1.2.20"
-    "@tryghost/image-transform" "1.2.4"
+    "@tryghost/image-transform" "1.2.5"
     "@tryghost/string" "0.2.3"
     "@tryghost/zip" "1.1.32"
     adm-zip "0.5.10"
     csv-parse "5.3.6"
     date-fns "2.29.3"
-    fs-extra "11.1.0"
+    fs-extra "11.1.1"
     lodash "4.17.21"
     node-stream-zip "1.15.0"
     sharp "0.31.3"
@@ -3122,10 +3122,10 @@ fs-extra@10.1.0, fs-extra@^10.0.0:
     jsonfile "^6.0.1"
     universalify "^2.0.0"
 
-fs-extra@11.1.0:
-  version "11.1.0"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.1.0.tgz#5784b102104433bb0e090f48bfc4a30742c357ed"
-  integrity sha512-0rcTq621PD5jM/e0a3EJoGC/1TC5ZBCERW82LQuwfGnCa1V8w7dpYH1yNu+SLb6E5dkeCBzKEyLGlFrnr+dUyw==
+fs-extra@11.1.1:
+  version "11.1.1"
+  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.1.1.tgz#da69f7c39f3b002378b0954bb6ae7efdc0876e2d"
+  integrity sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==
   dependencies:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
