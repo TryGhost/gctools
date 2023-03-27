@@ -18,7 +18,8 @@
     "gctools": "gctools",
     "test:only": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js && yarn lint",
-    "lint": "eslint . --ext .js --cache"
+    "lint": "eslint . --ext .js --cache",
+    "update": "git pull origin main && yarn"
   },
   "devDependencies": {
     "eslint": "8.36.0",
