@@ -28,6 +28,10 @@ const setup = (sywac) => {
         defaultValue: null,
         desc: 'Current author slug'
     });
+    sywac.string('--tag', {
+        defaultValue: null,
+        desc: 'Select posts with these tag slugs, inside single quotes. i.e. \'existing-tag, newsletter\''
+    });
     sywac.string('--new_author', {
         defaultValue: null,
         desc: 'New author slug'

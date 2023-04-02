@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
+import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
@@ -55,6 +56,10 @@ const getFullTaskList = (options) => {
 
                     if (ctx.args.author) {
                         discoveryFilter.push(`author:[${ctx.args.author.slug}]`);
+                    }
+
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
                     }
 
                     ctx.posts = await discover({
