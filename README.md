@@ -159,7 +159,7 @@ gctools delete-posts <apiURL> <adminAPIKey> --status 'draft'
 gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user'
 
 # Delete all posts by a specific author with a specific tag
-gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
+gctools delete-posts <apiURL> <adminAPIKey> --author 'sample-user' --tag 'hash-testing'
 ```
 
 
@@ -187,7 +187,7 @@ gctools delete-pages <apiURL> <adminAPIKey> --status 'draft'
 gctools delete-pages <apiURL> <adminAPIKey> --author 'sample-user'
 
 # Delete all pages by a specific author with a specific tag
-gctools delete-pages <apiURL> <adminAPIKey> --author 'sample-user' --tag '#testing'
+gctools delete-pages <apiURL> <adminAPIKey> --author 'sample-user' --tag 'hash-testing'
 ```
 
 
