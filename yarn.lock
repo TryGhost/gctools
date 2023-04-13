@@ -1988,10 +1988,10 @@
   resolved "https://registry.yarnpkg.com/@tokenizer/token/-/token-0.3.0.tgz#fe98a93fe789247e998c75e74e9c7c63217aa276"
   integrity sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==
 
-"@tryghost/admin-api@1.13.4":
-  version "1.13.4"
-  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.13.4.tgz#8a0a174db49d530b45169dab24f97ab15414f3c3"
-  integrity sha512-ibcn/TwetaDtIfj7tz3gnhiH9bPrItDtIrbHdYknwF6mjxL9mQ1bLYSkZ0f+y8za9MjHjdX7Opqdi1SgUWpM5w==
+"@tryghost/admin-api@1.13.5":
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.13.5.tgz#464374f0b780873a1c93cf2ddbfad4e02407cd43"
+  integrity sha512-GbmpduZ8HQjtDbvMBc0hHvSpBw6q09RhfxbH2dVkgHV0fKUGFk3eM13l5SrZ73WLiXfcG4u7t/6hSDGd5xwrPg==
   dependencies:
     axios "^0.27.0"
     form-data "^4.0.0"
