@@ -1,5 +1,4 @@
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import _ from 'lodash';
 import {join, dirname} from 'node:path';
 import fs from 'fs-extra';
 import fsUtils from '@tryghost/mg-fs-utils';
@@ -28,7 +27,11 @@ const getFullTaskList = (options) => {
             title: 'Create separate free, comp, & paid objects',
             task: async (ctx) => {
                 ctx.letterdropMembers.forEach((member) => {
-                    const stripeMember = _.find(ctx.stripeMembers, {Email: member.Email});
+                    const memberEmail = member.email;
+
+                    const stripeMember = ctx.stripeMembers.find((sMember) => {
+                        return sMember['Customer Email'] === memberEmail;
+                    });
 
                     let labels = [];
 
@@ -40,7 +43,7 @@ const getFullTaskList = (options) => {
                     }
 
                     let newMemberObj = {
-                        email: member.Email,
+                        email: memberEmail,
                         created_at: new Date(member.subscribed_on).toISOString()
                     };
 
@@ -71,7 +74,7 @@ const getFullTaskList = (options) => {
                         data: fsUtils.csv.jsonToCSV(ctx.newFreeMembers)
                     },
                     {
-                        fileName: 'letterdrop-stripe-members.csv',
+                        fileName: 'letterdrop-paid-members.csv',
                         data: fsUtils.csv.jsonToCSV(ctx.newPaidMembers)
                     }
                 ];
