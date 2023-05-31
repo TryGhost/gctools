@@ -49,7 +49,7 @@ const getFullTaskList = (options) => {
 
                     if (stripeMember) {
                         labels.push('letterdrop-paid');
-                        newMemberObj.stripe_customer_id = stripeMember.id;
+                        newMemberObj.stripe_customer_id = stripeMember['Customer ID'];
                     } else {
                         labels.push('letterdrop-free');
                     }
