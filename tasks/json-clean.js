@@ -118,8 +118,10 @@ const getFullTaskList = (options) => {
                 let siteUsers = [];
 
                 ctx.jsonData.users.forEach((user) => {
+                    let allPosts = _.filter(ctx.jsonData.posts_authors, {author_id: user.id});
+
                     siteUsers.push({
-                        name: `${user.name} - ${user.slug} - ${user.id}`,
+                        name: `${user.name} - ${user.slug} - ID: ${user.id} - Post Count: ${allPosts.length}`,
                         value: {
                             originalData: user
                         }
