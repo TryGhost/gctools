@@ -14,7 +14,7 @@
     "**/node_modules/**"
   ],
   "scripts": {
-    "dev": "gctools",
+    "dev": "node bin/cli.js",
     "gctools": "gctools",
     "test:only": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js && yarn lint",
