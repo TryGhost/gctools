@@ -2120,21 +2120,7 @@
   optionalDependencies:
     sharp "^0.30.0"
 
-"@tryghost/listr-smart-renderer@0.5.3":
-  version "0.5.3"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.5.3.tgz#f05e291d061fb54d1212d74f5592f50ada0517b5"
-  integrity sha512-jlKe7BJEOJNCTJk+XRCioWzEQGCtJQQDPHpAX1JDXzM667CYwjFisL5pJrSprX7fAIn76XCHsIMUisdhKsu8Jw==
-  dependencies:
-    chalk "5.2.0"
-    cli-truncate "3.1.0"
-    elegant-spinner "3.0.0"
-    indent-string "^5.0.0"
-    listr2 "5.0.8"
-    log-symbols "5.1.0"
-    log-update "5.0.1"
-    strip-ansi "7.0.1"
-
-"@tryghost/listr-smart-renderer@^0.5.8":
+"@tryghost/listr-smart-renderer@0.5.8", "@tryghost/listr-smart-renderer@^0.5.8":
   version "0.5.8"
   resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.5.8.tgz#b3869e9d278bf8311b05572dacb92153f8b15740"
   integrity sha512-cIzpdxz06CLB05PKtrqB/NmTvbrsWGRF96A/TZNB4XqIKRDXXmpoetwV7aBTVcWhH89n4+P+Psbav8E+udJSZQ==
@@ -2388,12 +2374,7 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*":
-  version "18.11.17"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.11.17.tgz#5c009e1d9c38f4a2a9d45c0b0c493fe6cdb4bcb5"
-  integrity sha512-HJSUJmni4BeDHhfzn6nF0sVmd1SMezP7/4F0Lq+aXzmp2xm9O7WXrUtHW/CHlYVtZUbByEvWidHqRtcJXGF2Ng==
-
-"@types/node@^20.4.2":
+"@types/node@*", "@types/node@^20.4.2":
   version "20.4.2"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.4.2.tgz#129cc9ae69f93824f92fac653eebfb4812ab4af9"
   integrity sha512-Dd0BYtWgnWJKwO1jkmTrzofjK2QXXcai0dmtzvIBhcA+RsG5h8R3xlyta0kGOZRNfL9GuRtb1knmPEhQrePCEw==
@@ -3097,11 +3078,6 @@ celia@^8.0.2:
   version "8.0.4"
   resolved "https://registry.yarnpkg.com/celia/-/celia-8.0.4.tgz#501b4d9f91147979ebfff81fab16acbcf2823d4d"
   integrity sha512-XwPKQgxQ5Dr+lIbsFSBzf9U/u9vnh5pPLbbEEeFPPS7Jgw0bMXmuKUs2sJvAlr/noLeaDIYVLnGi8fsjATP7gg==
-
-chalk@5.2.0:
-  version "5.2.0"
-  resolved "https://registry.yarnpkg.com/chalk/-/chalk-5.2.0.tgz#249623b7d66869c673699fb66d65723e54dfcfb3"
-  integrity sha512-ree3Gqw/nazQAPuJJEy+avdl7QfZMcUvmHIKgEZkGL+xOBzRvup5Hxo6LHuMceSxOabuJLJm5Yp/92R9eMmMvA==
 
 chalk@5.3.0, chalk@^5.0.0, chalk@^5.3.0:
   version "5.3.0"
@@ -4809,7 +4785,7 @@ imurmurhash@^0.1.4:
   resolved "https://registry.yarnpkg.com/imurmurhash/-/imurmurhash-0.1.4.tgz#9218b9b2b928a238b13dc4fb6b6d576f231453ea"
   integrity sha512-JmXMZ6wuvDmLiHEml9ykzqO6lwFbof0GG4IkcGaENdCRDDmMVnny7s5HsIgHCbaq0w2MyPhDqkhTUgS2LU2PHA==
 
-indent-string@5.0.0, indent-string@^5.0.0:
+indent-string@5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/indent-string/-/indent-string-5.0.0.tgz#4fd2980fccaf8622d14c64d694f4cf33c81951a5"
   integrity sha512-m6FAo/spmsW2Ab2fU35JTYwtOKa2yAwXSwgjSv1TJzh4Mh7mC3lzAOVLBprb72XsTrgkEIsl7YrFNAiDiRhIGg==
@@ -7434,13 +7410,6 @@ string_decoder@~1.1.1:
   integrity sha512-Y38VPSHcqkFrCpFnQ9vuSXmquuv5oXOKpGeT6aGrr3o3Gc9AlVa6JBfUSOCnbxGGZF+/0ooI7KrPuUSztUdU5A==
   dependencies:
     ansi-regex "^5.0.1"
-
-strip-ansi@7.0.1:
-  version "7.0.1"
-  resolved "https://registry.yarnpkg.com/strip-ansi/-/strip-ansi-7.0.1.tgz#61740a08ce36b61e50e65653f07060d000975fb2"
-  integrity sha512-cXNxvT8dFNRVfhVME3JAe98mkXDYN2O1l7jmcwMnOslDeESg1rF/OZMtK0nRAhiari1unG5cD4jG3rapUAkLbw==
-  dependencies:
-    ansi-regex "^6.0.1"
 
 strip-ansi@7.1.0, strip-ansi@^7.0.1:
   version "7.1.0"
