@@ -1,8 +1,7 @@
 import fs from 'fs-extra';
 import MgAssetScraper from '@tryghost/mg-assetscraper';
 import fsUtils from '@tryghost/mg-fs-utils';
-import SmartRenderer from '@tryghost/listr-smart-renderer';
-import {Listr} from 'listr2';
+import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
 const getTaskRunner = (options, logger) => {
     let tasks = [
@@ -95,8 +94,7 @@ const getTaskRunner = (options, logger) => {
         }
     ];
 
-    // Configure a new Listr task manager, we can use different renderers for different configs
-    return new Listr(tasks, {renderer: (options.verbose) ? 'verbose' : SmartRenderer});
+    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
 };
 
 export default {
