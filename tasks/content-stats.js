@@ -20,6 +20,12 @@ const initialise = (options) => {
                 posts: {
                     count: null
                 },
+                posts_drafts: {
+                    count: null
+                },
+                posts_published: {
+                    count: null
+                },
                 public_posts: {
                     count: null
                 },
@@ -69,6 +75,20 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public'});
                 ctx.stats.public_posts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting draft posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public+status:draft'});
+                ctx.stats.posts_drafts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting published posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public+status:published'});
+                ctx.stats.posts_published.count = postsData.meta.pagination.total;
             }
         },
         {
@@ -149,6 +169,8 @@ const getFullTaskList = (options) => {
 
                 const statsRows = [
                     ['Posts', ctx.stats.posts.count],
+                    ['- - Draft', ctx.stats.posts_drafts.count],
+                    ['- - Published', ctx.stats.posts_published.count],
                     ['- Public', ctx.stats.public_posts.count],
                     ['- Members', ctx.stats.members_posts.count],
                     ['- Paid', ctx.stats.paid_posts.count],
