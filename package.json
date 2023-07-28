@@ -28,7 +28,7 @@
     "jest-extended": "4.0.0"
   },
   "dependencies": {
-    "@inquirer/confirm": "2.0.6",
+    "@inquirer/confirm": "2.0.7",
     "@tryghost/admin-api": "1.13.8",
     "@tryghost/listr-smart-renderer": "0.5.8",
     "@tryghost/logging": "2.4.5",
