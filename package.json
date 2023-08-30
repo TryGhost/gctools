@@ -45,7 +45,7 @@
     "inquirer": "9.2.10",
     "inquirer-datepicker-prompt": "0.4.3",
     "inquirer-search-checkbox": "1.0.0",
-    "jsonwebtoken": "9.0.1",
+    "jsonwebtoken": "9.0.2",
     "listr": "0.14.3",
     "lodash": "4.17.21",
     "lorem-ipsum": "2.0.8",
