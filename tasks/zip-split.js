@@ -189,7 +189,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 6. Move each new zip to the desired destination path
                 try {
-                    let filePaths = globSync(`${ctx.fileCache.zipDir}/*.zip`);
+                    let filePaths = glob.globSync(`${ctx.fileCache.zipDir}/*.zip`);
 
                     await Promise.all(filePaths.map(async (filePath) => {
                         let fileName = basename(filePath);
