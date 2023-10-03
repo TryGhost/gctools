@@ -2,7 +2,7 @@ import {dirname, basename, parse, join} from 'node:path';
 import fsUtils from '@tryghost/mg-fs-utils';
 import zip from '@tryghost/zip';
 import fs from 'fs-extra';
-import {globSync} from 'glob';
+import glob from 'glob';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import superbytes from 'superbytes';
 
@@ -102,7 +102,7 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 // 2. Get the size for each image that was just unzipped
                 try {
-                    let filePaths = globSync(`${ctx.fileCache.tmpDir}/**/*`, {
+                    let filePaths = glob.globSync(`${ctx.fileCache.tmpDir}/**/*`, {
                         dot: false,
                         nodir: true
                     });
@@ -163,7 +163,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 5. Zip each of those new chunk directories
                 let tasks = [];
-                let chunkDirs = globSync(`${ctx.fileCache.zipDir}/chunks/*`);
+                let chunkDirs = glob.globSync(`${ctx.fileCache.zipDir}/chunks/*`);
 
                 chunkDirs.forEach((dir, index) => {
                     const zipFileParts = parse(ctx.args.zipFile);
