@@ -67,6 +67,81 @@ const getFullTaskList = (options) => {
             }
         },
         {
+            title: 'Keep posts and pages?',
+            task: async (ctx, task) => {
+                const promptOptions = [
+                    {
+                        type: 'checkbox',
+                        name: 'postspages',
+                        message: 'Select content types to keep:',
+                        pageSize: 20,
+                        choices: [
+                            {
+                                name: 'Posts',
+                                value: 'post',
+                                checked: true
+                            },
+                            {
+                                name: 'Pages',
+                                value: 'page',
+                                checked: true
+                            }
+                        ]
+                    }
+                ];
+
+                await inquirer.prompt(promptOptions).then(async (answers) => {
+                    ctx.postsAndPages = answers.postspages;
+                    task.output = `Selected tp keep ${answers.postspages.join(', ')}`;
+                });
+            }
+        },
+        {
+            title: 'Removing unwanted content types',
+            skip: ctx => !ctx.postsAndPages.length,
+            task: async (ctx) => {
+                // ctx.postsAndPages
+
+                let metaToDelete = [];
+
+                ctx.jsonData.posts = ctx.jsonData.posts.filter((item) => {
+                    const isWantedType = ctx.postsAndPages.includes(item.type);
+
+                    if (isWantedType) {
+                        return item;
+                    } else {
+                        // console.log('Delete meta for', item.title, item.type, item.id);
+                        metaToDelete.push(item.id);
+                        return false;
+                    }
+                });
+
+                ctx.jsonData.posts_meta = ctx.jsonData.posts_meta.filter((item) => {
+                    if (metaToDelete.includes(item.post_id)) {
+                        return false;
+                    } else {
+                        return item;
+                    }
+                });
+
+                ctx.jsonData.posts_tags = ctx.jsonData.posts_tags.filter((item) => {
+                    if (metaToDelete.includes(item.post_id)) {
+                        return false;
+                    } else {
+                        return item;
+                    }
+                });
+
+                ctx.jsonData.posts_authors = ctx.jsonData.posts_authors.filter((item) => {
+                    if (metaToDelete.includes(item.post_id)) {
+                        return false;
+                    } else {
+                        return item;
+                    }
+                });
+            }
+        },
+        {
             title: 'Remove users with no posts',
             task: async (ctx, task) => {
                 let siteUsers = [];
