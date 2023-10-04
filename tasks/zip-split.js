@@ -2,7 +2,7 @@ import {dirname, basename, parse, join} from 'node:path';
 import fsUtils from '@tryghost/mg-fs-utils';
 import zip from '@tryghost/zip';
 import fs from 'fs-extra';
-import glob from 'glob';
+import {globSync} from 'glob';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import superbytes from 'superbytes';
 
@@ -102,7 +102,7 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 // 2. Get the size for each image that was just unzipped
                 try {
-                    let filePaths = glob.globSync(`${ctx.fileCache.tmpDir}/**/*`, {
+                    let filePaths = globSync(`${ctx.fileCache.tmpDir}/**/*`, {
                         dot: false,
                         nodir: true
                     });
@@ -163,7 +163,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 5. Zip each of those new chunk directories
                 let tasks = [];
-                let chunkDirs = glob.globSync(`${ctx.fileCache.zipDir}/chunks/*`);
+                let chunkDirs = globSync(`${ctx.fileCache.zipDir}/chunks/*`);
 
                 chunkDirs.forEach((dir, index) => {
                     const zipFileParts = parse(ctx.args.zipFile);
@@ -189,7 +189,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 6. Move each new zip to the desired destination path
                 try {
-                    let filePaths = glob.globSync(`${ctx.fileCache.zipDir}/*.zip`);
+                    let filePaths = globSync(`${ctx.fileCache.zipDir}/*.zip`);
 
                     await Promise.all(filePaths.map(async (filePath) => {
                         let fileName = basename(filePath);
