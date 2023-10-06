@@ -22,7 +22,7 @@
     "update": "git pull origin main && yarn"
   },
   "devDependencies": {
-    "eslint": "8.50.0",
+    "eslint": "8.51.0",
     "eslint-plugin-ghost": "3.3.2",
     "jest": "29.7.0",
     "jest-extended": "4.0.1"
