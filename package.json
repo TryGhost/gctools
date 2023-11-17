@@ -31,7 +31,7 @@
     "@inquirer/confirm": "2.0.15",
     "@tryghost/admin-api": "1.13.11",
     "@tryghost/listr-smart-renderer": "0.5.9",
-    "@tryghost/logging": "2.4.8",
+    "@tryghost/logging": "2.4.9",
     "@tryghost/mg-assetscraper": "0.4.2",
     "@tryghost/mg-fs-utils": "0.12.15",
     "@tryghost/pretty-cli": "1.2.38",
