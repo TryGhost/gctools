@@ -34,7 +34,7 @@
     "@tryghost/logging": "2.4.9",
     "@tryghost/mg-assetscraper": "0.4.2",
     "@tryghost/mg-fs-utils": "0.12.15",
-    "@tryghost/pretty-cli": "1.2.38",
+    "@tryghost/pretty-cli": "1.2.39",
     "@tryghost/zip": "1.1.38",
     "axios": "1.6.2",
     "bluebird": "3.7.2",
