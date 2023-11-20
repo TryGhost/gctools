@@ -71,7 +71,7 @@ const setup = (sywac) => {
     });
     sywac.enumeration('--status', {
         defaultValue: 'published',
-        choices: ['public', 'draft', 'scheduled'],
+        choices: ['published', 'draft', 'scheduled', 'sent'],
         desc: 'Post status'
     });
     sywac.enumeration('--visibility', {
