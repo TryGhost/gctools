@@ -57,7 +57,7 @@ const getFullTaskList = (options) => {
                 let discoveryOptions = {
                     api: ctx.api,
                     type: 'posts',
-                    formats: 'html,mobiledoc',
+                    formats: 'mobiledoc,lexical',
                     filter: discoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
@@ -76,49 +76,91 @@ const getFullTaskList = (options) => {
                 let tasks = [];
 
                 await Promise.mapSeries(ctx.posts, async (post) => {
-                    let updatedMobiledoc = JSON.parse(post.mobiledoc);
+                    const isMobiledoc = post.mobiledoc ?? false;
+                    const isLexical = post.lexical ?? false;
 
-                    const hasPaywallCard = Object.keys(updatedMobiledoc.cards).some((key) => {
-                        return updatedMobiledoc.cards[key][0] === 'paywall';
-                    });
+                    if (isMobiledoc) {
+                        let updatedMobiledoc = JSON.parse(post.mobiledoc);
 
-                    tasks.push({
-                        title: `${post.title}`,
-                        skip: () => {
-                            if (hasPaywallCard) {
-                                return `${post.title} (${post.slug}) already has a paywall card`;
+                        const hasPaywallCard = Object.keys(updatedMobiledoc.cards).some((key) => {
+                            return updatedMobiledoc.cards[key][0] === 'paywall';
+                        });
+
+                        tasks.push({
+                            title: `${post.title}`,
+                            skip: () => {
+                                if (hasPaywallCard) {
+                                    return `${post.title} (${post.slug}) already has a paywall card`;
+                                }
+                            },
+                            task: async () => {
+                                const newCardsLength = updatedMobiledoc.cards.push(['paywall', {}]);
+                                const paywallCardIndex = newCardsLength - 1;
+                                const sectionsBeforePaywall = updatedMobiledoc.sections.slice(0, options.previewPosition);
+                                const sectionsAfterPaywall = updatedMobiledoc.sections.slice(options.previewPosition);
+
+                                updatedMobiledoc.sections = [];
+                                updatedMobiledoc.sections.push(...sectionsBeforePaywall);
+                                updatedMobiledoc.sections.push(...[[10, paywallCardIndex]]); // `10` signifies this is a card
+                                updatedMobiledoc.sections.push(...sectionsAfterPaywall);
+                                updatedMobiledoc = JSON.stringify(updatedMobiledoc);
+
+                                try {
+                                    let result = await ctx.api.posts.edit({
+                                        id: post.id,
+                                        updated_at: post.updated_at,
+                                        mobiledoc: updatedMobiledoc
+                                    });
+
+                                    ctx.updated.push(result.url);
+                                    return Promise.delay(options.delayBetweenCalls).return(result);
+                                } catch (error) {
+                                    error.resource = {
+                                        title: post.title
+                                    };
+                                    ctx.errors.push(error);
+                                    throw error;
+                                }
                             }
-                        },
-                        task: async () => {
-                            const newCardsLength = updatedMobiledoc.cards.push(['paywall', {}]);
-                            const paywallCardIndex = newCardsLength - 1;
-                            const sectionsBeforePaywall = updatedMobiledoc.sections.slice(0, options.previewPosition);
-                            const sectionsAfterPaywall = updatedMobiledoc.sections.slice(options.previewPosition);
+                        });
+                    } else if (isLexical) {
+                        let updatedLexical = JSON.parse(post.lexical);
 
-                            updatedMobiledoc.sections = [];
-                            updatedMobiledoc.sections.push(...sectionsBeforePaywall);
-                            updatedMobiledoc.sections.push(...[[10, paywallCardIndex]]); // `10` signifies this is a card
-                            updatedMobiledoc.sections.push(...sectionsAfterPaywall);
-                            updatedMobiledoc = JSON.stringify(updatedMobiledoc);
+                        const hasPaywallCard = Object.entries(updatedLexical.root.children).some((item) => {
+                            const [, value] = item;
+                            return value.type === 'paywall';
+                        });
 
-                            try {
-                                let result = await ctx.api.posts.edit({
-                                    id: post.id,
-                                    updated_at: post.updated_at,
-                                    mobiledoc: updatedMobiledoc
-                                });
+                        tasks.push({
+                            title: `${post.title}`,
+                            skip: () => {
+                                if (hasPaywallCard) {
+                                    return `${post.title} (${post.slug}) already has a paywall card`;
+                                }
+                            },
+                            task: async () => {
+                                updatedLexical.root.children.splice(options.previewPosition, 0, {type: 'paywall', version: 1});
+                                updatedLexical = JSON.stringify(updatedLexical, null, 2);
 
-                                ctx.updated.push(result.url);
-                                return Promise.delay(options.delayBetweenCalls).return(result);
-                            } catch (error) {
-                                error.resource = {
-                                    title: post.title
-                                };
-                                ctx.errors.push(error);
-                                throw error;
+                                try {
+                                    let result = await ctx.api.posts.edit({
+                                        id: post.id,
+                                        updated_at: post.updated_at,
+                                        lexical: updatedLexical
+                                    });
+
+                                    ctx.updated.push(result.url);
+                                    return Promise.delay(options.delayBetweenCalls).return(result);
+                                } catch (error) {
+                                    error.resource = {
+                                        title: post.title
+                                    };
+                                    ctx.errors.push(error);
+                                    throw error;
+                                }
                             }
-                        }
-                    });
+                        });
+                    }
                 });
 
                 let taskOptions = options;
