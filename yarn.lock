@@ -1826,21 +1826,7 @@
   optionalDependencies:
     sharp "^0.32.0"
 
-"@tryghost/listr-smart-renderer@0.5.9":
-  version "0.5.9"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.5.9.tgz#4ceb3cbc9d3b6e5de0a053a6b8a514c230efe23e"
-  integrity sha512-K61lzVMsztcYEPa2jCpuGJCySfeqzduJQ0Lby+m/fX0aPemeTUfjUVbdxUsmWCKS/5Ve2sAzKMYa2VwlnnuIVw==
-  dependencies:
-    chalk "5.3.0"
-    cli-truncate "3.1.0"
-    elegant-spinner "3.0.0"
-    indent-string "5.0.0"
-    listr2 "6.6.1"
-    log-symbols "5.1.0"
-    log-update "5.0.1"
-    strip-ansi "7.1.0"
-
-"@tryghost/listr-smart-renderer@^0.5.9":
+"@tryghost/listr-smart-renderer@0.5.12", "@tryghost/listr-smart-renderer@^0.5.9":
   version "0.5.12"
   resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.5.12.tgz#6a4d5e22e6d8746fb276e3b25cba2e190cc641ed"
   integrity sha512-0fezB7TURONnQmkBevnTvYlPFkTLeEMTCk6YWKszgixf1t/lJ1EqHRVvBzdyP2Pd6vJgCZIj6cvwx/V2L5TsDw==
