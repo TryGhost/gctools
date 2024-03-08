@@ -7563,10 +7563,10 @@ strtok3@^7.0.0:
     "@tokenizer/token" "^0.3.0"
     peek-readable "^5.0.0"
 
-superbytes@1.9.1:
-  version "1.9.1"
-  resolved "https://registry.yarnpkg.com/superbytes/-/superbytes-1.9.1.tgz#cf1f75057398b572b0eec09c19ab6fbe00a346ba"
-  integrity sha512-HCWIRUlRu3EE/AoUKjV7OAyQnUumkXOe/CNZCx4b1GKh5almosflRnDV/+imCFaTfs6t9u9AMIE+uqppO/xXIQ==
+superbytes@2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/superbytes/-/superbytes-2.0.1.tgz#e5037da1237a740f0716ae3b63f452e62aac736c"
+  integrity sha512-QjGNlCo58LYC9T0HdJNVRRHdX3/+Y+sq+tTvzDtsAjI6CUvEI5XST5/ZfZ3v2jf0GFmwF8VQBXevm0VnSLppbQ==
 
 supports-color@^2.0.0:
   version "2.0.0"
