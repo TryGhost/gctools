@@ -4,7 +4,7 @@ import zip from '@tryghost/zip';
 import fs from 'fs-extra';
 import {globSync} from 'glob';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import superbytes from 'superbytes';
+import {superbytes} from 'superbytes';
 
 function pad(n, width, z) {
     z = z || '0';
