@@ -10,7 +10,7 @@ import {getNewsletters} from '../questions/get-newsletters.js';
 import {getLabels} from '../questions/get-labels.js';
 
 const choice = {
-    name: 'Add Member Newsletter Subscription',
+    name: 'Add member newsletter subscription',
     value: 'add-member-newsletter-subscription'
 };
 

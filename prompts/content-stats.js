@@ -4,7 +4,7 @@ import contentStats from '../tasks/content-stats.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
-    name: 'Content Stats',
+    name: 'Content stats',
     value: 'contentStats'
 };
 

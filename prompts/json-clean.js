@@ -3,7 +3,7 @@ import {ui} from '@tryghost/pretty-cli';
 import jsonClean from '../tasks/json-clean.js';
 
 const choice = {
-    name: 'JSON Clean',
+    name: 'JSON clean',
     value: 'jsonClean'
 };
 

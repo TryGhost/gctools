@@ -8,7 +8,7 @@ import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
-    name: 'Change Author',
+    name: 'Change author',
     value: 'changeAuthor'
 };
 

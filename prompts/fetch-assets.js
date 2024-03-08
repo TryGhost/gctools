@@ -7,16 +7,6 @@ const choice = {
     value: 'fetchAssets'
 };
 
-// sywac.array('-s --scrape', {
-//     choices: ['all', 'img', 'web', 'media', 'files', 'none'],
-//     defaultValue: 'all',
-//     desc: 'Configure scraping tasks'
-// });
-// sywac.number('--sizeLimit', {
-//     defaultValue: false,
-//     desc: 'Assets larger than this size (defined in MB) will be ignored'
-// });
-
 const options = [
     {
         type: 'input',

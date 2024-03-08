@@ -3,7 +3,7 @@ import {ui} from '@tryghost/pretty-cli';
 import zipCreate from '../tasks/zip-create.js';
 
 const choice = {
-    name: 'Zip Create',
+    name: 'Zip create',
     value: 'zipCreate'
 };
 

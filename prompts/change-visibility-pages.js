@@ -8,7 +8,7 @@ import {getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj} from '../lib/ghost
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
-    name: 'Change Visibility for Pages',
+    name: 'Change visibility for pages',
     value: 'changeVisibilityPages'
 };
 

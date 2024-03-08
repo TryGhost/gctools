@@ -3,7 +3,7 @@ import {ui} from '@tryghost/pretty-cli';
 import jsonSplit from '../tasks/json-split.js';
 
 const choice = {
-    name: 'JSON Split',
+    name: 'JSON split',
     value: 'jsonSplit'
 };
 

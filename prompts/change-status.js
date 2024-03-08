@@ -12,7 +12,7 @@ import ghostAPICreds from '../lib/ghost-api-creds.js';
 const dateToday = new Date();
 
 const choice = {
-    name: 'Change Status',
+    name: 'Change post status',
     value: 'changeStatus'
 };
 

@@ -3,7 +3,7 @@ import {ui} from '@tryghost/pretty-cli';
 import dedupeMembersCsv from '../tasks/dedupe-members-csv.js';
 
 const choice = {
-    name: 'Dedupe Members Csv',
+    name: 'Dedupe members CSV',
     value: 'dedupeMembersCsv'
 };
 
