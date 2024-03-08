@@ -48,6 +48,7 @@ Available tools include:
 * [`change-visibility-pages`](#change-visibility-pages)
 * [`change-status`](#change-status)
 * [`change-role`](#change-role)
+* [`add-member-comp-subscription`](#add-member-comp-subscription)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
 * [`change-tags`](#change-tags)
@@ -416,6 +417,15 @@ gctools change-role <apiURL> <adminAPIKey> --newRole 'Contributor'
 
 # Change all staff users who are currently the Editor role to have the Author role
 gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Author'
+```
+
+### add-member-comp-subscription
+
+Add complimentary subscriptions for members
+
+```sh
+# Add a compliemty plan to tier ID abcdtierid1234 that expired on May 4th 2025, but only for members with the label slug 'my-member-label-slug'
+gctools add-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtierid1234  --expireAt '2025-05-04T00:00:00.000Z' --onlyForLabelSlugs my-member-label-slug
 ```
 
 ### add-member-newsletter-subscription

@@ -19,6 +19,7 @@ import changeRole from './change-role.js';
 import contentStats from './content-stats.js';
 import dedupeMembersCsv from './dedupe-members-csv.js';
 import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
+import addMemberCompSubscription from './add-member-comp-subscription.js';
 
 export default {
     zipSplit,
@@ -40,6 +41,7 @@ export default {
     changeStatus,
     changeRole,
     addMemberNewsletterSubscription,
+    addMemberCompSubscription,
     contentStats,
     dedupeMembersCsv
 };

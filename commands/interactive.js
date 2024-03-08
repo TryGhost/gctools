@@ -110,6 +110,10 @@ const run = async () => {
                 value: tasks.deleteUnusedTags.choice.value
             },
             {
+                name: tasks.addMemberCompSubscription.choice.name,
+                value: tasks.addMemberCompSubscription.choice.value
+            },
+            {
                 name: tasks.addMemberNewsletterSubscription.choice.name,
                 value: tasks.addMemberNewsletterSubscription.choice.value
             },
