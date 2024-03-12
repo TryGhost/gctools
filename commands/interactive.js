@@ -94,6 +94,10 @@ const run = async () => {
                 value: tasks.addMemberCompSubscription.choice.value
             },
             {
+                name: tasks.removeMemberCompSubscription.choice.name,
+                value: tasks.removeMemberCompSubscription.choice.value
+            },
+            {
                 name: tasks.addMemberNewsletterSubscription.choice.name,
                 value: tasks.addMemberNewsletterSubscription.choice.value
             },

@@ -1,15 +1,13 @@
 import inquirer from 'inquirer';
-import inquirerDatepickerPrompt from 'inquirer-datepicker-prompt';
-inquirer.registerPrompt('datetime', inquirerDatepickerPrompt);
 import chalk from 'chalk';
-import addMemberComp from '../tasks/add-member-comp-subscription.js';
+import removeMemberComp from '../tasks/remove-member-comp-subscription.js';
 import {getAPITiers, getAPIMemberLabels} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 import {ui} from '@tryghost/pretty-cli';
 
 const choice = {
-    name: 'Add member complimentary subscription',
-    value: 'addMemberCompSubscription'
+    name: 'Remove member complimentary subscription',
+    value: 'removeMemberCompSubscription'
 };
 
 const onYearToday = new Date();
@@ -34,13 +32,6 @@ const options = [
         choices: function () {
             return getAPITiers({returnKey: 'id'});
         }
-    },
-    {
-        type: 'datetime',
-        name: 'expireAt',
-        message: 'End date (UTC):',
-        format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
-        initial: onYearToday
     }
 ];
 
@@ -52,9 +43,9 @@ async function run() {
         answers.onlyForLabelSlugs = [answers.onlyForLabelSlugs];
 
         try {
-            let runner = addMemberComp.getTaskRunner(answers);
+            let runner = removeMemberComp.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully added ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`);
+            ui.log.ok(`Successfully removed ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`);
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }

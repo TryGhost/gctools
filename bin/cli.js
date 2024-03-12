@@ -4,6 +4,7 @@ import prettyCLI from '@tryghost/pretty-cli';
 prettyCLI.preface('Command line utilities for working with Ghost content');
 
 import addMemberCompSubscriptionCommands from '../commands/add-member-comp.js';
+import removeMemberCompSubscriptionCommands from '../commands/remove-member-comp.js';
 import addMemberNewsletterSubscriptionCommands from '../commands/add-member-newsletter-subscription.js';
 import addPreviewCommands from '../commands/add-preview.js';
 import addTagsCommands from '../commands/add-tags.js';
@@ -32,6 +33,7 @@ import revueStripe from '../commands/revue-stripe.js';
 import letterdropStripe from '../commands/letterdrop-stripe.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
+prettyCLI.command(removeMemberCompSubscriptionCommands);
 prettyCLI.command(addMemberNewsletterSubscriptionCommands);
 prettyCLI.command(addPreviewCommands);
 prettyCLI.command(addTagsCommands);

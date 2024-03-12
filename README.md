@@ -49,6 +49,7 @@ Available tools include:
 * [`change-status`](#change-status)
 * [`change-role`](#change-role)
 * [`add-member-comp-subscription`](#add-member-comp-subscription)
+* [`remove-member-comp-subscription`](#remove-member-comp-subscription)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
 * [`change-tags`](#change-tags)
@@ -424,9 +425,20 @@ gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Auth
 Add complimentary subscriptions for members
 
 ```sh
-# Add a compliemty plan to tier ID abcdtierid1234 that expired on May 4th 2025, but only for members with the label slug 'my-member-label-slug'
+# Add a complimentary plan to tier ID abcdtierid1234 that expired on May 4th 2025, but only for members with the label slug 'my-member-label-slug'
 gctools add-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtierid1234  --expireAt '2025-05-04T00:00:00.000Z' --onlyForLabelSlugs my-member-label-slug
 ```
+
+
+### remove-member-comp-subscription
+
+Remove complimentary subscriptions for members
+
+```sh
+# Remove a complimentary plan to tier ID abcdtierid1234, but only for members with the label slug 'my-member-label-slug'
+gctools remove-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtierid1234  --onlyForLabelSlugs my-member-label-slug
+```
+
 
 ### add-member-newsletter-subscription
 
