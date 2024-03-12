@@ -1774,7 +1774,7 @@
     "@tryghost/root-utils" "^0.3.26"
     debug "^4.3.1"
 
-"@tryghost/elasticsearch@^3.0.16":
+"@tryghost/elasticsearch@^3.0.16", "@tryghost/elasticsearch@^3.0.17":
   version "3.0.17"
   resolved "https://registry.yarnpkg.com/@tryghost/elasticsearch/-/elasticsearch-3.0.17.tgz#408e8ba7ce35c9357f6814bf0fd9b88cb56c2ebb"
   integrity sha512-4uYnFJQ0QDNleko1J26E0byWnHrEBZzd3S1WVTbCztlC14KQweZxmfou3fc5JmcT/GNiyXd5Pgx+bLMtVi017g==
@@ -1799,7 +1799,7 @@
     "@stdlib/utils-copy" "^0.0.7"
     uuid "^9.0.0"
 
-"@tryghost/http-stream@^0.1.27":
+"@tryghost/http-stream@^0.1.27", "@tryghost/http-stream@^0.1.28":
   version "0.1.28"
   resolved "https://registry.yarnpkg.com/@tryghost/http-stream/-/http-stream-0.1.28.tgz#ae38ef2e113e23b582d194fc76c5196a54171a11"
   integrity sha512-E1TyZE5e121TPjMgJvlSPTcxJl3Xdq78kugmx2deLxADa5W/vuchidZ6yYQQzxCXPciQFUciVYT8B5tggZb+Xw==
@@ -1841,6 +1841,23 @@
     "@tryghost/http-stream" "^0.1.27"
     "@tryghost/pretty-stream" "^0.1.21"
     "@tryghost/root-utils" "^0.3.25"
+    bunyan "^1.8.15"
+    bunyan-loggly "^1.4.2"
+    fs-extra "^11.0.0"
+    gelf-stream "^1.1.1"
+    json-stringify-safe "^5.0.1"
+    lodash "^4.17.21"
+
+"@tryghost/logging@2.4.11":
+  version "2.4.11"
+  resolved "https://registry.yarnpkg.com/@tryghost/logging/-/logging-2.4.11.tgz#a0ac42cb0973a6bc31f4dcd27cbf6c75ea33fc86"
+  integrity sha512-EAEoK+qGD00U99z3gJljd8HTuqJJa3HAVYz7NeqVOcU0G1vkfTo3w2oaM094iWuZuI6W+omys8FrrXN+PrN6FA==
+  dependencies:
+    "@tryghost/bunyan-rotating-filestream" "^0.0.7"
+    "@tryghost/elasticsearch" "^3.0.17"
+    "@tryghost/http-stream" "^0.1.28"
+    "@tryghost/pretty-stream" "^0.1.22"
+    "@tryghost/root-utils" "^0.3.26"
     bunyan "^1.8.15"
     bunyan-loggly "^1.4.2"
     fs-extra "^11.0.0"
@@ -1891,7 +1908,7 @@
     chalk "^4.1.0"
     sywac "^1.3.0"
 
-"@tryghost/pretty-stream@^0.1.21":
+"@tryghost/pretty-stream@^0.1.21", "@tryghost/pretty-stream@^0.1.22":
   version "0.1.22"
   resolved "https://registry.yarnpkg.com/@tryghost/pretty-stream/-/pretty-stream-0.1.22.tgz#856a6b8eb3bd17b2fdc5ca668ac27bdd2f55b04b"
   integrity sha512-97/JRI7rmdQIG6zwPzux58Kfc/UJfdvKiJgYgH7+CuNQqdl0Zy2+X0wlnRnYjck7tj781/rhGTEGGZg6PHZbaw==
