@@ -446,22 +446,22 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.2.tgz#d9fae00a2d5cb40f92cfe64b47ad749fbc38f917"
   integrity sha512-6EwiSjwWYP7pTckG6I5eyFANjPhmPjUX9JRLUSfNPC7FX7zK9gyZAfUEaECL6ALTpGX5AjnBq3C9XmVWPitNpw==
 
-"@inquirer/confirm@3.1.1":
-  version "3.1.1"
-  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-3.1.1.tgz#e17c9eafa3d8f494fad3f848ba1e4c61d0a7ddcf"
-  integrity sha512-epf2RVHJJxX5qF85U41PBq9qq2KTJW9sKNLx6+bb2/i2rjXgeoHVGUm8kJxZHavrESgXgBLKCABcfOJYIso8cQ==
+"@inquirer/confirm@3.1.2":
+  version "3.1.2"
+  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-3.1.2.tgz#2352ff1d600d4c3763b051edbf1052e229eaacc3"
+  integrity sha512-xQeRxRpVOQdBinIyOHX9+/nTrvt84NnaP8hym5ARdLr6a5T1ckowx70sEaItgULBHlxSIJL970BoRfFxlzO2IA==
   dependencies:
-    "@inquirer/core" "^7.1.1"
+    "@inquirer/core" "^7.1.2"
     "@inquirer/type" "^1.2.1"
 
-"@inquirer/core@^7.1.1":
-  version "7.1.1"
-  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-7.1.1.tgz#9339095720c00cfd1f85943977ae15d2f66f336a"
-  integrity sha512-rD1UI3eARN9qJBcLRXPOaZu++Bg+xsk0Tuz1EUOXEW+UbYif1sGjr0Tw7lKejHzKD9IbXE1CEtZ+xR/DrNlQGQ==
+"@inquirer/core@^7.1.2":
+  version "7.1.2"
+  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-7.1.2.tgz#f16222e8838193c29a868d9d6d5ae3b79313342f"
+  integrity sha512-ne5VhDqruYYzx8mmjDZ9F58ymrLJGxmSHJUcJGiW3tifzvl3goAm6gNX11w6+zUnGE54vgQ6ALDXL3IOSezMRw==
   dependencies:
     "@inquirer/type" "^1.2.1"
     "@types/mute-stream" "^0.0.4"
-    "@types/node" "^20.11.30"
+    "@types/node" "^20.12.4"
     "@types/wrap-ansi" "^3.0.0"
     ansi-escapes "^4.3.2"
     chalk "^4.1.2"
@@ -2086,10 +2086,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^20.11.30":
-  version "20.12.2"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.2.tgz#9facdd11102f38b21b4ebedd9d7999663343d72e"
-  integrity sha512-zQ0NYO87hyN6Xrclcqp7f8ZbXNbRfoGWNcMvHTPQp9UUrwI0mI7XBz+cu7/W6/VClYo2g63B0cjull/srU7LgQ==
+"@types/node@*", "@types/node@^20.12.4":
+  version "20.12.4"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.4.tgz#af5921bd75ccdf3a3d8b3fa75bf3d3359268cd11"
+  integrity sha512-E+Fa9z3wSQpzgYQdYmme5X3OTuejnnTx88A6p6vkkJosR3KBz+HpE3kqNm98VE6cfLFcISx7zW7MsJkH6KwbTw==
   dependencies:
     undici-types "~5.26.4"
 
