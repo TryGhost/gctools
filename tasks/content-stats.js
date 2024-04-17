@@ -73,7 +73,6 @@ const getFullTaskList = (options) => {
             title: 'Counting posts',
             task: async (ctx) => {
                 const postsData = await ctx.api.posts.browse({limit: 100});
-                console.log(postsData);
                 ctx.stats.posts.count = postsData.meta.pagination.total;
             }
         },
