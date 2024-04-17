@@ -23,6 +23,9 @@ const initialise = (options) => {
                 posts_drafts: {
                     count: null
                 },
+                posts_sent: {
+                    count: null
+                },
                 posts_published: {
                     count: null
                 },
@@ -33,6 +36,9 @@ const initialise = (options) => {
                     count: null
                 },
                 paid_posts: {
+                    count: null
+                },
+                tiers_posts: {
                     count: null
                 },
                 pages: {
@@ -66,7 +72,8 @@ const getFullTaskList = (options) => {
         {
             title: 'Counting posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1});
+                const postsData = await ctx.api.posts.browse({limit: 100});
+                console.log(postsData);
                 ctx.stats.posts.count = postsData.meta.pagination.total;
             }
         },
@@ -78,16 +85,23 @@ const getFullTaskList = (options) => {
             }
         },
         {
+            title: 'Counting sent posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:sent'});
+                ctx.stats.posts_sent.count = postsData.meta.pagination.total;
+            }
+        },
+        {
             title: 'Counting draft posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public+status:draft'});
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:draft'});
                 ctx.stats.posts_drafts.count = postsData.meta.pagination.total;
             }
         },
         {
             title: 'Counting published posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public+status:published'});
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:published'});
                 ctx.stats.posts_published.count = postsData.meta.pagination.total;
             }
         },
@@ -103,6 +117,13 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:paid'});
                 ctx.stats.paid_posts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting tiers posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:tiers'});
+                ctx.stats.tiers_posts.count = postsData.meta.pagination.total;
             }
         },
         {
@@ -170,10 +191,12 @@ const getFullTaskList = (options) => {
                 const statsRows = [
                     ['Posts', ctx.stats.posts.count],
                     ['- - Draft', ctx.stats.posts_drafts.count],
+                    ['- - Sent', ctx.stats.posts_sent.count],
                     ['- - Published', ctx.stats.posts_published.count],
                     ['- Public', ctx.stats.public_posts.count],
                     ['- Members', ctx.stats.members_posts.count],
                     ['- Paid', ctx.stats.paid_posts.count],
+                    ['- Tiers', ctx.stats.tiers_posts.count],
                     ['Pages', ctx.stats.pages.count],
                     ['Tags', ctx.stats.tags.count],
                     ['Users', ctx.stats.users.count],
