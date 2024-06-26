@@ -485,8 +485,11 @@ If `--addAsPrimaryTag true` is set, 'News' & 'Blogs' will be added to the start 
 Adds an additional tier to posts that are already set to show to a specific tier.
 
 ```sh
-# Will add the tags to the end of the tag list
+# Will add the tier 5678bcde to all posts that currently also have the tier abcd1234
 gctools post-tiers <apiURL> <adminAPIKey> --filterTierId abcd1234 --addTierId 5678bcde
+
+# Will add the tier 5678bcde to all posts that are set to 'Paid-members only'
+gctools post-tiers <apiURL> <adminAPIKey> --visibility paid --addTierId 5678bcde
 ```
 
 

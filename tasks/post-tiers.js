@@ -42,7 +42,11 @@ const getFullTaskList = (options) => {
                 try {
                     let discoveryFilter = [];
 
-                    discoveryFilter.push(`visibility:[${ctx.args.filterTierId.join(',')}]`);
+                    if (ctx.args.visibility) {
+                        discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                    } else if (ctx.args.filterTierId) {
+                        discoveryFilter.push(`visibility:[${ctx.args.filterTierId.join(',')}]`);
+                    }
 
                     ctx.posts = await discover({
                         api: ctx.api,
@@ -66,22 +70,29 @@ const getFullTaskList = (options) => {
                     tasks.push({
                         title: post.title,
                         task: async () => {
-                            let theTiers = post.tiers;
-
                             let newTiersObj = [];
 
-                            theTiers.forEach((tier) => {
-                                newTiersObj.push({id: tier.id});
-                            });
+                            let newPostObj = {
+                                id: post.id,
+                                updated_at: post.updated_at
+                            };
+
+                            if (post.visibility === 'tiers') {
+                                let theTiers = post.tiers;
+
+                                theTiers.forEach((tier) => {
+                                    newTiersObj.push({id: tier.id});
+                                });
+                            } else if (post.visibility === 'paid') {
+                                newPostObj.visibility = 'tiers';
+                            }
 
                             newTiersObj.push({id: ctx.args.addTierId});
 
+                            newPostObj.tiers = newTiersObj;
+
                             try {
-                                let result = await ctx.api.posts.edit({
-                                    id: post.id,
-                                    updated_at: post.updated_at,
-                                    tiers: newTiersObj
-                                });
+                                let result = await ctx.api.posts.edit(newPostObj);
 
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);

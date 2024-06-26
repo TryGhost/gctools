@@ -24,9 +24,13 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.enumeration('--visibility', {
+        defaultValue: null,
+        choices: ['all', 'public', 'members', 'paid'],
+        desc: 'Select posts with this visibility setting'
+    });
     sywac.enumeration('--filterTierId', {
         defaultValue: null,
-        required: true,
         desc: 'Select posts with this tier. i.e. \'123456abcd7890efa123bc12\''
     });
     sywac.string('--addTierId', {
@@ -44,6 +48,11 @@ const setup = (sywac) => {
 const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
+
+    if (argv.visibility && argv.filterTierId) {
+        console.log('Cannot use --visibility and --filterTierId together. Please use only one.'); // eslint-disable-line no-console
+        process.exit(1);
+    }
 
     // The task depends on this being an array with the tier ID and 'tiers' string
     if (argv.filterTierId) {

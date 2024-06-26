@@ -14,8 +14,52 @@ const options = [
     ...ghostAPICreds,
     {
         type: 'list',
+        name: 'tierOrVisibility',
+        message: 'Filter by post visibility or a specific tier:',
+        choices: [
+            {
+                name: 'Visibility',
+                value: 'visibility'
+            },
+            {
+                name: 'Tier',
+                value: 'tier'
+            }
+        ]
+    },
+    {
+        type: 'list',
+        name: 'visibility',
+        message: 'Filter by visibility:',
+        when: (answers) => {
+            return answers.tierOrVisibility === 'visibility';
+        },
+        choices: [
+            {
+                name: 'All',
+                value: 'all'
+            },
+            {
+                name: 'Public',
+                value: 'public'
+            },
+            {
+                name: 'Members',
+                value: 'members'
+            },
+            {
+                name: 'Paid',
+                value: 'paid'
+            }
+        ]
+    },
+    {
+        type: 'list',
         name: 'filterTierId',
         message: 'Filter by tier:',
+        when: (answers) => {
+            return answers.tierOrVisibility === 'tier';
+        },
         choices: async function () {
             let tiers = await getAPITiers({returnKey: 'id'});
 
