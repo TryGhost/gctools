@@ -21,6 +21,7 @@ import dedupeMembersCsv from './dedupe-members-csv.js';
 import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
 import addMemberCompSubscription from './add-member-comp-subscription.js';
 import removeMemberCompSubscription from './remove-member-comp-subscription.js';
+import postTiers from './post-tiers.js';
 
 export default {
     zipSplit,
@@ -45,5 +46,6 @@ export default {
     addMemberCompSubscription,
     removeMemberCompSubscription,
     contentStats,
-    dedupeMembersCsv
+    dedupeMembersCsv,
+    postTiers
 };
