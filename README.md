@@ -53,6 +53,7 @@ Available tools include:
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
 * [`change-tags`](#change-tags)
+* [`post-tiers`](#post-tiers)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -477,6 +478,16 @@ https://example.com/my-post-slug/,Newsletter,"News, Blogs"
 In this CSV, the first post will have 'Newsletter` removed, and both 'News' & 'Blogs' added to the end the tag list.
 
 If `--addAsPrimaryTag true` is set, 'News' & 'Blogs' will be added to the start of the tag list, making 'News' the new primary tag.
+
+
+### post-tiers
+
+Adds an additional tier to posts that are already set to show to a specific tier.
+
+```sh
+# Will add the tags to the end of the tag list
+gctools post-tiers <apiURL> <adminAPIKey> --filterTierId abcd1234 --addTierId 5678bcde
+```
 
 
 ## Develop
