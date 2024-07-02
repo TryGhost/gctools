@@ -1779,15 +1779,15 @@
     "@tryghost/debug" "^0.1.30"
     split2 "4.2.0"
 
-"@tryghost/errors@1.3.0":
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-1.3.0.tgz#273beb4c91bd7eb8a44b2e4154e57cc5321ad9dc"
-  integrity sha512-XI3Gw+6Mbua7FiCdNMY+0bVQ0pP6YDY5UpIAd9YIb1PWtISmiqEA2St1bvBk08Blfks3+lFPigh/YUxjuTKjRw==
+"@tryghost/errors@1.3.2":
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-1.3.2.tgz#3612f6f59ca07e37d1095f9eb31ff6a069a3b7f2"
+  integrity sha512-Aqi2vz7HHwN6p2juIYUu8vpMtaKavjULBKNnL0l1req9qXjPs90i/HV8zhvK0ceeWuPdEXaCkfHSRr/yxG3/uw==
   dependencies:
     "@stdlib/utils-copy" "^0.0.7"
     uuid "^9.0.0"
 
-"@tryghost/errors@^1.2.26", "@tryghost/errors@^1.3.0", "@tryghost/errors@^1.3.2", "@tryghost/errors@^1.3.3":
+"@tryghost/errors@^1.2.26", "@tryghost/errors@^1.3.2", "@tryghost/errors@^1.3.3":
   version "1.3.3"
   resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-1.3.3.tgz#5833b1d63a296436bf6d3f8f625225cd32eb987a"
   integrity sha512-RElUnApvXSsSHZKCfIIykxwU6hF3X4HgMJ0qmUmaafna2/m+QIlbkl72NVo9B+S5xaY0MIQAqEI7RxY4fq034w==
@@ -1803,10 +1803,10 @@
     "@tryghost/errors" "^1.3.2"
     "@tryghost/request" "^1.0.5"
 
-"@tryghost/image-transform@1.2.11":
-  version "1.2.11"
-  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.2.11.tgz#82463d97f8747db6db70165a04e824eed6791fee"
-  integrity sha512-O4DRZw3lXj9E4LCV8Mm/gMchhyH9rq4/4h4f4+8tb/dhanz7DMhP5yXHH4WBooF2SG1HWV/XITVSY1erFYQFyA==
+"@tryghost/image-transform@1.3.0":
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/image-transform/-/image-transform-1.3.0.tgz#e68e630c4e42e1af193a18894a864e9e2da9fc1f"
+  integrity sha512-WQFSMh1eAWbZqiheMR5TuTOTll4RDRKZ5p/JIOvejiBzgu/OLBLGKrFKpPb9JSVySTFxpj1dInKmMu8z1so7nQ==
   dependencies:
     "@tryghost/errors" "^1.2.26"
     fs-extra "^11.0.0"
@@ -1894,17 +1894,18 @@
     pretty-bytes "6.1.1"
     srcset "5.0.1"
 
-"@tryghost/mg-fs-utils@0.13.1":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.13.1.tgz#9dcce6961df4d7a22d1a6ebb4368957ff138c925"
-  integrity sha512-FX1aZBAIiSShEk1qgUNm2Zwc7fFAmlSEVG1MKiQ7ZbvWj/eKhFxAALL/sV0JNGVEZLWD8qJgTZk4c6IKiAeAgg==
+"@tryghost/mg-fs-utils@0.14.1":
+  version "0.14.1"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.14.1.tgz#daa461496cffa9f7fa2a2e1bf8688ac996bc8a88"
+  integrity sha512-k9QmPJeDRR9pokM8D+Z0a0WW32zl3XN0Fxcw7fRI6kISk/EHNPmCGGwOIuzlI4+63SJC0wAumU5MIqknx2k0IA==
   dependencies:
-    "@tryghost/errors" "1.3.0"
-    "@tryghost/image-transform" "1.2.11"
-    "@tryghost/string" "0.2.11"
-    "@tryghost/zip" "1.1.40"
-    adm-zip "0.5.10"
-    csv-parse "5.5.5"
+    "@tryghost/errors" "1.3.2"
+    "@tryghost/image-transform" "1.3.0"
+    "@tryghost/string" "0.2.12"
+    "@tryghost/zip" "1.1.43"
+    adm-zip "0.5.12"
+    csv-parse "5.5.6"
+    dotenv "16.4.5"
     fs-extra "11.2.0"
     lodash "4.17.21"
     sharp "0.32.6"
@@ -1954,6 +1955,13 @@
   dependencies:
     unidecode "^0.1.8"
 
+"@tryghost/string@0.2.12":
+  version "0.2.12"
+  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.2.12.tgz#fc0e06939e7b43922e2471135ed9af4f22ddcd54"
+  integrity sha512-1ygv+nOycupvFX/lwvRbThcGzwlMlwNXUUQn3HqWnKYZmDAA2FOP5SvlcY/BkOLzpPQUlBgSs3PvjOurCIZU7g==
+  dependencies:
+    unidecode "^0.1.8"
+
 "@tryghost/tpl@^0.1.30":
   version "0.1.30"
   resolved "https://registry.yarnpkg.com/@tryghost/tpl/-/tpl-0.1.30.tgz#a012fd800e58d46a7d4146e2bde5f55892d8ae15"
@@ -1980,12 +1988,12 @@
     "@tryghost/root-utils" "^0.3.28"
     semver "^7.3.5"
 
-"@tryghost/zip@1.1.40":
-  version "1.1.40"
-  resolved "https://registry.yarnpkg.com/@tryghost/zip/-/zip-1.1.40.tgz#b470de2a38ef1c55215cc813f26ff310fd89e43e"
-  integrity sha512-1G3b/JNgjS4AGLVR//uc1IWKnvr+bep7YscFa6PuhEc7N5u2Pbx5sBNp+m6Q7BClJQjqas7KZ0cRHm/KCFYknw==
+"@tryghost/zip@1.1.43":
+  version "1.1.43"
+  resolved "https://registry.yarnpkg.com/@tryghost/zip/-/zip-1.1.43.tgz#e5ac6a13b19d0b1dad2aec04e9a1327de39c72d5"
+  integrity sha512-cB3gGiO29zQRjAz+Q3ly8z4DO3TA+YBhDNuNdN02unhkeTs6Hsf7eAcBNMYJVBroQVQ4N8femYKr90AIJe1OIQ==
   dependencies:
-    "@tryghost/errors" "^1.3.0"
+    "@tryghost/errors" "^1.3.2"
     archiver "^5.0.0"
     extract-zip "^2.0.1"
 
@@ -2254,10 +2262,10 @@ acorn@^8.9.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.12.0.tgz#1627bfa2e058148036133b8d9b51a700663c294c"
   integrity sha512-RTvkC4w+KNXrM39/lWCUaG0IbRkWdCv7W/IOW9oU6SawyxulvkQy5HQPVTKxEjczcUvapcrw3cFx/60VN/NRNw==
 
-adm-zip@0.5.10:
-  version "0.5.10"
-  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.5.10.tgz#4a51d5ab544b1f5ce51e1b9043139b639afff45b"
-  integrity sha512-x0HvcHqVJNTPk/Bw8JbLWlWoo6Wwnsug0fnYYro1HBrjxZ3G7/AZk7Ahv8JwDe1uIcz8eBqvu86FuF1POiG7vQ==
+adm-zip@0.5.12:
+  version "0.5.12"
+  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.5.12.tgz#87786328e91d54b37358d8a50f954c4cd73ba60b"
+  integrity sha512-6TVU49mK6KZb4qG6xWaaM4C7sA/sgUMLy/JYMOzkcp3BvVLpW0fXDFQiIzAuxFCt/2+xD7fNIiPFAoLZPhVNLQ==
 
 ajv@^6.12.3, ajv@^6.12.4:
   version "6.12.6"
@@ -3347,10 +3355,10 @@ csv-generate@^3.4.3:
   resolved "https://registry.yarnpkg.com/csv-generate/-/csv-generate-3.4.3.tgz#bc42d943b45aea52afa896874291da4b9108ffff"
   integrity sha512-w/T+rqR0vwvHqWs/1ZyMDWtHHSJaN06klRqJXBEpDJaM/+dZkso0OKh1VcuuYvK3XM53KysVNq8Ko/epCK8wOw==
 
-csv-parse@5.5.5:
-  version "5.5.5"
-  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.5.5.tgz#68a271a9092877b830541805e14c8a80e6a22517"
-  integrity sha512-erCk7tyU3yLWAhk6wvKxnyPtftuy/6Ak622gOO7BCJ05+TYffnPCJF905wmOQm+BpkX54OdAl8pveJwUdpnCXQ==
+csv-parse@5.5.6:
+  version "5.5.6"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.5.6.tgz#0d726d58a60416361358eec291a9f93abe0b6b1a"
+  integrity sha512-uNpm30m/AGSkLxxy7d9yRXpJQFrZzVWLFBkS+6ngPcZkw/5k3L/jjFuj7tVnEpRn+QgmiXr21nDlhCiUK4ij2A==
 
 csv-parse@^4.16.3:
   version "4.16.3"
@@ -3568,6 +3576,11 @@ dot-case@^3.0.4:
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
+
+dotenv@16.4.5:
+  version "16.4.5"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-16.4.5.tgz#cdd3b3b604cb327e286b4762e13502f717cb099f"
+  integrity sha512-ZmdL2rui+eB2YwhsWzjInR8LldtZHGDoQ1ugH85ppHKwpUHL7j7rN0Ti9NCnGiQbhaZ11FpR+7ao1dNsmduNUg==
 
 dtrace-provider@~0.8:
   version "0.8.8"
