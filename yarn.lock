@@ -444,15 +444,15 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
-"@inquirer/confirm@3.1.12":
-  version "3.1.12"
-  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-3.1.12.tgz#9727d43116c0c4cfc292ed0b37a5b0abb5a82fde"
-  integrity sha512-s5Sod79QsBBi5Qm7zxCq9DcAD0i7WRcjd/LzsiIAWqWZKW4+OJTGrCgVSLGIHTulwbZgdxM4AAxpCXe86hv4/Q==
+"@inquirer/confirm@3.1.14":
+  version "3.1.14"
+  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-3.1.14.tgz#b50a156f2cc0a6f874f2d2ab1739e988fbf950f4"
+  integrity sha512-nbLSX37b2dGPtKWL3rPuR/5hOuD30S+pqJ/MuFiUEgN6GiMs8UMxiurKAMDzKt6C95ltjupa8zH6+3csXNHWpA==
   dependencies:
-    "@inquirer/core" "^9.0.0"
+    "@inquirer/core" "^9.0.2"
     "@inquirer/type" "^1.4.0"
 
-"@inquirer/core@^9.0.0":
+"@inquirer/core@^9.0.2":
   version "9.0.2"
   resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-9.0.2.tgz#8be8782266f00129acb5c804537d1231b2fe3ac6"
   integrity sha512-nguvH3TZar3ACwbytZrraRTzGqyxJfYJwv+ZwqZNatAosdWQMP1GV8zvmkNlBe2JeZSaw0WYBHZk52pDpWC9qA==
