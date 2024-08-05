@@ -61,17 +61,22 @@ const getFullTaskList = (options) => {
         {
             title: 'Filter by tier',
             task: async (ctx, task) => {
-                ctx.members = ctx.members.filter((member) => {
-                    if (member.subscriptions.filter(e => e.tier.id === options.tierId).length > 0) {
-                        // Has the tier we're looking for
-                        return member;
-                    } else {
-                        // Does not have the tier we're looking for
-                        return false;
-                    }
-                });
+                try {
+                    ctx.members = ctx.members.filter((member) => {
+                        if (member.subscriptions.filter(e => e?.tier?.id === options.tierId).length > 0) {
+                            // Has the tier we're looking for
+                            return member;
+                        } else {
+                            // Does not have the tier we're looking for
+                            return false;
+                        }
+                    });
 
-                task.output = `Found ${ctx.members.length} members with the tier`;
+                    task.output = `Found ${ctx.members.length} members with the tier`;
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
             }
         },
         {
