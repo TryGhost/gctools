@@ -493,6 +493,22 @@ gctools post-tiers <apiURL> <adminAPIKey> --visibility paid --addTierId 5678bcde
 ```
 
 
+### page-to-post
+
+Changes a page (or selection of pages) to a post(s).
+
+```sh
+# Will change _all_ pages to posts
+gctools page-to-post <apiURL> <adminAPIKey>
+
+# Will change a single page to a post
+gctools page-to-post <apiURL> <adminAPIKey> --id abcd123480830d8dd2b7652c
+
+# Will change any page with this lat slug to a post
+gctools page-to-post <apiURL> <adminAPIKey> --tagSlug 'my-tag-slug'
+```
+
+
 ## Develop
 
 * `commands` handles the traditional CLI input

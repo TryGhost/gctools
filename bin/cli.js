@@ -32,6 +32,7 @@ import changeTags from '../commands/change-tags.js';
 import revueStripe from '../commands/revue-stripe.js';
 import letterdropStripe from '../commands/letterdrop-stripe.js';
 import postTiers from '../commands/post-tiers.js';
+import pageToPost from '../commands/page-to-post.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -62,6 +63,7 @@ prettyCLI.command(changeTags);
 prettyCLI.command(revueStripe);
 prettyCLI.command(letterdropStripe);
 prettyCLI.command(postTiers);
+prettyCLI.command(pageToPost);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'
