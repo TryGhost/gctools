@@ -444,23 +444,23 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-2.0.3.tgz#4a2868d75d6d6963e423bcf90b7fd1be343409d3"
   integrity sha512-93zYdMES/c1D69yZiKDBj0V24vqNzB/koF26KPaagAfd3P/4gUlh3Dys5ogAK+Exi9QyzlD8x/08Zt7wIKcDcA==
 
-"@inquirer/confirm@3.1.20":
-  version "3.1.20"
-  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-3.1.20.tgz#8fa3eb814b4e433fa109b6b91b797633e7f7665e"
-  integrity sha512-UvG5Plh0MfCqUvZB8RKzBBEWB/EeMzO59Awy/Jg4NgeSjIPqhPaQFnnmxiyWUTwZh4uENB7wCklEFUwckioXWg==
+"@inquirer/confirm@3.1.22":
+  version "3.1.22"
+  resolved "https://registry.yarnpkg.com/@inquirer/confirm/-/confirm-3.1.22.tgz#23990624c11f60c6f7a5b0558c7505c35076a037"
+  integrity sha512-gsAKIOWBm2Q87CDfs9fEo7wJT3fwWIJfnDGMn9Qy74gBnNFOACDNfhUzovubbJjWnKLGBln7/NcSmZwj5DuEXg==
   dependencies:
-    "@inquirer/core" "^9.0.8"
-    "@inquirer/type" "^1.5.1"
+    "@inquirer/core" "^9.0.10"
+    "@inquirer/type" "^1.5.2"
 
-"@inquirer/core@^9.0.8":
-  version "9.0.8"
-  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-9.0.8.tgz#18458c637879f1ea0c7919b7e9a8786fa2082db9"
-  integrity sha512-ttnI/BGlP9SxjbQnv1nssv7dPAwiR82KmjJZx2SxSZyi2mGbaEvh4jg0I4yU/4mVQf7QvCVGGr/hGuJFEYhwnw==
+"@inquirer/core@^9.0.10":
+  version "9.0.10"
+  resolved "https://registry.yarnpkg.com/@inquirer/core/-/core-9.0.10.tgz#4270191e2ad3bea6223530a093dd9479bcbc7dd0"
+  integrity sha512-TdESOKSVwf6+YWDz8GhS6nKscwzkIyakEzCLJ5Vh6O3Co2ClhCJ0A4MG909MUWfaWdpJm7DE45ii51/2Kat9tA==
   dependencies:
     "@inquirer/figures" "^1.0.5"
-    "@inquirer/type" "^1.5.1"
+    "@inquirer/type" "^1.5.2"
     "@types/mute-stream" "^0.0.4"
-    "@types/node" "^22.0.0"
+    "@types/node" "^22.1.0"
     "@types/wrap-ansi" "^3.0.0"
     ansi-escapes "^4.3.2"
     cli-spinners "^2.9.2"
@@ -476,10 +476,10 @@
   resolved "https://registry.yarnpkg.com/@inquirer/figures/-/figures-1.0.5.tgz#57f9a996d64d3e3345d2a3ca04d36912e94f8790"
   integrity sha512-79hP/VWdZ2UVc9bFGJnoQ/lQMpL74mGgzSYX1xUqCVk7/v73vJCMw1VuyWN1jGkZ9B3z7THAbySqGbCNefcjfA==
 
-"@inquirer/type@^1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@inquirer/type/-/type-1.5.1.tgz#cdd36732e38ea5d2b1a4336aada65ebe7d2765e0"
-  integrity sha512-m3YgGQlKNS0BM+8AFiJkCsTqHEFCWn6s/Rqye3mYwvqY6LdfUv12eSwbsgNzrYyrLXiy7IrrjDLPysaSBwEfhw==
+"@inquirer/type@^1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@inquirer/type/-/type-1.5.2.tgz#15f5e4a4dae02c4203650cb07c8a000cdd423939"
+  integrity sha512-w9qFkumYDCNyDZmNQjf/n6qQuvQ4dMC3BJesY4oF+yr0CxR5vxujflAVeIcS6U336uzi9GM0kAfZlLrZ9UTkpA==
   dependencies:
     mute-stream "^1.0.0"
 
@@ -2895,12 +2895,12 @@
   dependencies:
     "@types/node" "*"
 
-"@types/node@*", "@types/node@^22.0.0":
-  version "22.0.0"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.0.0.tgz#04862a2a71e62264426083abe1e27e87cac05a30"
-  integrity sha512-VT7KSYudcPOzP5Q0wfbowyNLaVR8QWUdw+088uFWwfvpY6uCWaXpqV6ieLAu9WBcnTa7H4Z5RLK8I5t2FuOcqw==
+"@types/node@*", "@types/node@^22.1.0":
+  version "22.1.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-22.1.0.tgz#6d6adc648b5e03f0e83c78dc788c2b037d0ad94b"
+  integrity sha512-AOmuRF0R2/5j1knA3c6G3HOk523Ga+l+ZXltX8SF1+5oqcXijjfTd8fY3XRZqSihEu9XhtQnKYLmkFaoxgsJHw==
   dependencies:
-    undici-types "~6.11.1"
+    undici-types "~6.13.0"
 
 "@types/normalize-package-data@^2.4.0":
   version "2.4.4"
@@ -8832,10 +8832,10 @@ underscore.string@~3.3.4:
     sprintf-js "^1.1.1"
     util-deprecate "^1.0.2"
 
-undici-types@~6.11.1:
-  version "6.11.1"
-  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.11.1.tgz#432ea6e8efd54a48569705a699e62d8f4981b197"
-  integrity sha512-mIDEX2ek50x0OlRgxryxsenE5XaQD4on5U2inY7RApK3SOJpofyw7uW2AyfMKkhAxXIceo2DeWGVGwyvng1GNQ==
+undici-types@~6.13.0:
+  version "6.13.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-6.13.0.tgz#e3e79220ab8c81ed1496b5812471afd7cf075ea5"
+  integrity sha512-xtFJHudx8S2DSoujjMd1WeWvn7KKWFRESZTMeL1RptAYERu29D6jphMjjY+vn96jvN3kVPDNxU/E13VTaXj6jg==
 
 undici@^5.22.1:
   version "5.28.4"
