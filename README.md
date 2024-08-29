@@ -8,6 +8,8 @@ Command line utilities for working with Ghost content.
 1. `git clone` this repo & `cd` into it as usual
 2. Run `yarn` to install top-level dependencies.
 3. To make `gctools` accessible globally, run `yarn global add`
+    - You need to run this after making changes to the codebase to update the global version
+    - If developing the code, `yarn dev ...` is a more suitable command
 
 
 ## Usage
