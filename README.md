@@ -445,13 +445,13 @@ gctools remove-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtier
 
 ### add-member-newsletter-subscription
 
-Remove subscriptions for a specific newsletter
+Add subscription for a specific newsletter
 
 ```sh
-# Remove all subscriptions
+# Add subscription to a specific newsletter to all members
 gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 
-# Remove all subscriptions for a filtered set of members with the labels 'Premium Blog' & 'News'
+# Add subscription to a specific newsletter to all members that have a label slug of 'premium-blog' or 'news'
 # Note: Slugs are not the same as names. You can get the label slug by filtering members and checking the URL
 gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlugs 'premium-blog,news'
 ```
