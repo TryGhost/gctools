@@ -1878,17 +1878,17 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper@0.4.16":
-  version "0.4.16"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.4.16.tgz#6984261987c2592abae7d6931ea9d75900f371f3"
-  integrity sha512-BHaAN1nJF5Wc9adJzds28KpIzlNEcLUbCcpvjSlSnpEYSecRSRMolPjgklZaCnoxkAYjSNpVSQwbuf/ADND4lQ==
+"@tryghost/mg-assetscraper@0.4.17":
+  version "0.4.17"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.4.17.tgz#781bc0aaf0cbaf0b721ecd7a39e73fae8a846aed"
+  integrity sha512-WNzTd0qs/avEaaPbx6Zr5mrVwylOA4nEbcU+YXQnKjaSe8WjGSrapZdUE91oKkaBQNeRcWmEXUFOcnasDzSwqg==
   dependencies:
     "@tryghost/listr-smart-renderer" "0.5.15"
     "@tryghost/logging" "2.4.19"
     "@tryghost/string" "0.2.12"
     cheerio "1.0.0-rc.12"
     fast-replaceall "1.0.2"
-    file-type "19.4.1"
+    file-type "19.5.0"
     fs-extra "11.2.0"
     got "11.8.6"
     listr "0.14.3"
@@ -4246,10 +4246,10 @@ file-entry-cache@^6.0.1:
   dependencies:
     flat-cache "^3.0.4"
 
-file-type@19.4.1:
-  version "19.4.1"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-19.4.1.tgz#97ea4561db7c8be0808fbd1caf380be0c2a65782"
-  integrity sha512-RuWzwF2L9tCHS76KR/Mdh+DwJZcFCzrhrPXpOw6MlEfl/o31fjpTikzcKlYuyeV7e7ftdCGVJTNOCzkYD/aLbw==
+file-type@19.5.0:
+  version "19.5.0"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-19.5.0.tgz#c13c5eca9c1c7270f6d5fbff70331b3c976f92b5"
+  integrity sha512-dMuq6WWnP6BpQY0zYJNpTtQWgeCImSMG0BTIzUBXvxbwc1HWP/E7AE4UWU9XSCOPGJuOHda0HpDnwM2FW+d90A==
   dependencies:
     get-stream "^9.0.1"
     strtok3 "^8.1.0"
