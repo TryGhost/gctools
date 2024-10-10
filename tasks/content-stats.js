@@ -6,7 +6,7 @@ const initialise = (options) => {
     return {
         title: 'Initialising API connection',
         task: async (ctx, task) => {
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
