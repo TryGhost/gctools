@@ -58,7 +58,8 @@ const getFullTaskList = (options) => {
                     ctx.posts = await discover({
                         api: ctx.api,
                         type: 'posts',
-                        filter: discoveryFilter.join('+')
+                        filter: discoveryFilter.join('+'),
+                        limit: 100
                     });
 
                     task.output = `Found ${ctx.posts.length} posts`;
