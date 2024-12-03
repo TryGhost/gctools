@@ -91,14 +91,26 @@ const getFullTaskList = (options) => {
                         title: `${post.title}`,
                         task: async () => {
                             try {
-                                // We only want to send minimal data to the API, to reduce the chance of unintentionally changing anything,
-                                // so lets create a slimmed down version with only what we need
+                                // Get the current authors
+                                let currentAuthors = post.authors;
+
+                                // Loop over them and replace the specified author with the new author
+                                // This maintains the author sort order (and primary author)
+                                currentAuthors = currentAuthors.map((author) => {
+                                    if (author.id === ctx.args.author.id) {
+                                        author = ctx.args.new_author;
+                                    }
+                                    return author;
+                                });
+
+                                // Create a minimal object we send back to Ghost
                                 let slimPost = {
-                                    authors: [ctx.args.new_author],
+                                    authors: currentAuthors,
                                     id: post.id,
                                     updated_at: post.updated_at
                                 };
 
+                                // And now we send the updated post back to Ghost
                                 let result = await ctx.api.posts.edit(slimPost);
 
                                 ctx.changed.push(result.url);
