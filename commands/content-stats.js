@@ -24,6 +24,10 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.boolean('--listEmptyAuthors', {
+        defaultValue: false,
+        desc: 'List the empty authors'
+    });
 };
 
 // What to do when this command is executed
@@ -41,6 +45,11 @@ const run = async (argv) => {
         // Show the tables
         ui.log(context.tables.stats);
         ui.log(context.tables.users);
+
+        if (argv.listEmptyAuthors) {
+            ui.log('\n\nAuthors with no posts:');
+            ui.log(context.tables.emptyAuthors);
+        }
 
         // Report success
         ui.log.ok(`Successfully showed stats in ${Date.now() - timer}ms.`);

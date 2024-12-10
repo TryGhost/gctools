@@ -53,12 +53,14 @@ const initialise = (options) => {
                 },
                 members: {
                     count: null
-                }
+                },
+                emptyAuthors: []
             };
 
             ctx.tables = {
                 stats: null,
-                users: null
+                users: null,
+                emptyAuthors: null
             };
 
             task.output = `Initialised API connection for ${options.apiURL}`;
@@ -142,7 +144,7 @@ const getFullTaskList = (options) => {
         {
             title: 'Counting staff',
             task: async (ctx) => {
-                const usersData = await ctx.api.users.browse({limit: 'all', include: 'roles'});
+                const usersData = await ctx.api.users.browse({limit: 'all', include: 'roles,count.posts'});
 
                 const staffOwner = usersData.filter(word => word.roles[0].name === 'Owner');
                 const staffAdministrator = usersData.filter(word => word.roles[0].name === 'Administrator');
@@ -158,6 +160,17 @@ const getFullTaskList = (options) => {
                     author: {count: staffAuthor.length},
                     contributor: {count: staffContributor.length}
                 };
+
+                if (options?.listEmptyAuthors) {
+                    usersData.forEach((user) => {
+                        if (user.count.posts === 0) {
+                            ctx.stats.emptyAuthors.push([
+                                user.name,
+                                `${options.apiURL}/ghost/#/settings/staff/${user.slug}`
+                            ]);
+                        }
+                    });
+                }
             }
         },
         {
@@ -230,6 +243,25 @@ const getFullTaskList = (options) => {
                 ];
 
                 ctx.tables.users = Table(usersHeader, usersRows, {compact: true}).render();
+
+                if (options?.listEmptyAuthors && ctx.stats.emptyAuthors.length > 0) {
+                    const authorsHeader = [{
+                        value: 'Name',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left'
+                    },
+                    {
+                        value: 'URL',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left'
+                    }];
+
+                    ctx.tables.emptyAuthors = Table(authorsHeader, ctx.stats.emptyAuthors, {compact: true}).render();
+                }
             }
         }
     ];
