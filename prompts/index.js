@@ -1,3 +1,5 @@
+/* eslint-disable max-lines */
+
 import zipSplit from './zip-split.js';
 import zipCreate from './zip-create.js';
 import jsonSplit from './json-split.js';
@@ -22,6 +24,7 @@ import addMemberNewsletterSubscription from './add-member-newsletter-subscriptio
 import addMemberCompSubscription from './add-member-comp-subscription.js';
 import removeMemberCompSubscription from './remove-member-comp-subscription.js';
 import postTiers from './post-tiers.js';
+import getPosts from './get-posts.js';
 
 export default {
     zipSplit,
@@ -47,5 +50,6 @@ export default {
     removeMemberCompSubscription,
     contentStats,
     dedupeMembersCsv,
-    postTiers
+    postTiers,
+    getPosts
 };

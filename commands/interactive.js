@@ -92,6 +92,10 @@ const run = async () => {
                 name: tasks.postTiers.choice.name,
                 value: tasks.postTiers.choice.value
             },
+            {
+                name: tasks.getPosts.choice.name,
+                value: tasks.getPosts.choice.value
+            },
             new inquirer.Separator('--- Members API Utilities ---------'),
             {
                 name: tasks.addMemberCompSubscription.choice.name,

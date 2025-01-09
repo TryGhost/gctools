@@ -33,6 +33,7 @@ import revueStripe from '../commands/revue-stripe.js';
 import letterdropStripe from '../commands/letterdrop-stripe.js';
 import postTiers from '../commands/post-tiers.js';
 import pageToPost from '../commands/page-to-post.js';
+import getPosts from '../commands/get-posts.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -64,6 +65,7 @@ prettyCLI.command(revueStripe);
 prettyCLI.command(letterdropStripe);
 prettyCLI.command(postTiers);
 prettyCLI.command(pageToPost);
+prettyCLI.command(getPosts);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'
