@@ -10,7 +10,7 @@ const group = 'Content:';
 const flags = 'change-author <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Delete posts in Ghost';
+const desc = 'Change the author of posts';
 
 // Descriptions for the individual params
 const paramsDesc = [
