@@ -100,6 +100,10 @@ const run = async () => {
                 name: tasks.getPosts.choice.name,
                 value: tasks.getPosts.choice.value
             },
+            {
+                name: tasks.setTemplate.choice.name,
+                value: tasks.setTemplate.choice.value
+            },
             new inquirer.Separator('--- Members API Utilities ---------'),
             {
                 name: tasks.addMemberCompSubscription.choice.name,

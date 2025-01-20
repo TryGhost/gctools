@@ -57,6 +57,7 @@ Available tools include:
 * [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
 * [`change-tags`](#change-tags)
 * [`post-tiers`](#post-tiers)
+* [`set-template`](#set-template)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -512,6 +513,22 @@ gctools post-tiers <apiURL> <adminAPIKey> --filterTierId abcd1234 --addTierId 56
 
 # Will add the tier 5678bcde to all posts that are set to 'Paid-members only'
 gctools post-tiers <apiURL> <adminAPIKey> --visibility paid --addTierId 5678bcde
+```
+
+
+### set-template
+
+Set posts to use a specific custom template.
+
+```sh
+# Set all posts to use the default template
+gctools set-template <apiURL> <adminAPIKey> --templateSlug default
+
+# Set all posts to use the template that has the filename `custom-posts-sidebar.hbs`
+gctools set-template <apiURL> <adminAPIKey> --templateSlug custom-posts-sidebar
+
+# Set all posts to use the template that has the filename `custom-posts-sidebar.hbs`, if it has the tag 'news'
+gctools set-template <apiURL> <adminAPIKey> --tag 'news' --templateSlug custom-posts-sidebar
 ```
 
 

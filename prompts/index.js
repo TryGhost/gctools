@@ -26,6 +26,7 @@ import addMemberCompSubscription from './add-member-comp-subscription.js';
 import removeMemberCompSubscription from './remove-member-comp-subscription.js';
 import postTiers from './post-tiers.js';
 import getPosts from './get-posts.js';
+import setTemplate from './set-template.js';
 
 export default {
     zipSplit,
@@ -53,5 +54,6 @@ export default {
     contentStats,
     dedupeMembersCsv,
     postTiers,
-    getPosts
+    getPosts,
+    setTemplate
 };
