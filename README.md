@@ -359,6 +359,9 @@ gctools add-author --help
 
 # Add author with the slug 'michael' to the posts with the tag 'news` 
 gctools add-author <apiURL> <adminAPIKey> --tag 'news' --new_author 'michael'
+
+# For posts that have 'richard' as an author and with the tag 'news', add 'michael' as an author
+gctools add-author <apiURL> <adminAPIKey> --author 'richard' --tag 'news' --new_author 'michael'
 ```
 
 

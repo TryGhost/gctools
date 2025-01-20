@@ -54,6 +54,10 @@ const getFullTaskList = (options) => {
                 try {
                     let discoveryFilter = [];
 
+                    if (ctx.args.author) {
+                        discoveryFilter.push(`author:[${ctx.args.author.slug}]`);
+                    }
+
                     if (ctx.args.tag && ctx.args.tag.length > 0) {
                         discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
                     }

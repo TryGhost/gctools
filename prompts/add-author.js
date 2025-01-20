@@ -15,6 +15,15 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
+        type: 'list',
+        name: 'author',
+        message: 'Current Author:',
+        pageSize: 20,
+        choices: function () {
+            return getAPIAuthorsObj();
+        }
+    },
+    {
         type: 'search-checkbox',
         name: 'tag',
         message: `Filter by tag: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
