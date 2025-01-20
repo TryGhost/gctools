@@ -46,6 +46,7 @@ Available tools include:
 * [`delete-unused-tags`](#delete-unused-tags)
 * [`find-replace`](#find-replace)
 * [`change-author`](#change-author)
+* [`add-author`](#add-author)
 * [`change-visibility-posts`](#change-visibility-posts)
 * [`change-visibility-pages`](#change-visibility-pages)
 * [`change-status`](#change-status)
@@ -345,6 +346,19 @@ gctools change-author --help
 
 # Change the posts written by `richard` and assign to `michael`
 gctools change-author <apiURL> <adminAPIKey> --author 'richard' --new_author 'michael'
+```
+
+
+### add-author
+
+Add an author to a post
+
+```sh
+# See all available options
+gctools add-author --help
+
+# Change the posts written by `richard` and assign to `michael`
+gctools add-author <apiURL> <adminAPIKey> --tag 'news' --new_author 'michael'
 ```
 
 

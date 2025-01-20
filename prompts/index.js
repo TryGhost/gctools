@@ -14,6 +14,7 @@ import deleteTags from './delete-tags.js';
 import deleteUnusedTags from './delete-unused-tags.js';
 import findReplace from './find-replace.js';
 import changeAuthor from './change-author.js';
+import addAuthor from './add-author.js';
 import changeVisibilityPosts from './change-visibility-posts.js';
 import changeVisibilityPages from './change-visibility-pages.js';
 import changeStatus from './change-status.js';
@@ -41,6 +42,7 @@ export default {
     deleteUnusedTags,
     findReplace,
     changeAuthor,
+    addAuthor,
     changeVisibilityPosts,
     changeVisibilityPages,
     changeStatus,

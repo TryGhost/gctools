@@ -9,6 +9,7 @@ import addMemberNewsletterSubscriptionCommands from '../commands/add-member-news
 import addPreviewCommands from '../commands/add-preview.js';
 import addTagsCommands from '../commands/add-tags.js';
 import changeAuthorCommands from '../commands/change-author.js';
+import addAuthorCommands from '../commands/add-author.js';
 import changeRoleCommands from '../commands/change-role.js';
 import changeStatusCommands from '../commands/change-status.js';
 import changeVisibilityPostsCommands from '../commands/change-visibility-posts.js';
@@ -41,6 +42,7 @@ prettyCLI.command(addMemberNewsletterSubscriptionCommands);
 prettyCLI.command(addPreviewCommands);
 prettyCLI.command(addTagsCommands);
 prettyCLI.command(changeAuthorCommands);
+prettyCLI.command(addAuthorCommands);
 prettyCLI.command(changeRoleCommands);
 prettyCLI.command(changeStatusCommands);
 prettyCLI.command(changeVisibilityPostsCommands);
