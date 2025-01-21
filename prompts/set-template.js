@@ -39,6 +39,10 @@ const options = [
         message: 'Filter content by:',
         choices: [
             {
+                name: 'No filtering',
+                value: false
+            },
+            {
                 name: 'Filter by author',
                 value: 'filter_by_author'
             },
