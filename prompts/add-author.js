@@ -19,8 +19,15 @@ const options = [
         name: 'author',
         message: 'Current Author:',
         pageSize: 20,
-        choices: function () {
-            return getAPIAuthorsObj();
+        choices: async function () {
+            const allAuthors = await getAPIAuthorsObj();
+            return [
+                {
+                    name: '(None, this this)',
+                    value: false
+                },
+                ... allAuthors
+            ];
         }
     },
     {
