@@ -236,6 +236,51 @@ const getFullTaskList = (options) => {
                             const promptOptions = [
                                 {
                                     type: 'input',
+                                    name: 'userID',
+                                    message: 'The new ID:',
+                                    filter: function (val) {
+                                        return val.trim();
+                                    },
+                                    validate: (input) => {
+                                        if (input.length) {
+                                            return true;
+                                        } else {
+                                            return 'Please provide an ID';
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'input',
+                                    name: 'userName',
+                                    message: 'The new name:',
+                                    filter: function (val) {
+                                        return val.trim();
+                                    },
+                                    validate: (input) => {
+                                        if (input.length) {
+                                            return true;
+                                        } else {
+                                            return 'Please provide a name';
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'input',
+                                    name: 'userSlug',
+                                    message: 'The new slug:',
+                                    filter: function (val) {
+                                        return val.trim();
+                                    },
+                                    validate: (input) => {
+                                        if (input.length) {
+                                            return true;
+                                        } else {
+                                            return 'Please provide a slug';
+                                        }
+                                    }
+                                },
+                                {
+                                    type: 'input',
                                     name: 'userEmail',
                                     message: 'The new email:',
                                     filter: function (val) {
@@ -253,6 +298,9 @@ const getFullTaskList = (options) => {
 
                             await inquirer.prompt(promptOptions).then(async (answers) => {
                                 // Prompt for updates to these values
+                                theData.id = answers.userID; // Something new
+                                theData.name = answers.userName; // Something new
+                                theData.slug = answers.userSlug; // Something new
                                 theData.email = answers.userEmail; // Something new
 
                                 // Add the new data to the user object
