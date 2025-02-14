@@ -1993,6 +1993,15 @@
     archiver "^5.0.0"
     extract-zip "^2.0.1"
 
+"@tryghost/zip@1.1.48":
+  version "1.1.48"
+  resolved "https://registry.yarnpkg.com/@tryghost/zip/-/zip-1.1.48.tgz#f2d9c2a9466dcb0caac743a9ded809c9f9d16ea0"
+  integrity sha512-VCepvZa3rARVo1Yfw4pGhzc2qOFnUZ9KljC7tcBAjJUlmKznkE680bhsbdBoBLMqWvAJDV0ImAdvDuWRme4hgQ==
+  dependencies:
+    "@tryghost/errors" "^1.3.7"
+    archiver "^5.0.0"
+    extract-zip "^2.0.1"
+
 "@types/babel__core@^7.1.14":
   version "7.20.5"
   resolved "https://registry.yarnpkg.com/@types/babel__core/-/babel__core-7.20.5.tgz#3df15f27ba85319caa07ba08d0721889bb39c017"
