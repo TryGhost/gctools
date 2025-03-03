@@ -34,7 +34,7 @@ const setup = (sywac) => {
     });
     sywac.array('--where', {
         defaultValue: 'mobiledoc',
-        choices: ['all', 'mobiledoc', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description'],
+        choices: ['all', 'mobiledoc', 'html', 'lexical', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description'],
         desc: 'Where to perform the find & replace (comma separated, eg: mobiledoc,title,meta_title)'
     });
     sywac.number('--delayBetweenCalls', {

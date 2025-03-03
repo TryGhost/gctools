@@ -26,7 +26,7 @@ const initialise = (options) => {
             ctx.posts = [];
             ctx.toUpdate = [];
             ctx.updated = [];
-            ctx.regex = new RegExp(ctx.args.find, 'g');
+            ctx.regex = new RegExp(ctx.args.find, 'gmi');
 
             task.output = `Initialised API connection for ${options.apiURL}`;
         }
