@@ -27,6 +27,25 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
+        type: 'list',
+        name: 'status',
+        message: 'Status: (Leave blank for all)',
+        choices: [
+            {
+                name: 'All',
+                value: 'all'
+            },
+            {
+                name: 'Draft',
+                value: 'draft'
+            },
+            {
+                name: 'Published',
+                value: 'published'
+            }
+        ]
+    },
+    {
         type: 'checkbox',
         name: 'type',
         message: 'Type of content to add tags to:',

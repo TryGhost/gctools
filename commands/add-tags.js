@@ -24,6 +24,11 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.enumeration('--status', {
+        defaultValue: 'all',
+        choices: ['all', 'draft', 'published'],
+        desc: 'Post visibility'
+    });
     sywac.array('--type', {
         defaultValue: 'all',
         choices: ['all', 'posts', 'pages'],

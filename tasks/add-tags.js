@@ -49,6 +49,10 @@ const getFullTaskList = (options) => {
                 if (options.customFilter) {
                     postDiscoveryFilter.push(options.customFilter);
                 } else {
+                    if (ctx.args.status && ctx.args.status !== 'all') {
+                        postDiscoveryFilter.push(`status:[${ctx.args.status}]`);
+                    }
+
                     if (ctx.args.visibility && ctx.args.visibility !== 'all') {
                         postDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
                     }
