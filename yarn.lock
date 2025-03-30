@@ -1803,7 +1803,7 @@
     "@stdlib/utils-copy" "^0.2.0"
     uuid "^9.0.0"
 
-"@tryghost/errors@^1.2.26", "@tryghost/errors@^1.3.6", "@tryghost/errors@^1.3.7":
+"@tryghost/errors@^1.2.26", "@tryghost/errors@^1.3.7":
   version "1.3.7"
   resolved "https://registry.yarnpkg.com/@tryghost/errors/-/errors-1.3.7.tgz#70098602944709d24c749b781ea2300d810c8edb"
   integrity sha512-VYWtDDxMZHDMgtWb5oSQcLfOTC/p+yLmqXBG172yVf+OgaBvgYm6Y/1B1buDv5ySC/icCs5KUImefv8MjBqsTg==
@@ -1896,19 +1896,19 @@
     pretty-bytes "6.1.1"
     srcset "5.0.1"
 
-"@tryghost/mg-fs-utils@0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.15.1.tgz#652da27a083bd8ce15de9c42bbdae471f952be4d"
-  integrity sha512-O8NkVv9L0PdCqZvkIAhhZzEvHrX/Pke2xUedPO9BIPGN4onZzc3QmeUVnXAlLh38o4kO/pwRQBvPfj80+aSG3A==
+"@tryghost/mg-fs-utils@0.15.4":
+  version "0.15.4"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.15.4.tgz#ec8acbcba2abe0dd9db9ceed00e3b04309f3a4f9"
+  integrity sha512-XJTeISUqtIDa1yhioFlqKUPltiuTw11RwUJIcEAjABJBNivtszXUZCRwqSGFD4MDyVsY0HW0J2Ry+k18+IOeIQ==
   dependencies:
     "@tryghost/errors" "1.3.6"
     "@tryghost/image-transform" "1.3.0"
     "@tryghost/string" "0.2.12"
-    "@tryghost/zip" "1.1.47"
+    "@tryghost/zip" "1.1.48"
     adm-zip "0.5.16"
-    csv-parse "5.5.6"
+    csv-parse "5.6.0"
     dotenv "16.4.5"
-    fs-extra "11.2.0"
+    fs-extra "11.3.0"
     lodash "4.17.21"
     sharp "0.33.5"
     transliteration "2.3.5"
@@ -1982,15 +1982,6 @@
   dependencies:
     "@tryghost/root-utils" "^0.3.32"
     semver "^7.3.5"
-
-"@tryghost/zip@1.1.47":
-  version "1.1.47"
-  resolved "https://registry.yarnpkg.com/@tryghost/zip/-/zip-1.1.47.tgz#b85ba37a1b7e2a2bc80b33a7b82fe3590775393d"
-  integrity sha512-CAr8x9kAJO+wpqN5dzoPgv/Rou6WjrdON6DiKK7IlyadvluCC4cq/+y8MxRqj/WN0qinxLRiyHAeyS4qfvamYQ==
-  dependencies:
-    "@tryghost/errors" "^1.3.6"
-    archiver "^5.0.0"
-    extract-zip "^2.0.1"
 
 "@tryghost/zip@1.1.48":
   version "1.1.48"
@@ -3386,10 +3377,10 @@ csv-generate@^3.4.3:
   resolved "https://registry.yarnpkg.com/csv-generate/-/csv-generate-3.4.3.tgz#bc42d943b45aea52afa896874291da4b9108ffff"
   integrity sha512-w/T+rqR0vwvHqWs/1ZyMDWtHHSJaN06klRqJXBEpDJaM/+dZkso0OKh1VcuuYvK3XM53KysVNq8Ko/epCK8wOw==
 
-csv-parse@5.5.6:
-  version "5.5.6"
-  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.5.6.tgz#0d726d58a60416361358eec291a9f93abe0b6b1a"
-  integrity sha512-uNpm30m/AGSkLxxy7d9yRXpJQFrZzVWLFBkS+6ngPcZkw/5k3L/jjFuj7tVnEpRn+QgmiXr21nDlhCiUK4ij2A==
+csv-parse@5.6.0:
+  version "5.6.0"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-5.6.0.tgz#219beace2a3e9f28929999d2aa417d3fb3071c7f"
+  integrity sha512-l3nz3euub2QMg5ouu5U09Ew9Wf6/wQ8I++ch1loQ0ljmzhmfZYrH9fflS22i/PQEvsPvxCwxgz5q7UB8K1JO4Q==
 
 csv-parse@^4.16.3:
   version "4.16.3"
