@@ -41,7 +41,7 @@
     "chalk": "5.4.1",
     "cli-progress": "3.12.0",
     "fs-extra": "11.3.0",
-    "glob": "10.4.5",
+    "glob": "11.0.1",
     "inquirer": "9.3.7",
     "inquirer-datepicker-prompt": "0.4.3",
     "inquirer-search-checkbox": "1.0.0",
