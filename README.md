@@ -14,7 +14,7 @@ Command line utilities for working with Ghost content.
 
 ## Usage
 
-To see all available tools:
+To see all available tools, run:
 
 ```sh
 gctools
