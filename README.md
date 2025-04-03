@@ -43,7 +43,7 @@ Available tools include:
 * [`combine-tags`](#combine-tags)
 * [`add-preview`](#add-preview)
 * [`delete-tags`](#delete-tags)
-* [`delete-unused-tags`](#delete-unused-tags)
+* [`delete-empty-tags`](#delete-empty-tags)
 * [`find-replace`](#find-replace)
 * [`change-author`](#change-author)
 * [`add-author`](#add-author)
@@ -291,19 +291,19 @@ gctools delete-tags <apiURL> <adminAPIKey> --tags hash-gctools, test 1
 ```
 
 
-### delete-unused-tags
+### delete-empty-tags
 
 Delete tags that have no or a low number of associated posts
 
 ```sh
 # See all available options
-gctools delete-unused-tags --help
+gctools delete-empty-tags --help
 
 # Delete a specific tag or multiple tags
-gctools delete-unused-tags <apiURL> <adminAPIKey>
+gctools delete-empty-tags <apiURL> <adminAPIKey>
 
 # Delete a specific tag or multiple tags
-gctools delete-unused-tags <apiURL> <adminAPIKey> --maxPostCount 3
+gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 3
 ```
 
 
