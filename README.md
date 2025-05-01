@@ -43,6 +43,7 @@ Available tools include:
 * [`combine-tags`](#combine-tags)
 * [`add-preview`](#add-preview)
 * [`delete-tags`](#delete-tags)
+* [`delete-labels`](#delete-labels)
 * [`delete-empty-tags`](#delete-empty-tags)
 * [`find-replace`](#find-replace)
 * [`change-author`](#change-author)
