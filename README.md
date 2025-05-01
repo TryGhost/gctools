@@ -290,6 +290,18 @@ gctools delete-tags --help
 gctools delete-tags <apiURL> <adminAPIKey> --tags hash-gctools, test 1
 ```
 
+### delete-labels
+
+Delete member labels
+
+```sh
+# See all available options
+gctools delete-labels --help
+
+# Delete a specific tag or multiple labels
+gctools delete-labels <apiURL> <adminAPIKey> --labels 'First' 'Second'
+```
+
 
 ### delete-empty-tags
 

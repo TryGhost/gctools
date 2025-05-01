@@ -11,6 +11,7 @@ import addTags from './add-tags.js';
 import combineTags from './combine-tags.js';
 import addPreview from './add-preview.js';
 import deleteTags from './delete-tags.js';
+import deleteLabels from './delete-labels.js';
 import deleteUnusedTags from './delete-unused-tags.js';
 import findReplace from './find-replace.js';
 import changeAuthor from './change-author.js';
@@ -40,6 +41,7 @@ export default {
     combineTags,
     addPreview,
     deleteTags,
+    deleteLabels,
     deleteUnusedTags,
     findReplace,
     changeAuthor,

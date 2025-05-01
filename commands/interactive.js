@@ -121,6 +121,10 @@ const run = async () => {
                 name: tasks.dedupeMembersCsv.choice.name,
                 value: tasks.dedupeMembersCsv.choice.value
             },
+            {
+                name: tasks.deleteLabels.choice.name,
+                value: tasks.deleteLabels.choice.value
+            },
             new inquirer.Separator('--- Dangerous API Utilities -------'),
             {
                 name: tasks.deletePosts.choice.name,
