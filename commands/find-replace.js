@@ -49,7 +49,7 @@ const run = async (argv) => {
     let context = {errors: []};
 
     if (argv.where.includes('all')) {
-        argv.where = ['mobiledoc', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description'];
+        argv.where = ['mobiledoc', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'html', 'lexical'];
     }
 
     try {
