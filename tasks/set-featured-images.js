@@ -152,7 +152,8 @@ const getFullTaskList = (options) => {
                                 feature_image: firstImage,
                                 title: post.title,
                                 status: post.status,
-                                updated_at: post.updated_at
+                                updated_at: post.updated_at,
+                                tags: [...(post.tags || []), {name: '#feature-image-set'}]
                             });
                             ctx.updated = ctx.updated + 1;
                             
