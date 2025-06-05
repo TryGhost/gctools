@@ -58,6 +58,13 @@ const options = [
         },
         when: function (answers) {
             return answers.delete_by === 'delete_by_tag';
+        },
+        validate: function (input) {
+            if (input.length === 0) {
+                return 'Select at least 1 tag (Press up/down to navigate)';
+            }
+
+            return true;
         }
     },
     {
@@ -69,6 +76,13 @@ const options = [
         },
         when: function (answers) {
             return answers.delete_by === 'delete_by_author';
+        },
+        validate: function (input) {
+            if (input.length === 0) {
+                return 'Select at least 1 author (Press up/down to navigate)';
+            }
+
+            return true;
         }
     }
 ];
