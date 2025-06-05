@@ -37,6 +37,7 @@ import postTiers from '../commands/post-tiers.js';
 import pageToPost from '../commands/page-to-post.js';
 import getPosts from '../commands/get-posts.js';
 import setTemplate from '../commands/set-template.js';
+import addMemberCompFromCSVCommands from '../commands/add-member-comp-from-csv.js';
 import setFeaturedImages from '../commands/set-featured-images.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
@@ -73,6 +74,7 @@ prettyCLI.command(postTiers);
 prettyCLI.command(pageToPost);
 prettyCLI.command(getPosts);
 prettyCLI.command(setTemplate);
+prettyCLI.command(addMemberCompFromCSVCommands);
 prettyCLI.command(setFeaturedImages);
 
 prettyCLI.style({
