@@ -38,6 +38,7 @@ import pageToPost from '../commands/page-to-post.js';
 import getPosts from '../commands/get-posts.js';
 import setTemplate from '../commands/set-template.js';
 import addMemberCompFromCSVCommands from '../commands/add-member-comp-from-csv.js';
+import setFeaturedImages from '../commands/set-featured-images.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -74,6 +75,7 @@ prettyCLI.command(pageToPost);
 prettyCLI.command(getPosts);
 prettyCLI.command(setTemplate);
 prettyCLI.command(addMemberCompFromCSVCommands);
+prettyCLI.command(setFeaturedImages);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'
