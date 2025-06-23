@@ -34,6 +34,7 @@ Available tools include:
 * [`zip-split`](#zip-split)
 * [`zip-create`](#zip-create)
 * [`json-split`](#json-split)
+* [`json-clean`](#json-clean)
 * [`fetch-assets`](#fetch-assets)
 * [`dedupe-members-csv`](#dedupe-members-csv)
 * [`random-posts`](#random-posts)
@@ -53,12 +54,20 @@ Available tools include:
 * [`change-status`](#change-status)
 * [`change-role`](#change-role)
 * [`add-member-comp-subscription`](#add-member-comp-subscription)
+* [`add-member-comp-from-csv`](#add-member-comp-from-csv)
 * [`remove-member-comp-subscription`](#remove-member-comp-subscription)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
-* [`remove-member-newsletter-subscription`](#remove-member-newsletter-subscription)
 * [`change-tags`](#change-tags)
 * [`post-tiers`](#post-tiers)
 * [`set-template`](#set-template)
+* [`page-to-post`](#page-to-post)
+* [`content-stats`](#content-stats)
+* [`get-posts`](#get-posts)
+* [`set-featured-images`](#set-featured-images)
+* [`clean-slugs`](#clean-slugs)
+* [`set-podcast`](#set-podcast)
+* [`revue-stripe`](#revue-stripe)
+* [`letterdrop-stripe`](#letterdrop-stripe)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -102,6 +111,19 @@ gctools json-split /path/to/big-file.json --M 50
 ```
 
 
+### json-clean
+
+Clean a JSON file so it only contains content.
+
+```sh
+# See all available options
+gctools json-clean --help
+
+# Clean a JSON file to only contain content
+gctools json-clean /path/to/file.json
+```
+
+
 ### fetch-assets
 
 Download all available assets from a valid Ghost JSON file create a JSON file with updated image references
@@ -139,8 +161,27 @@ gctools random-posts --help
 gctools random-posts <apiURL> <adminAPIKey>
 
 # Create and insert 3000 random draft posts with 2 tags visible to members only, written by a specific author
-gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tag '#random,New World' --status draft --visibility members --userEmail person@dummyemail.com
+gctools random-posts <apiURL> <adminAPIKey> --count 3000 --tag '#random,New World' --status draft --visibility members --author person@dummyemail.com
+
+# Customize the content length and structure
+gctools random-posts <apiURL> <adminAPIKey> --count 50 --contentUnit paragraphs --contentCount 5 --titleMinLength 2 --titleMaxLength 6
 ```
+
+**Available options:**
+- `--count` (default: 10): Number of posts to create
+- `--titleMinLength` (default: 3): Minimum words in title
+- `--titleMaxLength` (default: 8): Maximum words in title
+- `--contentUnit` (default: paragraphs): Content unit type (paragraphs, sentences, words)
+- `--contentCount` (default: 10): Number of content units per post
+- `--paragraphLowerBound` (default: 3): Min sentences per paragraph
+- `--paragraphUpperBound` (default: 7): Max sentences per paragraph
+- `--sentenceLowerBound` (default: 3): Min words per sentence
+- `--sentenceUpperBound` (default: 15): Max words per sentence
+- `--author`: Author email address
+- `--tag` (default: #gctools): Comma separated list of tags
+- `--status` (default: published): Post status (published, draft, scheduled, sent)
+- `--visibility` (default: public): Post visibility (public, members, paid)
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
 
 ### delete-posts
@@ -312,12 +353,19 @@ Delete tags that have no or a low number of associated posts
 # See all available options
 gctools delete-empty-tags --help
 
-# Delete a specific tag or multiple tags
+# Delete tags with no associated posts
 gctools delete-empty-tags <apiURL> <adminAPIKey>
 
-# Delete a specific tag or multiple tags
+# Delete tags with 3 or fewer associated posts
 gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 3
+
+# Custom delay between API calls
+gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 5 --delayBetweenCalls 100
 ```
+
+**Available options:**
+- `--maxPostCount` (default: 0): Maximum number of associated posts a tag can have to be deleted
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
 
 ### find-replace
@@ -333,12 +381,17 @@ gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New tex
 
 # Replace a string in all available fields
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --where all
+
+# Custom delay between API calls
+gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --delayBetweenCalls 100
 ```
 
 Available `where` fields are:
 
 * `all`
 * `mobiledoc` (default)
+* `html`
+* `lexical`
 * `title`
 * `slug`
 * `custom_excerpt`
@@ -464,7 +517,37 @@ Add complimentary subscriptions for members
 ```sh
 # Add a complimentary plan to tier ID abcdtierid1234 that expired on May 4th 2025, but only for members with the label slug 'my-member-label-slug'
 gctools add-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtierid1234  --expireAt '2025-05-04T00:00:00.000Z' --onlyForLabelSlugs my-member-label-slug
+
+# Custom delay between API calls
+gctools add-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtierid1234 --delayBetweenCalls 200
 ```
+
+**Available options:**
+- `--tierId`: The ID for the tier to add the subscription to
+- `--expireAt`: Expiration date in ISO format
+- `--onlyForLabelSlugs`: Filter by member label slugs
+- `--delayBetweenCalls` (default: 100): Delay between API calls in ms
+
+
+### add-member-comp-from-csv
+
+Add complimentary subscriptions for members from a CSV file
+
+```sh
+# See all available options
+gctools add-member-comp-from-csv --help
+
+# Add complimentary subscriptions from a CSV file
+gctools add-member-comp-from-csv <apiURL> <adminAPIKey> <csvPath>
+
+# Custom delay between API calls
+gctools add-member-comp-from-csv <apiURL> <adminAPIKey> <csvPath> --delayBetweenCalls 200
+```
+
+The CSV file must have columns: `email`, `expireAt`, `tierName`
+
+**Available options:**
+- `--delayBetweenCalls` (default: 100): Delay between API calls in ms
 
 
 ### remove-member-comp-subscription
@@ -474,7 +557,15 @@ Remove complimentary subscriptions for members
 ```sh
 # Remove a complimentary plan to tier ID abcdtierid1234, but only for members with the label slug 'my-member-label-slug'
 gctools remove-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtierid1234  --onlyForLabelSlugs my-member-label-slug
+
+# Custom delay between API calls
+gctools remove-member-comp-subscription <apiURL> <adminAPIKey> --tierId abcdtierid1234 --delayBetweenCalls 200
 ```
+
+**Available options:**
+- `--tierId`: The ID for the tier to remove the subscription from
+- `--onlyForLabelSlugs`: Filter by member label slugs
+- `--delayBetweenCalls` (default: 100): Delay between API calls in ms
 
 
 ### add-member-newsletter-subscription
@@ -559,6 +650,151 @@ gctools page-to-post <apiURL> <adminAPIKey> --id abcd123480830d8dd2b7652c
 # Will change any page with this lat slug to a post
 gctools page-to-post <apiURL> <adminAPIKey> --tagSlug 'my-tag-slug'
 ```
+
+
+### content-stats
+
+Display statistics about the content in your Ghost site.
+
+```sh
+# See all available options
+gctools content-stats --help
+
+# Show basic content statistics
+gctools content-stats <apiURL> <adminAPIKey>
+
+# Show content statistics and list authors with no posts
+gctools content-stats <apiURL> <adminAPIKey> --listEmptyAuthors
+```
+
+This command displays:
+- Total number of posts, pages, authors, tags, and members
+- Post status breakdown (published, draft, etc.)
+- Visibility breakdown (public, members, paid)
+- Author statistics
+
+**Available options:**
+- `--listEmptyAuthors`: List authors who have no posts
+
+
+### get-posts
+
+Retrieve all posts from Ghost (useful for debugging or data export).
+
+```sh
+# See all available options
+gctools get-posts --help
+
+# Get all posts
+gctools get-posts <apiURL> <adminAPIKey>
+
+# Custom delay between API calls
+gctools get-posts <apiURL> <adminAPIKey> --delayBetweenCalls 100
+```
+
+**Available options:**
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
+### set-featured-images
+
+Set featured images for posts that don't have one by using the first image found in the post content.
+
+```sh
+# See all available options
+gctools set-featured-images --help
+
+# Set featured images for posts without them
+gctools set-featured-images <apiURL> <adminAPIKey>
+
+# Custom delay between API calls
+gctools set-featured-images <apiURL> <adminAPIKey> --delayBetweenCalls 100
+```
+
+**Available options:**
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
+### clean-slugs
+
+Find and remove alphanumeric IDs from post slugs to make them cleaner and more SEO-friendly.
+
+```sh
+# See all available options
+gctools clean-slugs --help
+
+# Clean slugs by removing alphanumeric IDs
+gctools clean-slugs <apiURL> <adminAPIKey>
+
+# Dry run to see what would be changed without making changes
+gctools clean-slugs <apiURL> <adminAPIKey> --dry-run
+
+# Custom delay between API calls
+gctools clean-slugs <apiURL> <adminAPIKey> --delayBetweenCalls 100
+```
+
+This command identifies and removes alphanumeric ID patterns from post slugs that may have been automatically generated, making the URLs cleaner and more human-readable.
+
+**Available options:**
+- `--dry-run`: Show what would be changed without making actual changes
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
+### set-podcast
+
+Set Facebook description for podcast posts using the first audio source URL found in the post content.
+
+```sh
+# See all available options
+gctools set-podcast --help
+
+# Set Facebook descriptions for podcast posts
+gctools set-podcast <apiURL> <adminAPIKey>
+
+# Custom delay between API calls
+gctools set-podcast <apiURL> <adminAPIKey> --delayBetweenCalls 100
+```
+
+This command automatically finds the first audio element in post content and uses its source URL to populate the Facebook description field, which is useful for Ghost's [podcast workaround](https://ghost.org/tutorials/custom-rss-feed)
+
+**Available options:**
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
+### revue-stripe
+
+Add Stripe customer IDs to Revue subscriber export (Beta feature).
+
+```sh
+# See all available options
+gctools revue-stripe --help
+
+# Combine Revue and Stripe data
+gctools revue-stripe <revueCSV> <stripeCSV>
+```
+
+This is a beta feature for combining Revue subscriber data with Stripe customer information.
+
+
+### letterdrop-stripe
+
+Add Stripe customer IDs to Letterdrop subscriber export (Beta feature).
+
+```sh
+# See all available options
+gctools letterdrop-stripe --help
+
+# Combine Letterdrop and Stripe data
+gctools letterdrop-stripe <letterdropCSV> <stripeCSV>
+
+# Skip writing CSV files
+gctools letterdrop-stripe <letterdropCSV> <stripeCSV> --writeCSVs false
+```
+
+This is a beta feature for combining Letterdrop subscriber data with Stripe customer information.
+
+**Available options:**
+- `--writeCSVs` (default: true): Whether to create new CSV files
 
 
 ## Develop
