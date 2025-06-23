@@ -39,6 +39,7 @@ import getPosts from '../commands/get-posts.js';
 import setTemplate from '../commands/set-template.js';
 import addMemberCompFromCSVCommands from '../commands/add-member-comp-from-csv.js';
 import setFeaturedImages from '../commands/set-featured-images.js';
+import setPodcast from '../commands/set-podcast.js';
 import cleanSlugs from '../commands/clean-slugs.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
@@ -77,6 +78,7 @@ prettyCLI.command(getPosts);
 prettyCLI.command(setTemplate);
 prettyCLI.command(addMemberCompFromCSVCommands);
 prettyCLI.command(setFeaturedImages);
+prettyCLI.command(setPodcast);
 prettyCLI.command(cleanSlugs);
 
 prettyCLI.style({
