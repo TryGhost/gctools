@@ -1,10 +1,5 @@
 import {ui} from '@tryghost/pretty-cli';
-import {GhostLogger} from '@tryghost/logging';
-import logConfig from '../lib/loggingrc.js';
-import {showLogs} from '../lib/cli-log-display.js';
 import fetchImages from '../tasks/fetch-assets.js';
-
-const logger = new GhostLogger(logConfig);
 
 // Internal ID in case we need one.
 const id = 'fetch-assets';
@@ -46,11 +41,9 @@ const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
-    const startMigrationTime = Date.now();
-
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let fetchImagesRunner = fetchImages.getTaskRunner(argv, logger);
+        let fetchImagesRunner = fetchImages.getTaskRunner(argv);
 
         // Run the migration
         await fetchImagesRunner.run(context);
@@ -68,8 +61,6 @@ const run = async (argv) => {
 
     // Report success
     ui.log.ok(`Successfully fetched assets in ${Date.now() - timer}ms.`);
-
-    showLogs(logger, startMigrationTime);
 };
 
 export default {
