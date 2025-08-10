@@ -85,7 +85,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 1. Copy the directory
                 try {
-                    let res = await fs.copy(ctx.args.dirPath, `${ctx.fileCache.tmpDir}/images`);
+                    let res = await fs.copy(ctx.args.dirPath, `${ctx.fileCache.tmpDir}`);
                     return res;
                 } catch (error) {
                     ctx.errors.push(error);
