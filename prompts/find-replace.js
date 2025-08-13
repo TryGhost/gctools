@@ -66,6 +66,10 @@ const options = [
             {
                 name: 'Open Graph Description',
                 value: 'og_description'
+            },
+            {
+                name: 'Feature Image',
+                value: 'feature_image'
             }
         ]
     }
