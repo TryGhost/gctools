@@ -37,8 +37,8 @@ const setup = (sywac) => {
         defaultValue: null,
         desc: 'Delete content with this author slug'
     });
-    sywac.number('-pp --previewPosition', {
-        defaultValue: 2,
+    sywac.string('-pp --previewPosition', {
+        defaultValue: '2',
         desc: 'The card position index the public preview should be inserted after'
     });
     sywac.number('--delayBetweenCalls', {

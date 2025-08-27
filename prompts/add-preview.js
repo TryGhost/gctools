@@ -55,10 +55,10 @@ const options = [
         }
     },
     {
-        type: 'number',
+        type: 'string',
         name: 'previewPosition',
-        message: 'The card position index the public preview should be inserted after:',
-        default: 2
+        message: 'The card position index the public preview should be inserted after (or percentage, written as "20%"):',
+        default: '2'
     }
 ];
 

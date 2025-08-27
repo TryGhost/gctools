@@ -4,6 +4,7 @@ import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
 import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
+import errors from '@tryghost/errors';
 
 const initialise = (options) => {
     return {
@@ -28,6 +29,18 @@ const initialise = (options) => {
             ctx.api = api;
             ctx.posts = [];
             ctx.updated = [];
+
+            ctx.previewPosition = null;
+            ctx.previewPositionType = null;
+
+            // If options.previewPosition contains a percent character
+            if (options.previewPosition.includes('%')) {
+                ctx.previewPositionType = 'percentage';
+                ctx.previewPosition = parseFloat(options.previewPosition.replace('%', ''));
+            } else {
+                ctx.previewPositionType = 'index';
+                ctx.previewPosition = parseInt(options.previewPosition);
+            }
 
             task.output = `Initialised API connection for ${options.apiURL}`;
         }
@@ -80,49 +93,7 @@ const getFullTaskList = (options) => {
                     const isLexical = post.lexical ?? false;
 
                     if (isMobiledoc) {
-                        let updatedMobiledoc = JSON.parse(post.mobiledoc);
-
-                        const hasPaywallCard = Object.keys(updatedMobiledoc.cards).some((key) => {
-                            return updatedMobiledoc.cards[key][0] === 'paywall';
-                        });
-
-                        tasks.push({
-                            title: `${post.title}`,
-                            skip: () => {
-                                if (hasPaywallCard) {
-                                    return `${post.title} (${post.slug}) already has a paywall card`;
-                                }
-                            },
-                            task: async () => {
-                                const newCardsLength = updatedMobiledoc.cards.push(['paywall', {}]);
-                                const paywallCardIndex = newCardsLength - 1;
-                                const sectionsBeforePaywall = updatedMobiledoc.sections.slice(0, options.previewPosition);
-                                const sectionsAfterPaywall = updatedMobiledoc.sections.slice(options.previewPosition);
-
-                                updatedMobiledoc.sections = [];
-                                updatedMobiledoc.sections.push(...sectionsBeforePaywall);
-                                updatedMobiledoc.sections.push(...[[10, paywallCardIndex]]); // `10` signifies this is a card
-                                updatedMobiledoc.sections.push(...sectionsAfterPaywall);
-                                updatedMobiledoc = JSON.stringify(updatedMobiledoc);
-
-                                try {
-                                    let result = await ctx.api.posts.edit({
-                                        id: post.id,
-                                        updated_at: post.updated_at,
-                                        mobiledoc: updatedMobiledoc
-                                    });
-
-                                    ctx.updated.push(result.url);
-                                    return Promise.delay(options.delayBetweenCalls).return(result);
-                                } catch (error) {
-                                    error.resource = {
-                                        title: post.title
-                                    };
-                                    ctx.errors.push(error);
-                                    throw error;
-                                }
-                            }
-                        });
+                        throw new errors.IncorrectUsageError({message: 'Mobiledoc is not supported yet. Convert post to Lexical.'});
                     } else if (isLexical) {
                         let updatedLexical = JSON.parse(post.lexical);
 
@@ -139,7 +110,14 @@ const getFullTaskList = (options) => {
                                 }
                             },
                             task: async () => {
-                                updatedLexical.root.children.splice(options.previewPosition, 0, {type: 'paywall', version: 1});
+                                if (ctx.previewPositionType === 'percentage') {
+                                    const childrenLength = updatedLexical.root.children.length;
+                                    const percentageAsDecimal = ctx.previewPosition / 100;
+                                    ctx.previewPosition = Math.floor(childrenLength * percentageAsDecimal) + 1;
+                                }
+
+                                updatedLexical.root.children.splice(ctx.previewPosition, 0, {type: 'paywall', version: 1});
+
                                 updatedLexical = JSON.stringify(updatedLexical, null, 2);
 
                                 try {

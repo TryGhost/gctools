@@ -306,6 +306,9 @@ Insert a public preview divider at a specific point, after the `previewPosition`
 # Add a divider to all posts as position 2
 gctools add-preview <apiURL> <adminAPIKey> --previewPosition 2
 
+# Add a divider to all posts 50% through the post
+gctools add-preview <apiURL> <adminAPIKey> --previewPosition 50%
+
 # Add a divider to all posts as position 2 for members-only posts
 gctools add-preview <apiURL> <adminAPIKey> --visibility members --previewPosition 2
 
