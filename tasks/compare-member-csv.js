@@ -67,28 +67,24 @@ const compareMembers = () => {
 
             // Create maps for efficient comparison
             const oldMembersByEmail = new Map();
-            ctx.oldMembers.forEach(member => {
+            ctx.oldMembers.forEach((member) => {
                 if (member.email) {
                     oldMembersByEmail.set(member.email.toLowerCase(), member);
                 }
             });
 
             const newMembersByEmail = new Map();
-            ctx.newMembers.forEach(member => {
+            ctx.newMembers.forEach((member) => {
                 if (member.email) {
                     newMembersByEmail.set(member.email.toLowerCase(), member);
                 }
             });
 
             // Find new members (in new file but not in old)
-            ctx.newMembersList = ctx.newMembers.filter(member =>
-                member.email && !oldMembersByEmail.has(member.email.toLowerCase())
-            );
+            ctx.newMembersList = ctx.newMembers.filter(member => member.email && !oldMembersByEmail.has(member.email.toLowerCase()));
 
             // Find unsubscribed members (in old file but not in new)
-            ctx.unsubscribedList = ctx.oldMembers.filter(member =>
-                member.email && !newMembersByEmail.has(member.email.toLowerCase())
-            );
+            ctx.unsubscribedList = ctx.oldMembers.filter(member => member.email && !newMembersByEmail.has(member.email.toLowerCase()));
 
             // Find updated members (present in both but with changes)
             ctx.updatedList = [];
