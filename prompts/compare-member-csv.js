@@ -51,12 +51,16 @@ async function run() {
             ui.log.info('Summary:');
             ui.log.info(`- New members found: ${context.newMembersList.length}`);
             ui.log.info(`- Unsubscribed members found: ${context.unsubscribedList.length}`);
+            ui.log.info(`- Updated members found: ${context.updatedList ? context.updatedList.length : 0}`);
 
             if (context.newMembersFile) {
                 ui.log.ok(`New members exported to: ${context.newMembersFile}`);
             }
             if (context.unsubscribedFile) {
                 ui.log.ok(`Unsubscribed members exported to: ${context.unsubscribedFile}`);
+            }
+            if (context.updatedFile) {
+                ui.log.ok(`Updated members exported to: ${context.updatedFile}`);
             }
 
             ui.log.ok(`Comparison completed in ${Date.now() - timer}ms`);

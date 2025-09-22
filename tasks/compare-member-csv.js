@@ -17,6 +17,7 @@ const initialise = (options) => {
             ctx.errors = [];
             ctx.newMembersList = [];
             ctx.unsubscribedList = [];
+            ctx.updatedList = [];
 
             // Validate file paths
             if (!await fs.pathExists(options.oldFile)) {
@@ -64,17 +65,53 @@ const compareMembers = () => {
                 });
             }
 
-            // Create email sets for efficient comparison
-            const oldEmails = new Set(ctx.oldMembers.map(member => member.email?.toLowerCase()).filter(Boolean));
-            const newEmails = new Set(ctx.newMembers.map(member => member.email?.toLowerCase()).filter(Boolean));
+            // Create maps for efficient comparison
+            const oldMembersByEmail = new Map();
+            ctx.oldMembers.forEach(member => {
+                if (member.email) {
+                    oldMembersByEmail.set(member.email.toLowerCase(), member);
+                }
+            });
+
+            const newMembersByEmail = new Map();
+            ctx.newMembers.forEach(member => {
+                if (member.email) {
+                    newMembersByEmail.set(member.email.toLowerCase(), member);
+                }
+            });
 
             // Find new members (in new file but not in old)
-            ctx.newMembersList = ctx.newMembers.filter(member => member.email && !oldEmails.has(member.email.toLowerCase()));
+            ctx.newMembersList = ctx.newMembers.filter(member =>
+                member.email && !oldMembersByEmail.has(member.email.toLowerCase())
+            );
 
             // Find unsubscribed members (in old file but not in new)
-            ctx.unsubscribedList = ctx.oldMembers.filter(member => member.email && !newEmails.has(member.email.toLowerCase()));
+            ctx.unsubscribedList = ctx.oldMembers.filter(member =>
+                member.email && !newMembersByEmail.has(member.email.toLowerCase())
+            );
 
-            task.output = `Found ${ctx.newMembersList.length} new members and ${ctx.unsubscribedList.length} unsubscribed members`;
+            // Find updated members (present in both but with changes)
+            ctx.updatedList = [];
+            newMembersByEmail.forEach((newMember, email) => {
+                const oldMember = oldMembersByEmail.get(email);
+                if (oldMember) {
+                    // Check if there are meaningful changes
+                    const hasStripeChanges = (!oldMember.stripe_customer_id && newMember.stripe_customer_id) ||
+                                           (oldMember.stripe_customer_id !== newMember.stripe_customer_id);
+
+                    const hasSubscriptionChanges = oldMember.subscribed_to_emails !== newMember.subscribed_to_emails;
+
+                    const hasComplimentaryChanges = oldMember.complimentary_plan !== newMember.complimentary_plan;
+
+                    const hasLabelChanges = oldMember.labels !== newMember.labels;
+
+                    if (hasStripeChanges || hasSubscriptionChanges || hasComplimentaryChanges || hasLabelChanges) {
+                        ctx.updatedList.push(newMember);
+                    }
+                }
+            });
+
+            task.output = `Found ${ctx.newMembersList.length} new, ${ctx.unsubscribedList.length} unsubscribed, and ${ctx.updatedList.length} updated members`;
         }
     };
 };
@@ -106,6 +143,15 @@ const exportResults = () => {
                 task.output = `Exported ${ctx.unsubscribedList.length} unsubscribed members to unsubscribed.csv`;
             } else {
                 task.output = 'No unsubscribed members to export';
+            }
+
+            // Export updated members
+            if (ctx.updatedList && ctx.updatedList.length > 0) {
+                const updatedPath = path.join(outputDir, 'updated.csv');
+                const csvData = fsUtils.csv.jsonToCSV(ctx.updatedList);
+                await fs.writeFile(updatedPath, csvData);
+                ctx.updatedFile = updatedPath;
+                task.output = `Exported ${ctx.updatedList.length} updated members to updated.csv`;
             }
         }
     };

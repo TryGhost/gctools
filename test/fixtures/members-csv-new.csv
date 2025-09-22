@@ -1,6 +1,6 @@
 email,subscribed_to_emails,complimentary_plan,stripe_customer_id,created_at,labels,note
 user2@example.com,true,false,,2024-01-01T10:00:00.000Z,substack-free,
-user3@example.com,true,false,,2024-01-01T10:00:00.000Z,substack-free,
+user3@example.com,true,false,cus_1234,2024-01-01T10:00:00.000Z,substack-free,
 user4@example.com,true,false,,2024-01-01T10:00:00.000Z,substack-free,
 user5@example.com,true,false,,2024-01-01T10:00:00.000Z,substack-free,
 user6@example.com,true,false,,2024-01-01T10:00:00.000Z,substack-free,

@@ -11,6 +11,7 @@ describe('Compare member CSV files', function () {
         // Clean up generated files after each test
         await fs.remove(join(__dirname, 'fixtures', 'new.csv'));
         await fs.remove(join(__dirname, 'fixtures', 'unsubscribed.csv'));
+        await fs.remove(join(__dirname, 'fixtures', 'updated.csv'));
     });
 
     test('identifies new members correctly', async function () {
@@ -40,6 +41,39 @@ describe('Compare member CSV files', function () {
 
         // Verify file contents
         const csvContent = await fsUtils.csv.parseCSV(newFilePath);
+        expect(csvContent).toBeArrayOfSize(1);
+    });
+
+    test('identifies updated members correctly', async function () {
+        const oldFile = join(__dirname, 'fixtures', 'members-csv-old.csv');
+        const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
+
+        const runner = compareMemberCsv.getTaskRunner({
+            oldFile: oldFile,
+            newFile: newFile
+        });
+
+        const context = {errors: []};
+        await runner.run(context);
+
+        // Check that updated members were identified (user3 now has Stripe ID)
+        expect(context.updatedList).toBeArrayOfSize(1);
+
+        // Verify specific updated member
+        const updatedEmails = context.updatedList.map(m => m.email);
+        expect(updatedEmails).toContain('user3@example.com');
+
+        // Verify the updated member has the Stripe customer ID
+        const updatedUser = context.updatedList.find(m => m.email === 'user3@example.com');
+        expect(updatedUser.stripe_customer_id).toBe('cus_1234');
+
+        // Verify the file was created
+        const updatedFilePath = join(__dirname, 'fixtures', 'updated.csv');
+        const fileExists = await fs.pathExists(updatedFilePath);
+        expect(fileExists).toBe(true);
+
+        // Verify file contents
+        const csvContent = await fsUtils.csv.parseCSV(updatedFilePath);
         expect(csvContent).toBeArrayOfSize(1);
     });
 
@@ -84,15 +118,18 @@ describe('Compare member CSV files', function () {
         const context = {errors: []};
         await runner.run(context);
 
-        // No new or unsubscribed members
+        // No new, unsubscribed, or updated members
         expect(context.newMembersList).toBeArrayOfSize(0);
         expect(context.unsubscribedList).toBeArrayOfSize(0);
+        expect(context.updatedList).toBeArrayOfSize(0);
 
         // Files should not be created when there are no differences
         const newFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'new.csv'));
         const unsubscribedFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'unsubscribed.csv'));
+        const updatedFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'updated.csv'));
         expect(newFileExists).toBe(false);
         expect(unsubscribedFileExists).toBe(false);
+        expect(updatedFileExists).toBe(false);
     });
 
     test('preserves all CSV columns in output', async function () {
@@ -159,6 +196,7 @@ describe('Compare member CSV files', function () {
             await fs.remove(tempNewPath);
             await fs.remove(join(__dirname, 'new.csv'));
             await fs.remove(join(__dirname, 'unsubscribed.csv'));
+            await fs.remove(join(__dirname, 'updated.csv'));
         }
     });
 
@@ -205,6 +243,7 @@ describe('Compare member CSV files', function () {
             await fs.remove(tempNewPath);
             await fs.remove(join(__dirname, 'new.csv'));
             await fs.remove(join(__dirname, 'unsubscribed.csv'));
+            await fs.remove(join(__dirname, 'updated.csv'));
         }
     });
 

@@ -152,11 +152,12 @@ gctools dedupe-members-csv <existing-members> [new-free] [new-comp] [new-paid]
 
 ### compare-member-csv
 
-Compare two member CSV files to identify new members and unsubscribed members. This tool is useful for tracking membership changes between two exports.
+Compare two member CSV files to identify new, updated, and unsubscribed members. This tool is useful for tracking membership changes between two exports.
 
-The tool will generate two output files in the same directory as your source files:
+The tool will generate up to three output files in the same directory as your source files:
 - `new.csv` - Members present in the new file but not in the old file (new signups)
 - `unsubscribed.csv` - Members present in the old file but not in the new file (cancellations/unsubscribes)
+- `updated.csv` - Members present in both files but with changes (e.g., new Stripe customer ID, label changes, subscription status changes)
 
 ```sh
 # See all available options
@@ -174,8 +175,14 @@ gctools compare-member-csv /path/to/members-jan-2024.csv /path/to/members-feb-20
 
 The comparison uses email addresses as the unique identifier. All columns from the original CSV files are preserved in the output files. The tool handles case-insensitive email matching and ignores entries with missing or empty email fields.
 
+**What counts as an update:**
+- Changes to Stripe customer ID
+- Changes to subscription status (subscribed_to_emails)
+- Changes to complimentary plan status
+- Changes to labels
+
 **Output:**
-- The tool displays statistics showing how many new and unsubscribed members were found
+- The tool displays statistics showing how many new, updated, and unsubscribed members were found
 - Output files are only created when there are differences to report
 - Files are saved in the same directory as the old/first CSV file
 
