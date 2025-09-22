@@ -13,7 +13,9 @@ const options = [
         name: 'oldFile',
         message: 'Path to the old/existing members CSV file (drag file into this window):',
         filter: function (val) {
-            return val.trim();
+            // Remove backslash escapes that come from shell path escaping
+            // Replace "\ " with just " "
+            return val.trim().replace(/\\ /g, ' ');
         },
         validate: function (val) {
             if (val.length === 0) {
@@ -27,7 +29,9 @@ const options = [
         name: 'newFile',
         message: 'Path to the new members CSV file (drag file into this window):',
         filter: function (val) {
-            return val.trim();
+            // Remove backslash escapes that come from shell path escaping
+            // Replace "\ " with just " "
+            return val.trim().replace(/\\ /g, ' ');
         },
         validate: function (val) {
             if (val.length === 0) {
