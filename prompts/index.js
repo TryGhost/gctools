@@ -22,6 +22,7 @@ import changeStatus from './change-status.js';
 import changeRole from './change-role.js';
 import contentStats from './content-stats.js';
 import dedupeMembersCsv from './dedupe-members-csv.js';
+import compareMemberCsv from './compare-member-csv.js';
 import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
 import addMemberCompSubscription from './add-member-comp-subscription.js';
 import removeMemberCompSubscription from './remove-member-comp-subscription.js';
@@ -55,6 +56,7 @@ export default {
     removeMemberCompSubscription,
     contentStats,
     dedupeMembersCsv,
+    compareMemberCsv,
     postTiers,
     getPosts,
     setTemplate

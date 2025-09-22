@@ -122,6 +122,10 @@ const run = async () => {
                 value: tasks.dedupeMembersCsv.choice.value
             },
             {
+                name: tasks.compareMemberCsv.choice.name,
+                value: tasks.compareMemberCsv.choice.value
+            },
+            {
                 name: tasks.deleteLabels.choice.name,
                 value: tasks.deleteLabels.choice.value
             },

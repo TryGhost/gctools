@@ -17,6 +17,7 @@ import changeVisibilityPagesCommands from '../commands/change-visibility-pages.j
 import combineTagsCommands from '../commands/combine-tags.js';
 import contentStatsCommands from '../commands/content-stats.js';
 import dedupeMembersCsvCommands from '../commands/dedupe-members-csv.js';
+import compareMemberCsvCommands from '../commands/compare-member-csv.js';
 import deleteUnusedTagsCommands from '../commands/delete-unused-tags.js';
 import deletePagesCommands from '../commands/delete-pages.js';
 import deletePostsCommands from '../commands/delete-posts.js';
@@ -56,6 +57,7 @@ prettyCLI.command(changeVisibilityPagesCommands);
 prettyCLI.command(combineTagsCommands);
 prettyCLI.command(contentStatsCommands);
 prettyCLI.command(dedupeMembersCsvCommands);
+prettyCLI.command(compareMemberCsvCommands);
 prettyCLI.command(deleteUnusedTagsCommands);
 prettyCLI.command(deletePagesCommands);
 prettyCLI.command(deletePostsCommands);

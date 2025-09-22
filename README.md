@@ -37,6 +37,7 @@ Available tools include:
 * [`json-clean`](#json-clean)
 * [`fetch-assets`](#fetch-assets)
 * [`dedupe-members-csv`](#dedupe-members-csv)
+* [`compare-member-csv`](#compare-member-csv)
 * [`random-posts`](#random-posts)
 * [`delete-posts`](#delete-posts)
 * [`delete-pages`](#delete-pages)
@@ -147,6 +148,36 @@ gctools dedupe-members-csv --help
 
 gctools dedupe-members-csv <existing-members> [new-free] [new-comp] [new-paid]
 ```
+
+
+### compare-member-csv
+
+Compare two member CSV files to identify new members and unsubscribed members. This tool is useful for tracking membership changes between two exports.
+
+The tool will generate two output files in the same directory as your source files:
+- `new.csv` - Members present in the new file but not in the old file (new signups)
+- `unsubscribed.csv` - Members present in the old file but not in the new file (cancellations/unsubscribes)
+
+```sh
+# See all available options
+gctools compare-member-csv --help
+
+# Compare two member CSV files
+gctools compare-member-csv <oldFile> <newFile>
+
+# Compare with verbose output
+gctools compare-member-csv <oldFile> <newFile> --verbose
+
+# Example: Compare January and February exports
+gctools compare-member-csv /path/to/members-jan-2024.csv /path/to/members-feb-2024.csv
+```
+
+The comparison uses email addresses as the unique identifier. All columns from the original CSV files are preserved in the output files. The tool handles case-insensitive email matching and ignores entries with missing or empty email fields.
+
+**Output:**
+- The tool displays statistics showing how many new and unsubscribed members were found
+- Output files are only created when there are differences to report
+- Files are saved in the same directory as the old/first CSV file
 
 
 ### random-posts
@@ -806,6 +837,12 @@ This is a beta feature for combining Letterdrop subscriber data with Stripe cust
 * `prompts` handles the interactive CLI input
 * `tasks` is the tasks run by both the CLI and interactive tool
 
+## Tests
+
+* `yarn test` to run all tests and linting
+* `yarn test:only` to only run tests
+* `yarn test:only -- ./test/my-file.test.js` to only run a specific file
+* `yarn lint` to run linting
 
 # Copyright & License
 
