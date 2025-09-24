@@ -102,10 +102,23 @@ const getFullTaskList = (options) => {
                             return value.type === 'paywall';
                         });
 
+                        if (hasPaywallCard) {
+                            if (options.overwrite) {
+                                const paywallCardIndex = updatedLexical.root.children.findIndex((child) => {
+                                    return child.type === 'paywall';
+                                });
+
+                                if (paywallCardIndex > 0) {
+                                    // Remove existing paywall card
+                                    updatedLexical.root.children.splice(paywallCardIndex, 1);
+                                }
+                            }
+                        }
+
                         tasks.push({
                             title: `${post.title}`,
                             skip: () => {
-                                if (hasPaywallCard) {
+                                if (hasPaywallCard && options.overwrite === false) {
                                     return `${post.title} (${post.slug}) already has a paywall card`;
                                 }
                             },

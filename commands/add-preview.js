@@ -31,15 +31,19 @@ const setup = (sywac) => {
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'The tag(s) to be added'
+        desc: 'Update content with this tag slug'
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Delete content with this author slug'
+        desc: 'Update content with this author slug'
     });
     sywac.string('-pp --previewPosition', {
         defaultValue: '2',
         desc: 'The card position index the public preview should be inserted after'
+    });
+    sywac.boolean('-o --overwrite', {
+        defaultValue: false,
+        desc: 'Overwrite the preview position if one already exists'
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,

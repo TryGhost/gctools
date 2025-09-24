@@ -59,6 +59,12 @@ const options = [
         name: 'previewPosition',
         message: 'The card position index the public preview should be inserted after (or percentage, written as "20%"):',
         default: '2'
+    },
+    {
+        type: 'confirm',
+        name: 'overwrite',
+        message: 'Overwrite the preview position if one already exists?',
+        default: false
     }
 ];
 
