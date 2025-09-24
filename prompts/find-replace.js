@@ -32,6 +32,14 @@ const options = [
                 checked: true
             },
             {
+                name: 'HTML',
+                value: 'html'
+            },
+            {
+                name: 'Lexical',
+                value: 'lexical'
+            },
+            {
                 name: 'Title',
                 value: 'title'
             },
@@ -70,6 +78,14 @@ const options = [
             {
                 name: 'Feature Image',
                 value: 'feature_image'
+            },
+            {
+                name: 'Codeinjection Head',
+                value: 'codeinjection_head'
+            },
+            {
+                name: 'Codeinjection Foot',
+                value: 'codeinjection_foot'
             }
         ]
     }

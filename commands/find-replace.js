@@ -34,7 +34,7 @@ const setup = (sywac) => {
     });
     sywac.array('--where', {
         defaultValue: 'mobiledoc',
-        choices: ['all', 'mobiledoc', 'html', 'lexical', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'feature_image'],
+        choices: ['all', 'mobiledoc', 'html', 'lexical', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'feature_image', 'codeinjection_head', 'codeinjection_foot'],
         desc: 'Where to perform the find & replace (comma separated, eg: mobiledoc,title,meta_title)'
     });
     sywac.number('--delayBetweenCalls', {
@@ -49,7 +49,7 @@ const run = async (argv) => {
     let context = {errors: []};
 
     if (argv.where.includes('all')) {
-        argv.where = ['mobiledoc', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'html', 'lexical'];
+        argv.where = ['mobiledoc', 'html', 'lexical', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'feature_image', 'codeinjection_head', 'codeinjection_foot'];
     }
 
     try {
