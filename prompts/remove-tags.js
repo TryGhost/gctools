@@ -103,7 +103,7 @@ const options = [
         name: 'afterDate',
         message: 'Remove tags from content published after:',
         format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
-        initial: dateToday,
+        initial: new Date(dateToday.getFullYear() - 2, dateToday.getMonth(), dateToday.getDate()),
         when: function (answers) {
             return answers.dateRange === 'custom';
         }
@@ -111,7 +111,7 @@ const options = [
     {
         type: 'search-checkbox',
         name: 'remove_tags',
-        message: `Tag(s) to be removed: ${chalk.yellow('[Type to search]')}`,
+        message: `Tag(s) to be removed: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
         pageSize: 20,
         choices: function () {
             return getAPITagsObj();

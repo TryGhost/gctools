@@ -147,11 +147,18 @@ const getFullTaskList = (options) => {
                             try {
                                 // Filter out the tags that need to be removed
                                 const tagsToRemove = ctx.args.remove_tags;
-                                // Handle both string array (CLI) and object array (interactive) formats
-                                const tagNamesToRemove = tagsToRemove.map(tag => 
-                                    typeof tag === 'string' ? tag : tag.name
-                                );
-                                const updatedTags = post.tags.filter(tag => !tagNamesToRemove.includes(tag.name));
+                                
+                                let updatedTags;
+                                if (!tagsToRemove || tagsToRemove.length === 0) {
+                                    // If no tags specified (leave blank for all), remove all tags
+                                    updatedTags = [];
+                                } else {
+                                    // Handle both string array (CLI) and object array (interactive) formats
+                                    const tagNamesToRemove = tagsToRemove.map(tag => 
+                                        typeof tag === 'string' ? tag : tag.name
+                                    );
+                                    updatedTags = post.tags.filter(tag => !tagNamesToRemove.includes(tag.name));
+                                }
 
                                 let result = await ctx.api.posts.edit({
                                     id: post.id,
@@ -192,11 +199,18 @@ const getFullTaskList = (options) => {
                             try {
                                 // Filter out the tags that need to be removed
                                 const tagsToRemove = ctx.args.remove_tags;
-                                // Handle both string array (CLI) and object array (interactive) formats
-                                const tagNamesToRemove = tagsToRemove.map(tag => 
-                                    typeof tag === 'string' ? tag : tag.name
-                                );
-                                const updatedTags = page.tags.filter(tag => !tagNamesToRemove.includes(tag.name));
+                                
+                                let updatedTags;
+                                if (!tagsToRemove || tagsToRemove.length === 0) {
+                                    // If no tags specified (leave blank for all), remove all tags
+                                    updatedTags = [];
+                                } else {
+                                    // Handle both string array (CLI) and object array (interactive) formats
+                                    const tagNamesToRemove = tagsToRemove.map(tag => 
+                                        typeof tag === 'string' ? tag : tag.name
+                                    );
+                                    updatedTags = page.tags.filter(tag => !tagNamesToRemove.includes(tag.name));
+                                }
 
                                 let result = await ctx.api.pages.edit({
                                     id: page.id,
