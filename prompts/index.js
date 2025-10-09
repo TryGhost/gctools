@@ -18,6 +18,7 @@ import deleteMembers from './delete-members.js';
 import changeRole from './change-role.js';
 import addMemberNewsletterSubscription from './add-member-newsletter-subscription.js';
 import removeMemberNewsletterSubscription from './remove-member-newsletter-subscription.js';
+import removeTags from './remove-tags.js';
 import contentStats from './content-stats.js';
 import dedupeMembersCsv from './dedupe-members-csv.js';
 
@@ -42,6 +43,7 @@ export default {
     changeRole,
     addMemberNewsletterSubscription,
     removeMemberNewsletterSubscription,
+    removeTags,
     contentStats,
     dedupeMembersCsv
 };

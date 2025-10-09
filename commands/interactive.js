@@ -65,6 +65,10 @@ const run = async () => {
                 value: tasks.addTags.choice.value
             },
             {
+                name: tasks.removeTags.choice.name,
+                value: tasks.removeTags.choice.value
+            },
+            {
                 name: tasks.combineTags.choice.name,
                 value: tasks.combineTags.choice.value
             },

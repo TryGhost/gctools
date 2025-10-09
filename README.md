@@ -42,6 +42,7 @@ Available tools include:
 * [`add-preview`](#add-preview)
 * [`delete-tags`](#delete-tags)
 * [`delete-unused-tags`](#delete-unused-tags)
+* [`remove-tags`](#remove-tags)
 * [`find-replace`](#find-replace)
 * [`change-author`](#change-author)
 * [`change-visibility`](#change-visibility)
@@ -282,6 +283,40 @@ gctools delete-tags --help
 # Delete a specific tag or multiple tags
 gctools delete-tags <apiURL> <adminAPIKey> --tags hash-gctools, test 1
 ```
+
+
+### remove-tags
+
+Remove tags from specific posts and pages with a specific set of filters
+
+```sh
+# See all available options
+gctools remove-tags --help
+
+# Remove 'Legacy' tag from all posts and pages
+gctools remove-tags <apiURL> <adminAPIKey> --remove_tags 'Legacy'
+
+# Remove multiple tags from posts only
+gctools remove-tags <apiURL> <adminAPIKey> --remove_tags 'Legacy, Old Tag' --type posts
+
+# Remove tags from posts published before a specific date
+gctools remove-tags <apiURL> <adminAPIKey> --remove_tags 'Legacy' --before-date 2023-01-01
+
+# Remove tags from posts with specific visibility
+gctools remove-tags <apiURL> <adminAPIKey> --remove_tags 'Draft' --visibility members
+
+# Remove tags from posts by specific author
+gctools remove-tags <apiURL> <adminAPIKey> --remove_tags 'Newsletter' --author 'john-doe'
+
+# Remove tags from posts that have specific existing tags
+gctools remove-tags <apiURL> <adminAPIKey> --remove_tags 'Legacy' --tag 'old-content, archived'
+
+# Remove tags from posts with date range filtering
+gctools remove-tags <apiURL> <adminAPIKey> --remove_tags 'Old' --before-date 2023-01-01 --after-date 2022-01-01
+```
+
+**Interactive Mode:**
+The interactive mode provides a user-friendly interface with searchable tag selection, date pickers, and all filtering options. Use `gctools i` and select "Remove tags from posts and pages".
 
 
 ### delete-unused-tags
