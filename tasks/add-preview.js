@@ -123,13 +123,15 @@ const getFullTaskList = (options) => {
                                 }
                             },
                             task: async () => {
+                                let thisPreviewPosition = ctx.previewPosition;
+
                                 if (ctx.previewPositionType === 'percentage') {
                                     const childrenLength = updatedLexical.root.children.length;
                                     const percentageAsDecimal = ctx.previewPosition / 100;
-                                    ctx.previewPosition = Math.floor(childrenLength * percentageAsDecimal) + 1;
+                                    thisPreviewPosition = Math.floor(childrenLength * percentageAsDecimal) + 1;
                                 }
 
-                                updatedLexical.root.children.splice(ctx.previewPosition, 0, {type: 'paywall', version: 1});
+                                updatedLexical.root.children.splice(thisPreviewPosition, 0, {type: 'paywall', version: 1});
 
                                 updatedLexical = JSON.stringify(updatedLexical, null, 2);
 
