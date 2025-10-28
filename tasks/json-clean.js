@@ -142,6 +142,17 @@ const getFullTaskList = (options) => {
             }
         },
         {
+            title: 'Add temporary user ID to users without one',
+            task: async (ctx) => {
+                // Deleting users relies on them having an ID
+                ctx.jsonData.users.forEach((user) => {
+                    if (!user.id || user.id === '') {
+                        user.id = `temp-id-${Math.random().toString(36).substring(2, 15)}`;
+                    }
+                });
+            }
+        },
+        {
             title: 'Remove users with no posts',
             task: async (ctx, task) => {
                 let siteUsers = [];
