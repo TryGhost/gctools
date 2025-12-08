@@ -249,6 +249,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userID',
                                     message: 'The new ID:',
+                                    default: theData.id,
                                     filter: function (val) {
                                         return val.trim();
                                     },
@@ -264,6 +265,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userName',
                                     message: 'The new name:',
+                                    default: theData.name,
                                     filter: function (val) {
                                         return val.trim();
                                     },
@@ -279,6 +281,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userSlug',
                                     message: 'The new slug:',
+                                    default: theData.slug,
                                     filter: function (val) {
                                         return val.trim();
                                     },
@@ -294,6 +297,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userEmail',
                                     message: 'The new email:',
+                                    default: theData.email,
                                     filter: function (val) {
                                         return val.trim();
                                     },
