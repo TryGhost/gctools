@@ -856,4 +856,4 @@ This is a beta feature for combining Letterdrop subscriber data with Stripe cust
 
 # Copyright & License
 
-Copyright (c) 2013-2025 Ghost Foundation - Released under the [MIT license](LICENSE).
+Copyright (c) 2013-2026 Ghost Foundation - Released under the [MIT license](LICENSE).
