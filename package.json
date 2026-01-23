@@ -48,7 +48,7 @@
     "inquirer-search-list": "1.2.6",
     "jsonwebtoken": "9.0.3",
     "listr": "0.14.3",
-    "lodash": "4.17.21",
+    "lodash": "4.17.23",
     "lorem-ipsum": "2.0.8",
     "superbytes": "2.0.1",
     "title-case": "4.3.2",
