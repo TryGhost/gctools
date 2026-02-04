@@ -68,7 +68,6 @@ Available tools include:
 * [`set-featured-images`](#set-featured-images)
 * [`clean-slugs`](#clean-slugs)
 * [`set-podcast`](#set-podcast)
-* [`letterdrop-stripe`](#letterdrop-stripe)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -841,27 +840,6 @@ This command automatically finds the first audio element in post content and use
 
 **Available options:**
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
-
-
-### letterdrop-stripe
-
-Add Stripe customer IDs to Letterdrop subscriber export (Beta feature).
-
-```sh
-# See all available options
-gctools letterdrop-stripe --help
-
-# Combine Letterdrop and Stripe data
-gctools letterdrop-stripe <letterdropCSV> <stripeCSV>
-
-# Skip writing CSV files
-gctools letterdrop-stripe <letterdropCSV> <stripeCSV> --writeCSVs false
-```
-
-This is a beta feature for combining Letterdrop subscriber data with Stripe customer information.
-
-**Available options:**
-- `--writeCSVs` (default: true): Whether to create new CSV files
 
 
 ## Develop
