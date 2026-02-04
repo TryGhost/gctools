@@ -68,7 +68,6 @@ Available tools include:
 * [`set-featured-images`](#set-featured-images)
 * [`clean-slugs`](#clean-slugs)
 * [`set-podcast`](#set-podcast)
-* [`revue-stripe`](#revue-stripe)
 * [`letterdrop-stripe`](#letterdrop-stripe)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
@@ -842,21 +841,6 @@ This command automatically finds the first audio element in post content and use
 
 **Available options:**
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
-
-
-### revue-stripe
-
-Add Stripe customer IDs to Revue subscriber export (Beta feature).
-
-```sh
-# See all available options
-gctools revue-stripe --help
-
-# Combine Revue and Stripe data
-gctools revue-stripe <revueCSV> <stripeCSV>
-```
-
-This is a beta feature for combining Revue subscriber data with Stripe customer information.
 
 
 ### letterdrop-stripe
