@@ -42,6 +42,7 @@ import addMemberCompFromCSVCommands from '../commands/add-member-comp-from-csv.j
 import setFeaturedImages from '../commands/set-featured-images.js';
 import setPodcast from '../commands/set-podcast.js';
 import cleanSlugs from '../commands/clean-slugs.js';
+import commentNotifications from '../commands/comment-notifications.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -82,6 +83,7 @@ prettyCLI.command(addMemberCompFromCSVCommands);
 prettyCLI.command(setFeaturedImages);
 prettyCLI.command(setPodcast);
 prettyCLI.command(cleanSlugs);
+prettyCLI.command(commentNotifications);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'

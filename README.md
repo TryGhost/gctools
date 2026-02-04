@@ -54,6 +54,7 @@ Available tools include:
 * [`change-visibility-pages`](#change-visibility-pages)
 * [`change-status`](#change-status)
 * [`change-role`](#change-role)
+* [`comment-notifications`](#comment-notifications)
 * [`add-member-comp-subscription`](#add-member-comp-subscription)
 * [`add-member-comp-from-csv`](#add-member-comp-from-csv)
 * [`remove-member-comp-subscription`](#remove-member-comp-subscription)
@@ -553,6 +554,44 @@ gctools change-role <apiURL> <adminAPIKey> --newRole 'Contributor'
 # Change all staff users who are currently the Editor role to have the Author role
 gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Author'
 ```
+
+### comment-notifications
+
+Manage comment notification settings for staff users. Backup current settings to CSV, restore from a backup, or enable/disable notifications for all staff.
+
+```sh
+# See all available options
+gctools comment-notifications --help
+
+# Backup current settings to CSV (no changes made)
+gctools comment-notifications <apiURL> <adminAPIKey> --backup ./backup.csv
+
+# Backup settings, then disable notifications for all staff
+gctools comment-notifications <apiURL> <adminAPIKey> --backup ./backup.csv --value false
+
+# Disable notifications for all staff (no backup)
+gctools comment-notifications <apiURL> <adminAPIKey> --value false
+
+# Enable notifications for all staff
+gctools comment-notifications <apiURL> <adminAPIKey> --value true
+
+# Restore settings from a previous backup
+gctools comment-notifications <apiURL> <adminAPIKey> --restore ./backup.csv
+```
+
+The backup CSV contains columns: `id`, `email`, `name`, `slug`, `comment_notifications`
+
+**Available options:**
+- `--backup`: Path to save backup CSV before making changes
+- `--restore`: Path to CSV file to restore settings from
+- `--value`: Enable (true) or disable (false) comment notifications
+- `--delayBetweenCalls` (default: 1000): Delay between API calls in ms
+
+**Notes:**
+- The Owner role is always excluded from changes
+- Cannot combine `--restore` with `--value` (restore uses values from the CSV)
+- Using `--backup` without `--value` only creates a backup (no updates)
+
 
 ### add-member-comp-subscription
 

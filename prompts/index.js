@@ -29,6 +29,7 @@ import removeMemberCompSubscription from './remove-member-comp-subscription.js';
 import postTiers from './post-tiers.js';
 import getPosts from './get-posts.js';
 import setTemplate from './set-template.js';
+import commentNotifications from './comment-notifications.js';
 
 export default {
     zipSplit,
@@ -59,5 +60,6 @@ export default {
     compareMemberCsv,
     postTiers,
     getPosts,
-    setTemplate
+    setTemplate,
+    commentNotifications
 };
