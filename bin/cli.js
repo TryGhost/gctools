@@ -94,6 +94,7 @@ prettyCLI.groupOrder([
     'Tools:',
     'Content:',
     'Members:',
+    'Staff:',
     'Global Options:',
     'Beta:'
 ]);

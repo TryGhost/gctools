@@ -4,7 +4,7 @@ import changeRole from '../tasks/change-role.js';
 // Internal ID in case we need one.
 const id = 'change-role';
 
-const group = 'Content:';
+const group = 'Staff:';
 
 // The command to run and any params
 const flags = 'change-role <apiURL> <adminAPIKey>';

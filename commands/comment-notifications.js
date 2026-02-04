@@ -3,7 +3,7 @@ import commentNotifications from '../tasks/comment-notifications.js';
 
 // Internal ID in case we need one.
 export const id = 'comment-notifications';
-export const group = 'Content:';
+export const group = 'Staff:';
 
 // The command to run and any params
 export const flags = 'comment-notifications <apiURL> <adminAPIKey>';

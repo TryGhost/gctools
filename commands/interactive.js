@@ -129,6 +129,15 @@ const run = async () => {
                 name: tasks.deleteLabels.choice.name,
                 value: tasks.deleteLabels.choice.value
             },
+            new inquirer.Separator('--- Staff API Utilities ---------'),
+            {
+                name: tasks.changeRole.choice.name,
+                value: tasks.changeRole.choice.value
+            },
+            {
+                name: tasks.commentNotifications.choice.name,
+                value: tasks.commentNotifications.choice.value
+            },
             new inquirer.Separator('--- Dangerous API Utilities -------'),
             {
                 name: tasks.deletePosts.choice.name,
@@ -145,14 +154,6 @@ const run = async () => {
             {
                 name: tasks.deleteUnusedTags.choice.name,
                 value: tasks.deleteUnusedTags.choice.value
-            },
-            {
-                name: tasks.changeRole.choice.name,
-                value: tasks.changeRole.choice.value
-            },
-            {
-                name: tasks.commentNotifications.choice.name,
-                value: tasks.commentNotifications.choice.value
             },
             {
                 name: tasks.findReplace.choice.name,
