@@ -1,10 +1,10 @@
-import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
 import {ui} from '@tryghost/pretty-cli';
 import _ from 'lodash';
 import {discover} from '../lib/batch-ghost-discover.js';
+import {sleep} from '../lib/utils.js';
 
 const initialise = (options) => {
     return {
@@ -116,34 +116,30 @@ const getFullTaskList = (options) => {
                     return;
                 }
 
-                let tasks = [];
+                let tasks = ctx.postsWithIds.map(post => ({
+                    title: `Updating "${post.title}": ${post.slug} → ${post.cleanSlug}`,
+                    task: async () => {
+                        try {
+                            const updatedPost = {
+                                id: post.id,
+                                slug: post.cleanSlug,
+                                updated_at: post.updated_at
+                            };
 
-                await Promise.mapSeries(ctx.postsWithIds, async (post) => {
-                    tasks.push({
-                        title: `Updating "${post.title}": ${post.slug} → ${post.cleanSlug}`,
-                        task: async () => {
-                            try {
-                                // Update the post with the clean slug
-                                const updatedPost = {
-                                    id: post.id,
-                                    slug: post.cleanSlug,
-                                    updated_at: post.updated_at
-                                };
-
-                                let result = await ctx.api.posts.edit(updatedPost);
-                                ctx.updated.push(result);
-                                return Promise.delay(ctx.args.delayBetweenCalls).return(result);
-                            } catch (error) {
-                                error.resource = {
-                                    title: post.title,
-                                    slug: post.slug
-                                };
-                                ctx.errors.push(error);
-                                throw error;
-                            }
+                            let result = await ctx.api.posts.edit(updatedPost);
+                            ctx.updated.push(result);
+                            await sleep(ctx.args.delayBetweenCalls);
+                            return result;
+                        } catch (error) {
+                            error.resource = {
+                                title: post.title,
+                                slug: post.slug
+                            };
+                            ctx.errors.push(error);
+                            throw error;
                         }
-                    });
-                });
+                    }
+                }));
 
                 let taskOptions = options;
                 taskOptions.concurrent = 3;
@@ -218,33 +214,30 @@ const getFullTaskList = (options) => {
                     return;
                 }
 
-                let tasks = [];
+                let tasks = ctx.tagsWithIds.map(tag => ({
+                    title: `Updating "${tag.name}": ${tag.slug} → ${tag.cleanSlug}`,
+                    task: async () => {
+                        try {
+                            const updatedTag = {
+                                id: tag.id,
+                                slug: tag.cleanSlug,
+                                updated_at: tag.updated_at
+                            };
 
-                await Promise.mapSeries(ctx.tagsWithIds, async (tag) => {
-                    tasks.push({
-                        title: `Updating "${tag.name}": ${tag.slug} → ${tag.cleanSlug}`,
-                        task: async () => {
-                            try {
-                                const updatedTag = {
-                                    id: tag.id,
-                                    slug: tag.cleanSlug,
-                                    updated_at: tag.updated_at
-                                };
-
-                                let result = await ctx.api.tags.edit(updatedTag);
-                                ctx.updatedTags.push(result);
-                                return Promise.delay(ctx.args.delayBetweenCalls).return(result);
-                            } catch (error) {
-                                error.resource = {
-                                    name: tag.name,
-                                    slug: tag.slug
-                                };
-                                ctx.errors.push(error);
-                                throw error;
-                            }
+                            let result = await ctx.api.tags.edit(updatedTag);
+                            ctx.updatedTags.push(result);
+                            await sleep(ctx.args.delayBetweenCalls);
+                            return result;
+                        } catch (error) {
+                            error.resource = {
+                                name: tag.name,
+                                slug: tag.slug
+                            };
+                            ctx.errors.push(error);
+                            throw error;
                         }
-                    });
-                });
+                    }
+                }));
 
                 let taskOptions = options;
                 taskOptions.concurrent = 3;
