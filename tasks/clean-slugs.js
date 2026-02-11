@@ -29,7 +29,10 @@ const initialise = (options) => {
             ctx.api = api;
             ctx.posts = [];
             ctx.postsWithIds = [];
+            ctx.tags = [];
+            ctx.tagsWithIds = [];
             ctx.updated = [];
+            ctx.updatedTags = [];
 
             // Regex to match alphanumeric IDs at the end of slugs (24+ characters)
             // This matches strings like "684a32da145d7d001be71b4f" at the end of slugs
@@ -101,12 +104,12 @@ const getFullTaskList = (options) => {
         },
 
         {
-            title: 'Cleaning slugs',
+            title: 'Cleaning post slugs',
             skip: ctx => ctx.postsWithIds.length === 0,
             task: async (ctx) => {
                 if (ctx.args['dry-run']) {
                     ctx.updated = ctx.postsWithIds;
-                    ui.log.info('\n[DRY RUN] Would update the following slugs:');
+                    ui.log.info('\n[DRY RUN] Would update the following post slugs:');
                     ctx.postsWithIds.forEach((post) => {
                         ui.log.info(`  • "${post.title}": ${post.slug} → ${post.cleanSlug}`);
                     });
@@ -134,6 +137,107 @@ const getFullTaskList = (options) => {
                                 error.resource = {
                                     title: post.title,
                                     slug: post.slug
+                                };
+                                ctx.errors.push(error);
+                                throw error;
+                            }
+                        }
+                    });
+                });
+
+                let taskOptions = options;
+                taskOptions.concurrent = 3;
+                return makeTaskRunner(tasks, taskOptions);
+            }
+        },
+        {
+            title: 'Fetch Tags from Ghost API',
+            task: async (ctx, task) => {
+                try {
+                    ctx.tags = await discover({
+                        api: ctx.api,
+                        type: 'tags'
+                    });
+
+                    task.output = `Found ${ctx.tags.length} tags`;
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Finding tags with IDs in slugs',
+            task: async (ctx, task) => {
+                ctx.tagsWithIds = ctx.tags.filter((tag) => {
+                    if (tag.slug && ctx.idRegex.test(tag.slug)) {
+                        const match = tag.slug.match(ctx.idRegex);
+                        tag.extractedId = match[1];
+                        tag.cleanSlug = tag.slug.replace(ctx.idRegex, '');
+                        return true;
+                    }
+                    return false;
+                });
+
+                task.output = `Found ${ctx.tagsWithIds.length} tags with IDs in slugs`;
+
+                if (ctx.tagsWithIds.length === 0) {
+                    task.output = 'No tags found with IDs in slugs';
+                    return;
+                }
+
+                // Display the tags found
+                if (ctx.args.verbose || ctx.tagsWithIds.length <= 20) {
+                    ui.log.info('\nTags with IDs in slugs:');
+                    ctx.tagsWithIds.forEach((tag) => {
+                        ui.log.info(`  • "${tag.name}"`);
+                        ui.log.info(`    Current slug: ${tag.slug}`);
+                        ui.log.info(`    Clean slug: ${tag.cleanSlug}`);
+                        ui.log.info(`    Extracted ID: ${tag.extractedId}`);
+                        ui.log.info('');
+                    });
+                } else {
+                    ui.log.info(`\nFound ${ctx.tagsWithIds.length} tags with IDs in slugs. Use --verbose to see full list.`);
+                    ui.log.info('\nFirst 5 examples:');
+                    ctx.tagsWithIds.slice(0, 5).forEach((tag) => {
+                        ui.log.info(`  • "${tag.name}": ${tag.slug} → ${tag.cleanSlug}`);
+                    });
+                }
+            }
+        },
+        {
+            title: 'Cleaning tag slugs',
+            skip: ctx => ctx.tagsWithIds.length === 0,
+            task: async (ctx) => {
+                if (ctx.args['dry-run']) {
+                    ctx.updatedTags = ctx.tagsWithIds;
+                    ui.log.info('\n[DRY RUN] Would update the following tag slugs:');
+                    ctx.tagsWithIds.forEach((tag) => {
+                        ui.log.info(`  • "${tag.name}": ${tag.slug} → ${tag.cleanSlug}`);
+                    });
+                    return;
+                }
+
+                let tasks = [];
+
+                await Promise.mapSeries(ctx.tagsWithIds, async (tag) => {
+                    tasks.push({
+                        title: `Updating "${tag.name}": ${tag.slug} → ${tag.cleanSlug}`,
+                        task: async () => {
+                            try {
+                                const updatedTag = {
+                                    id: tag.id,
+                                    slug: tag.cleanSlug,
+                                    updated_at: tag.updated_at
+                                };
+
+                                let result = await ctx.api.tags.edit(updatedTag);
+                                ctx.updatedTags.push(result);
+                                return Promise.delay(ctx.args.delayBetweenCalls).return(result);
+                            } catch (error) {
+                                error.resource = {
+                                    name: tag.name,
+                                    slug: tag.slug
                                 };
                                 ctx.errors.push(error);
                                 throw error;

@@ -10,7 +10,7 @@ const group = 'Content:';
 const flags = 'clean-slugs <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Find and remove alphanumeric IDs from post slugs';
+const desc = 'Find and remove alphanumeric IDs from post and tag slugs';
 
 // Descriptions for the individual params
 const paramsDesc = [
@@ -50,8 +50,19 @@ const run = async (argv) => {
     }
 
     // Report success
-    if (context.updated && context.updated.length > 0) {
-        ui.log.ok(`Successfully updated ${context.updated.length} slug${context.updated.length === 1 ? '' : 's'} in ${Date.now() - timer}ms.`);
+    let postCount = context.updated ? context.updated.length : 0;
+    let tagCount = context.updatedTags ? context.updatedTags.length : 0;
+    let totalCount = postCount + tagCount;
+
+    if (totalCount > 0) {
+        let messages = [];
+        if (postCount > 0) {
+            messages.push(`${postCount} post${postCount === 1 ? '' : 's'}`);
+        }
+        if (tagCount > 0) {
+            messages.push(`${tagCount} tag${tagCount === 1 ? '' : 's'}`);
+        }
+        ui.log.ok(`Successfully updated ${messages.join(' and ')} in ${Date.now() - timer}ms.`);
     } else {
         ui.log.ok(`No slugs needed cleaning in ${Date.now() - timer}ms.`);
     }
