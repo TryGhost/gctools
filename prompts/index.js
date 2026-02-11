@@ -30,6 +30,7 @@ import postTiers from './post-tiers.js';
 import getPosts from './get-posts.js';
 import setTemplate from './set-template.js';
 import commentNotifications from './comment-notifications.js';
+import memberNewsletterBackup from './member-newsletter-backup.js';
 
 export default {
     zipSplit,
@@ -61,5 +62,6 @@ export default {
     postTiers,
     getPosts,
     setTemplate,
-    commentNotifications
+    commentNotifications,
+    memberNewsletterBackup
 };

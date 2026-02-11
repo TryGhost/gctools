@@ -59,6 +59,7 @@ Available tools include:
 * [`add-member-comp-from-csv`](#add-member-comp-from-csv)
 * [`remove-member-comp-subscription`](#remove-member-comp-subscription)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
+* [`member-newsletter-backup`](#member-newsletter-backup)
 * [`change-tags`](#change-tags)
 * [`post-tiers`](#post-tiers)
 * [`set-template`](#set-template)
@@ -661,6 +662,44 @@ gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>
 # Note: Slugs are not the same as names. You can get the label slug by filtering members and checking the URL
 gctools add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID> --onlyForLabelSlugs 'premium-blog,news'
 ```
+
+
+### member-newsletter-backup
+
+Backup and restore member newsletter preferences. This tool allows you to save a snapshot of which newsletters each member is subscribed to, and restore those preferences later.
+
+```sh
+# See all available options
+gctools member-newsletter-backup --help
+
+# Backup all members' newsletter preferences to CSV
+gctools member-newsletter-backup <apiURL> <adminAPIKey> --backup ./backup.csv
+
+# Backup only members with specific labels
+gctools member-newsletter-backup <apiURL> <adminAPIKey> --backup ./premium-backup.csv --label premium --label vip
+
+# Preview what would be restored (dry run)
+gctools member-newsletter-backup <apiURL> <adminAPIKey> --restore ./backup.csv --dry-run
+
+# Restore newsletter preferences from backup
+gctools member-newsletter-backup <apiURL> <adminAPIKey> --restore ./backup.csv
+```
+
+The backup CSV contains columns: `id`, `email`, `name`, `newsletter_slugs`
+
+Newsletter slugs are stored as comma-separated values (e.g., `main-newsletter,weekly-digest`), making the file human-readable and portable across Ghost instances.
+
+**Available options:**
+- `--backup`: Path to save backup CSV
+- `--restore`: Path to CSV file to restore from
+- `--dry-run`: Show what would be changed without making changes (restore only)
+- `--label`: Filter members by label slug (backup only, can specify multiple)
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+**Notes:**
+- Cannot combine `--backup` with `--restore`
+- Members are matched by email address during restore (more reliable than ID across instances)
+- Use `--dry-run` before restoring to preview changes
 
 
 ### change-tags

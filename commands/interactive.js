@@ -118,6 +118,10 @@ const run = async () => {
                 value: tasks.addMemberNewsletterSubscription.choice.value
             },
             {
+                name: tasks.memberNewsletterBackup.choice.name,
+                value: tasks.memberNewsletterBackup.choice.value
+            },
+            {
                 name: tasks.dedupeMembersCsv.choice.name,
                 value: tasks.dedupeMembersCsv.choice.value
             },

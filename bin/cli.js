@@ -41,6 +41,7 @@ import setFeaturedImages from '../commands/set-featured-images.js';
 import setPodcast from '../commands/set-podcast.js';
 import cleanSlugs from '../commands/clean-slugs.js';
 import commentNotifications from '../commands/comment-notifications.js';
+import memberNewsletterBackup from '../commands/member-newsletter-backup.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -80,6 +81,7 @@ prettyCLI.command(setFeaturedImages);
 prettyCLI.command(setPodcast);
 prettyCLI.command(cleanSlugs);
 prettyCLI.command(commentNotifications);
+prettyCLI.command(memberNewsletterBackup);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'
