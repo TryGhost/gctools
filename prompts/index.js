@@ -31,6 +31,7 @@ import getPosts from './get-posts.js';
 import setTemplate from './set-template.js';
 import commentNotifications from './comment-notifications.js';
 import memberNewsletterBackup from './member-newsletter-backup.js';
+import importJson from './import-json.js';
 
 export default {
     zipSplit,
@@ -63,5 +64,6 @@ export default {
     getPosts,
     setTemplate,
     commentNotifications,
-    memberNewsletterBackup
+    memberNewsletterBackup,
+    importJson
 };

@@ -42,6 +42,7 @@ import setPodcast from '../commands/set-podcast.js';
 import cleanSlugs from '../commands/clean-slugs.js';
 import commentNotifications from '../commands/comment-notifications.js';
 import memberNewsletterBackup from '../commands/member-newsletter-backup.js';
+import importJson from '../commands/import-json.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -82,6 +83,7 @@ prettyCLI.command(setPodcast);
 prettyCLI.command(cleanSlugs);
 prettyCLI.command(commentNotifications);
 prettyCLI.command(memberNewsletterBackup);
+prettyCLI.command(importJson);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'

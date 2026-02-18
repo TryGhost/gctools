@@ -104,6 +104,10 @@ const run = async () => {
                 name: tasks.setTemplate.choice.name,
                 value: tasks.setTemplate.choice.value
             },
+            {
+                name: tasks.importJson.choice.name,
+                value: tasks.importJson.choice.value
+            },
             new inquirer.Separator('--- Members API Utilities ---------'),
             {
                 name: tasks.addMemberCompSubscription.choice.name,

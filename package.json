@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@inquirer/confirm": "3.2.0",
+    "better-sqlite3": "11.8.1",
     "@tryghost/admin-api": "1.14.4",
     "@tryghost/listr-smart-renderer": "0.5.22",
     "@tryghost/logging": "2.5.0",
