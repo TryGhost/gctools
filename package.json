@@ -35,7 +35,7 @@
     "@tryghost/mg-assetscraper": "0.4.16",
     "@tryghost/mg-fs-utils": "0.15.1",
     "@tryghost/pretty-cli": "1.2.48",
-    "@tryghost/zip": "1.1.50",
+    "@tryghost/zip": "1.1.54",
     "axios": "1.13.5",
     "bluebird": "3.7.2",
     "chalk": "5.6.2",
