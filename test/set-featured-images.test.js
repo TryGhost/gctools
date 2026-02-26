@@ -1,4 +1,5 @@
-import {jest} from '@jest/globals';
+import {describe, test, mock, beforeEach} from 'node:test';
+import assert from 'node:assert/strict';
 
 // Mock the Ghost Admin API
 const mockPosts = [
@@ -45,50 +46,53 @@ const mockPosts = [
     }
 ];
 
+const mockEdit = mock.fn(data => Promise.resolve(data));
+const mockBrowse = mock.fn();
+
 const mockApi = {
     posts: {
-        browse: jest.fn(), // not used in test, but required for API shape
-        edit: jest.fn().mockImplementation((data) => {
-            return Promise.resolve(data);
-        })
+        browse: mockBrowse,
+        edit: mockEdit
     }
 };
 
-jest.unstable_mockModule('@tryghost/admin-api', () => ({
-    default: jest.fn().mockImplementation(() => mockApi)
-}));
-jest.unstable_mockModule('../lib/batch-ghost-discover.js', () => ({
-    discover: jest.fn().mockResolvedValue(mockPosts)
-}));
+mock.module('@tryghost/admin-api', {
+    defaultExport: function GhostAdminAPI() {
+        return mockApi;
+    }
+});
+mock.module('../lib/batch-ghost-discover.js', {
+    namedExports: {discover: mock.fn(() => Promise.resolve(mockPosts))}
+});
 
 describe('Set featured images', function () {
     beforeEach(() => {
-        // Reset mocks
-        jest.clearAllMocks();
+        mockEdit.mock.resetCalls();
+        mockBrowse.mock.resetCalls();
     });
 
     test('can extract images from Lexical content', async function () {
         const {extractFirstImageFromLexical} = await import('../tasks/set-featured-images.js');
         const image = extractFirstImageFromLexical(mockPosts[0].lexical);
-        expect(image).toBe('https://example.com/image1.jpg');
+        assert.strictEqual(image, 'https://example.com/image1.jpg');
     });
 
     test('can extract images from Mobiledoc content', async function () {
         const {extractFirstImageFromMobiledoc} = await import('../tasks/set-featured-images.js');
         const image = extractFirstImageFromMobiledoc(mockPosts[1].mobiledoc);
-        expect(image).toBe('https://example.com/image2.jpg');
+        assert.strictEqual(image, 'https://example.com/image2.jpg');
     });
 
     test('can extract images from HTML content', async function () {
         const {extractFirstImage} = await import('../tasks/set-featured-images.js');
         const image = extractFirstImage(mockPosts[2].html);
-        expect(image).toBe('https://example.com/image3.jpg');
+        assert.strictEqual(image, 'https://example.com/image3.jpg');
     });
 
     test('returns null when no image is found', async function () {
         const {extractFirstImage} = await import('../tasks/set-featured-images.js');
         const image = extractFirstImage(mockPosts[3].html);
-        expect(image).toBeNull();
+        assert.strictEqual(image, null);
     });
 
     test('can process posts and set featured images', async function () {
@@ -103,26 +107,33 @@ describe('Set featured images', function () {
         await runner.run(context);
 
         // Should have processed all posts
-        expect(context.processed).toBe(4);
+        assert.strictEqual(context.processed, 4);
         // Should have updated 3 posts (the one with no images should be skipped)
-        expect(context.updated).toBe(3);
+        assert.strictEqual(context.updated, 3);
         // Should have no errors
-        expect(context.errors).toHaveLength(0);
+        assert.strictEqual(context.errors.length, 0);
 
         // Verify edit calls for each post with an image
-        expect(mockApi.posts.edit).toHaveBeenCalledTimes(3);
-        expect(mockApi.posts.edit).toHaveBeenCalledWith({
-            id: '1',
-            feature_image: 'https://example.com/image1.jpg',
-            title: 'Post with Lexical',
-            status: 'published',
-            updated_at: '2024-03-20T12:00:00.000Z'
-        });
+        assert.strictEqual(mockApi.posts.edit.mock.callCount(), 3);
+        assert.ok(mockApi.posts.edit.mock.calls.some((c) => {
+            try {
+                assert.deepStrictEqual(c.arguments, [{
+                    id: '1',
+                    feature_image: 'https://example.com/image1.jpg',
+                    title: 'Post with Lexical',
+                    status: 'published',
+                    updated_at: '2024-03-20T12:00:00.000Z'
+                }]);
+                return true;
+            } catch {
+                return false;
+            }
+        }));
     });
 
     test('handles API errors gracefully', async function () {
         // Make the edit call fail for one post
-        mockApi.posts.edit.mockRejectedValueOnce({message: 'API Error'});
+        mockApi.posts.edit.mock.mockImplementationOnce(() => Promise.reject({message: 'API Error'}));
 
         const setFeaturedImagesModule = await import('../tasks/set-featured-images.js');
         const runner = setFeaturedImagesModule.default.getTaskRunner({
@@ -135,9 +146,9 @@ describe('Set featured images', function () {
         await runner.run(context);
 
         // Should still process the remaining posts after the error
-        expect(context.processed).toBe(3);
+        assert.strictEqual(context.processed, 3);
         // Should have one error
-        expect(context.errors).toHaveLength(1);
-        expect(context.errors[0]).toContain('API Error');
+        assert.strictEqual(context.errors.length, 1);
+        assert.ok(context.errors[0].includes('API Error'));
     });
-}); 
+});

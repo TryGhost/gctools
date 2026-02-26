@@ -1,3 +1,5 @@
+import {describe, test} from 'node:test';
+import assert from 'node:assert/strict';
 import cleanSlugs from '../tasks/clean-slugs.js';
 
 describe('Clean Slugs', function () {
@@ -50,44 +52,44 @@ describe('Clean Slugs', function () {
         });
 
         // Should identify 3 posts with IDs (24+ character alphanumeric strings)
-        expect(postsWithIds).toBeArrayOfSize(3);
+        assert.strictEqual(postsWithIds.length, 3);
 
         // Check first post
-        expect(postsWithIds[0].slug).toEqual('my-great-post-684a32da145d7d001be71b4f');
-        expect(postsWithIds[0].extractedId).toEqual('684a32da145d7d001be71b4f');
-        expect(postsWithIds[0].cleanSlug).toEqual('my-great-post');
+        assert.deepStrictEqual(postsWithIds[0].slug, 'my-great-post-684a32da145d7d001be71b4f');
+        assert.deepStrictEqual(postsWithIds[0].extractedId, '684a32da145d7d001be71b4f');
+        assert.deepStrictEqual(postsWithIds[0].cleanSlug, 'my-great-post');
 
         // Check second post
-        expect(postsWithIds[1].slug).toEqual('another-post-123abc456def789012345678');
-        expect(postsWithIds[1].extractedId).toEqual('123abc456def789012345678');
-        expect(postsWithIds[1].cleanSlug).toEqual('another-post');
+        assert.deepStrictEqual(postsWithIds[1].slug, 'another-post-123abc456def789012345678');
+        assert.deepStrictEqual(postsWithIds[1].extractedId, '123abc456def789012345678');
+        assert.deepStrictEqual(postsWithIds[1].cleanSlug, 'another-post');
 
         // Check third post (mixed case)
-        expect(postsWithIds[2].slug).toEqual('mixed-case-507f1f77bcf86cd799439011');
-        expect(postsWithIds[2].extractedId).toEqual('507f1f77bcf86cd799439011');
-        expect(postsWithIds[2].cleanSlug).toEqual('mixed-case');
+        assert.deepStrictEqual(postsWithIds[2].slug, 'mixed-case-507f1f77bcf86cd799439011');
+        assert.deepStrictEqual(postsWithIds[2].extractedId, '507f1f77bcf86cd799439011');
+        assert.deepStrictEqual(postsWithIds[2].cleanSlug, 'mixed-case');
     });
 
     test('regex correctly identifies valid alphanumeric IDs', function () {
         const idRegex = /-([a-f0-9]{24,})$/i;
 
         // Should match these
-        expect(idRegex.test('post-684a32da145d7d001be71b4f')).toBe(true);
-        expect(idRegex.test('test-123abc456def789012345678')).toBe(true);
-        expect(idRegex.test('mixed-507F1F77BCF86CD799439011')).toBe(true); // uppercase
-        expect(idRegex.test('long-507f1f77bcf86cd799439011abcdef123456')).toBe(true); // longer than 24
+        assert.strictEqual(idRegex.test('post-684a32da145d7d001be71b4f'), true);
+        assert.strictEqual(idRegex.test('test-123abc456def789012345678'), true);
+        assert.strictEqual(idRegex.test('mixed-507F1F77BCF86CD799439011'), true); // uppercase
+        assert.strictEqual(idRegex.test('long-507f1f77bcf86cd799439011abcdef123456'), true); // longer than 24
 
         // Should NOT match these
-        expect(idRegex.test('post-without-id')).toBe(false);
-        expect(idRegex.test('post-123')).toBe(false); // too short
-        expect(idRegex.test('post-123xyz')).toBe(false); // contains invalid chars
-        expect(idRegex.test('post-123-456-789')).toBe(false); // contains dashes
-        expect(idRegex.test('post-GHIJKLMNOPQRSTUVWXYZ123456')).toBe(false); // contains G-Z
+        assert.strictEqual(idRegex.test('post-without-id'), false);
+        assert.strictEqual(idRegex.test('post-123'), false); // too short
+        assert.strictEqual(idRegex.test('post-123xyz'), false); // contains invalid chars
+        assert.strictEqual(idRegex.test('post-123-456-789'), false); // contains dashes
+        assert.strictEqual(idRegex.test('post-GHIJKLMNOPQRSTUVWXYZ123456'), false); // contains G-Z
     });
 
     test('regex extracts correct ID and produces clean slug', function () {
         const idRegex = /-([a-f0-9]{24,})$/i;
-        
+
         const testCases = [
             {
                 input: 'my-awesome-post-684a32da145d7d001be71b4f',
@@ -108,11 +110,11 @@ describe('Clean Slugs', function () {
 
         testCases.forEach((testCase) => {
             const match = testCase.input.match(idRegex);
-            expect(match).not.toBeNull();
-            expect(match[1]).toEqual(testCase.expectedId);
-            
+            assert.notStrictEqual(match, null);
+            assert.deepStrictEqual(match[1], testCase.expectedId);
+
             const cleanSlug = testCase.input.replace(idRegex, '');
-            expect(cleanSlug).toEqual(testCase.expectedClean);
+            assert.deepStrictEqual(cleanSlug, testCase.expectedClean);
         });
     });
 
@@ -130,7 +132,7 @@ describe('Clean Slugs', function () {
         ];
 
         edgeCases.forEach((edgeCase) => {
-            expect(idRegex.test(edgeCase)).toBe(false);
+            assert.strictEqual(idRegex.test(edgeCase), false);
         });
     });
 
@@ -145,30 +147,30 @@ describe('Clean Slugs', function () {
         };
 
         const initTask = cleanSlugs.initialise(options);
-        
-        expect(initTask).toBeObject();
-        expect(initTask.title).toEqual('Initialising API connection');
-        expect(initTask.task).toBeFunction();
+
+        assert.strictEqual(typeof initTask, 'object');
+        assert.deepStrictEqual(initTask.title, 'Initialising API connection');
+        assert.strictEqual(typeof initTask.task, 'function');
 
         // Mock task context
         const ctx = {};
         const task = {output: ''};
-        
+
         // Run the initialization
         initTask.task(ctx, task);
 
         // Check that context is set up correctly
-        expect(ctx.args).toBeObject();
-        expect(ctx.api).toBeObject();
-        expect(ctx.posts).toBeArray();
-        expect(ctx.postsWithIds).toBeArray();
-        expect(ctx.updated).toBeArray();
-        expect(ctx.idRegex).toBeInstanceOf(RegExp);
-        
+        assert.strictEqual(typeof ctx.args, 'object');
+        assert.strictEqual(typeof ctx.api, 'object');
+        assert.ok(Array.isArray(ctx.posts));
+        assert.ok(Array.isArray(ctx.postsWithIds));
+        assert.ok(Array.isArray(ctx.updated));
+        assert.ok(ctx.idRegex instanceof RegExp);
+
         // Check that the regex pattern is correct
-        expect(ctx.idRegex.source).toEqual('-([a-f0-9]{24,})$');
-        expect(ctx.idRegex.flags).toEqual('i');
-        
-        expect(task.output).toEqual('Initialised API connection for https://test.ghost.io');
+        assert.deepStrictEqual(ctx.idRegex.source, '-([a-f0-9]{24,})$');
+        assert.deepStrictEqual(ctx.idRegex.flags, 'i');
+
+        assert.deepStrictEqual(task.output, 'Initialised API connection for https://test.ghost.io');
     });
-}); 
+});

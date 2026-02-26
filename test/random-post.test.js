@@ -1,4 +1,6 @@
-import {getRandomPostContent} from '../lib/random-post';
+import {describe, test} from 'node:test';
+import assert from 'node:assert/strict';
+import {getRandomPostContent} from '../lib/random-post.js';
 
 describe('Random post', function () {
     test('can create a random post', async function () {
@@ -12,26 +14,26 @@ describe('Random post', function () {
             }
         });
 
-        expect(randomPost.tags).toBeArrayOfSize(1);
-        expect(randomPost.tags[0]).toEqual('#gctools');
+        assert.strictEqual(randomPost.tags.length, 1);
+        assert.deepStrictEqual(randomPost.tags[0], '#gctools');
 
-        expect(randomPost.status).toEqual('published');
-        expect(randomPost.visibility).toEqual('public');
+        assert.deepStrictEqual(randomPost.status, 'published');
+        assert.deepStrictEqual(randomPost.visibility, 'public');
 
-        expect(randomPost.title).toBeString();
-        expect(randomPost.excerpt).toBeString();
+        assert.strictEqual(typeof randomPost.title, 'string');
+        assert.strictEqual(typeof randomPost.excerpt, 'string');
 
         // Count number of <p> tags in HTML content
-        expect(randomPost.html.match(/<p>/g).length).toEqual(10);
+        assert.deepStrictEqual(randomPost.html.match(/<p>/g).length, 10);
 
-        expect(randomPost.created_at).toBeAfterOrEqualTo(startDate);
-        expect(randomPost.created_at).toBeBeforeOrEqualTo(endDate);
+        assert.ok(randomPost.created_at >= startDate);
+        assert.ok(randomPost.created_at <= endDate);
 
-        expect(randomPost.updated_at).toBeBeforeOrEqualTo(endDate);
-        expect(randomPost.updated_at).toBeBeforeOrEqualTo(endDate);
+        assert.ok(randomPost.updated_at <= endDate);
+        assert.ok(randomPost.updated_at <= endDate);
 
-        expect(randomPost.published_at).toBeBeforeOrEqualTo(endDate);
-        expect(randomPost.published_at).toBeBeforeOrEqualTo(endDate);
+        assert.ok(randomPost.published_at <= endDate);
+        assert.ok(randomPost.published_at <= endDate);
     });
 
     test('can create a random post with specific options', async function () {
@@ -49,17 +51,17 @@ describe('Random post', function () {
             }
         });
 
-        expect(randomPost.tags).toBeArrayOfSize(2);
-        expect(randomPost.tags[0]).toEqual('#Test');
-        expect(randomPost.tags[1]).toEqual('Hello World');
+        assert.strictEqual(randomPost.tags.length, 2);
+        assert.deepStrictEqual(randomPost.tags[0], '#Test');
+        assert.deepStrictEqual(randomPost.tags[1], 'Hello World');
 
-        expect(randomPost.status).toEqual('draft');
-        expect(randomPost.visibility).toEqual('paid');
+        assert.deepStrictEqual(randomPost.status, 'draft');
+        assert.deepStrictEqual(randomPost.visibility, 'paid');
 
-        expect(randomPost.title).toBeString();
-        expect(randomPost.excerpt).toBeString();
+        assert.strictEqual(typeof randomPost.title, 'string');
+        assert.strictEqual(typeof randomPost.excerpt, 'string');
 
         // Count number of <p> tags in HTML content
-        expect(randomPost.html.match(/<p>/g).length).toEqual(3);
+        assert.deepStrictEqual(randomPost.html.match(/<p>/g).length, 3);
     });
 });

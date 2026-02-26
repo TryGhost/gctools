@@ -1,9 +1,13 @@
+import {describe, test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
 import {filterBuilder} from '../lib/filter-builder.js';
 
-import tagsObject from './fixtures/tags.json';
-import authorsObject from './fixtures/authors.json';
-import newslettersObject from './fixtures/newsletters.json';
-import labelsObject from './fixtures/labels.json';
+const require = createRequire(import.meta.url);
+const tagsObject = require('./fixtures/tags.json');
+const authorsObject = require('./fixtures/authors.json');
+const newslettersObject = require('./fixtures/newsletters.json');
+const labelsObject = require('./fixtures/labels.json');
 
 describe('Filter builder', function () {
     describe('Authors', function () {
@@ -12,7 +16,7 @@ describe('Filter builder', function () {
                 authors: authorsObject
             });
 
-            expect(filter).toEqual('author:[ghost-user]+author:[sample-user]');
+            assert.deepStrictEqual(filter, 'author:[ghost-user]+author:[sample-user]');
         });
 
         test('Exclude authors', async function () {
@@ -20,7 +24,7 @@ describe('Filter builder', function () {
                 notAuthors: authorsObject
             });
 
-            expect(filter).toEqual('author:-[ghost-user]+author:-[sample-user]');
+            assert.deepStrictEqual(filter, 'author:-[ghost-user]+author:-[sample-user]');
         });
 
         test('Inluce & exclude authors', async function () {
@@ -29,7 +33,7 @@ describe('Filter builder', function () {
                 notAuthors: authorsObject.slice(1, 2)
             });
 
-            expect(filter).toEqual('author:[ghost-user]+author:-[sample-user]');
+            assert.deepStrictEqual(filter, 'author:[ghost-user]+author:-[sample-user]');
         });
     });
 
@@ -39,7 +43,7 @@ describe('Filter builder', function () {
                 tags: tagsObject
             });
 
-            expect(filter).toEqual('tag:[lorem-ipsum]+tag:[dolor-simet]');
+            assert.deepStrictEqual(filter, 'tag:[lorem-ipsum]+tag:[dolor-simet]');
         });
 
         test('Exclude tags', async function () {
@@ -47,7 +51,7 @@ describe('Filter builder', function () {
                 notTags: tagsObject
             });
 
-            expect(filter).toEqual('tag:-[lorem-ipsum]+tag:-[dolor-simet]');
+            assert.deepStrictEqual(filter, 'tag:-[lorem-ipsum]+tag:-[dolor-simet]');
         });
 
         test('Inluce & exclude tags', async function () {
@@ -56,7 +60,7 @@ describe('Filter builder', function () {
                 notTags: tagsObject.slice(1, 2)
             });
 
-            expect(filter).toEqual('tag:[lorem-ipsum]+tag:-[dolor-simet]');
+            assert.deepStrictEqual(filter, 'tag:[lorem-ipsum]+tag:-[dolor-simet]');
         });
     });
 
@@ -66,7 +70,7 @@ describe('Filter builder', function () {
                 newsletters: newslettersObject
             });
 
-            expect(filter).toEqual('newsletters:[default-newsletter]+newsletters:[weekly-edition]');
+            assert.deepStrictEqual(filter, 'newsletters:[default-newsletter]+newsletters:[weekly-edition]');
         });
 
         test('Exclude newsletters', async function () {
@@ -74,7 +78,7 @@ describe('Filter builder', function () {
                 notNewsletters: newslettersObject
             });
 
-            expect(filter).toEqual('newsletters:-[default-newsletter]+newsletters:-[weekly-edition]');
+            assert.deepStrictEqual(filter, 'newsletters:-[default-newsletter]+newsletters:-[weekly-edition]');
         });
 
         test('Include & exclude newsletters', async function () {
@@ -83,7 +87,7 @@ describe('Filter builder', function () {
                 notNewsletters: newslettersObject.slice(1, 2)
             });
 
-            expect(filter).toEqual('newsletters:[default-newsletter]+newsletters:-[weekly-edition]');
+            assert.deepStrictEqual(filter, 'newsletters:[default-newsletter]+newsletters:-[weekly-edition]');
         });
     });
 
@@ -93,7 +97,7 @@ describe('Filter builder', function () {
                 labels: labelsObject
             });
 
-            expect(filter).toEqual('label:[lorem]+label:[ipsum]+label:[dolor-simet]');
+            assert.deepStrictEqual(filter, 'label:[lorem]+label:[ipsum]+label:[dolor-simet]');
         });
 
         test('Exclude labels', async function () {
@@ -101,7 +105,7 @@ describe('Filter builder', function () {
                 notLabels: labelsObject
             });
 
-            expect(filter).toEqual('label:-[lorem]+label:-[ipsum]+label:-[dolor-simet]');
+            assert.deepStrictEqual(filter, 'label:-[lorem]+label:-[ipsum]+label:-[dolor-simet]');
         });
 
         test('Include and exclude labels', async function () {
@@ -110,7 +114,7 @@ describe('Filter builder', function () {
                 notLabels: labelsObject.slice(1,2)
             });
 
-            expect(filter).toEqual('label:[lorem]+label:-[ipsum]');
+            assert.deepStrictEqual(filter, 'label:[lorem]+label:-[ipsum]');
         });
     });
 
@@ -120,7 +124,7 @@ describe('Filter builder', function () {
                 visibility: ['member', 'paid']
             });
 
-            expect(filter).toEqual('visibility:[member]+visibility:[paid]');
+            assert.deepStrictEqual(filter, 'visibility:[member]+visibility:[paid]');
         });
 
         test('Exclude visibility', async function () {
@@ -128,7 +132,7 @@ describe('Filter builder', function () {
                 notVisibility: ['member', 'paid']
             });
 
-            expect(filter).toEqual('visibility:-[member]+visibility:-[paid]');
+            assert.deepStrictEqual(filter, 'visibility:-[member]+visibility:-[paid]');
         });
 
         test('Include & exclude visibility', async function () {
@@ -137,7 +141,7 @@ describe('Filter builder', function () {
                 notVisibility: ['paid']
             });
 
-            expect(filter).toEqual('visibility:[member]+visibility:-[paid]');
+            assert.deepStrictEqual(filter, 'visibility:[member]+visibility:-[paid]');
         });
 
         test('Skips visibility if contains `all`', async function () {
@@ -145,7 +149,7 @@ describe('Filter builder', function () {
                 visibility: ['member', 'paid', 'all']
             });
 
-            expect(filter).toEqual('');
+            assert.deepStrictEqual(filter, '');
         });
     });
 
@@ -163,7 +167,7 @@ describe('Filter builder', function () {
                 visibility: ['member', 'paid']
             });
 
-            expect(filter).toEqual('author:[ghost-user]+author:-[sample-user]+tag:[lorem-ipsum]+tag:-[dolor-simet]+visibility:[member]+visibility:[paid]+newsletters:[default-newsletter]+newsletters:-[weekly-edition]+label:[lorem]+label:-[ipsum]');
+            assert.deepStrictEqual(filter, 'author:[ghost-user]+author:-[sample-user]+tag:[lorem-ipsum]+tag:-[dolor-simet]+visibility:[member]+visibility:[paid]+newsletters:[default-newsletter]+newsletters:-[weekly-edition]+label:[lorem]+label:-[ipsum]');
         });
     });
 });
