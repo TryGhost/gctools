@@ -6,6 +6,9 @@
   "author": "Ghost Foundation",
   "main": "index.js",
   "type": "module",
+  "engines": {
+    "node": ">=22.21.1"
+  },
   "license": "MIT",
   "bin": {
     "gctools": "./bin/cli.js"
