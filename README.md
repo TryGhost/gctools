@@ -426,6 +426,9 @@ gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New tex
 # Replace a string in all available fields
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --where all
 
+# Replace a string in all available fields in posts with the `world-news` tag
+gctools find-replace <apiURL> <adminAPIKey> --tag world-news --find 'Old text' --replace 'New text' --where all
+
 # Custom delay between API calls
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --delayBetweenCalls 100
 ```

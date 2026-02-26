@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
+import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
@@ -10,6 +11,7 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
+                tag: false,
                 delayBetweenCalls: 50
             };
 
@@ -39,10 +41,17 @@ const getFullTaskList = (options) => {
         {
             title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
+                let discoveryFilter = [];
+
+                if (ctx.args.tag && ctx.args.tag.length > 0) {
+                    discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                }
+
                 try {
                     ctx.posts = await discover({
                         api: ctx.api,
-                        type: 'posts'
+                        type: 'posts',
+                        filter: discoveryFilter.join('+')
                     });
 
                     task.output = `Found ${ctx.posts.length} posts`;

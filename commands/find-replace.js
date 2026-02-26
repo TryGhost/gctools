@@ -37,6 +37,10 @@ const setup = (sywac) => {
         choices: ['all', 'mobiledoc', 'html', 'lexical', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'feature_image', 'codeinjection_head', 'codeinjection_foot'],
         desc: 'Where to perform the find & replace (comma separated, eg: mobiledoc,title,meta_title)'
     });
+    sywac.string('--tag', {
+        defaultValue: null,
+        desc: 'Filter by tag (slug, comma separated for multiple, eg: world-news,weather-reports)'
+    });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'
