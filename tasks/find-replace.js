@@ -1,6 +1,7 @@
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import {ui} from '@tryghost/pretty-cli';
 import _ from 'lodash';
 import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
@@ -36,6 +37,8 @@ const initialise = (options) => {
 };
 
 const getFullTaskList = (options) => {
+    const dryRun = options.replace === null;
+
     return [
         initialise(options),
         {
@@ -66,25 +69,60 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 await Promise.mapSeries(ctx.posts, async (post) => {
                     let matches = [];
+                    let matchesByField = {};
 
                     ctx.args.where.forEach((key) => {
                         if (post[key]) {
                             let match = post[key].match(ctx.regex);
                             if (match) {
                                 matches.push(...match);
+                                matchesByField[key] = match.length;
                             }
                         }
                     });
 
                     if (matches.length > 0) {
                         post.matches = matches;
+                        post.matchesByField = matchesByField;
                         ctx.toUpdate.push(post);
                     }
                 });
             }
         },
         {
+            title: 'Reporting matches',
+            enabled: () => dryRun,
+            task: async (ctx, task) => {
+                if (ctx.toUpdate.length === 0) {
+                    task.title = 'No matches found';
+                    return;
+                }
+
+                let totalMatches = 0;
+
+                for (const post of ctx.toUpdate) {
+                    for (const [, count] of Object.entries(post.matchesByField)) {
+                        totalMatches += count;
+                    }
+                }
+
+                if (ctx.args.verbose) {
+                    ui.log.info('');
+                    for (const post of ctx.toUpdate) {
+                        for (const [field, count] of Object.entries(post.matchesByField)) {
+                            ui.log.info(`  ${count}:${field}:${post.title}`);
+                        }
+                    }
+                    ui.log.info('');
+                }
+
+                task.title = `Found ${totalMatches} matches across ${ctx.toUpdate.length} posts`;
+                task.output = `Add --replace '<string>' to replace them.`;
+            }
+        },
+        {
             title: 'Replacing text',
+            enabled: () => !dryRun,
             task: async (ctx) => {
                 let tasks = [];
 
@@ -98,8 +136,9 @@ const getFullTaskList = (options) => {
                                 }
                             });
 
-                            // Delete the matches object or else the request gets denied
+                            // Delete the matches objects or else the request gets denied
                             delete post.matches;
+                            delete post.matchesByField;
 
                             try {
                                 let result = await ctx.api.posts.edit(post);
