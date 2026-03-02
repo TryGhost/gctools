@@ -37,7 +37,7 @@
     "@tryghost/mg-fs-utils": "0.15.1",
     "@tryghost/pretty-cli": "1.2.48",
     "@tryghost/zip": "1.1.54",
-    "axios": "1.13.5",
+    "axios": "1.13.6",
     "bluebird": "3.7.2",
     "chalk": "5.6.2",
     "cli-progress": "3.12.0",
