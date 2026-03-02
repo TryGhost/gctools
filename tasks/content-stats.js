@@ -144,7 +144,17 @@ const getFullTaskList = (options) => {
         {
             title: 'Counting staff',
             task: async (ctx) => {
-                const usersData = await ctx.api.users.browse({limit: 'all', include: 'roles,count.posts'});
+                let usersData = [];
+                let page = 1;
+                let lastResponse;
+
+                do {
+                    lastResponse = await ctx.api.users.browse({limit: 100, page, include: 'roles,count.posts'});
+                    usersData = usersData.concat(lastResponse);
+                    page = lastResponse.meta.pagination.next;
+                } while (lastResponse.meta.pagination.next);
+
+                usersData.meta = lastResponse.meta;
 
                 const staffOwner = usersData.filter(word => word.roles[0].name === 'Owner');
                 const staffAdministrator = usersData.filter(word => word.roles[0].name === 'Administrator');
