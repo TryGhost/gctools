@@ -414,11 +414,17 @@ gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 5 --delayBetween
 
 ### find-replace
 
-Find & replace strings of text within Ghost posts
+Find & replace strings of text within Ghost posts. If `--replace` is omitted, the command runs in dry-run mode and reports the number of matches without making any changes.
 
 ```sh
 # See all available options
 gctools find-replace --help
+
+# Dry run: find matches without replacing anything
+gctools find-replace <apiURL> <adminAPIKey> --find 'Old text'
+
+# Dry run with detailed per-post, per-field match report
+gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --where all -V
 
 # Replace a string but only in the `mobiledoc` and `title`
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --where mobiledoc,title
@@ -432,6 +438,8 @@ gctools find-replace <apiURL> <adminAPIKey> --tag world-news --find 'Old text' -
 # Custom delay between API calls
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --delayBetweenCalls 100
 ```
+
+Use `-V` (`--verbose`) for detailed output showing which fields matched or were replaced in each post.
 
 Available `where` fields are:
 
