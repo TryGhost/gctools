@@ -437,9 +437,14 @@ gctools find-replace <apiURL> <adminAPIKey> --tag world-news --find 'Old text' -
 
 # Custom delay between API calls
 gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --delayBetweenCalls 100
+
+# Replace a string without creating post revisions
+gctools find-replace <apiURL> <adminAPIKey> --find 'Old text' --replace 'New text' --no-saveRevision
 ```
 
 Use `-V` (`--verbose`) for detailed output showing which fields matched or were replaced in each post.
+
+By default, `--saveRevision` is enabled, which creates a post revision for each edited post (lexical posts only). Use `--no-saveRevision` to disable this.
 
 Available `where` fields are:
 
