@@ -50,6 +50,10 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Skip API fetch, use existing cache (faster for multiple files)'
     });
+    sywac.string('--fallback', {
+        defaultValue: null,
+        desc: 'User slug to use as fallback author when no matching author is found'
+    });
 };
 
 // What to do when this command is executed

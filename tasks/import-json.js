@@ -184,6 +184,26 @@ const buildImportMaps = () => {
     };
 };
 
+const resolveFallbackAuthor = () => {
+    return {
+        title: 'Resolving fallback author',
+        skip: (ctx) => {
+            if (!ctx.args.fallback) {
+                return 'No --fallback provided';
+            }
+            return false;
+        },
+        task: async (ctx, task) => {
+            const fallbackUser = findUserBySlug(ctx.db, ctx.args.fallback);
+            if (!fallbackUser) {
+                throw new Error(`Fallback author not found in Ghost: ${ctx.args.fallback}`);
+            }
+            ctx.fallbackAuthor = {id: fallbackUser.id};
+            task.output = `Fallback author: ${fallbackUser.name || fallbackUser.slug} (${fallbackUser.id})`;
+        }
+    };
+};
+
 const analyzeImport = (options) => {
     return {
         title: 'Analyzing import data',
@@ -298,6 +318,11 @@ const importPosts = (options) => {
                                 ctx.skipped.push(post);
                                 task.skip('No HTML content');
                                 return;
+                            }
+
+                            // Use fallback author if no match found
+                            if (resolvedAuthors.length === 0 && ctx.fallbackAuthor) {
+                                resolvedAuthors.push(ctx.fallbackAuthor);
                             }
 
                             // Skip post if no author match
@@ -465,6 +490,7 @@ const getFullTaskList = (options) => {
         refreshCacheTask(options),
         readJsonFile(options),
         buildImportMaps(),
+        resolveFallbackAuthor(),
         analyzeImport(options),
         showImportSummary(),
         importPosts(options),
