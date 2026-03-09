@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "eslint": "8.57.1",
-    "eslint-plugin-ghost": "3.4.4"
+    "eslint-plugin-ghost": "3.5.0"
   },
   "dependencies": {
     "@inquirer/confirm": "3.2.0",
