@@ -122,6 +122,10 @@ const run = async () => {
                 value: tasks.memberNewsletterBackup.choice.value
             },
             {
+                name: tasks.splitMembers.choice.name,
+                value: tasks.splitMembers.choice.value
+            },
+            {
                 name: tasks.dedupeMembersCsv.choice.name,
                 value: tasks.dedupeMembersCsv.choice.value
             },
