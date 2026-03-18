@@ -32,6 +32,7 @@ import setTemplate from './set-template.js';
 import commentNotifications from './comment-notifications.js';
 import memberNewsletterBackup from './member-newsletter-backup.js';
 import splitMembers from './split-members.js';
+import addLabelToMembers from './add-label-to-members.js';
 
 export default {
     zipSplit,
@@ -65,5 +66,6 @@ export default {
     setTemplate,
     commentNotifications,
     memberNewsletterBackup,
-    splitMembers
+    splitMembers,
+    addLabelToMembers
 };

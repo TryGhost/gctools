@@ -43,6 +43,7 @@ import cleanSlugs from '../commands/clean-slugs.js';
 import commentNotifications from '../commands/comment-notifications.js';
 import memberNewsletterBackup from '../commands/member-newsletter-backup.js';
 import splitMembers from '../commands/split-members.js';
+import addLabelToMembers from '../commands/add-label-to-members.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -84,6 +85,7 @@ prettyCLI.command(cleanSlugs);
 prettyCLI.command(commentNotifications);
 prettyCLI.command(memberNewsletterBackup);
 prettyCLI.command(splitMembers);
+prettyCLI.command(addLabelToMembers);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'

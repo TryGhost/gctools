@@ -126,6 +126,10 @@ const run = async () => {
                 value: tasks.splitMembers.choice.value
             },
             {
+                name: tasks.addLabelToMembers.choice.name,
+                value: tasks.addLabelToMembers.choice.value
+            },
+            {
                 name: tasks.dedupeMembersCsv.choice.name,
                 value: tasks.dedupeMembersCsv.choice.value
             },

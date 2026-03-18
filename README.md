@@ -61,6 +61,7 @@ Available tools include:
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`member-newsletter-backup`](#member-newsletter-backup)
 * [`split-members`](#split-members)
+* [`add-label-to-members`](#add-label-to-members)
 * [`change-tags`](#change-tags)
 * [`post-tiers`](#post-tiers)
 * [`set-template`](#set-template)
@@ -739,6 +740,25 @@ Interleaving A and B reconstructs the original sorted order. The CSV columns mat
 **Available options:**
 - `--output` (default: `.`): Output directory for CSV files
 - `--baseName` (default: `members`): Filename prefix for output files
+
+
+### add-label-to-members
+
+Add a label to all members listed in a CSV file, using the Ghost Admin API bulk endpoint. This is useful after `split-members` to apply a label to one of the output groups.
+
+```sh
+# See all available options
+gctools add-label-to-members --help
+
+# Add a label to members in a CSV file
+gctools add-label-to-members https://example.com 1234:abcd /path/to/members-a.csv "Group A"
+```
+
+Members are processed in batches (default 50) using the bulk API endpoint, so even large CSVs are handled efficiently.
+
+**Available options:**
+- `--delayBetweenCalls` (default: `50`): Delay between API calls in ms
+- `--batchSize` (default: `50`): Number of members to process per API call
 
 
 ### change-tags
