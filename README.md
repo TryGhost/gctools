@@ -60,6 +60,7 @@ Available tools include:
 * [`remove-member-comp-subscription`](#remove-member-comp-subscription)
 * [`add-member-newsletter-subscription`](#add-member-newsletter-subscription)
 * [`member-newsletter-backup`](#member-newsletter-backup)
+* [`split-members`](#split-members)
 * [`change-tags`](#change-tags)
 * [`post-tiers`](#post-tiers)
 * [`set-template`](#set-template)
@@ -711,6 +712,42 @@ Newsletter slugs are stored as comma-separated values (e.g., `main-newsletter,we
 - Cannot combine `--backup` with `--restore`
 - Members are matched by email address during restore (more reliable than ID across instances)
 - Use `--dry-run` before restoring to preview changes
+
+
+### split-members
+
+Download members matching a filter, sort them by `created_at`, and split them into two evenly-distributed halves using a zipper pattern (index 0→A, 1→B, 2→A, 3→B…). This produces two balanced groups useful for segmented migrations or A/B campaigns.
+
+```sh
+# See all available options
+gctools split-members --help
+
+# Split members using a filter URL copied from the Ghost admin
+gctools split-members <apiURL> <adminAPIKey> --filterURL "https://site.ghost.io/ghost/#/members?filter=created_at%3A%3C%3D'2026-02-17%2023%3A59%3A59'"
+
+# Split members using a raw Ghost API filter string
+gctools split-members <apiURL> <adminAPIKey> --filter "created_at:<='2026-02-17'"
+
+# Custom output directory and filename prefix
+gctools split-members <apiURL> <adminAPIKey> --filterURL "..." --output ./output --baseName campaign-members
+```
+
+This produces three CSV files:
+- `members-all.csv` — all matched members sorted by `created_at` ascending
+- `members-a.csv` — even-index half (0, 2, 4…)
+- `members-b.csv` — odd-index half (1, 3, 5…)
+
+Interleaving A and B reconstructs the original sorted order. The CSV columns are Ghost import-compatible: `id`, `email`, `name`, `note`, `subscribed_to_emails`, `complimentary_plan`, `stripe_customer_id`, `created_at`, `labels`.
+
+**Available options:**
+- `--filterURL`: Ghost admin URL containing the filter (copy from your browser's address bar)
+- `--filter`: Raw Ghost API filter string (alternative to `--filterURL`)
+- `--output` (default: `.`): Output directory for CSV files
+- `--baseName` (default: `members`): Filename prefix for output files
+
+**Notes:**
+- Exactly one of `--filterURL` or `--filter` must be provided
+- The filter URL format is: `https://yoursite.ghost.io/ghost/#/members?filter=...`
 
 
 ### change-tags
