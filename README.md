@@ -750,11 +750,14 @@ Add a label to all members listed in a CSV file, using the Ghost Admin API bulk 
 # See all available options
 gctools add-label-to-members --help
 
-# Add a label to members in a CSV file
+# Add a label by name (will look up or create the label)
 gctools add-label-to-members https://example.com 1234:abcd /path/to/members-a.csv "Group A"
+
+# Add a label by ID (skips the lookup)
+gctools add-label-to-members https://example.com 1234:abcd /path/to/members-a.csv 69bacf7ebd018900018563b5
 ```
 
-Members are processed in batches (default 50) using the bulk API endpoint, so even large CSVs are handled efficiently.
+The `<label>` argument can be either a label name or a 24-character hex label ID. Members are matched by their `id` column in the CSV and processed in batches (default 50) using the bulk API endpoint.
 
 **Available options:**
 - `--delayBetweenCalls` (default: `50`): Delay between API calls in ms

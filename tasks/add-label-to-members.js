@@ -13,6 +13,7 @@ const initialise = (options) => {
                 delayBetweenCalls: 50,
                 batchSize: 50
             }, options);
+            ctx.errors = ctx.errors || [];
             ctx.successful = 0;
             ctx.unsuccessful = 0;
         }
@@ -23,6 +24,13 @@ const findOrCreateLabel = () => {
     return {
         title: 'Finding label',
         task: async (ctx, task) => {
+            // If the label value looks like a hex ID, use it directly
+            if (/^[0-9a-f]{24}$/i.test(ctx.options.label)) {
+                ctx.labelId = ctx.options.label;
+                task.output = `Using label ID directly: ${ctx.labelId}`;
+                return;
+            }
+
             const labels = await getMemberLabels(ctx.options);
             const existing = labels.find(l => l.name === ctx.options.label);
 
@@ -61,7 +69,6 @@ const addLabelInBatches = () => {
         title: 'Adding label to members',
         task: async (ctx) => {
             const batches = _.chunk(ctx.memberIds, ctx.options.batchSize);
-            const headers = apiAuthTokenHeaders(ctx.options);
             const apiURL = ctx.options.apiURL.replace('localhost', '127.0.0.1');
 
             let tasks = [];
@@ -70,6 +77,7 @@ const addLabelInBatches = () => {
                 tasks.push({
                     title: `Batch ${i + 1} of ${batches.length} (${batch.length} members)`,
                     task: async () => {
+                        const headers = apiAuthTokenHeaders(ctx.options);
                         const filter = `id:[${batch.join(',')}]`;
                         const url = `${apiURL}/ghost/api/admin/members/bulk/?filter=${encodeURIComponent(filter)}`;
 
@@ -93,10 +101,12 @@ const addLabelInBatches = () => {
                             ctx.unsuccessful += failed;
                         } catch (error) {
                             ctx.unsuccessful += batch.length;
+                            const message = error.response?.data?.errors?.[0]?.message || error.message;
+                            ctx.errors.push(`Batch ${i + 1}: ${message}`);
                             throw error;
+                        } finally {
+                            await sleep(ctx.options.delayBetweenCalls);
                         }
-
-                        await sleep(ctx.options.delayBetweenCalls);
                     }
                 });
             });
