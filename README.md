@@ -105,11 +105,20 @@ gctools zip-create /path/to/big-directory -M 50
 
 Split a large JSON file into smaller JSON files of a defined maximum size, while retaining meta, tag, and author information.
 
+Output files are saved in a folder named after the source file. For example, splitting `big-file.json` with `--M 50` produces:
+
+```
+big-file/
+  big-file-posts-00.json
+  big-file-posts-01.json
+  ...
+```
+
 ```sh
 # See all available options
 gctools json-split --help
 
-# Split a JSON file into as many files needed for them to hax a maximum of 50 posts per file
+# Split a JSON file into as many files needed for them to have a maximum of 50 posts per file
 gctools json-split /path/to/big-file.json --M 50
 ```
 

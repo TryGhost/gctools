@@ -1,4 +1,4 @@
-import {dirname} from 'node:path';
+import {dirname, basename} from 'node:path';
 import fsUtils from '@tryghost/mg-fs-utils';
 import fs from 'node:fs';
 import fse from 'fs-extra';
@@ -204,7 +204,8 @@ const getFullTaskList = (options) => {
             // 4. Save each chunk as its own JSON file
             title: 'Save Post files',
             task: async (ctx) => {
-                const destination = `${ctx.args.destDir}/split_json_files`;
+                const sourceBase = basename(options.jsonFile, '.json');
+                const destination = `${ctx.args.destDir}/${sourceBase}`;
                 await fse.ensureDir(destination);
 
                 ctx.newChunks.forEach(async (chunk, i) => {
@@ -224,7 +225,7 @@ const getFullTaskList = (options) => {
                         ]
                     };
 
-                    await createChunkFile(`${destination}/posts_${fileNumber}.json`, chunkData);
+                    await createChunkFile(`${destination}/${sourceBase}-posts-${fileNumber}.json`, chunkData);
                 });
             }
         }
