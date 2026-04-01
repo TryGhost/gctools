@@ -1935,10 +1935,10 @@
   optionalDependencies:
     sharp "^0.34.2"
 
-"@tryghost/listr-smart-renderer@0.5.24":
-  version "0.5.24"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.5.24.tgz#50d03f4d584709efc59a6ea2b79fffca4a7392ba"
-  integrity sha512-hkoOgocZi3T2c5aIIHfVIl81YEzj3s/A9l7mEsOLICyTw0Ku7GdB5DM1rY1/H9N2rtBRkRey07FEmTQasvhFPw==
+"@tryghost/listr-smart-renderer@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.6.0.tgz#85f9b26aabc589633b53680238c26eea94b1d31b"
+  integrity sha512-bZgCjJ5pe7IyDyqgYfCfa2jVwLK8VvjpbtVJxXScoSsIDhzO2j/5RyEu0TuuYVLTm9GPaj+/mMFpr9CpPhyKkg==
   dependencies:
     chalk "5.6.2"
     cli-truncate "5.2.0"
@@ -1983,17 +1983,17 @@
     json-stringify-safe "5.0.1"
     lodash "4.17.23"
 
-"@tryghost/mg-assetscraper@0.4.37":
-  version "0.4.37"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.4.37.tgz#e2ef1d0c6848ad59bd4c62ad1e7df964a40cd1e6"
-  integrity sha512-rrG3Fq4M5aY3pGgrvzmb/n//Nvx7Jx3QsudJ80Z1trSx1d+4bV3PQQ2CWSetrlbRDoLfutu1tYnoxtq/7sPW/g==
+"@tryghost/mg-assetscraper@0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper/-/mg-assetscraper-0.5.0.tgz#f2dc1e526128d19af96e4846e8638252adf76e06"
+  integrity sha512-d0CSnAgeDahhW6zKsHyvobv+YJWxToOiiesvcepmit4qtTBlFuo2nBZ5D1hI3z8sIZLJnVGhTpn5hbSZ5kcpag==
   dependencies:
-    "@tryghost/listr-smart-renderer" "0.5.24"
+    "@tryghost/listr-smart-renderer" "0.6.0"
     "@tryghost/logging" "4.0.3"
     "@tryghost/string" "0.3.1"
     cheerio "1.2.0"
     fast-replaceall "2.0.2"
-    file-type "21.3.4"
+    file-type "22.0.0"
     fs-extra "11.3.4"
     got "11.8.6"
     listr "0.14.3"
@@ -2002,10 +2002,10 @@
     pretty-bytes "7.1.0"
     srcset "5.0.3"
 
-"@tryghost/mg-fs-utils@0.16.7":
-  version "0.16.7"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.16.7.tgz#88f2e27e257ead995268d98caf5a22e96e340c78"
-  integrity sha512-S9at3wijliow+61ZAhYiiQZk2+xNPHh5Pj9MKeDSE1jWns+oVyC5zij3isjlO32jlWRSScQipvudsHwE1UTP6g==
+"@tryghost/mg-fs-utils@0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.17.0.tgz#d935d99a87bcbacb93f84e2d9eae41aa3247ba81"
+  integrity sha512-AOpYXj0rinC4Rc5BRidbwpQr7+PazVqr0wCEGPrhXYbuurn9+BU3YlzksPg5CVOVJtJN6+1rF+j0s6OekFCvIQ==
   dependencies:
     "@tryghost/errors" "3.0.3"
     "@tryghost/image-transform" "1.4.12"
@@ -4046,15 +4046,15 @@ file-entry-cache@^6.0.1:
   dependencies:
     flat-cache "^3.0.4"
 
-file-type@21.3.4:
-  version "21.3.4"
-  resolved "https://registry.yarnpkg.com/file-type/-/file-type-21.3.4.tgz#e3f902faee8ec4aa152909fc902a7a77f9c06725"
-  integrity sha512-Ievi/yy8DS3ygGvT47PjSfdFoX+2isQueoYP1cntFW1JLYAuS4GD7NUPGg4zv2iZfV52uDyk5w5Z0TdpRS6Q1g==
+file-type@22.0.0:
+  version "22.0.0"
+  resolved "https://registry.yarnpkg.com/file-type/-/file-type-22.0.0.tgz#437d427c49bdee4d7ecb1e9b70a0e4ab2d8e0b36"
+  integrity sha512-cmBmnYo8Zymabm2+qAP7jTFbKF10bQpYmxoGfuZbRFRcq00BRddJdGNH/P7GA1EMpJy5yQbqa9B7yROb3z8Ziw==
   dependencies:
     "@tokenizer/inflate" "^0.4.1"
-    strtok3 "^10.3.4"
-    token-types "^6.1.1"
-    uint8array-extras "^1.4.0"
+    strtok3 "^10.3.5"
+    token-types "^6.1.2"
+    uint8array-extras "^1.5.0"
 
 find-replace@^5.0.2:
   version "5.0.2"
@@ -6710,7 +6710,7 @@ strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-strtok3@^10.3.4:
+strtok3@^10.3.5:
   version "10.3.5"
   resolved "https://registry.yarnpkg.com/strtok3/-/strtok3-10.3.5.tgz#7213285da0dc3dec0fc8ce5df4b8b7a733f14360"
   integrity sha512-ki4hZQfh5rX0QDLLkOCj+h+CVNkqmp/CMf8v8kZpkNVK6jGQooMytqzLZYUVYIZcFZ6yDB70EfD8POcFXiF5oA==
@@ -6839,7 +6839,7 @@ tmp@^0.0.33:
   dependencies:
     os-tmpdir "~1.0.2"
 
-token-types@^6.1.1:
+token-types@^6.1.1, token-types@^6.1.2:
   version "6.1.2"
   resolved "https://registry.yarnpkg.com/token-types/-/token-types-6.1.2.tgz#18d0fd59b996d421f9f83914d6101c201bd08129"
   integrity sha512-dRXchy+C0IgK8WPC6xvCHFRIWYUbqqdEIKPaKo/AcTUNzwLTK6AH7RjdLWsEZcAN/TBdtfUw3PYEgPr5VPr6ww==
@@ -6995,7 +6995,7 @@ uc.micro@^2.0.0, uc.micro@^2.1.0:
   resolved "https://registry.yarnpkg.com/uc.micro/-/uc.micro-2.1.0.tgz#f8d3f7d0ec4c3dea35a7e3c8efa4cb8b45c9e7ee"
   integrity sha512-ARDJmphmdvUk6Glw7y9DQ2bFkKBHwQHLi2lsaH6PPmz/Ka9sFOBsBluozhDltWmnv9u/cF6Rt87znRTPV+yp/A==
 
-uint8array-extras@^1.4.0:
+uint8array-extras@^1.5.0:
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/uint8array-extras/-/uint8array-extras-1.5.0.tgz#10d2a85213de3ada304fea1c454f635c73839e86"
   integrity sha512-rvKSBiC5zqCCiDZ9kAOszZcDvdAHwwIKJG33Ykj43OKcWsnmcBRL09YTU4nOeHZ8Y2a7l1MgTd08SBe9A8Qj6A==
