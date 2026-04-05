@@ -144,8 +144,8 @@ Download all available assets from a valid Ghost JSON file create a JSON file wi
 # See all available options
 gctools fetch-assets --help
 
-# Fetch assets from a valid Ghost JSON file, with `https://example.com` as the base URL
-gctools fetch-assets /path/to/file.json https://example.com
+# Fetch assets from a valid Ghost JSON file, using `https://example.com` to resolve relative URLs
+gctools fetch-assets /path/to/file.json --url https://example.com
 ```
 
 

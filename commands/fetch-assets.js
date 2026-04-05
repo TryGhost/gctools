@@ -7,13 +7,13 @@ const id = 'fetch-assets';
 const group = 'Tools:';
 
 // The command to run and any params
-const flags = 'fetch-assets <jsonFile> <url>';
+const flags = 'fetch-assets <jsonFile>';
 
 // Description for the top level command
-const desc = 'Fetch the images referenced inb a Ghost JSON file';
+const desc = 'Fetch the assets referenced in a Ghost JSON file';
 
 // Descriptions for the individual params
-const paramsDesc = ['Path to the Ghost JSON file file', 'Provide a URL (without trailing slash) to scrape assets from'];
+const paramsDesc = ['Path to the Ghost JSON file'];
 
 // Configure all the options
 const setup = (sywac) => {
@@ -21,10 +21,9 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
-    sywac.array('-s --scrape', {
-        choices: ['all', 'img', 'media', 'files'],
-        defaultValue: 'all',
-        desc: 'Configure scraping tasks'
+    sywac.string('--url', {
+        defaultValue: null,
+        desc: 'Provide a base URL (without trailing slash) to resolve relative asset URLs'
     });
     sywac.number('--sizeLimit', {
         defaultValue: false,
