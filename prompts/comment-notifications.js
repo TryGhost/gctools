@@ -11,7 +11,7 @@ export const choice = {
 const modeOptions = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'mode',
         message: 'What would you like to do?',
         choices: [
@@ -38,7 +38,7 @@ const modeOptions = [
 
 const setOptions = [
     {
-        type: 'list',
+        type: 'select',
         name: 'value',
         message: 'Enable or disable comment notifications:',
         choices: [

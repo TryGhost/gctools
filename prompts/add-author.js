@@ -15,7 +15,7 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'author',
         message: 'Current Author:',
         pageSize: 20,
@@ -40,7 +40,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'new_author',
         message: 'New Author:',
         pageSize: 20,

@@ -13,7 +13,7 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'tierOrVisibility',
         message: 'Filter by post visibility or a specific tier:',
         choices: [
@@ -28,7 +28,7 @@ const options = [
         ]
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'visibility',
         message: 'Filter by visibility:',
         when: (answers) => {
@@ -54,7 +54,7 @@ const options = [
         ]
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'filterTierId',
         message: 'Filter by tier:',
         when: (answers) => {
@@ -72,7 +72,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'addTierId',
         message: `Select tier to add to these posts: ${chalk.yellow('[Type to search]')}`,
         pageSize: 20,

@@ -19,7 +19,7 @@ async function run() {
 
     // 2. Ask whether to backup or restore
     const modeAnswer = await inquirer.prompt([{
-        type: 'list',
+        type: 'select',
         name: 'mode',
         message: 'What would you like to do?',
         choices: [

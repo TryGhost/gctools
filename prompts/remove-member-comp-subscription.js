@@ -16,7 +16,7 @@ onYearToday.setFullYear(onYearToday.getFullYear() + 1);
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'onlyForLabelSlugs',
         message: `Select member label: ${chalk.yellow('[Type to search]')}`,
         pageSize: 20,
@@ -25,7 +25,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'tierId',
         message: `Select tier: ${chalk.yellow('[Type to search]')}`,
         pageSize: 20,

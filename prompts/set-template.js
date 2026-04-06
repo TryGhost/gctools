@@ -15,7 +15,7 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'status',
         message: 'Status:',
         choices: [
@@ -34,7 +34,7 @@ const options = [
         ]
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'filter_by',
         message: 'Filter content by:',
         choices: [

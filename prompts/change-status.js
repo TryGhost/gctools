@@ -19,7 +19,7 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'status',
         message: 'Status: (Leave blank for all)',
         choices: [
@@ -38,7 +38,7 @@ const options = [
         ]
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'visibility',
         message: 'Visibility: (Leave blank for all)',
         choices: [
@@ -78,7 +78,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'dateRange',
         message: 'Date Range:',
         choices: [
@@ -113,7 +113,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'new_status',
         message: 'New status:',
         choices: [

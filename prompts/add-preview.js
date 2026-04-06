@@ -15,7 +15,7 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'visibility',
         message: 'Visibility:',
         choices: [

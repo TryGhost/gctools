@@ -21,7 +21,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'newRole',
         message: 'The new role name:',
         pageSize: 20,

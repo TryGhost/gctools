@@ -5,7 +5,7 @@ const getNewsletters = async (args = {}) => {
     const message = args?.message ?? 'Pick newsletter:';
 
     let prompts = [{
-        type: 'list',
+        type: 'select',
         name: 'newsletter',
         message,
         choices: () => {
