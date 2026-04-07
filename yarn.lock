@@ -1868,24 +1868,10 @@
   optionalDependencies:
     sharp "^0.34.2"
 
-"@tryghost/listr-smart-renderer@0.7.0":
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.7.0.tgz#6e096a30ec16caeaf09d90be77c98cc437ac62a3"
-  integrity sha512-k8t0VW02zhcAsdwa/lGaVu3p554dwktjKDvRoHcPjMoEQSo/j1vukMEjXFzcWkef8lVkCV57DYU3qr7ckdLiug==
-  dependencies:
-    chalk "5.6.2"
-    cli-truncate "5.2.0"
-    elegant-spinner "3.0.0"
-    indent-string "5.0.0"
-    listr2 "10.2.1"
-    log-symbols "7.0.1"
-    log-update "7.2.0"
-    strip-ansi "7.2.0"
-
-"@tryghost/listr-smart-renderer@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.8.0.tgz#bae8165c8f98eb13187fa727090d51aed72c78ee"
-  integrity sha512-tJeSkNfcZ8MMLIYcKxjYImdE/bxQDgYO/XjtsXx8sFVBgiAnW1BPI7XKx9LtA3bi1oPFiPuSsWtM+AloytWOyg==
+"@tryghost/listr-smart-renderer@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.9.0.tgz#41a00c9da1d0d20ed67b9991da798cac7056f037"
+  integrity sha512-gRrntykxk8ZPnfYo0xt57RXD2uNMAbXnfwInW5OISPAx3/+bt/9T/joG8CDhIxuoDINNdyswl0OxstocCbHU8g==
   dependencies:
     chalk "5.6.2"
     cli-truncate "5.2.0"
@@ -1913,15 +1899,15 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper-db@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.6.0.tgz#a0317d8312e8ac6eee5b1dc4d83dbc352b129f7e"
-  integrity sha512-pcYDconZIkC4sGc2tC4VWgReBwikgBrNQRNmz3Hu/0NNkHo+qM4joECgIzQPKOJxeWtJIcSNINQneeEKhzPI3A==
+"@tryghost/mg-assetscraper-db@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.7.0.tgz#ba791fdbeb5d1ad53f91cfaa88ae8b29d66cd0d0"
+  integrity sha512-DqwV52RhjXk8GZ0IIt3i/DtCfmjpg75bqeK12WgKo3LJrvppLaSFSuvZUHsgwaRwTKPntKdVzLqDkr37jT7kUA==
   dependencies:
     "@tryghost/debug" "2.0.3"
     "@tryghost/errors" "3.0.3"
-    "@tryghost/listr-smart-renderer" "0.8.0"
-    "@tryghost/mg-fs-utils" "0.19.0"
+    "@tryghost/listr-smart-renderer" "0.9.0"
+    "@tryghost/mg-fs-utils" "0.20.0"
     "@tryghost/string" "0.3.1"
     file-type "22.0.0"
     fs-extra "11.3.4"
@@ -1930,27 +1916,10 @@
     transliteration "2.6.1"
     uuid "13.0.0"
 
-"@tryghost/mg-fs-utils@0.18.0":
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.18.0.tgz#7010d22f77373980c0729969a3448b2819c22f8f"
-  integrity sha512-DRjcjQzOfvAQ899MKSbSdRLre9R77XAJ/wmv96RA/zbYsb2cpf59hvkj9FPBMmtsgDEPVHFO2Gl/eGfkLjHkzw==
-  dependencies:
-    "@tryghost/errors" "3.0.3"
-    "@tryghost/image-transform" "1.4.12"
-    "@tryghost/string" "0.3.1"
-    "@tryghost/zip" "3.0.3"
-    adm-zip "0.5.17"
-    csv-parse "6.2.1"
-    dotenv "17.3.1"
-    fs-extra "11.3.4"
-    lodash "4.18.1"
-    sharp "0.34.5"
-    transliteration "2.6.1"
-
-"@tryghost/mg-fs-utils@0.19.0":
-  version "0.19.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.19.0.tgz#3cfcc5d237fd5b89b97ba93d5ff1189fb112dd07"
-  integrity sha512-3LheWOMrlmyNl6FbVz3uN9zaLN+3pSacs7W9zj64k4AdeeN27UaJTJfKIW03TSZp+RrkHEU4Oz45YhZedImpAQ==
+"@tryghost/mg-fs-utils@0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.20.0.tgz#dcac24c4655a6ef366e612cf8affcf2d766911f8"
+  integrity sha512-Q2jK+POePDZ4Gvo7lq6R01Koln2LOBjNgyYxDVmW8HCh4/MD8zNyLytvcdaeiBLeDe9LOsUAFi0K1tD9RVMQrg==
   dependencies:
     "@tryghost/errors" "3.0.3"
     "@tryghost/image-transform" "1.4.12"
@@ -1964,7 +1933,7 @@
     sharp "0.34.5"
     transliteration "2.6.1"
 
-"@tryghost/mg-ghost-authors@^0.4.0":
+"@tryghost/mg-ghost-authors@0.4.0":
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.4.0.tgz#86dfd1ed52ce761815ffd88b1645979a6db21742"
   integrity sha512-5gdy1EtXbReYrKQXBE3MuMI8rlbF3jDTdmcZ1QTyzd69CadpJlS71zf2PIGPwDwu4hu1nNIrQ5rl3fHoQaju8g==
@@ -3124,11 +3093,6 @@ dot-case@^3.0.4:
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
-
-dotenv@17.3.1:
-  version "17.3.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.3.1.tgz#2706f5b0165e45a1503348187b8468f87fe6aae2"
-  integrity sha512-IO8C/dzEb6O3F9/twg6ZLXz164a2fhTnEWb95H23Dm4OuN+92NmEAlTrupP9VW6Jm3sO26tQlqyvyi4CsnY9GA==
 
 dotenv@17.4.0:
   version "17.4.0"
