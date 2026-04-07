@@ -4,6 +4,7 @@ import fs from 'fs-extra';
 import inquirer from 'inquirer';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
+import {fetchGhostUsers} from '@tryghost/mg-ghost-authors';
 
 const initialise = (options) => {
     return {
@@ -205,11 +206,57 @@ const getFullTaskList = (options) => {
             }
         },
         {
+            title: 'Fetch Ghost users and auto-update matches',
+            skip: () => !options.ghostApiUrl || !options.ghostAdminKey,
+            task: async (ctx, task) => {
+                const ghostUsers = await fetchGhostUsers({
+                    apiUrl: options.ghostApiUrl,
+                    adminKey: options.ghostAdminKey
+                });
+
+                task.output = `Fetched ${ghostUsers.length} Ghost users`;
+
+                ctx.autoMatchedUserIds = new Set();
+
+                ctx.jsonData.users.forEach((jsonUser) => {
+                    if (!jsonUser.email) {
+                        return;
+                    }
+
+                    const matchedGhostUser = ghostUsers.find((ghostUser) => {
+                        return ghostUser.email &&
+                            ghostUser.email.toLowerCase() === jsonUser.email.toLowerCase();
+                    });
+
+                    if (matchedGhostUser) {
+                        ctx.usersToUpdate.push({
+                            originalData: _.clone(jsonUser),
+                            newData: {
+                                ...jsonUser,
+                                id: matchedGhostUser.id,
+                                name: matchedGhostUser.name,
+                                slug: matchedGhostUser.slug,
+                                email: matchedGhostUser.email
+                            }
+                        });
+                        ctx.autoMatchedUserIds.add(jsonUser.id);
+                    }
+                });
+
+                task.output = `Matched ${ctx.usersToUpdate.length} of ${ctx.jsonData.users.length} users to Ghost users`;
+            }
+        },
+        {
             title: 'Select users to update',
             task: async (ctx, task) => {
                 let siteUsers = [];
 
                 ctx.jsonData.users.forEach((user) => {
+                    // Skip users already auto-matched from Ghost
+                    if (ctx.autoMatchedUserIds && ctx.autoMatchedUserIds.has(user.id)) {
+                        return;
+                    }
+
                     let allPosts = _.filter(ctx.jsonData.posts_authors, {author_id: user.id});
 
                     siteUsers.push({
@@ -219,6 +266,11 @@ const getFullTaskList = (options) => {
                         }
                     });
                 });
+
+                if (!siteUsers.length) {
+                    task.output = 'All users already matched, nothing to manually update';
+                    return;
+                }
 
                 siteUsers = _.sortBy(siteUsers, ['name']);
 
@@ -233,17 +285,26 @@ const getFullTaskList = (options) => {
                 ];
 
                 await inquirer.prompt(promptOptions).then(async (answers) => {
-                    ctx.usersToUpdate = answers.users;
-                    task.output = `Selected ${answers.users.length} of ${ctx.jsonData.users.length} users to update`;
+                    ctx.usersToUpdate = ctx.usersToUpdate.concat(answers.users);
+                    task.output = `Selected ${answers.users.length} of ${siteUsers.length} remaining users to update`;
                 });
             }
         },
         {
             title: 'Update users data',
+            skip: (ctx) => {
+                // Only run for manually-selected users (those without newData already set)
+                return !ctx.usersToUpdate.some(u => !u.newData);
+            },
             task: async (ctx) => {
                 let tasks = [];
 
                 ctx.usersToUpdate.forEach((user) => {
+                    // Skip auto-matched users that already have newData
+                    if (user.newData) {
+                        return;
+                    }
+
                     tasks.push({
                         title: `New details for ${user.originalData.name} - ${user.originalData.slug} - ${user.originalData.id}`,
                         task: async () => {

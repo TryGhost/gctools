@@ -1779,6 +1779,15 @@
   resolved "https://registry.yarnpkg.com/@tokenizer/token/-/token-0.3.0.tgz#fe98a93fe789247e998c75e74e9c7c63217aa276"
   integrity sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==
 
+"@tryghost/admin-api@1.14.6":
+  version "1.14.6"
+  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.14.6.tgz#7748904acd5fd63ccef8edf1eefd444ca9f67f8c"
+  integrity sha512-GZ14THA09fCUIxveB1iC50v9GyCqCy3xbvAM51Q4XVhTmycz1BZaWfH2n+X+JXnfN3nIzQQwgSjp/RxMglQ9Mg==
+  dependencies:
+    axios "1.13.5"
+    form-data "4.0.5"
+    jsonwebtoken "9.0.3"
+
 "@tryghost/admin-api@1.14.7":
   version "1.14.7"
   resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.14.7.tgz#58c45c9d72a12a060d3bd9240d2f2ca4f18654da"
@@ -1954,6 +1963,14 @@
     lodash "4.18.1"
     sharp "0.34.5"
     transliteration "2.6.1"
+
+"@tryghost/mg-ghost-authors@^0.4.0":
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.4.0.tgz#86dfd1ed52ce761815ffd88b1645979a6db21742"
+  integrity sha512-5gdy1EtXbReYrKQXBE3MuMI8rlbF3jDTdmcZ1QTyzd69CadpJlS71zf2PIGPwDwu4hu1nNIrQ5rl3fHoQaju8g==
+  dependencies:
+    "@tryghost/admin-api" "1.14.6"
+    "@tryghost/errors" "3.0.3"
 
 "@tryghost/pretty-cli@1.2.52":
   version "1.2.52"
@@ -2429,6 +2446,15 @@ aws4@^1.8.0:
   version "1.13.2"
   resolved "https://registry.yarnpkg.com/aws4/-/aws4-1.13.2.tgz#0aa167216965ac9474ccfa83892cfb6b3e1e52ef"
   integrity sha512-lHe62zvbTB5eEABUVi/AwVh0ZKY9rMMDhmm+eeyuuUQbQ3+J+fONVQOZyj+DdrvD4BY33uYniyRJ4UJIaSKAfw==
+
+axios@1.13.5:
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.13.5.tgz#5e464688fa127e11a660a2c49441c009f6567a43"
+  integrity sha512-cz4ur7Vb0xS4/KUN0tPWe44eqxrIu31me+fbang3ijiNscE129POzipJJA6zniq2C/Z6sJCjMimjS8Lc/GAs8Q==
+  dependencies:
+    follow-redirects "^1.15.11"
+    form-data "^4.0.5"
+    proxy-from-env "^1.1.0"
 
 axios@1.13.6:
   version "1.13.6"

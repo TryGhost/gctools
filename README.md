@@ -125,7 +125,7 @@ gctools json-split /path/to/big-file.json --M 50
 
 ### json-clean
 
-Clean a JSON file so it only contains content.
+Clean a JSON file so it only contains content. Optionally connect to a target Ghost site to automatically match and update user IDs, slugs, names, and emails by comparing against existing Ghost users (matched by email address). Users not found in Ghost can still be updated manually via interactive prompts.
 
 ```sh
 # See all available options
@@ -133,7 +133,14 @@ gctools json-clean --help
 
 # Clean a JSON file to only contain content
 gctools json-clean /path/to/file.json
+
+# Clean a JSON file and auto-update users from a Ghost site
+gctools json-clean /path/to/file.json --ghostApiUrl https://example.ghost.io --ghostAdminKey 1234:abcd
 ```
+
+**Available options:**
+- `--ghostApiUrl`: Ghost site URL to fetch existing users (e.g. https://example.ghost.io)
+- `--ghostAdminKey`: Ghost Admin API key to authenticate with Ghost (format: id:secret)
 
 
 ### fetch-assets
