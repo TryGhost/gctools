@@ -168,6 +168,12 @@ const getFullTaskList = (options) => {
                     }
                 });
 
+                if (!siteUsers.length) {
+                    ctx.usersWithNoPosts = [];
+                    task.output = 'All users have posts, nothing to remove';
+                    return;
+                }
+
                 siteUsers = _.sortBy(siteUsers, ['name']);
 
                 const promptOptions = [
