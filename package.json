@@ -44,7 +44,7 @@
     "cli-progress": "3.12.0",
     "fs-extra": "11.3.4",
     "glob": "13.0.6",
-    "inquirer": "13.3.2",
+    "inquirer": "13.4.0",
     "inquirer-datepicker-prompt": "0.4.3",
     "inquirer-search-checkbox": "1.0.0",
     "inquirer-search-list": "1.2.6",
