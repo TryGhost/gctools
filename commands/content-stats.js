@@ -45,6 +45,7 @@ const run = async (argv) => {
         // Show the tables
         ui.log(context.tables.stats);
         ui.log(context.tables.users);
+        ui.log(context.tables.staffPosts);
 
         if (argv.listEmptyAuthors) {
             ui.log('\n\nAuthors with no posts:');

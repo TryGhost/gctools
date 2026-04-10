@@ -24,6 +24,7 @@ async function run() {
             // Show the tables
             ui.log(context.tables.stats);
             ui.log(context.tables.users);
+            ui.log(context.tables.staffPosts);
 
             // Report success
             ui.log.ok(`Successfully showed stats in ${Date.now() - timer}ms.`);

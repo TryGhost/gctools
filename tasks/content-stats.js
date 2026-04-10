@@ -60,6 +60,7 @@ const initialise = (options) => {
             ctx.tables = {
                 stats: null,
                 users: null,
+                staffPosts: null,
                 emptyAuthors: null
             };
 
@@ -155,6 +156,7 @@ const getFullTaskList = (options) => {
                 } while (lastResponse.meta.pagination.next);
 
                 usersData.meta = lastResponse.meta;
+                ctx.usersData = usersData;
 
                 const staffOwner = usersData.filter(word => word.roles[0].name === 'Owner');
                 const staffAdministrator = usersData.filter(word => word.roles[0].name === 'Administrator');
@@ -253,6 +255,47 @@ const getFullTaskList = (options) => {
                 ];
 
                 ctx.tables.users = Table(usersHeader, usersRows, {compact: true}).render();
+
+                const roleOrder = ['Owner', 'Administrator', 'Editor', 'Author', 'Contributor'];
+
+                const sortedUsers = [...ctx.usersData].sort((a, b) => {
+                    const roleA = roleOrder.indexOf(a.roles[0].name);
+                    const roleB = roleOrder.indexOf(b.roles[0].name);
+                    if (roleA !== roleB) {
+                        return roleA - roleB;
+                    }
+                    return b.count.posts - a.count.posts;
+                });
+
+                const staffPostsHeader = [{
+                    value: 'Role',
+                    headerColor: 'cyan',
+                    color: 'white',
+                    headerAlign: 'left',
+                    align: 'left',
+                    width: 20
+                },
+                {
+                    value: 'Name',
+                    headerColor: 'cyan',
+                    color: 'white',
+                    headerAlign: 'left',
+                    align: 'left'
+                },
+                {
+                    value: 'Posts',
+                    headerColor: 'cyan',
+                    color: 'white',
+                    headerAlign: 'left',
+                    align: 'left',
+                    width: 10
+                }];
+
+                const staffPostsRows = sortedUsers.map((user) => {
+                    return [user.roles[0].name, user.name, user.count.posts];
+                });
+
+                ctx.tables.staffPosts = Table(staffPostsHeader, staffPostsRows, {compact: true}).render();
 
                 if (options?.listEmptyAuthors && ctx.stats.emptyAuthors.length > 0) {
                     const authorsHeader = [{
