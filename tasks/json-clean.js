@@ -4,6 +4,7 @@ import fs from 'fs-extra';
 import inquirer from 'inquirer';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
+import {fetchGhostUsers} from '@tryghost/mg-ghost-authors';
 
 const initialise = (options) => {
     return {
@@ -67,6 +68,92 @@ const getFullTaskList = (options) => {
             }
         },
         {
+            title: 'Keep posts and pages?',
+            task: async (ctx, task) => {
+                const promptOptions = [
+                    {
+                        type: 'checkbox',
+                        name: 'postspages',
+                        message: 'Select content types to keep:',
+                        pageSize: 20,
+                        choices: [
+                            {
+                                name: 'Posts',
+                                value: 'post',
+                                checked: true
+                            },
+                            {
+                                name: 'Pages',
+                                value: 'page',
+                                checked: true
+                            }
+                        ]
+                    }
+                ];
+
+                await inquirer.prompt(promptOptions).then(async (answers) => {
+                    ctx.postsAndPages = answers.postspages;
+                    task.output = `Selected tp keep ${answers.postspages.join(', ')}`;
+                });
+            }
+        },
+        {
+            title: 'Removing unwanted content types',
+            skip: ctx => !ctx.postsAndPages.length,
+            task: async (ctx) => {
+                // ctx.postsAndPages
+
+                let metaToDelete = [];
+
+                ctx.jsonData.posts = ctx.jsonData.posts.filter((item) => {
+                    const isWantedType = ctx.postsAndPages.includes(item.type);
+
+                    if (isWantedType) {
+                        return item;
+                    } else {
+                        // console.log('Delete meta for', item.title, item.type, item.id);
+                        metaToDelete.push(item.id);
+                        return false;
+                    }
+                });
+
+                ctx.jsonData.posts_meta = ctx.jsonData.posts_meta.filter((item) => {
+                    if (metaToDelete.includes(item.post_id)) {
+                        return false;
+                    } else {
+                        return item;
+                    }
+                });
+
+                ctx.jsonData.posts_tags = ctx.jsonData.posts_tags.filter((item) => {
+                    if (metaToDelete.includes(item.post_id)) {
+                        return false;
+                    } else {
+                        return item;
+                    }
+                });
+
+                ctx.jsonData.posts_authors = ctx.jsonData.posts_authors.filter((item) => {
+                    if (metaToDelete.includes(item.post_id)) {
+                        return false;
+                    } else {
+                        return item;
+                    }
+                });
+            }
+        },
+        {
+            title: 'Add temporary user ID to users without one',
+            task: async (ctx) => {
+                // Deleting users relies on them having an ID
+                ctx.jsonData.users.forEach((user) => {
+                    if (!user.id || user.id === '') {
+                        user.id = `temp-id-${Math.random().toString(36).substring(2, 15)}`;
+                    }
+                });
+            }
+        },
+        {
             title: 'Remove users with no posts',
             task: async (ctx, task) => {
                 let siteUsers = [];
@@ -81,6 +168,12 @@ const getFullTaskList = (options) => {
                         });
                     }
                 });
+
+                if (!siteUsers.length) {
+                    ctx.usersWithNoPosts = [];
+                    task.output = 'All users have posts, nothing to remove';
+                    return;
+                }
 
                 siteUsers = _.sortBy(siteUsers, ['name']);
 
@@ -113,18 +206,71 @@ const getFullTaskList = (options) => {
             }
         },
         {
+            title: 'Fetch Ghost users and auto-update matches',
+            skip: () => !options.ghostApiUrl || !options.ghostAdminKey,
+            task: async (ctx, task) => {
+                const ghostUsers = await fetchGhostUsers({
+                    apiUrl: options.ghostApiUrl,
+                    adminKey: options.ghostAdminKey
+                });
+
+                task.output = `Fetched ${ghostUsers.length} Ghost users`;
+
+                ctx.autoMatchedUserIds = new Set();
+
+                ctx.jsonData.users.forEach((jsonUser) => {
+                    if (!jsonUser.email) {
+                        return;
+                    }
+
+                    const matchedGhostUser = ghostUsers.find((ghostUser) => {
+                        return ghostUser.email &&
+                            ghostUser.email.toLowerCase() === jsonUser.email.toLowerCase();
+                    });
+
+                    if (matchedGhostUser) {
+                        ctx.usersToUpdate.push({
+                            originalData: _.clone(jsonUser),
+                            newData: {
+                                ...jsonUser,
+                                id: matchedGhostUser.id,
+                                name: matchedGhostUser.name,
+                                slug: matchedGhostUser.slug,
+                                email: matchedGhostUser.email
+                            }
+                        });
+                        ctx.autoMatchedUserIds.add(jsonUser.id);
+                    }
+                });
+
+                task.output = `Matched ${ctx.usersToUpdate.length} of ${ctx.jsonData.users.length} users to Ghost users`;
+            }
+        },
+        {
             title: 'Select users to update',
             task: async (ctx, task) => {
                 let siteUsers = [];
 
                 ctx.jsonData.users.forEach((user) => {
+                    // Skip users already auto-matched from Ghost
+                    if (ctx.autoMatchedUserIds && ctx.autoMatchedUserIds.has(user.id)) {
+                        return;
+                    }
+
+                    let allPosts = _.filter(ctx.jsonData.posts_authors, {author_id: user.id});
+
                     siteUsers.push({
-                        name: `${user.name} - ${user.slug} - ${user.id}`,
+                        name: `${user.name} - ${user.slug} - ID: ${user.id} - Post Count: ${allPosts.length}`,
                         value: {
                             originalData: user
                         }
                     });
                 });
+
+                if (!siteUsers.length) {
+                    task.output = 'All users already matched, nothing to manually update';
+                    return;
+                }
 
                 siteUsers = _.sortBy(siteUsers, ['name']);
 
@@ -139,17 +285,26 @@ const getFullTaskList = (options) => {
                 ];
 
                 await inquirer.prompt(promptOptions).then(async (answers) => {
-                    ctx.usersToUpdate = answers.users;
-                    task.output = `Selected ${answers.users.length} of ${ctx.jsonData.users.length} users to update`;
+                    ctx.usersToUpdate = ctx.usersToUpdate.concat(answers.users);
+                    task.output = `Selected ${answers.users.length} of ${siteUsers.length} remaining users to update`;
                 });
             }
         },
         {
             title: 'Update users data',
+            skip: (ctx) => {
+                // Only run for manually-selected users (those without newData already set)
+                return !ctx.usersToUpdate.some(u => !u.newData);
+            },
             task: async (ctx) => {
                 let tasks = [];
 
                 ctx.usersToUpdate.forEach((user) => {
+                    // Skip auto-matched users that already have newData
+                    if (user.newData) {
+                        return;
+                    }
+
                     tasks.push({
                         title: `New details for ${user.originalData.name} - ${user.originalData.slug} - ${user.originalData.id}`,
                         task: async () => {
@@ -161,6 +316,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userID',
                                     message: 'The new ID:',
+                                    default: theData.id,
                                     filter: function (val) {
                                         return val.trim();
                                     },
@@ -176,6 +332,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userName',
                                     message: 'The new name:',
+                                    default: theData.name,
                                     filter: function (val) {
                                         return val.trim();
                                     },
@@ -191,6 +348,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userSlug',
                                     message: 'The new slug:',
+                                    default: theData.slug,
                                     filter: function (val) {
                                         return val.trim();
                                     },
@@ -206,6 +364,7 @@ const getFullTaskList = (options) => {
                                     type: 'input',
                                     name: 'userEmail',
                                     message: 'The new email:',
+                                    default: theData.email,
                                     filter: function (val) {
                                         return val.trim();
                                     },

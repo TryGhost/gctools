@@ -1,6 +1,7 @@
-import {dirname} from 'node:path';
+import {dirname, basename} from 'node:path';
 import fsUtils from '@tryghost/mg-fs-utils';
-import fs from 'fs-extra';
+import fs from 'node:fs';
+import fse from 'fs-extra';
 import _ from 'lodash';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
@@ -11,6 +12,7 @@ const initialise = (options) => {
             ctx.args = options;
 
             ctx.fileCache = new fsUtils.FileCache('json_split');
+            ctx.originalJSON = null;
             ctx.jsonData = [];
             ctx.postChunks = [];
             ctx.newChunks = [];
@@ -94,18 +96,34 @@ function getPostMeta(postID, ctx) {
 }
 
 async function createChunkFile(dest, data) {
-    await fs.writeFile(dest, JSON.stringify(data, null, 4));
+    await fse.writeFile(dest, JSON.stringify(data, null, 4));
 }
 
 const getFullTaskList = (options) => {
     return [
         initialise(options),
         {
+            title: 'Opening JSON file',
+            task: async (ctx) => {
+                return new Promise((resolve) => {
+                    let readStream = fs.createReadStream(options.jsonFile, 'utf8');
+                    let data = '';
+                    readStream.on('data', (chunk) => {
+                        data += chunk;
+                    }).on('end', () => {
+                        ctx.originalJSON = JSON.parse(data);
+                        resolve();
+                    });
+                });
+            }
+        },
+        {
             title: 'Reading JSON file',
             task: async (ctx, task) => {
                 // 1. Read JSON file and store data
                 try {
-                    const jsonFileData = await fs.readJson(options.jsonFile);
+                    const jsonFileData = ctx.originalJSON;
+
                     const json = (jsonFileData.data) ? jsonFileData : jsonFileData.db[0];
                     ctx.jsonData = (jsonFileData.data) ? json.data : json.data;
 
@@ -186,8 +204,9 @@ const getFullTaskList = (options) => {
             // 4. Save each chunk as its own JSON file
             title: 'Save Post files',
             task: async (ctx) => {
-                const destination = `${ctx.args.destDir}/split_json_files`;
-                await fs.ensureDir(destination);
+                const sourceBase = basename(options.jsonFile, '.json');
+                const destination = `${ctx.args.destDir}/${sourceBase}`;
+                await fse.ensureDir(destination);
 
                 ctx.newChunks.forEach(async (chunk, i) => {
                     const fileNumber = `${i}`.padStart((ctx.newChunks.length.toString().length + 1), '0');
@@ -206,7 +225,7 @@ const getFullTaskList = (options) => {
                         ]
                     };
 
-                    await createChunkFile(`${destination}/posts_${fileNumber}.json`, chunkData);
+                    await createChunkFile(`${destination}/${sourceBase}-posts-${fileNumber}.json`, chunkData);
                 });
             }
         }

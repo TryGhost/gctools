@@ -13,10 +13,10 @@ const initialise = (options) => {
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
@@ -66,8 +66,8 @@ const getFullTaskList = (options) => {
 
                 discoveryFilter.push(`newsletters:-[${thisNewsletterSlug}]`);
 
-                if (options.onlyForLabelSlug) {
-                    discoveryFilter.push(`label:[${options.onlyForLabelSlug}]`);
+                if (options.onlyForLabelSlugs.length) {
+                    discoveryFilter.push(`label:[${options.onlyForLabelSlugs.join(',')}]`);
                 }
 
                 let discoveryOptions = {
@@ -100,8 +100,6 @@ const getFullTaskList = (options) => {
                             };
 
                             newMemberObject.newsletters.push(ctx.newsletterObj);
-
-                            // console.log(newMemberObject);
 
                             try {
                                 let result = await ctx.api.members.edit(newMemberObject);

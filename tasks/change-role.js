@@ -15,10 +15,10 @@ const initialise = (options) => {
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
@@ -67,12 +67,9 @@ const getFullTaskList = (options) => {
             title: 'Filter staff roles',
             skip: () => !options.filterRole.length,
             task: (ctx, task) => {
+                const filterRoleNames = options.filterRole.map(role => role.name);
                 ctx.users = ctx.users.filter((user) => {
-                    if (options.filterRole.includes(user.roles[0].name)) {
-                        return true;
-                    } else {
-                        return false;
-                    }
+                    return filterRoleNames.includes(user.roles[0].name);
                 });
                 task.output = `Found ${ctx.users.length} users with specific roles`;
             }
@@ -88,7 +85,7 @@ const getFullTaskList = (options) => {
                         task: async () => {
                             try {
                                 let result = await ctx.api.users.edit({
-                                    id: user.id,
+                                    ...user,
                                     roles: [ctx.args.newRole]
                                 });
                                 ctx.updated.push(result);

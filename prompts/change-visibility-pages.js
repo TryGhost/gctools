@@ -3,19 +3,19 @@ import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import chalk from 'chalk';
 import {ui} from '@tryghost/pretty-cli';
-import changeVisibility from '../tasks/change-visibility.js';
+import changeVisibilityPages from '../tasks/change-visibility-pages.js';
 import {getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
-    name: 'Change Visibility',
-    value: 'changeVisibility'
+    name: 'Change visibility for pages',
+    value: 'changeVisibilityPages'
 };
 
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'visibility',
         message: 'Visibility:',
         choices: [
@@ -55,7 +55,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'new_visibility',
         message: 'New Visibility:',
         choices: function () {
@@ -70,9 +70,9 @@ async function run() {
         let context = {errors: []};
 
         try {
-            let runner = changeVisibility.getTaskRunner(answers);
+            let runner = changeVisibilityPages.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully changed ${context.changed.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(`Successfully changed ${context.changed.length} pages in ${Date.now() - timer}ms.`);
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }

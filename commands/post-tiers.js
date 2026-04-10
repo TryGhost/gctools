@@ -1,16 +1,16 @@
 import {ui} from '@tryghost/pretty-cli';
-import changeVisibility from '../tasks/change-visibility.js';
+import postTiers from '../tasks/post-tiers.js';
 
 // Internal ID in case we need one.
-const id = 'change-visibility';
+const id = 'post-tiers';
 
 const group = 'Content:';
 
 // The command to run and any params
-const flags = 'change-visibility <apiURL> <adminAPIKey>';
+const flags = 'post-tiers <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Switch the visibility for posts from one level to another';
+const desc = 'Add extra tier to post with tiers';
 
 // Descriptions for the individual params
 const paramsDesc = [
@@ -25,22 +25,18 @@ const setup = (sywac) => {
         desc: 'Show verbose output'
     });
     sywac.enumeration('--visibility', {
-        defaultValue: 'all',
+        defaultValue: null,
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Post visibility'
+        desc: 'Select posts with this visibility setting'
     });
-    sywac.string('--tag', {
+    sywac.enumeration('--filterTierId', {
         defaultValue: null,
-        desc: 'Filter by tag'
+        desc: 'Select posts with this tier. i.e. \'123456abcd7890efa123bc12\''
     });
-    sywac.string('--author', {
+    sywac.string('--addTierId', {
         defaultValue: null,
-        desc: 'Filter by author'
-    });
-    sywac.enumeration('--new_visibility', {
-        choices: ['public', 'members', 'paid'],
-        defaultValue: 'members',
-        desc: 'New visibility slug'
+        required: true,
+        desc: 'The tier ID that will be added to these posts. i.e. \'903456abcd7890efa123bc12\''
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
@@ -53,9 +49,19 @@ const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
+    if (argv.visibility && argv.filterTierId) {
+        console.log('Cannot use --visibility and --filterTierId together. Please use only one.'); // eslint-disable-line no-console
+        process.exit(1);
+    }
+
+    // The task depends on this being an array with the tier ID and 'tiers' string
+    if (argv.filterTierId) {
+        argv.filterTierId = [argv.filterTierId, 'tiers'];
+    }
+
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = changeVisibility.getTaskRunner(argv);
+        let runner = postTiers.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);
@@ -64,7 +70,7 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully changed the visibility of ${context.changed.length} posts in ${Date.now() - timer}ms.`);
+    ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
 };
 
 export default {

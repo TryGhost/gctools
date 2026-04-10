@@ -1,16 +1,16 @@
 import {ui} from '@tryghost/pretty-cli';
-import deleteMembers from '../tasks/delete-members.js';
+import pageToPost from '../tasks/page-to-post.js';
 
 // Internal ID in case we need one.
-const id = 'delete-members';
+const id = 'page-to-post';
 
 const group = 'Members:';
 
 // The command to run and any params
-const flags = 'delete-members <apiURL> <adminAPIKey>';
+const flags = 'page-to-post <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Delete members in Ghost';
+const desc = 'Change posts to pages, and pages to posts.';
 
 // Descriptions for the individual params
 const paramsDesc = [
@@ -24,8 +24,16 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.string('--id', {
+        defaultValue: null,
+        desc: 'The ID for the post or page'
+    });
+    sywac.string('--tagSlug', {
+        defaultValue: null,
+        desc: 'Select posts with this tag to change type'
+    });
     sywac.number('--delayBetweenCalls', {
-        defaultValue: 50,
+        defaultValue: 100,
         desc: 'The delay between API calls, in ms'
     });
 };
@@ -37,7 +45,7 @@ const run = async (argv) => {
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = deleteMembers.getTaskRunner(argv);
+        let runner = pageToPost.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);
@@ -46,7 +54,7 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully deleted ${context.deleted.length} members in ${Date.now() - timer}ms.`);
+    ui.log.ok(`Successfully changed ${context.updated.length} posts to pages in ${Date.now() - timer}ms.`);
 };
 
 export default {

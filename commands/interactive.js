@@ -34,7 +34,7 @@ const run = async () => {
         message: 'Which tool would you like to use?',
         pageSize: 30,
         choices: [
-            new inquirer.Separator('--- File Utilities -----------'),
+            new inquirer.Separator('--- File Utilities ----------------'),
             {
                 name: tasks.zipSplit.choice.name,
                 value: tasks.zipSplit.choice.value
@@ -51,11 +51,7 @@ const run = async () => {
                 name: tasks.fetchAssets.choice.name,
                 value: tasks.fetchAssets.choice.value
             },
-            {
-                name: tasks.dedupeMembersCsv.choice.name,
-                value: tasks.dedupeMembersCsv.choice.value
-            },
-            new inquirer.Separator('--- API Utilities ------------'),
+            new inquirer.Separator('--- Post API Utilities ------------'),
             {
                 name: tasks.randomPosts.choice.name,
                 value: tasks.randomPosts.choice.value
@@ -81,8 +77,16 @@ const run = async () => {
                 value: tasks.changeAuthor.choice.value
             },
             {
-                name: tasks.changeVisibility.choice.name,
-                value: tasks.changeVisibility.choice.value
+                name: tasks.addAuthor.choice.name,
+                value: tasks.addAuthor.choice.value
+            },
+            {
+                name: tasks.changeVisibilityPosts.choice.name,
+                value: tasks.changeVisibilityPosts.choice.value
+            },
+            {
+                name: tasks.changeVisibilityPages.choice.name,
+                value: tasks.changeVisibilityPages.choice.value
             },
             {
                 name: tasks.changeStatus.choice.name,
@@ -92,7 +96,65 @@ const run = async () => {
                 name: tasks.contentStats.choice.name,
                 value: tasks.contentStats.choice.value
             },
-            new inquirer.Separator('--- Dangerous Utilities ------'),
+            {
+                name: tasks.postTiers.choice.name,
+                value: tasks.postTiers.choice.value
+            },
+            {
+                name: tasks.getPosts.choice.name,
+                value: tasks.getPosts.choice.value
+            },
+            {
+                name: tasks.setTemplate.choice.name,
+                value: tasks.setTemplate.choice.value
+            },
+            new inquirer.Separator('--- Members API Utilities ---------'),
+            {
+                name: tasks.addMemberCompSubscription.choice.name,
+                value: tasks.addMemberCompSubscription.choice.value
+            },
+            {
+                name: tasks.removeMemberCompSubscription.choice.name,
+                value: tasks.removeMemberCompSubscription.choice.value
+            },
+            {
+                name: tasks.addMemberNewsletterSubscription.choice.name,
+                value: tasks.addMemberNewsletterSubscription.choice.value
+            },
+            {
+                name: tasks.memberNewsletterBackup.choice.name,
+                value: tasks.memberNewsletterBackup.choice.value
+            },
+            {
+                name: tasks.splitMembers.choice.name,
+                value: tasks.splitMembers.choice.value
+            },
+            {
+                name: tasks.addLabelToMembers.choice.name,
+                value: tasks.addLabelToMembers.choice.value
+            },
+            {
+                name: tasks.dedupeMembersCsv.choice.name,
+                value: tasks.dedupeMembersCsv.choice.value
+            },
+            {
+                name: tasks.compareMemberCsv.choice.name,
+                value: tasks.compareMemberCsv.choice.value
+            },
+            {
+                name: tasks.deleteLabels.choice.name,
+                value: tasks.deleteLabels.choice.value
+            },
+            new inquirer.Separator('--- Staff API Utilities ---------'),
+            {
+                name: tasks.changeRole.choice.name,
+                value: tasks.changeRole.choice.value
+            },
+            {
+                name: tasks.commentNotifications.choice.name,
+                value: tasks.commentNotifications.choice.value
+            },
+            new inquirer.Separator('--- Dangerous API Utilities -------'),
             {
                 name: tasks.deletePosts.choice.name,
                 value: tasks.deletePosts.choice.value
@@ -110,26 +172,10 @@ const run = async () => {
                 value: tasks.deleteUnusedTags.choice.value
             },
             {
-                name: tasks.deleteMembers.choice.name,
-                value: tasks.deleteMembers.choice.value
-            },
-            {
-                name: tasks.addMemberNewsletterSubscription.choice.name,
-                value: tasks.addMemberNewsletterSubscription.choice.value
-            },
-            {
-                name: tasks.removeMemberNewsletterSubscription.choice.name,
-                value: tasks.removeMemberNewsletterSubscription.choice.value
-            },
-            {
-                name: tasks.changeRole.choice.name,
-                value: tasks.changeRole.choice.value
-            },
-            {
                 name: tasks.findReplace.choice.name,
                 value: tasks.findReplace.choice.value
             },
-            new inquirer.Separator('--- Settings -----------------'),
+            new inquirer.Separator('--- Settings ----------------------'),
             {
                 name: 'Show saved credentials path',
                 value: 'show_saved_creds_path'

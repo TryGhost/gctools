@@ -16,10 +16,10 @@ const initialise = (options) => {
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
@@ -46,16 +46,29 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 let postDiscoveryFilter = [];
 
-                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
-                    postDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
-                }
+                if (options.customFilter) {
+                    postDiscoveryFilter.push(options.customFilter);
+                } else {
+                    if (ctx.args.status && ctx.args.status !== 'all') {
+                        postDiscoveryFilter.push(`status:[${ctx.args.status}]`);
+                    }
 
-                if (ctx.args.tag && ctx.args.tag.length > 0) {
-                    postDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
-                }
+                    if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                        postDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                    }
 
-                if (ctx.args.author && ctx.args.author.length > 0) {
-                    postDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        postDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                    }
+
+                    if (ctx.args.author && ctx.args.author.length > 0) {
+                        postDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    }
+
+                    if (ctx.args.dateFilterStart && ctx.args.dateFilterEnd) {
+                        postDiscoveryFilter.push(`published_at:>='${ctx.args.dateFilterStart.toISOString()}'`);
+                        postDiscoveryFilter.push(`published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`);
+                    }
                 }
 
                 let postDiscoveryOptions = {
@@ -63,7 +76,7 @@ const getFullTaskList = (options) => {
                     type: 'posts',
                     limit: 100,
                     include: 'tags',
-                    fields: 'id,title,slug,visibility,updated_at',
+                    fields: 'id,title,slug,visibility,updated_at,published_at',
                     filter: postDiscoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
@@ -84,16 +97,25 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 let pageDiscoveryFilter = [];
 
-                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
-                    pageDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
-                }
+                if (options.customFilter) {
+                    pageDiscoveryFilter.push(options.customFilter);
+                } else {
+                    if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                        pageDiscoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                    }
 
-                if (ctx.args.tag && ctx.args.tag.length > 0) {
-                    pageDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
-                }
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        pageDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                    }
 
-                if (ctx.args.author && ctx.args.author.length > 0) {
-                    pageDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    if (ctx.args.author && ctx.args.author.length > 0) {
+                        pageDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    }
+
+                    if (ctx.args.dateFilterStart && ctx.args.dateFilterEnd) {
+                        pageDiscoveryFilter.push(`published_at:>='${ctx.args.dateFilterStart.toISOString()}'`);
+                        pageDiscoveryFilter.push(`published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`);
+                    }
                 }
 
                 let pageDiscoveryOptions = {

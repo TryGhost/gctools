@@ -1,0 +1,262 @@
+import {describe, test, afterEach} from 'node:test';
+import assert from 'node:assert/strict';
+import {join} from 'node:path';
+import {URL} from 'node:url';
+import fs from 'fs-extra';
+import fsUtils from '@tryghost/mg-fs-utils';
+import compareMemberCsv from '../tasks/compare-member-csv.js';
+
+const __dirname = new URL('.', import.meta.url).pathname;
+
+describe('Compare member CSV files', function () {
+    afterEach(async function () {
+        // Clean up generated files after each test
+        await fs.remove(join(__dirname, 'fixtures', 'new.csv'));
+        await fs.remove(join(__dirname, 'fixtures', 'unsubscribed.csv'));
+        await fs.remove(join(__dirname, 'fixtures', 'updated.csv'));
+    });
+
+    test('identifies new members correctly', async function () {
+        const oldFile = join(__dirname, 'fixtures', 'members-csv-old.csv');
+        const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
+
+        const runner = compareMemberCsv.getTaskRunner({
+            oldFile: oldFile,
+            newFile: newFile
+        });
+
+        const context = {errors: []};
+        await runner.run(context);
+
+        // Check that new members were identified
+        assert.strictEqual(context.newMembersList.length, 1);
+
+        // Verify specific new members
+        const newEmails = context.newMembersList.map(m => m.email);
+
+        assert.ok(newEmails.includes('user6@example.com'));
+
+        // Verify the file was created
+        const newFilePath = join(__dirname, 'fixtures', 'new.csv');
+        const fileExists = await fs.pathExists(newFilePath);
+        assert.strictEqual(fileExists, true);
+
+        // Verify file contents
+        const csvContent = await fsUtils.csv.parseCSV(newFilePath);
+        assert.strictEqual(csvContent.length, 1);
+    });
+
+    test('identifies updated members correctly', async function () {
+        const oldFile = join(__dirname, 'fixtures', 'members-csv-old.csv');
+        const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
+
+        const runner = compareMemberCsv.getTaskRunner({
+            oldFile: oldFile,
+            newFile: newFile
+        });
+
+        const context = {errors: []};
+        await runner.run(context);
+
+        // Check that updated members were identified (user3 now has Stripe ID)
+        assert.strictEqual(context.updatedList.length, 1);
+
+        // Verify specific updated member
+        const updatedEmails = context.updatedList.map(m => m.email);
+        assert.ok(updatedEmails.includes('user3@example.com'));
+
+        // Verify the updated member has the Stripe customer ID
+        const updatedUser = context.updatedList.find(m => m.email === 'user3@example.com');
+        assert.strictEqual(updatedUser.stripe_customer_id, 'cus_1234');
+
+        // Verify the file was created
+        const updatedFilePath = join(__dirname, 'fixtures', 'updated.csv');
+        const fileExists = await fs.pathExists(updatedFilePath);
+        assert.strictEqual(fileExists, true);
+
+        // Verify file contents
+        const csvContent = await fsUtils.csv.parseCSV(updatedFilePath);
+        assert.strictEqual(csvContent.length, 1);
+    });
+
+    test('identifies unsubscribed members correctly', async function () {
+        const oldFile = join(__dirname, 'fixtures', 'members-csv-old.csv');
+        const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
+
+        const runner = compareMemberCsv.getTaskRunner({
+            oldFile: oldFile,
+            newFile: newFile
+        });
+
+        const context = {errors: []};
+        await runner.run(context);
+
+        // Check that unsubscribed members were identified
+        assert.strictEqual(context.unsubscribedList.length, 1);
+
+        // Verify specific unsubscribed members
+        const unsubscribedEmails = context.unsubscribedList.map(m => m.email);
+        assert.ok(unsubscribedEmails.includes('user1@example.com'));
+
+        // Verify the file was created
+        const unsubscribedFilePath = join(__dirname, 'fixtures', 'unsubscribed.csv');
+        const fileExists = await fs.pathExists(unsubscribedFilePath);
+        assert.strictEqual(fileExists, true);
+
+        // Verify file contents
+        const csvContent = await fsUtils.csv.parseCSV(unsubscribedFilePath);
+        assert.strictEqual(csvContent.length, 1);
+    });
+
+    test('handles identical files (no changes)', async function () {
+        const oldFile = join(__dirname, 'fixtures', 'members-csv-old.csv');
+        const newFile = join(__dirname, 'fixtures', 'members-csv-old.csv'); // Same file
+
+        const runner = compareMemberCsv.getTaskRunner({
+            oldFile: oldFile,
+            newFile: newFile
+        });
+
+        const context = {errors: []};
+        await runner.run(context);
+
+        // No new, unsubscribed, or updated members
+        assert.strictEqual(context.newMembersList.length, 0);
+        assert.strictEqual(context.unsubscribedList.length, 0);
+        assert.strictEqual(context.updatedList.length, 0);
+
+        // Files should not be created when there are no differences
+        const newFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'new.csv'));
+        const unsubscribedFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'unsubscribed.csv'));
+        const updatedFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'updated.csv'));
+        assert.strictEqual(newFileExists, false);
+        assert.strictEqual(unsubscribedFileExists, false);
+        assert.strictEqual(updatedFileExists, false);
+    });
+
+    test('preserves all CSV columns in output', async function () {
+        const oldFile = join(__dirname, 'fixtures', 'members-csv-old.csv');
+        const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
+
+        const runner = compareMemberCsv.getTaskRunner({
+            oldFile: oldFile,
+            newFile: newFile
+        });
+
+        const context = {errors: []};
+        await runner.run(context);
+
+        // Check that all columns are preserved in new members
+        const newMember = context.newMembersList[0];
+        assert.ok('email' in newMember);
+        assert.ok('subscribed_to_emails' in newMember);
+        assert.ok('complimentary_plan' in newMember);
+        assert.ok('stripe_customer_id' in newMember);
+        assert.ok('created_at' in newMember);
+        assert.ok('labels' in newMember);
+        assert.ok('note' in newMember);
+    });
+
+    test('handles case-insensitive email comparison', async function () {
+        // Create temporary test files with mixed case emails
+        const tempOldPath = join(__dirname, 'temp-old.csv');
+        const tempNewPath = join(__dirname, 'temp-new.csv');
+
+        const oldData = [
+            {email: 'Test@Example.com', subscribed_to_emails: true, labels: 'test'},
+            {email: 'another@test.com', subscribed_to_emails: true, labels: 'test'}
+        ];
+
+        const newData = [
+            {email: 'test@example.com', subscribed_to_emails: true, labels: 'test'}, // Same as first but different case
+            {email: 'newuser@test.com', subscribed_to_emails: true, labels: 'test'}
+        ];
+
+        // Write test CSV files
+        await fs.writeFile(tempOldPath, fsUtils.csv.jsonToCSV(oldData));
+        await fs.writeFile(tempNewPath, fsUtils.csv.jsonToCSV(newData));
+
+        try {
+            const runner = compareMemberCsv.getTaskRunner({
+                oldFile: tempOldPath,
+                newFile: tempNewPath
+            });
+
+            const context = {errors: []};
+            await runner.run(context);
+
+            // Should identify one new member (newuser@test.com)
+            assert.strictEqual(context.newMembersList.length, 1);
+            assert.strictEqual(context.newMembersList[0].email, 'newuser@test.com');
+
+            // Should identify one unsubscribed member (another@test.com)
+            assert.strictEqual(context.unsubscribedList.length, 1);
+            assert.strictEqual(context.unsubscribedList[0].email, 'another@test.com');
+        } finally {
+            // Clean up temporary files and any generated output
+            await fs.remove(tempOldPath);
+            await fs.remove(tempNewPath);
+            await fs.remove(join(__dirname, 'new.csv'));
+            await fs.remove(join(__dirname, 'unsubscribed.csv'));
+            await fs.remove(join(__dirname, 'updated.csv'));
+        }
+    });
+
+    test('handles missing email fields gracefully', async function () {
+        // Create temporary test files with some missing emails
+        const tempOldPath = join(__dirname, 'temp-old-missing.csv');
+        const tempNewPath = join(__dirname, 'temp-new-missing.csv');
+
+        const oldData = [
+            {email: 'valid@example.com', subscribed_to_emails: true},
+            {email: null, subscribed_to_emails: true}, // Missing email
+            {email: '', subscribed_to_emails: true}, // Empty email
+            {email: 'another@example.com', subscribed_to_emails: true}
+        ];
+
+        const newData = [
+            {email: 'valid@example.com', subscribed_to_emails: true},
+            {email: undefined, subscribed_to_emails: true}, // Missing email
+            {email: 'new@example.com', subscribed_to_emails: true}
+        ];
+
+        // Write test CSV files
+        await fs.writeFile(tempOldPath, fsUtils.csv.jsonToCSV(oldData));
+        await fs.writeFile(tempNewPath, fsUtils.csv.jsonToCSV(newData));
+
+        try {
+            const runner = compareMemberCsv.getTaskRunner({
+                oldFile: tempOldPath,
+                newFile: tempNewPath
+            });
+
+            const context = {errors: []};
+            await runner.run(context);
+
+            // Should only process entries with valid emails
+            assert.strictEqual(context.newMembersList.length, 1);
+            assert.strictEqual(context.newMembersList[0].email, 'new@example.com');
+
+            assert.strictEqual(context.unsubscribedList.length, 1);
+            assert.strictEqual(context.unsubscribedList[0].email, 'another@example.com');
+        } finally {
+            // Clean up temporary files and any generated output
+            await fs.remove(tempOldPath);
+            await fs.remove(tempNewPath);
+            await fs.remove(join(__dirname, 'new.csv'));
+            await fs.remove(join(__dirname, 'unsubscribed.csv'));
+            await fs.remove(join(__dirname, 'updated.csv'));
+        }
+    });
+
+    test('throws error for non-existent files', async function () {
+        const runner = compareMemberCsv.getTaskRunner({
+            oldFile: '/non/existent/old.csv',
+            newFile: '/non/existent/new.csv'
+        });
+
+        const context = {errors: []};
+
+        await assert.rejects(runner.run(context), /Old file not found/);
+    });
+});

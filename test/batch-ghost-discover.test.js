@@ -1,13 +1,16 @@
+import {describe, test} from 'node:test';
+import assert from 'node:assert/strict';
 import {requestOptions} from '../lib/batch-ghost-discover.js';
 
 describe('Batch Ghost Discover', function () {
     test('Builds the default query', async function () {
         const opts = requestOptions();
 
-        expect(opts).toBeObject();
-        expect(opts).toContainAllKeys(['page', 'limit']);
-        expect(opts.page).toBeNumber();
-        expect(opts.limit).toBeNumber();
+        assert.strictEqual(typeof opts, 'object');
+        assert.ok('page' in opts);
+        assert.ok('limit' in opts);
+        assert.strictEqual(typeof opts.page, 'number');
+        assert.strictEqual(typeof opts.limit, 'number');
     });
 
     test('Has different defaults for specific types: tags', async function () {
@@ -15,11 +18,13 @@ describe('Batch Ghost Discover', function () {
             type: 'tags'
         });
 
-        expect(opts).toBeObject();
-        expect(opts).toContainAllKeys(['page', 'limit', 'include']);
-        expect(opts.page).toBeNumber();
-        expect(opts.limit).toBeNumber();
-        expect(opts.include).toEqual('count.posts');
+        assert.strictEqual(typeof opts, 'object');
+        assert.ok('page' in opts);
+        assert.ok('limit' in opts);
+        assert.ok('include' in opts);
+        assert.strictEqual(typeof opts.page, 'number');
+        assert.strictEqual(typeof opts.limit, 'number');
+        assert.deepStrictEqual(opts.include, 'count.posts');
     });
 
     test('Has different defaults for specific types: users', async function () {
@@ -27,11 +32,13 @@ describe('Batch Ghost Discover', function () {
             type: 'users'
         });
 
-        expect(opts).toBeObject();
-        expect(opts).toContainAllKeys(['page', 'limit', 'include']);
-        expect(opts.page).toBeNumber();
-        expect(opts.limit).toBeNumber();
-        expect(opts.include).toEqual('count.posts,roles');
+        assert.strictEqual(typeof opts, 'object');
+        assert.ok('page' in opts);
+        assert.ok('limit' in opts);
+        assert.ok('include' in opts);
+        assert.strictEqual(typeof opts.page, 'number');
+        assert.strictEqual(typeof opts.limit, 'number');
+        assert.deepStrictEqual(opts.include, 'count.posts,roles');
     });
 
     test('Has different defaults for specific types, with a custom limit', async function () {
@@ -40,8 +47,8 @@ describe('Batch Ghost Discover', function () {
             limit: 100
         });
 
-        expect(opts.limit).toEqual(100);
-        expect(opts.include).toEqual('count.posts,roles');
+        assert.deepStrictEqual(opts.limit, 100);
+        assert.deepStrictEqual(opts.include, 'count.posts,roles');
     });
 
     test('Accepts a specific limit (supplied as int)', async function () {
@@ -49,7 +56,7 @@ describe('Batch Ghost Discover', function () {
             limit: 55
         });
 
-        expect(opts.limit).toEqual(55);
+        assert.deepStrictEqual(opts.limit, 55);
     });
 
     test('Accepts a specific limit (supplied as string)', async function () {
@@ -57,7 +64,7 @@ describe('Batch Ghost Discover', function () {
             limit: '45'
         });
 
-        expect(opts.limit).toEqual(45);
+        assert.deepStrictEqual(opts.limit, 45);
     });
 
     test('Accepts a specific include', async function () {
@@ -65,7 +72,7 @@ describe('Batch Ghost Discover', function () {
             include: 'monthly_price,yearly_price,benefits'
         });
 
-        expect(opts.include).toEqual('monthly_price,yearly_price,benefits');
+        assert.deepStrictEqual(opts.include, 'monthly_price,yearly_price,benefits');
     });
 
     test('Accepts a specific filter', async function () {
@@ -73,7 +80,7 @@ describe('Batch Ghost Discover', function () {
             filter: 'tag:getting-started'
         });
 
-        expect(opts.filter).toEqual('tag:getting-started');
+        assert.deepStrictEqual(opts.filter, 'tag:getting-started');
     });
 
     test('Accepts a specific fields', async function () {
@@ -81,7 +88,7 @@ describe('Batch Ghost Discover', function () {
             fields: 'title,url'
         });
 
-        expect(opts.fields).toEqual('title,url');
+        assert.deepStrictEqual(opts.fields, 'title,url');
     });
 
     test('Accepts a specific formats', async function () {
@@ -89,7 +96,7 @@ describe('Batch Ghost Discover', function () {
             formats: 'html,plaintext'
         });
 
-        expect(opts.formats).toEqual('html,plaintext');
+        assert.deepStrictEqual(opts.formats, 'html,plaintext');
     });
 
     test('Accepts a specific order', async function () {
@@ -97,7 +104,7 @@ describe('Batch Ghost Discover', function () {
             order: 'monthly_price ASC'
         });
 
-        expect(opts.order).toEqual('monthly_price ASC');
+        assert.deepStrictEqual(opts.order, 'monthly_price ASC');
     });
 
     test('Accepts a combination of parameters', async function () {
@@ -108,11 +115,14 @@ describe('Batch Ghost Discover', function () {
             order: 'title DESC'
         });
 
-        expect(opts).toBeObject();
-        expect(opts).toContainAllKeys(['page', 'limit', 'include', 'order']);
-        expect(opts.page).toBeNumber();
-        expect(opts.limit).toBeNumber();
-        expect(opts.include).toEqual('authors, tags');
-        expect(opts.order).toEqual('title DESC');
+        assert.strictEqual(typeof opts, 'object');
+        assert.ok('page' in opts);
+        assert.ok('limit' in opts);
+        assert.ok('include' in opts);
+        assert.ok('order' in opts);
+        assert.strictEqual(typeof opts.page, 'number');
+        assert.strictEqual(typeof opts.limit, 'number');
+        assert.deepStrictEqual(opts.include, 'authors, tags');
+        assert.deepStrictEqual(opts.order, 'title DESC');
     });
 });

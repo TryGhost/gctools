@@ -3,7 +3,7 @@ import {ui} from '@tryghost/pretty-cli';
 import zipSplit from '../tasks/zip-split.js';
 
 const choice = {
-    name: 'Zip Split',
+    name: 'Zip split',
     value: 'zipSplit'
 };
 

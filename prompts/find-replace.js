@@ -1,6 +1,10 @@
 import inquirer from 'inquirer';
+import inquirerSearchCheckbox from 'inquirer-search-checkbox';
+inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
+import chalk from 'chalk';
 import {ui} from '@tryghost/pretty-cli';
 import findReplace from '../tasks/find-replace.js';
+import {getAPITagsObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
@@ -10,6 +14,15 @@ const choice = {
 
 const options = [
     ...ghostAPICreds,
+    {
+        type: 'search-checkbox',
+        name: 'tag',
+        message: `Filter by tag: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
+        pageSize: 20,
+        choices: function () {
+            return getAPITagsObj();
+        }
+    },
     {
         type: 'input',
         name: 'find',
@@ -27,9 +40,17 @@ const options = [
         pageSize: 20,
         choices: [
             {
-                name: 'Content',
+                name: 'Mobiledoc',
                 value: 'mobiledoc',
                 checked: true
+            },
+            {
+                name: 'HTML',
+                value: 'html'
+            },
+            {
+                name: 'Lexical',
+                value: 'lexical'
             },
             {
                 name: 'Title',
@@ -66,6 +87,18 @@ const options = [
             {
                 name: 'Open Graph Description',
                 value: 'og_description'
+            },
+            {
+                name: 'Feature Image',
+                value: 'feature_image'
+            },
+            {
+                name: 'Codeinjection Head',
+                value: 'codeinjection_head'
+            },
+            {
+                name: 'Codeinjection Foot',
+                value: 'codeinjection_foot'
             }
         ]
     }

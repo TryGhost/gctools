@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
+import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
@@ -10,22 +11,23 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
+                tag: false,
+                author: false,
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
 
             ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
-            ctx.membersCount = 0;
-            ctx.members = [];
-            ctx.deleted = [];
+            ctx.posts = [];
+            ctx.updated = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
         }
@@ -36,30 +38,31 @@ const getFullTaskList = (options) => {
     return [
         initialise(options),
         {
-            title: 'Counting members',
+            title: 'Fetch Content from Ghost API',
             task: async (ctx, task) => {
                 try {
-                    // Quickly grab how many members there are
-                    let countQuery = await ctx.api.members.browse();
-                    ctx.membersCount = countQuery.meta.pagination.total;
-                    task.output = `Counted ${ctx.membersCount} members`;
-                } catch (error) {
-                    ctx.errors.push(error);
-                    throw error;
-                }
-            }
-        },
-        {
-            title: 'Fetching members from Ghost',
-            task: async (ctx, task) => {
-                try {
-                    ctx.members = await discover({
+                    let discoveryFilter = [];
+
+                    if (ctx.args.status && ctx.args.status !== 'all') {
+                        discoveryFilter.push(`status:[${ctx.args.status}]`);
+                    }
+
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                    }
+
+                    if (ctx.args.author && ctx.args.author.length > 0) {
+                        discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    }
+
+                    ctx.posts = await discover({
                         api: ctx.api,
-                        type: 'members',
-                        fields: 'id,uuid,email,name'
+                        type: 'posts',
+                        filter: discoveryFilter.join('+'),
+                        limit: 100
                     });
 
-                    task.output = `Found ${ctx.members.length} members`;
+                    task.output = `Found ${ctx.posts.length} posts`;
                 } catch (error) {
                     ctx.errors.push(error);
                     throw error;
@@ -67,21 +70,33 @@ const getFullTaskList = (options) => {
             }
         },
         {
-            title: 'Deleting members from Ghost',
+            title: 'Updating posts',
             task: async (ctx) => {
                 let tasks = [];
 
-                await Promise.mapSeries(ctx.members, async (member) => {
+                await Promise.mapSeries(ctx.posts, async (post) => {
                     tasks.push({
-                        title: `${member.email}`,
+                        title: `${post.title}`,
                         task: async () => {
+                            let templateName = options?.templateSlug ?? null;
+                            if (templateName === 'default') {
+                                templateName = null;
+                            }
+
                             try {
-                                let result = await ctx.api.members.delete({id: member.id});
-                                ctx.deleted.push(member.email);
+                                let newPostObj = {
+                                    id: post.id,
+                                    updated_at: post.updated_at,
+                                    custom_template: templateName
+                                };
+
+                                let result = await ctx.api.posts.edit(newPostObj);
+
+                                ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: member.email
+                                    title: post.title
                                 };
                                 ctx.errors.push(error);
                                 throw error;

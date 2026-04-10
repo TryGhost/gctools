@@ -1,68 +1,173 @@
+import {describe, test} from 'node:test';
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
 import {filterBuilder} from '../lib/filter-builder.js';
 
-import tagsObject from './fixtures/tags.json';
-import authorsObject from './fixtures/authors.json';
+const require = createRequire(import.meta.url);
+const tagsObject = require('./fixtures/tags.json');
+const authorsObject = require('./fixtures/authors.json');
+const newslettersObject = require('./fixtures/newsletters.json');
+const labelsObject = require('./fixtures/labels.json');
 
 describe('Filter builder', function () {
-    test('Builds exclusive filter from strings', async function () {
-        const filter = filterBuilder({
-            author: 'harry,ron',
-            tag: 'newsletter,blog',
-            visibility: 'member,paid'
+    describe('Authors', function () {
+        test('Include authors', function () {
+            const filter = filterBuilder({
+                authors: authorsObject
+            });
+
+            assert.deepStrictEqual(filter, 'author:[ghost-user]+author:[sample-user]');
         });
 
-        expect(filter).toEqual('author:[harry, ron], tag:[newsletter, blog], visibility:[member, paid]');
+        test('Exclude authors', async function () {
+            const filter = filterBuilder({
+                notAuthors: authorsObject
+            });
+
+            assert.deepStrictEqual(filter, 'author:-[ghost-user]+author:-[sample-user]');
+        });
+
+        test('Inluce & exclude authors', async function () {
+            const filter = filterBuilder({
+                authors: authorsObject.slice(0, 1),
+                notAuthors: authorsObject.slice(1, 2)
+            });
+
+            assert.deepStrictEqual(filter, 'author:[ghost-user]+author:-[sample-user]');
+        });
     });
 
-    test('Builds exclusive filter from strings with no visibility', async function () {
-        // CASE: The `all` in `visibility` takes priority, so no visibility filter is actually needed
-        const filter = filterBuilder({
-            author: 'harry,ron',
-            tag: 'newsletter,blog',
-            visibility: 'member,paid,all'
+    describe('Tags', function () {
+        test('Include tags', async function () {
+            const filter = filterBuilder({
+                tags: tagsObject
+            });
+
+            assert.deepStrictEqual(filter, 'tag:[lorem-ipsum]+tag:[dolor-simet]');
         });
 
-        expect(filter).toEqual('author:[harry, ron], tag:[newsletter, blog]');
+        test('Exclude tags', async function () {
+            const filter = filterBuilder({
+                notTags: tagsObject
+            });
+
+            assert.deepStrictEqual(filter, 'tag:-[lorem-ipsum]+tag:-[dolor-simet]');
+        });
+
+        test('Inluce & exclude tags', async function () {
+            const filter = filterBuilder({
+                tags: tagsObject.slice(0, 1),
+                notTags: tagsObject.slice(1, 2)
+            });
+
+            assert.deepStrictEqual(filter, 'tag:[lorem-ipsum]+tag:-[dolor-simet]');
+        });
     });
 
-    test('Builds inclusive filter from strings', async function () {
-        const filter = filterBuilder({
-            author: 'harry,ron',
-            tag: 'newsletter,blog',
-            visibility: 'member,paid',
-            joinSeparator: '+'
+    describe('Newsletters', function () {
+        test('Include newsletters', async function () {
+            const filter = filterBuilder({
+                newsletters: newslettersObject
+            });
+
+            assert.deepStrictEqual(filter, 'newsletters:[default-newsletter]+newsletters:[weekly-edition]');
         });
 
-        expect(filter).toEqual('author:[harry+ron]+tag:[newsletter+blog]+visibility:[member+paid]');
+        test('Exclude newsletters', async function () {
+            const filter = filterBuilder({
+                notNewsletters: newslettersObject
+            });
+
+            assert.deepStrictEqual(filter, 'newsletters:-[default-newsletter]+newsletters:-[weekly-edition]');
+        });
+
+        test('Include & exclude newsletters', async function () {
+            const filter = filterBuilder({
+                newsletters: newslettersObject.slice(0, 1),
+                notNewsletters: newslettersObject.slice(1, 2)
+            });
+
+            assert.deepStrictEqual(filter, 'newsletters:[default-newsletter]+newsletters:-[weekly-edition]');
+        });
     });
 
-    test('Builds exclusive filter from arrays', async function () {
-        const filter = filterBuilder({
-            author: ['harry', 'ron'],
-            tag: ['newsletter', 'blog'],
-            visibility: ['member', 'paid']
+    describe('Labels', function () {
+        test('Include labels', async function () {
+            const filter = filterBuilder({
+                labels: labelsObject
+            });
+
+            assert.deepStrictEqual(filter, 'label:[lorem]+label:[ipsum]+label:[dolor-simet]');
         });
 
-        expect(filter).toEqual('author:[harry, ron], tag:[newsletter, blog], visibility:[member, paid]');
+        test('Exclude labels', async function () {
+            const filter = filterBuilder({
+                notLabels: labelsObject
+            });
+
+            assert.deepStrictEqual(filter, 'label:-[lorem]+label:-[ipsum]+label:-[dolor-simet]');
+        });
+
+        test('Include and exclude labels', async function () {
+            const filter = filterBuilder({
+                labels: labelsObject.slice(0, 1),
+                notLabels: labelsObject.slice(1,2)
+            });
+
+            assert.deepStrictEqual(filter, 'label:[lorem]+label:-[ipsum]');
+        });
     });
 
-    test('Builds filter from objects', async function () {
-        const filter = filterBuilder({
-            author: authorsObject,
-            tag: tagsObject,
-            visibility: ['members', 'paid']
+    describe('Visibility', function () {
+        test('Include visibility', async function () {
+            const filter = filterBuilder({
+                visibility: ['member', 'paid']
+            });
+
+            assert.deepStrictEqual(filter, 'visibility:[member]+visibility:[paid]');
         });
 
-        expect(filter).toEqual('author:[ghost-user, sample-user], tag:[lorem-ipsum, dolor-simet], visibility:[members, paid]');
+        test('Exclude visibility', async function () {
+            const filter = filterBuilder({
+                notVisibility: ['member', 'paid']
+            });
+
+            assert.deepStrictEqual(filter, 'visibility:-[member]+visibility:-[paid]');
+        });
+
+        test('Include & exclude visibility', async function () {
+            const filter = filterBuilder({
+                visibility: ['member'],
+                notVisibility: ['paid']
+            });
+
+            assert.deepStrictEqual(filter, 'visibility:[member]+visibility:-[paid]');
+        });
+
+        test('Skips visibility if contains `all`', async function () {
+            const filter = filterBuilder({
+                visibility: ['member', 'paid', 'all']
+            });
+
+            assert.deepStrictEqual(filter, '');
+        });
     });
 
-    test('Builds filter from strings, arrays, and objects', async function () {
-        const filter = filterBuilder({
-            author: 'harry',
-            tag: tagsObject,
-            visibility: ['members', 'paid']
-        });
+    describe('Combinations', function () {
+        test('Include visibility', async function () {
+            const filter = filterBuilder({
+                authors: authorsObject.slice(0, 1),
+                notAuthors: authorsObject.slice(1, 2),
+                tags: tagsObject.slice(0, 1),
+                notTags: tagsObject.slice(1, 2),
+                newsletters: newslettersObject.slice(0, 1),
+                notNewsletters: newslettersObject.slice(1, 2),
+                labels: labelsObject.slice(0, 1),
+                notLabels: labelsObject.slice(1,2),
+                visibility: ['member', 'paid']
+            });
 
-        expect(filter).toEqual('author:[harry], tag:[lorem-ipsum, dolor-simet], visibility:[members, paid]');
+            assert.deepStrictEqual(filter, 'author:[ghost-user]+author:-[sample-user]+tag:[lorem-ipsum]+tag:-[dolor-simet]+visibility:[member]+visibility:[paid]+newsletters:[default-newsletter]+newsletters:-[weekly-edition]+label:[lorem]+label:-[ipsum]');
+        });
     });
 });

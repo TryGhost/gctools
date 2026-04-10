@@ -1,3 +1,5 @@
+import {describe, test} from 'node:test';
+import assert from 'node:assert/strict';
 import {join} from 'node:path';
 import {URL} from 'node:url';
 import fsUtils from '@tryghost/mg-fs-utils';
@@ -19,14 +21,14 @@ describe('Deduplicate posts', function () {
 
         const {combinedNewMembers} = determineIfUpdated(ctx);
 
-        expect(combinedNewMembers).toBeArrayOfSize(13);
+        assert.strictEqual(combinedNewMembers.length, 13);
 
         // Convert it to a string to make sure values do _not_ exist
         const combinedNewMembersString = JSON.stringify(combinedNewMembers);
 
-        expect(combinedNewMembersString).not.toContain('"email":"person05@gmail.com"');
-        expect(combinedNewMembersString).not.toContain('"stripe_customer_id":"cus_05ABCDEFGABCED"');
-        expect(combinedNewMembersString).not.toContain('"email":"person06@gmail.com"');
+        assert.ok(!combinedNewMembersString.includes('"email":"person05@gmail.com"'));
+        assert.ok(!combinedNewMembersString.includes('"stripe_customer_id":"cus_05ABCDEFGABCED"'));
+        assert.ok(!combinedNewMembersString.includes('"email":"person06@gmail.com"'));
     });
 
     test('splits members by status', async function () {
@@ -48,8 +50,8 @@ describe('Deduplicate posts', function () {
         // And then split by status
         ctx = splitByStatus(ctx);
 
-        expect(ctx.newFreeMembers).toBeArrayOfSize(5);
-        expect(ctx.newCompMembers).toBeArrayOfSize(3);
-        expect(ctx.newPaidMembers).toBeArrayOfSize(5);
+        assert.strictEqual(ctx.newFreeMembers.length, 5);
+        assert.strictEqual(ctx.newCompMembers.length, 3);
+        assert.strictEqual(ctx.newPaidMembers.length, 5);
     });
 });

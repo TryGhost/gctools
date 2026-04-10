@@ -2,6 +2,7 @@ import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
+import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
@@ -14,10 +15,10 @@ const initialise = (options) => {
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
@@ -57,6 +58,10 @@ const getFullTaskList = (options) => {
                         discoveryFilter.push(`author:[${ctx.args.author.slug}]`);
                     }
 
+                    if (ctx.args.tag && ctx.args.tag.length > 0) {
+                        discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                    }
+
                     ctx.posts = await discover({
                         api: ctx.api,
                         type: 'posts',
@@ -86,14 +91,26 @@ const getFullTaskList = (options) => {
                         title: `${post.title}`,
                         task: async () => {
                             try {
-                                // We only want to send minimal data to the API, to reduce the chance of unintentionally changing anything,
-                                // so lets create a slimmed down version with only what we need
+                                // Get the current authors
+                                let currentAuthors = post.authors;
+
+                                // Loop over them and replace the specified author with the new author
+                                // This maintains the author sort order (and primary author)
+                                currentAuthors = currentAuthors.map((author) => {
+                                    if (author.id === ctx.args.author.id) {
+                                        author = ctx.args.new_author;
+                                    }
+                                    return author;
+                                });
+
+                                // Create a minimal object we send back to Ghost
                                 let slimPost = {
-                                    authors: [ctx.args.new_author],
+                                    authors: currentAuthors,
                                     id: post.id,
                                     updated_at: post.updated_at
                                 };
 
+                                // And now we send the updated post back to Ghost
                                 let result = await ctx.api.posts.edit(slimPost);
 
                                 ctx.changed.push(result.url);

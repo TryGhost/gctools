@@ -10,7 +10,7 @@ const group = 'Content:';
 const flags = 'change-status <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Switch the visibility for posts from one level to another';
+const desc = 'Switch the status for posts';
 
 // Descriptions for the individual params
 const paramsDesc = [

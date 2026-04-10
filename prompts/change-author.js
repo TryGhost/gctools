@@ -1,18 +1,21 @@
 import inquirer from 'inquirer';
+import inquirerSearchCheckbox from 'inquirer-search-checkbox';
+inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
+import chalk from 'chalk';
 import {ui} from '@tryghost/pretty-cli';
 import changeAuthor from '../tasks/change-author.js';
-import {getAPIAuthorsObj} from '../lib/ghost-api-choices.js';
+import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
-    name: 'Change Author',
+    name: 'Change author',
     value: 'changeAuthor'
 };
 
 const options = [
     ...ghostAPICreds,
     {
-        type: 'list',
+        type: 'select',
         name: 'author',
         message: 'Current Author:',
         pageSize: 20,
@@ -21,7 +24,16 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'search-checkbox',
+        name: 'tag',
+        message: `Filter by tag: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
+        pageSize: 20,
+        choices: function () {
+            return getAPITagsObj();
+        }
+    },
+    {
+        type: 'select',
         name: 'new_author',
         message: 'New Author:',
         pageSize: 20,

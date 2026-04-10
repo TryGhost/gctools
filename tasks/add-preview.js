@@ -4,6 +4,7 @@ import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
 import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
+import errors from '@tryghost/errors';
 
 const initialise = (options) => {
     return {
@@ -16,10 +17,10 @@ const initialise = (options) => {
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
@@ -28,6 +29,18 @@ const initialise = (options) => {
             ctx.api = api;
             ctx.posts = [];
             ctx.updated = [];
+
+            ctx.previewPosition = null;
+            ctx.previewPositionType = null;
+
+            // If options.previewPosition contains a percent character
+            if (options.previewPosition.includes('%')) {
+                ctx.previewPositionType = 'percentage';
+                ctx.previewPosition = parseFloat(options.previewPosition.replace('%', ''));
+            } else {
+                ctx.previewPositionType = 'index';
+                ctx.previewPosition = parseInt(options.previewPosition);
+            }
 
             task.output = `Initialised API connection for ${options.apiURL}`;
         }
@@ -57,7 +70,7 @@ const getFullTaskList = (options) => {
                 let discoveryOptions = {
                     api: ctx.api,
                     type: 'posts',
-                    formats: 'html,mobiledoc',
+                    formats: 'mobiledoc,lexical',
                     filter: discoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
@@ -76,49 +89,71 @@ const getFullTaskList = (options) => {
                 let tasks = [];
 
                 await Promise.mapSeries(ctx.posts, async (post) => {
-                    let updatedMobiledoc = JSON.parse(post.mobiledoc);
+                    const isMobiledoc = post.mobiledoc ?? false;
+                    const isLexical = post.lexical ?? false;
 
-                    const hasPaywallCard = Object.keys(updatedMobiledoc.cards).some((key) => {
-                        return updatedMobiledoc.cards[key][0] === 'paywall';
-                    });
+                    if (isMobiledoc) {
+                        throw new errors.IncorrectUsageError({message: 'Mobiledoc is not supported yet. Convert post to Lexical.'});
+                    } else if (isLexical) {
+                        let updatedLexical = JSON.parse(post.lexical);
 
-                    tasks.push({
-                        title: `${post.title}`,
-                        skip: () => {
-                            if (hasPaywallCard) {
-                                return `${post.title} (${post.slug}) already has a paywall card`;
-                            }
-                        },
-                        task: async () => {
-                            const newCardsLength = updatedMobiledoc.cards.push(['paywall', {}]);
-                            const paywallCardIndex = newCardsLength - 1;
-                            const sectionsBeforePaywall = updatedMobiledoc.sections.slice(0, options.previewPosition);
-                            const sectionsAfterPaywall = updatedMobiledoc.sections.slice(options.previewPosition);
+                        const hasPaywallCard = Object.entries(updatedLexical.root.children).some((item) => {
+                            const [, value] = item;
+                            return value.type === 'paywall';
+                        });
 
-                            updatedMobiledoc.sections = [];
-                            updatedMobiledoc.sections.push(...sectionsBeforePaywall);
-                            updatedMobiledoc.sections.push(...[[10, paywallCardIndex]]); // `10` signifies this is a card
-                            updatedMobiledoc.sections.push(...sectionsAfterPaywall);
-                            updatedMobiledoc = JSON.stringify(updatedMobiledoc);
-
-                            try {
-                                let result = await ctx.api.posts.edit({
-                                    id: post.id,
-                                    updated_at: post.updated_at,
-                                    mobiledoc: updatedMobiledoc
+                        if (hasPaywallCard) {
+                            if (options.overwrite) {
+                                const paywallCardIndex = updatedLexical.root.children.findIndex((child) => {
+                                    return child.type === 'paywall';
                                 });
 
-                                ctx.updated.push(result.url);
-                                return Promise.delay(options.delayBetweenCalls).return(result);
-                            } catch (error) {
-                                error.resource = {
-                                    title: post.title
-                                };
-                                ctx.errors.push(error);
-                                throw error;
+                                if (paywallCardIndex > 0) {
+                                    // Remove existing paywall card
+                                    updatedLexical.root.children.splice(paywallCardIndex, 1);
+                                }
                             }
                         }
-                    });
+
+                        tasks.push({
+                            title: `${post.title}`,
+                            skip: () => {
+                                if (hasPaywallCard && options.overwrite === false) {
+                                    return `${post.title} (${post.slug}) already has a paywall card`;
+                                }
+                            },
+                            task: async () => {
+                                let thisPreviewPosition = ctx.previewPosition;
+
+                                if (ctx.previewPositionType === 'percentage') {
+                                    const childrenLength = updatedLexical.root.children.length;
+                                    const percentageAsDecimal = ctx.previewPosition / 100;
+                                    thisPreviewPosition = Math.floor(childrenLength * percentageAsDecimal) + 1;
+                                }
+
+                                updatedLexical.root.children.splice(thisPreviewPosition, 0, {type: 'paywall', version: 1});
+
+                                updatedLexical = JSON.stringify(updatedLexical, null, 2);
+
+                                try {
+                                    let result = await ctx.api.posts.edit({
+                                        id: post.id,
+                                        updated_at: post.updated_at,
+                                        lexical: updatedLexical
+                                    });
+
+                                    ctx.updated.push(result.url);
+                                    return Promise.delay(options.delayBetweenCalls).return(result);
+                                } catch (error) {
+                                    error.resource = {
+                                        title: post.title
+                                    };
+                                    ctx.errors.push(error);
+                                    throw error;
+                                }
+                            }
+                        });
+                    }
                 });
 
                 let taskOptions = options;

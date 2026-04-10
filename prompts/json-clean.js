@@ -3,7 +3,7 @@ import {ui} from '@tryghost/pretty-cli';
 import jsonClean from '../tasks/json-clean.js';
 
 const choice = {
-    name: 'JSON Clean',
+    name: 'JSON clean',
     value: 'jsonClean'
 };
 
@@ -15,6 +15,26 @@ const options = [
         filter: function (val) {
             return val.trim();
         }
+    },
+    {
+        type: 'confirm',
+        name: 'useGhostApi',
+        message: 'Auto-update users from a Ghost site?',
+        default: false
+    },
+    {
+        type: 'input',
+        name: 'ghostApiUrl',
+        message: 'Ghost site URL (e.g. https://example.ghost.io):',
+        when: answers => answers.useGhostApi,
+        filter: val => val.trim()
+    },
+    {
+        type: 'input',
+        name: 'ghostAdminKey',
+        message: 'Ghost Admin API key (id:secret):',
+        when: answers => answers.useGhostApi,
+        filter: val => val.trim()
     }
 ];
 

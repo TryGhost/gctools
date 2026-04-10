@@ -1,22 +1,21 @@
 import {ui} from '@tryghost/pretty-cli';
-import removeMemberNewsletterSubscription from '../tasks/remove-member-newsletter-subscription.js';
+import addMemberCompSubscription from '../tasks/add-member-comp-subscription.js';
 
 // Internal ID in case we need one.
-const id = 'remove-member-newsletter-subscription';
+const id = 'add-member-comp-subscription';
 
 const group = 'Members:';
 
 // The command to run and any params
-const flags = 'remove-member-newsletter-subscription <apiURL> <adminAPIKey> <newsletterID>';
+const flags = 'add-member-comp-subscription <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Remove member newsletter subscription';
+const desc = 'Add member complimentary subscription';
 
 // Descriptions for the individual params
 const paramsDesc = [
     'URL to your Ghost API',
-    'Admin API key',
-    'Newsletter ID to be unsubscribed from'
+    'Admin API key'
 ];
 
 // Configure all the options
@@ -25,9 +24,17 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
-    sywac.string('--onlyForLabelSlug', {
-        defaultValue: false,
+    sywac.array('--onlyForLabelSlugs', {
+        defaultValue: null,
         desc: 'Optional label to filter members'
+    });
+    sywac.string('--tierId', {
+        defaultValue: null,
+        desc: 'The ID for the tier to add the subscription to'
+    });
+    sywac.string('--expireAt', {
+        defaultValue: null,
+        desc: 'When the comp plan should expire in quotes, such as \'2024-05-12T00:00:00.000Z\''
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 100,
@@ -42,7 +49,7 @@ const run = async (argv) => {
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
-        let runner = removeMemberNewsletterSubscription.getTaskRunner(argv);
+        let runner = addMemberCompSubscription.getTaskRunner(argv);
 
         // Run the migration
         await runner.run(context);
@@ -51,7 +58,7 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully removed ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`);
+    ui.log.ok(`Successfully added ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`);
 };
 
 export default {

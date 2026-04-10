@@ -1,6 +1,6 @@
 import {parse, dirname, join, basename} from 'node:path';
 import fs from 'fs-extra';
-import glob from 'glob';
+import {globSync} from 'glob';
 import fsUtils from '@tryghost/mg-fs-utils';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 
@@ -55,7 +55,7 @@ async function createZip(chunk, index, ctx) {
     const zipFileParts = parse(ctx.args.dirPath);
     const zipName = `${zipFileParts.name}_${index}.zip`;
 
-    fsUtils.zip.write(ctx.fileCache.zipDir, chunk, zipName);
+    await fsUtils.zip.write(ctx.fileCache.zipDir, chunk, zipName);
 }
 
 const initialise = (options) => {
@@ -98,7 +98,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 2. Get the size for each image that was just copied
                 try {
-                    let filePaths = glob.sync(`${ctx.fileCache.tmpDir}/**/*`, {
+                    let filePaths = globSync(`${ctx.fileCache.tmpDir}/**/*`, {
                         dot: false,
                         nodir: true
                     });
@@ -155,10 +155,8 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 5. Zip each of those new chunk directories
                 try {
-                    let chunkDirs = glob.sync(`${ctx.fileCache.zipDir}/chunks/*`);
+                    let chunkDirs = globSync(`${ctx.fileCache.zipDir}/chunks/*`);
 
-                    // This does not work properly, and is still trying to create the zip file when the tmp dir has been deleted
-                    // When resolved, re-enable the 'Cleaning up' task
                     await Promise.all(chunkDirs.map((dir, index) => {
                         return createZip(dir, index, ctx);
                     }));
@@ -173,7 +171,7 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 // 6. Move each new zip to the desired destination path
                 try {
-                    let filePaths = glob.sync(`${ctx.fileCache.zipDir}/*.zip`);
+                    let filePaths = globSync(`${ctx.fileCache.zipDir}/*.zip`);
 
                     await Promise.all(filePaths.map(async (filePath) => {
                         let fileName = basename(filePath);
@@ -190,7 +188,6 @@ const getFullTaskList = (options) => {
         },
         {
             title: 'Cleaning up',
-            skip: () => true,
             task: async (ctx) => {
                 // 7. Remove the cached data
                 try {

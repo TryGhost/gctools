@@ -6,10 +6,10 @@ const initialise = (options) => {
     return {
         title: 'Initialising API connection',
         task: async (ctx, task) => {
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
@@ -20,6 +20,15 @@ const initialise = (options) => {
                 posts: {
                     count: null
                 },
+                posts_drafts: {
+                    count: null
+                },
+                posts_sent: {
+                    count: null
+                },
+                posts_published: {
+                    count: null
+                },
                 public_posts: {
                     count: null
                 },
@@ -27,6 +36,9 @@ const initialise = (options) => {
                     count: null
                 },
                 paid_posts: {
+                    count: null
+                },
+                tiers_posts: {
                     count: null
                 },
                 pages: {
@@ -41,12 +53,14 @@ const initialise = (options) => {
                 },
                 members: {
                     count: null
-                }
+                },
+                emptyAuthors: []
             };
 
             ctx.tables = {
                 stats: null,
-                users: null
+                users: null,
+                emptyAuthors: null
             };
 
             task.output = `Initialised API connection for ${options.apiURL}`;
@@ -60,7 +74,7 @@ const getFullTaskList = (options) => {
         {
             title: 'Counting posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1});
+                const postsData = await ctx.api.posts.browse({limit: 100});
                 ctx.stats.posts.count = postsData.meta.pagination.total;
             }
         },
@@ -69,6 +83,27 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public'});
                 ctx.stats.public_posts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting sent posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:sent'});
+                ctx.stats.posts_sent.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting draft posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:draft'});
+                ctx.stats.posts_drafts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting published posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:published'});
+                ctx.stats.posts_published.count = postsData.meta.pagination.total;
             }
         },
         {
@@ -83,6 +118,13 @@ const getFullTaskList = (options) => {
             task: async (ctx) => {
                 const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:paid'});
                 ctx.stats.paid_posts.count = postsData.meta.pagination.total;
+            }
+        },
+        {
+            title: 'Counting tiers posts',
+            task: async (ctx) => {
+                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:tiers'});
+                ctx.stats.tiers_posts.count = postsData.meta.pagination.total;
             }
         },
         {
@@ -102,7 +144,17 @@ const getFullTaskList = (options) => {
         {
             title: 'Counting staff',
             task: async (ctx) => {
-                const usersData = await ctx.api.users.browse({limit: 'all', include: 'roles'});
+                let usersData = [];
+                let page = 1;
+                let lastResponse;
+
+                do {
+                    lastResponse = await ctx.api.users.browse({limit: 100, page, include: 'roles,count.posts'});
+                    usersData = usersData.concat(lastResponse);
+                    page = lastResponse.meta.pagination.next;
+                } while (lastResponse.meta.pagination.next);
+
+                usersData.meta = lastResponse.meta;
 
                 const staffOwner = usersData.filter(word => word.roles[0].name === 'Owner');
                 const staffAdministrator = usersData.filter(word => word.roles[0].name === 'Administrator');
@@ -118,6 +170,17 @@ const getFullTaskList = (options) => {
                     author: {count: staffAuthor.length},
                     contributor: {count: staffContributor.length}
                 };
+
+                if (options?.listEmptyAuthors) {
+                    usersData.forEach((user) => {
+                        if (user.count.posts === 0) {
+                            ctx.stats.emptyAuthors.push([
+                                user.name,
+                                `${options.apiURL}/ghost/#/settings/staff/${user.slug}`
+                            ]);
+                        }
+                    });
+                }
             }
         },
         {
@@ -149,9 +212,13 @@ const getFullTaskList = (options) => {
 
                 const statsRows = [
                     ['Posts', ctx.stats.posts.count],
+                    ['- - Draft', ctx.stats.posts_drafts.count],
+                    ['- - Sent', ctx.stats.posts_sent.count],
+                    ['- - Published', ctx.stats.posts_published.count],
                     ['- Public', ctx.stats.public_posts.count],
                     ['- Members', ctx.stats.members_posts.count],
                     ['- Paid', ctx.stats.paid_posts.count],
+                    ['- Tiers', ctx.stats.tiers_posts.count],
                     ['Pages', ctx.stats.pages.count],
                     ['Tags', ctx.stats.tags.count],
                     ['Users', ctx.stats.users.count],
@@ -186,6 +253,25 @@ const getFullTaskList = (options) => {
                 ];
 
                 ctx.tables.users = Table(usersHeader, usersRows, {compact: true}).render();
+
+                if (options?.listEmptyAuthors && ctx.stats.emptyAuthors.length > 0) {
+                    const authorsHeader = [{
+                        value: 'Name',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left'
+                    },
+                    {
+                        value: 'URL',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left'
+                    }];
+
+                    ctx.tables.emptyAuthors = Table(authorsHeader, ctx.stats.emptyAuthors, {compact: true}).render();
+                }
             }
         }
     ];

@@ -16,10 +16,10 @@ const initialise = (options) => {
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
@@ -58,7 +58,8 @@ const getFullTaskList = (options) => {
                     ctx.posts = await discover({
                         api: ctx.api,
                         type: 'posts',
-                        filter: discoveryFilter.join('+')
+                        filter: discoveryFilter.join('+'),
+                        limit: 100
                     });
 
                     task.output = `Found ${ctx.posts.length} posts`;

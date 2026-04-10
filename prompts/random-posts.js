@@ -88,7 +88,7 @@ const options = [
         }
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'dateRange',
         message: 'Date Range:',
         choices: [

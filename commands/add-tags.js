@@ -24,6 +24,11 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.enumeration('--status', {
+        defaultValue: 'all',
+        choices: ['all', 'draft', 'published'],
+        desc: 'Post visibility'
+    });
     sywac.array('--type', {
         defaultValue: 'all',
         choices: ['all', 'posts', 'pages'],
@@ -41,6 +46,10 @@ const setup = (sywac) => {
     sywac.string('--author', {
         defaultValue: null,
         desc: 'Select posts with these author slugs, inside single quotes. i.e. \'example-author\''
+    });
+    sywac.string('--customFilter', {
+        defaultValue: null,
+        desc: 'Custom Ghost filter query'
     });
     sywac.string('--new_tags', {
         desc: 'Comma separated list of tag names to add (not slugs), inside single quotes. i.e. \'New Tag, Podcast\''

@@ -21,6 +21,14 @@ const setup = (sywac) => {
         defaultValue: true,
         desc: 'Show verbose output'
     });
+    sywac.string('--ghostApiUrl', {
+        defaultValue: null,
+        desc: 'Ghost site URL to fetch existing users (e.g. https://example.ghost.io)'
+    });
+    sywac.string('--ghostAdminKey', {
+        defaultValue: null,
+        desc: 'Ghost Admin API key to authenticate with Ghost (format: id:secret)'
+    });
 };
 
 // What to do when this command is executed

@@ -7,16 +7,6 @@ const choice = {
     value: 'fetchAssets'
 };
 
-// sywac.array('-s --scrape', {
-//     choices: ['all', 'img', 'web', 'media', 'files', 'none'],
-//     defaultValue: 'all',
-//     desc: 'Configure scraping tasks'
-// });
-// sywac.number('--sizeLimit', {
-//     defaultValue: false,
-//     desc: 'Assets larger than this size (defined in MB) will be ignored'
-// });
-
 const options = [
     {
         type: 'input',
@@ -29,34 +19,10 @@ const options = [
     {
         type: 'input',
         name: 'url',
-        message: 'Provide a URL (without trailing slash) to scrape assets from:',
+        message: 'Provide a base URL (without trailing slash) to resolve relative asset URLs:',
         filter: function (val) {
             return val.trim();
         }
-    },
-    {
-        type: 'checkbox',
-        name: 'scrape',
-        message: 'Scrape these assets:',
-        choices: [
-            {
-                name: 'All',
-                value: 'all',
-                checked: true
-            },
-            {
-                name: 'Images',
-                value: 'img'
-            },
-            {
-                name: 'Media',
-                value: 'media'
-            },
-            {
-                name: 'Files',
-                value: 'files'
-            }
-        ]
     },
     {
         type: 'number',

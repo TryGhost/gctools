@@ -1,7 +1,7 @@
 import Promise from 'bluebird';
+import _ from 'lodash';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import _ from 'lodash';
 import {discover} from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
@@ -13,18 +13,16 @@ const initialise = (options) => {
                 delayBetweenCalls: 50
             };
 
-            const url = options.apiURL;
+            const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
-                url,
+                url: url.replace('localhost', '127.0.0.1'),
                 key,
                 version: 'v5.0'
             });
 
             ctx.args = _.mergeWith(defaults, options);
             ctx.api = api;
-            ctx.newsletters = [];
-            ctx.users = [];
             ctx.updated = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
@@ -36,36 +34,12 @@ const getFullTaskList = (options) => {
     return [
         initialise(options),
         {
-            title: 'Fetch Content from Ghost API',
+            title: 'Fetch members from Ghost API',
             task: async (ctx, task) => {
-                try {
-                    ctx.newsletters = await discover({
-                        api: ctx.api,
-                        type: 'newsletters',
-                        limit: 50
-                    });
-                } catch (error) {
-                    ctx.errors.push(error);
-                    throw error;
-                }
-
-                let thisNewsletterSlug;
-
-                try {
-                    const thisNewsletterObj = _.find(ctx.newsletters, {id: options.newsletterID});
-                    thisNewsletterSlug = thisNewsletterObj.slug;
-                } catch (error) {
-                    error.message = `No newsletter found for ${options.newsletterID}`;
-                    ctx.errors.push(error);
-                    throw error;
-                }
-
                 let discoveryFilter = [];
 
-                discoveryFilter.push(`newsletters:[${thisNewsletterSlug}]`);
-
-                if (options.onlyForLabelSlug) {
-                    discoveryFilter.push(`label:[${options.onlyForLabelSlug}]`);
+                if (options.onlyForLabelSlugs.length) {
+                    discoveryFilter.push(`label:[${options.onlyForLabelSlugs.join(',')}]`);
                 }
 
                 let discoveryOptions = {
@@ -76,24 +50,37 @@ const getFullTaskList = (options) => {
 
                 try {
                     ctx.members = await discover(discoveryOptions);
+                    // console.log({cm: ctx.members});
                     task.output = `Found ${ctx.members.length} members`;
                 } catch (error) {
                     ctx.errors.push(error);
                     throw error;
                 }
-
-                // Filter out members who are not currently subscribed to the given newsletter
-                ctx.members = _.filter(ctx.members, (user) => {
-                    const isSubscribed = _.find(user.newsletters, {id: options.newsletterID});
-
-                    if (isSubscribed) {
-                        return user;
-                    }
-                });
             }
         },
         {
-            title: 'Updating members from Ghost',
+            title: 'Filter by tier',
+            task: async (ctx, task) => {
+                try {
+                    ctx.members = ctx.members.filter((member) => {
+                        if (member.subscriptions.filter(e => e?.tier?.id === options.tierId).length > 0) {
+                            // Has the tier we're looking for
+                            return member;
+                        } else {
+                            // Does not have the tier we're looking for
+                            return false;
+                        }
+                    });
+
+                    task.output = `Found ${ctx.members.length} members with the tier`;
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Updating members',
             task: async (ctx) => {
                 let tasks = [];
 
@@ -101,11 +88,11 @@ const getFullTaskList = (options) => {
                     tasks.push({
                         title: `Updating ${member.email}`,
                         task: async () => {
+                            const subscriptionsWithoutComp = member.subscriptions.filter(e => e.tier.id !== options.tierId);
+
                             let newMemberObject = {
                                 id: member.id,
-                                newsletters: _.filter(member.newsletters, (item) => {
-                                    return item.id !== options.newsletterID;
-                                })
+                                tiers: subscriptionsWithoutComp
                             };
 
                             try {

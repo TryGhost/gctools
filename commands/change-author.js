@@ -10,7 +10,7 @@ const group = 'Content:';
 const flags = 'change-author <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Delete posts in Ghost';
+const desc = 'Change the author of posts';
 
 // Descriptions for the individual params
 const paramsDesc = [
@@ -27,6 +27,10 @@ const setup = (sywac) => {
     sywac.string('--author', {
         defaultValue: null,
         desc: 'Current author slug'
+    });
+    sywac.string('--tag', {
+        defaultValue: null,
+        desc: 'Select posts with these tag slugs, inside single quotes. i.e. \'existing-tag, newsletter\''
     });
     sywac.string('--new_author', {
         defaultValue: null,
