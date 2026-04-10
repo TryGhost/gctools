@@ -24,6 +24,11 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output'
     });
+    sywac.enumeration('--status', {
+        defaultValue: 'all',
+        choices: ['all', 'draft', 'published'],
+        desc: 'Post visibility'
+    });
     sywac.array('--type', {
         defaultValue: 'all',
         choices: ['all', 'posts', 'pages'],
@@ -42,13 +47,9 @@ const setup = (sywac) => {
         defaultValue: null,
         desc: 'Select posts with these author slugs, inside single quotes. i.e. \'example-author\''
     });
-    sywac.string('--before-date', {
+    sywac.string('--customFilter', {
         defaultValue: null,
-        desc: 'Remove tags from content published before this date (YYYY-MM-DD format)'
-    });
-    sywac.string('--after-date', {
-        defaultValue: null,
-        desc: 'Remove tags from content published after this date (YYYY-MM-DD format)'
+        desc: 'Custom Ghost filter query'
     });
     sywac.string('--remove_tags', {
         desc: 'Comma separated list of tag names to remove (not slugs), inside single quotes. i.e. \'Legacy Tag, Old Tag\''

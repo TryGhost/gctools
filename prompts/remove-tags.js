@@ -9,7 +9,15 @@ import removeTags from '../tasks/remove-tags.js';
 import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
-const dateToday = new Date();
+const dateStartOfToday = new Date();
+dateStartOfToday.setUTCHours(0);
+dateStartOfToday.setUTCMinutes(0);
+dateStartOfToday.setUTCSeconds(0);
+
+const dateEndOfToday = new Date();
+dateEndOfToday.setUTCHours(23);
+dateEndOfToday.setUTCMinutes(59);
+dateEndOfToday.setUTCSeconds(59);
 
 const choice = {
     name: 'Remove tags from posts and pages',
@@ -18,6 +26,25 @@ const choice = {
 
 const options = [
     ...ghostAPICreds,
+    {
+        type: 'select',
+        name: 'status',
+        message: 'Status: (Leave blank for all)',
+        choices: [
+            {
+                name: 'All',
+                value: 'all'
+            },
+            {
+                name: 'Draft',
+                value: 'draft'
+            },
+            {
+                name: 'Published',
+                value: 'published'
+            }
+        ]
+    },
     {
         type: 'checkbox',
         name: 'type',
@@ -34,7 +61,7 @@ const options = [
         ]
     },
     {
-        type: 'list',
+        type: 'select',
         name: 'visibility',
         message: 'Filter by visibility:',
         choices: [
@@ -74,38 +101,38 @@ const options = [
         }
     },
     {
-        type: 'list',
-        name: 'dateRange',
+        type: 'select',
+        name: 'dateFilter',
         message: 'Filter by date:',
         choices: [
             {
-                name: 'All',
-                value: 'all'
+                name: `No`,
+                value: 'no'
             },
             {
-                name: 'Custom',
-                value: 'custom'
+                name: `Yes`,
+                value: 'yes'
             }
         ]
     },
     {
         type: 'datetime',
-        name: 'beforeDate',
-        message: 'Remove tags from content published before:',
+        name: 'dateFilterStart',
+        message: 'Start date (UTC):',
         format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
-        initial: new Date(dateToday.getFullYear() - 1, dateToday.getMonth(), dateToday.getDate()),
+        initial: dateStartOfToday,
         when: function (answers) {
-            return answers.dateRange === 'custom';
+            return answers.dateFilter === 'yes';
         }
     },
     {
         type: 'datetime',
-        name: 'afterDate',
-        message: 'Remove tags from content published after:',
+        name: 'dateFilterEnd',
+        message: 'End date (UTC):',
         format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
-        initial: new Date(dateToday.getFullYear() - 2, dateToday.getMonth(), dateToday.getDate()),
+        initial: dateEndOfToday,
         when: function (answers) {
-            return answers.dateRange === 'custom';
+            return answers.dateFilter === 'yes';
         }
     },
     {
@@ -123,14 +150,6 @@ async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
         let context = {errors: []};
-
-        // Convert date objects to ISO string format for the task
-        if (answers.beforeDate) {
-            answers.beforeDate = answers.beforeDate.toISOString().substring(0, 10);
-        }
-        if (answers.afterDate) {
-            answers.afterDate = answers.afterDate.toISOString().substring(0, 10);
-        }
 
         try {
             let runner = removeTags.getTaskRunner(answers);
