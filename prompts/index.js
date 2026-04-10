@@ -8,6 +8,7 @@ import randomPosts from './random-posts.js';
 import deletePosts from './delete-posts.js';
 import deletePages from './delete-pages.js';
 import addTags from './add-tags.js';
+import removeTags from './remove-tags.js';
 import combineTags from './combine-tags.js';
 import addPreview from './add-preview.js';
 import deleteTags from './delete-tags.js';
@@ -43,6 +44,7 @@ export default {
     deletePosts,
     deletePages,
     addTags,
+    removeTags,
     combineTags,
     addPreview,
     deleteTags,

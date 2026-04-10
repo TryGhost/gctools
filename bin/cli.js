@@ -8,6 +8,7 @@ import removeMemberCompSubscriptionCommands from '../commands/remove-member-comp
 import addMemberNewsletterSubscriptionCommands from '../commands/add-member-newsletter-subscription.js';
 import addPreviewCommands from '../commands/add-preview.js';
 import addTagsCommands from '../commands/add-tags.js';
+import removeTagsCommands from '../commands/remove-tags.js';
 import changeAuthorCommands from '../commands/change-author.js';
 import addAuthorCommands from '../commands/add-author.js';
 import changeRoleCommands from '../commands/change-role.js';
@@ -50,6 +51,7 @@ prettyCLI.command(removeMemberCompSubscriptionCommands);
 prettyCLI.command(addMemberNewsletterSubscriptionCommands);
 prettyCLI.command(addPreviewCommands);
 prettyCLI.command(addTagsCommands);
+prettyCLI.command(removeTagsCommands);
 prettyCLI.command(changeAuthorCommands);
 prettyCLI.command(addAuthorCommands);
 prettyCLI.command(changeRoleCommands);
