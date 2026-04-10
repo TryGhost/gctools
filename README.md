@@ -361,32 +361,16 @@ The interactive mode provides a user-friendly interface with searchable tag sele
 
 ### combine-tags
 
-Combine tags by adding the `target` tag to all posts that hav any of the `incorporate` tags. For example, posts with the `posts`, `newsletter`, and `blogs` tags will have the `articles` added to it.
+Merge one tag into another. All posts with Tag B will have it replaced with Tag A at the same position. If a post already has both tags, Tag B is simply removed. Tag A is preserved in its original position.
 
 ```sh
-gctools combine-tags <apiURL> <adminAPIKey> <jsonFile>
+gctools combine-tags <apiURL> <adminAPIKey> --tagA <slug-to-keep> --tagB <slug-to-remove>
 ```
 
-The `<jsonFile>` file needs to follow the format below, with slugs used as the values.
+For example, to merge the `newsletter` tag into `articles`:
 
-```json
-[
-    {
-        "target": "articles",
-        "incorporate": [
-            "posts",
-            "newsletter",
-            "blogs"
-        ]
-    },
-    {
-        "target": "media",
-        "incorporate": [
-            "podcasts",
-            "video"
-        ]
-    }
-]
+```sh
+gctools combine-tags <apiURL> <adminAPIKey> --tagA articles --tagB newsletter
 ```
 
 
