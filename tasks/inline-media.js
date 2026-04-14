@@ -393,9 +393,11 @@ const getFullTaskList = (options) => {
                                         if (uploadResult) {
                                             urlMap.set(mediaUrl, uploadResult.url);
                                         } else {
+                                            ctx.errors.push(`Skipping unsupported type (${contentType}): ${mediaUrl}`);
                                             task.output = `Skipping unsupported type (${contentType}): ${mediaUrl}`;
                                         }
                                     } catch (e) {
+                                        ctx.errors.push(`Failed to process ${mediaUrl}: ${e.message}`);
                                         task.output = `Failed to process: ${mediaUrl}`;
                                     }
                                 }
