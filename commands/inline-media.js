@@ -28,6 +28,11 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show what would be processed without downloading or uploading'
     });
+    sywac.array('--type', {
+        defaultValue: 'all',
+        choices: ['all', 'posts', 'pages'],
+        desc: 'Content type'
+    });
     sywac.enumeration('--status', {
         defaultValue: 'all',
         choices: ['all', 'draft', 'published'],

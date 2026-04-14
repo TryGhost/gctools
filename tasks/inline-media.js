@@ -228,6 +228,7 @@ const initialise = (options) => {
             ctx.api = api;
             ctx.siteUrl = url;
             ctx.posts = [];
+            ctx.pages = [];
             ctx.toProcess = [];
             ctx.updated = [];
 
@@ -241,6 +242,9 @@ const getFullTaskList = (options) => {
         initialise(options),
         {
             title: 'Fetch posts from Ghost API',
+            skip: () => {
+                return !options.type.includes('posts') && !options.type.includes('all');
+            },
             task: async (ctx, task) => {
                 let discoveryFilter = [];
 
@@ -260,21 +264,67 @@ const getFullTaskList = (options) => {
                     discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
                 }
 
-                // Exclude posts already processed
+                // Exclude content already processed
                 discoveryFilter.push('tags:-[hash-imagesuploaded]');
 
-                let postDiscoveryOptions = {
-                    api: ctx.api,
-                    type: 'posts',
-                    limit: 100,
-                    include: 'tags',
-                    formats: 'mobiledoc,lexical',
-                    filter: discoveryFilter.join('+')
-                };
+                try {
+                    ctx.posts = await discover({
+                        api: ctx.api,
+                        type: 'posts',
+                        limit: 100,
+                        include: 'tags',
+                        formats: 'mobiledoc,lexical',
+                        filter: discoveryFilter.join('+')
+                    });
+
+                    ctx.posts.forEach((post) => {
+                        post._type = 'posts';
+                    });
+
+                    task.output = `Found ${ctx.posts.length} posts`;
+                } catch (error) {
+                    ctx.errors.push(error);
+                    throw error;
+                }
+            }
+        },
+        {
+            title: 'Fetch pages from Ghost API',
+            skip: () => {
+                return !options.type.includes('pages') && !options.type.includes('all');
+            },
+            task: async (ctx, task) => {
+                let discoveryFilter = [];
+
+                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                    discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                }
+
+                if (ctx.args.tag && ctx.args.tag.length > 0) {
+                    discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                }
+
+                if (ctx.args.author && ctx.args.author.length > 0) {
+                    discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                }
+
+                discoveryFilter.push('tags:-[hash-imagesuploaded]');
 
                 try {
-                    ctx.posts = await discover(postDiscoveryOptions);
-                    task.output = `Found ${ctx.posts.length} posts`;
+                    ctx.pages = await discover({
+                        api: ctx.api,
+                        type: 'pages',
+                        limit: 100,
+                        include: 'tags',
+                        formats: 'mobiledoc,lexical',
+                        filter: discoveryFilter.join('+')
+                    });
+
+                    ctx.pages.forEach((page) => {
+                        page._type = 'pages';
+                    });
+
+                    task.output = `Found ${ctx.pages.length} pages`;
                 } catch (error) {
                     ctx.errors.push(error);
                     throw error;
@@ -284,12 +334,13 @@ const getFullTaskList = (options) => {
         {
             title: 'Finding external media',
             skip: (ctx) => {
-                return ctx.posts.length === 0;
+                return ctx.posts.length === 0 && ctx.pages.length === 0;
             },
             task: async (ctx) => {
                 let tasks = [];
+                const allContent = [...ctx.posts, ...ctx.pages];
 
-                ctx.posts.forEach((post) => {
+                allContent.forEach((post) => {
                     tasks.push({
                         title: post.title,
                         task: async (ctx) => { // eslint-disable-line no-shadow
@@ -418,8 +469,9 @@ const getFullTaskList = (options) => {
                                     return;
                                 }
 
-                                // Re-read post for latest updated_at
-                                let currentPost = await ctx.api.posts.read({id: post.id, include: 'tags', formats: 'mobiledoc,lexical'});
+                                // Re-read for latest updated_at
+                                const apiType = post._type || 'posts';
+                                let currentPost = await ctx.api[apiType].read({id: post.id, include: 'tags', formats: 'mobiledoc,lexical'});
 
                                 // Replace URLs in metadata fields
                                 let updatePayload = {
@@ -461,7 +513,7 @@ const getFullTaskList = (options) => {
                                 let updatedTags = [...currentPost.tags, {name: '#ImagesUploaded'}];
                                 updatePayload.tags = updatedTags;
 
-                                let result = await ctx.api.posts.edit(updatePayload);
+                                let result = await ctx.api[apiType].edit(updatePayload);
 
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);

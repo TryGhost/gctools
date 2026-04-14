@@ -377,11 +377,25 @@ gctools combine-tags <apiURL> <adminAPIKey> --tagA articles --tagB newsletter
 
 ### inline-media
 
-Download external images referenced in posts, re-upload them to Ghost, and update the image URLs in the post content. Handles images in Lexical content, Mobiledoc content (image and gallery cards), and metadata fields (`feature_image`, `og_image`, `twitter_image`). Images already hosted on the Ghost site are skipped. Processed posts are tagged with `#ImagesUploaded` to prevent reprocessing.
+Download external media from posts and pages, re-upload them to Ghost, and update the URLs in the content. Handles image, audio, video, and file cards in both Lexical and Mobiledoc content, gallery cards, and metadata fields (`feature_image`, `og_image`, `twitter_image`). HEIC/HEIF images are automatically converted to JPEG. Media already hosted on the Ghost site is skipped. Processed content is tagged with `#ImagesUploaded` to prevent reprocessing.
+
+Supported file types are routed to the correct Ghost upload endpoint:
+- **Images** (`/images/upload/`): JPEG, PNG, GIF, WebP, SVG, ICO, AVIF, HEIC/HEIF
+- **Media** (`/media/upload/`): MP4, WebM, OGG, MP3, WAV, M4A
+- **Files** (`/files/upload/`): PDF, JSON, XML, RTF, Office documents, OpenDocument formats
 
 ```sh
-# Inline all external images across all posts
+# Inline all external media across all posts and pages
 gctools inline-media <apiURL> <adminAPIKey>
+
+# Only process posts (not pages)
+gctools inline-media <apiURL> <adminAPIKey> --type posts
+
+# Only process media from specific domains
+gctools inline-media <apiURL> <adminAPIKey> --assetDomains 'cdn.example.com, images.example.com'
+
+# Dry run to see what would be processed
+gctools inline-media <apiURL> <adminAPIKey> --dryRun
 
 # Only process published posts by a specific author
 gctools inline-media <apiURL> <adminAPIKey> --status published --author 'example-author'

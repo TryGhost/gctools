@@ -15,6 +15,21 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
+        type: 'checkbox',
+        name: 'type',
+        message: 'Content type:',
+        choices: [
+            {
+                name: 'Posts',
+                value: 'posts'
+            },
+            {
+                name: 'Pages',
+                value: 'pages'
+            }
+        ]
+    },
+    {
         type: 'select',
         name: 'status',
         message: 'Status: (Leave blank for all)',
