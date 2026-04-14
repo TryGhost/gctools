@@ -292,7 +292,7 @@ const getFullTaskList = (options) => {
                 ctx.posts.forEach((post) => {
                     tasks.push({
                         title: post.title,
-                        task: async (ctx, task) => { // eslint-disable-line no-shadow
+                        task: async (ctx) => { // eslint-disable-line no-shadow
                             let mediaUrls = [];
 
                             // Metadata image fields
@@ -346,18 +346,15 @@ const getFullTaskList = (options) => {
 
                             post.externalMedia = mediaUrls;
 
-                            if (mediaUrls.length === 0) {
-                                task.output = `No external media found`;
-                            } else {
+                            if (mediaUrls.length > 0) {
                                 ctx.toProcess.push(post);
-                                task.output = `Found ${mediaUrls.length} external media files`;
                             }
                         }
                     });
                 });
 
                 let taskOptions = options;
-                taskOptions.concurrent = 1;
+                taskOptions.concurrent = 3;
                 return makeTaskRunner(tasks, taskOptions);
             }
         },
@@ -389,7 +386,7 @@ const getFullTaskList = (options) => {
                 ctx.toProcess.forEach((post) => {
                     tasks.push({
                         title: post.title,
-                        task: async (ctx, task) => { // eslint-disable-line no-shadow
+                        task: async (ctx) => { // eslint-disable-line no-shadow
                             const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gctools-'));
                             const tempFiles = [];
 
@@ -410,16 +407,13 @@ const getFullTaskList = (options) => {
                                             urlMap.set(mediaUrl, uploadResult.url);
                                         } else {
                                             ctx.errors.push(`Skipping unsupported type (${contentType}): ${mediaUrl}`);
-                                            task.output = `Skipping unsupported type (${contentType}): ${mediaUrl}`;
                                         }
                                     } catch (e) {
                                         ctx.errors.push(`Failed to process ${mediaUrl}: ${e.message}`);
-                                        task.output = `Failed to process: ${mediaUrl}`;
                                     }
                                 }
 
                                 if (urlMap.size === 0) {
-                                    task.output = `No media successfully uploaded`;
                                     return;
                                 }
 
@@ -469,7 +463,6 @@ const getFullTaskList = (options) => {
                                 let result = await ctx.api.posts.edit(updatePayload);
 
                                 ctx.updated.push(result.url);
-                                task.output = `Uploaded ${urlMap.size} media files`;
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
@@ -497,7 +490,7 @@ const getFullTaskList = (options) => {
                 });
 
                 let taskOptions = options;
-                taskOptions.concurrent = 1;
+                taskOptions.concurrent = 3;
                 return makeTaskRunner(tasks, taskOptions);
             }
         }
