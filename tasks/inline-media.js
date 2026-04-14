@@ -409,7 +409,8 @@ const getFullTaskList = (options) => {
                                             ctx.errors.push(`Skipping unsupported type (${contentType}): ${mediaUrl}`);
                                         }
                                     } catch (e) {
-                                        ctx.errors.push(`Failed to process ${mediaUrl}: ${e.message}`);
+                                        const reason = e.message || e.context || e.statusCode || String(e);
+                                        ctx.errors.push(`Failed to process ${mediaUrl}: ${reason}`);
                                     }
                                 }
 
@@ -465,6 +466,9 @@ const getFullTaskList = (options) => {
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
+                                if (!error.message) {
+                                    error.message = error.context || error.statusCode || String(error);
+                                }
                                 error.resource = {
                                     title: post.title
                                 };
