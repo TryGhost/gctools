@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import axios from 'axios';
+import heicConvert from 'heic-convert';
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
@@ -155,19 +156,34 @@ const replaceUrlsInMobiledoc = (cards, urlMap) => {
 };
 
 /**
- * Download a file to a temp directory, returning the file path and content type
+ * Download a file to a temp directory, returning the file path and content type.
+ * HEIC/HEIF images are converted to JPEG before saving.
  */
 const downloadFile = async (url, tmpDir) => {
     const response = await axios.get(url, {responseType: 'arraybuffer'});
-    const contentType = response.headers['content-type'] || '';
+    let contentType = response.headers['content-type'] || '';
+    let data = Buffer.from(response.data);
+
+    const mime = contentType.split(';')[0].trim();
+
+    // Convert HEIC/HEIF to JPEG
+    if (mime === 'image/heic' || mime === 'image/heif') {
+        data = Buffer.from(await heicConvert({
+            buffer: data,
+            format: 'JPEG',
+            quality: 1
+        }));
+        contentType = 'image/jpeg';
+    }
 
     const urlPath = new URL(url).pathname;
-    const ext = path.extname(urlPath) || '.bin';
-    const basename = path.basename(urlPath, ext) || 'file';
+    const origExt = path.extname(urlPath) || '.bin';
+    const ext = (mime === 'image/heic' || mime === 'image/heif') ? '.jpg' : origExt;
+    const basename = path.basename(urlPath, origExt) || 'file';
     const filename = `${basename}-${Date.now()}${ext}`;
     const filePath = path.join(tmpDir, filename);
 
-    fs.writeFileSync(filePath, response.data);
+    fs.writeFileSync(filePath, data);
     return {filePath, contentType};
 };
 
