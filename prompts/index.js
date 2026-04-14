@@ -34,6 +34,7 @@ import commentNotifications from './comment-notifications.js';
 import memberNewsletterBackup from './member-newsletter-backup.js';
 import splitMembers from './split-members.js';
 import addLabelToMembers from './add-label-to-members.js';
+import inlineMedia from './inline-media.js';
 
 export default {
     zipSplit,
@@ -69,5 +70,6 @@ export default {
     commentNotifications,
     memberNewsletterBackup,
     splitMembers,
-    addLabelToMembers
+    addLabelToMembers,
+    inlineMedia
 };

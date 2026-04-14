@@ -108,6 +108,10 @@ const run = async () => {
                 name: tasks.setTemplate.choice.name,
                 value: tasks.setTemplate.choice.value
             },
+            {
+                name: tasks.inlineMedia.choice.name,
+                value: tasks.inlineMedia.choice.value
+            },
             new inquirer.Separator('--- Members API Utilities ---------'),
             {
                 name: tasks.addMemberCompSubscription.choice.name,

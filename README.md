@@ -44,6 +44,7 @@ Available tools include:
 * [`add-tags`](#add-tags)
 * [`remove-tags`](#remove-tags)
 * [`combine-tags`](#combine-tags)
+* [`inline-media`](#inline-media)
 * [`add-preview`](#add-preview)
 * [`delete-tags`](#delete-tags)
 * [`delete-labels`](#delete-labels)
@@ -371,6 +372,22 @@ For example, to merge the `newsletter` tag into `articles`:
 
 ```sh
 gctools combine-tags <apiURL> <adminAPIKey> --tagA articles --tagB newsletter
+```
+
+
+### inline-media
+
+Download external images referenced in posts, re-upload them to Ghost, and update the image URLs in the post content. Handles images in Lexical content, Mobiledoc content (image and gallery cards), and metadata fields (`feature_image`, `og_image`, `twitter_image`). Images already hosted on the Ghost site are skipped. Processed posts are tagged with `#ImagesUploaded` to prevent reprocessing.
+
+```sh
+# Inline all external images across all posts
+gctools inline-media <apiURL> <adminAPIKey>
+
+# Only process published posts by a specific author
+gctools inline-media <apiURL> <adminAPIKey> --status published --author 'example-author'
+
+# Only process posts with a specific tag
+gctools inline-media <apiURL> <adminAPIKey> --tag 'imported'
 ```
 
 

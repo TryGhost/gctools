@@ -45,6 +45,7 @@ import commentNotifications from '../commands/comment-notifications.js';
 import memberNewsletterBackup from '../commands/member-newsletter-backup.js';
 import splitMembers from '../commands/split-members.js';
 import addLabelToMembers from '../commands/add-label-to-members.js';
+import inlineMedia from '../commands/inline-media.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -88,6 +89,7 @@ prettyCLI.command(commentNotifications);
 prettyCLI.command(memberNewsletterBackup);
 prettyCLI.command(splitMembers);
 prettyCLI.command(addLabelToMembers);
+prettyCLI.command(inlineMedia);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'
