@@ -426,82 +426,130 @@ const getFullTaskList = (options) => {
             }
         },
         {
-            title: 'Uploading media',
+            title: 'Downloading media',
             enabled: () => !options.dryRun,
             skip: (ctx) => {
                 return ctx.toProcess.length === 0;
             },
-            task: async (ctx) => {
+            task: async (ctx, task) => {
+                ctx.tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gctools-'));
+                ctx.downloaded = [];
+                task.output = `Temp folder: ${ctx.tmpDir}`;
+
                 let tasks = [];
 
                 ctx.toProcess.forEach((post) => {
+                    post.externalMedia.forEach((mediaUrl) => {
+                        const filename = path.basename(new URL(mediaUrl).pathname) || mediaUrl;
+                        tasks.push({
+                            title: filename,
+                            task: async () => {
+                                try {
+                                    const {filePath, contentType} = await downloadFile(mediaUrl, ctx.tmpDir);
+                                    ctx.downloaded.push({mediaUrl, filePath, contentType});
+                                } catch (e) {
+                                    const reason = e.message || e.context || e.statusCode || String(e);
+                                    ctx.errors.push(`Failed to download ${mediaUrl}: ${reason}`);
+                                }
+                            }
+                        });
+                    });
+                });
+
+                let taskOptions = {...options};
+                taskOptions.concurrent = 5;
+                return makeTaskRunner(tasks, taskOptions);
+            }
+        },
+        {
+            title: 'Uploading media to Ghost',
+            enabled: () => !options.dryRun,
+            skip: (ctx) => {
+                return !ctx.downloaded || ctx.downloaded.length === 0;
+            },
+            task: async (ctx) => {
+                ctx.urlMap = new Map();
+
+                let tasks = [];
+
+                ctx.downloaded.forEach(({mediaUrl, filePath, contentType}) => {
+                    const filename = path.basename(filePath);
+                    tasks.push({
+                        title: filename,
+                        task: async () => {
+                            try {
+                                const uploadResult = await uploadToGhost(ctx.api, filePath, contentType);
+
+                                if (uploadResult) {
+                                    ctx.urlMap.set(mediaUrl, uploadResult.url);
+                                } else {
+                                    ctx.errors.push(`Skipping unsupported type (${contentType}): ${mediaUrl}`);
+                                }
+                            } catch (e) {
+                                const reason = e.message || e.context || e.statusCode || String(e);
+                                ctx.errors.push(`Failed to upload ${mediaUrl}: ${reason}`);
+                            }
+                        }
+                    });
+                });
+
+                let taskOptions = {...options};
+                taskOptions.concurrent = 5;
+                return makeTaskRunner(tasks, taskOptions);
+            }
+        },
+        {
+            title: 'Updating posts',
+            enabled: () => !options.dryRun,
+            skip: (ctx) => {
+                return !ctx.urlMap || ctx.urlMap.size === 0;
+            },
+            task: async (ctx) => {
+                let tasks = [];
+                const metaFields = ['feature_image', 'og_image', 'twitter_image'];
+
+                ctx.toProcess.forEach((post) => {
+                    // Only update posts that have at least one successfully uploaded URL
+                    const hasUploads = post.externalMedia.some((url) => {
+                        return ctx.urlMap.has(url);
+                    });
+                    if (!hasUploads) {
+                        return;
+                    }
+
                     tasks.push({
                         title: post.title,
                         task: async (ctx) => { // eslint-disable-line no-shadow
-                            const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'gctools-'));
-                            const tempFiles = [];
-
                             try {
-                                const metaFields = ['feature_image', 'og_image', 'twitter_image'];
-
-                                // Download and upload each file, building a URL map
-                                const urlMap = new Map();
-
-                                for (const mediaUrl of post.externalMedia) {
-                                    try {
-                                        const {filePath, contentType} = await downloadFile(mediaUrl, tmpDir);
-                                        tempFiles.push(filePath);
-
-                                        const uploadResult = await uploadToGhost(ctx.api, filePath, contentType);
-
-                                        if (uploadResult) {
-                                            urlMap.set(mediaUrl, uploadResult.url);
-                                        } else {
-                                            ctx.errors.push(`Skipping unsupported type (${contentType}): ${mediaUrl}`);
-                                        }
-                                    } catch (e) {
-                                        const reason = e.message || e.context || e.statusCode || String(e);
-                                        ctx.errors.push(`Failed to process ${mediaUrl}: ${reason}`);
-                                    }
-                                }
-
-                                if (urlMap.size === 0) {
-                                    return;
-                                }
-
-                                // Re-read for latest updated_at
                                 const apiType = post._type || 'posts';
                                 let currentPost = await ctx.api[apiType].read({id: post.id, include: 'tags', formats: 'mobiledoc,lexical'});
 
-                                // Replace URLs in metadata fields
                                 let updatePayload = {
                                     id: currentPost.id,
                                     updated_at: currentPost.updated_at
                                 };
 
                                 for (const field of metaFields) {
-                                    if (currentPost[field] && urlMap.has(currentPost[field])) {
-                                        updatePayload[field] = urlMap.get(currentPost[field]);
+                                    if (currentPost[field] && ctx.urlMap.has(currentPost[field])) {
+                                        updatePayload[field] = ctx.urlMap.get(currentPost[field]);
                                     }
                                 }
 
-                                // Replace URLs in lexical content
                                 if (currentPost.lexical) {
                                     try {
                                         let updatedLexical = JSON.parse(currentPost.lexical);
-                                        replaceUrlsInLexical(updatedLexical.root, urlMap);
+                                        replaceUrlsInLexical(updatedLexical.root, ctx.urlMap);
                                         updatePayload.lexical = JSON.stringify(updatedLexical);
                                     } catch (e) {
                                         // Skip if invalid JSON
                                     }
                                 }
 
-                                // Replace URLs in mobiledoc content
                                 if (currentPost.mobiledoc) {
                                     try {
                                         let updatedMobiledoc = JSON.parse(currentPost.mobiledoc);
                                         if (updatedMobiledoc.cards) {
-                                            replaceUrlsInMobiledoc(updatedMobiledoc.cards, urlMap);
+                                            replaceUrlsInMobiledoc(updatedMobiledoc.cards, ctx.urlMap);
                                         }
                                         updatePayload.mobiledoc = JSON.stringify(updatedMobiledoc);
                                     } catch (e) {
@@ -509,7 +557,6 @@ const getFullTaskList = (options) => {
                                     }
                                 }
 
-                                // Add #ImagesUploaded tag
                                 let updatedTags = [...currentPost.tags, {name: '#ImagesUploaded'}];
                                 updatePayload.tags = updatedTags;
 
@@ -526,20 +573,6 @@ const getFullTaskList = (options) => {
                                 };
                                 ctx.errors.push(error);
                                 throw error;
-                            } finally {
-                                // Clean up temp files
-                                for (const tempFile of tempFiles) {
-                                    try {
-                                        fs.unlinkSync(tempFile);
-                                    } catch (e) {
-                                        // Ignore cleanup errors
-                                    }
-                                }
-                                try {
-                                    fs.rmdirSync(tmpDir);
-                                } catch (e) {
-                                    // Ignore if not empty or already removed
-                                }
                             }
                         }
                     });
@@ -548,6 +581,29 @@ const getFullTaskList = (options) => {
                 let taskOptions = options;
                 taskOptions.concurrent = 5;
                 return makeTaskRunner(tasks, taskOptions);
+            }
+        },
+        {
+            title: 'Cleaning up temp files',
+            enabled: () => !options.dryRun,
+            skip: (ctx) => {
+                return !ctx.tmpDir;
+            },
+            task: (ctx) => {
+                if (ctx.downloaded) {
+                    for (const {filePath} of ctx.downloaded) {
+                        try {
+                            fs.unlinkSync(filePath);
+                        } catch (e) {
+                            // Ignore cleanup errors
+                        }
+                    }
+                }
+                try {
+                    fs.rmdirSync(ctx.tmpDir);
+                } catch (e) {
+                    // Ignore if not empty or already removed
+                }
             }
         }
     ];
