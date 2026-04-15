@@ -10,6 +10,14 @@ import _ from 'lodash';
 import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
 
+// Domains that should never be scraped
+const blockedDomains = [
+    'storage.ghost.io',
+    'images.unsplash.com',
+    'gravatar.com',
+    'www.gravatar.com'
+];
+
 // Allowlist of MIME types we handle
 const knownImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon', 'image/webp', 'image/avif', 'image/heif', 'image/heic', 'image/mpo'];
 const knownMediaTypes = ['video/mp4', 'video/webm', 'video/ogg', 'audio/mpeg', 'audio/vnd.wav', 'audio/wave', 'audio/wav', 'audio/x-wav', 'audio/ogg', 'audio/mp4', 'audio/x-m4a'];
@@ -393,6 +401,16 @@ const getFullTaskList = (options) => {
                             // and filter by asset domain if specified
                             mediaUrls = [...new Set(mediaUrls)].filter((url) => {
                                 if (url.startsWith(ctx.siteUrl)) {
+                                    return false;
+                                }
+                                try {
+                                    const urlHost = new URL(url).hostname;
+                                    if (blockedDomains.some((d) => {
+                                        return urlHost === d || urlHost.endsWith(`.${d}`);
+                                    })) {
+                                        return false;
+                                    }
+                                } catch (e) {
                                     return false;
                                 }
                                 if (ctx.args.assetDomains && ctx.args.assetDomains.length > 0) {
