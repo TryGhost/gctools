@@ -160,7 +160,14 @@ const replaceUrlsInMobiledoc = (cards, urlMap) => {
  * HEIC/HEIF images are converted to JPEG before saving.
  */
 const downloadFile = async (url, tmpDir) => {
-    const response = await axios.get(url, {responseType: 'arraybuffer'});
+    const response = await axios.get(url, {
+        responseType: 'arraybuffer',
+        timeout: 60000,
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (compatible; GCTools/1.0)',
+            Accept: '*/*'
+        }
+    });
     let contentType = response.headers['content-type'] || '';
     let data = Buffer.from(response.data);
 
