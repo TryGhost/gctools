@@ -163,10 +163,20 @@ async function run() {
         try {
             let runner = inlineMedia.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
         } catch (error) {
-            ui.log.error('Done with errors', context.errors);
+            ui.log.error('Done with errors');
         }
+
+        if (context.errors.length > 0) {
+            ui.log.warn(`\n${context.errors.length} errors encountered:`);
+            context.errors.forEach((err) => {
+                const message = typeof err === 'string' ? err : (err.message || err.context || String(err));
+                ui.log.warn(`  - ${message}`);
+            });
+            ui.log.info('');
+        }
+
+        ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
     });
 }
 

@@ -95,7 +95,16 @@ const run = async (argv) => {
         // Run the migration
         await runner.run(context);
     } catch (error) {
-        ui.log.error('Done with errors', context.errors);
+        ui.log.error('Done with errors');
+    }
+
+    if (context.errors.length > 0) {
+        ui.log.warn(`\n${context.errors.length} errors encountered:`);
+        context.errors.forEach((err) => {
+            const message = typeof err === 'string' ? err : (err.message || err.context || String(err));
+            ui.log.warn(`  - ${message}`);
+        });
+        ui.log.info('');
     }
 
     // Report success
