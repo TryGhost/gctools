@@ -546,7 +546,7 @@ const getFullTaskList = (options) => {
                 });
 
                 let taskOptions = options;
-                taskOptions.concurrent = 3;
+                taskOptions.concurrent = 5;
                 return makeTaskRunner(tasks, taskOptions);
             }
         }
