@@ -11,7 +11,7 @@ import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
 
 // Allowlist of MIME types we handle
-const knownImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon', 'image/webp', 'image/avif', 'image/heif', 'image/heic'];
+const knownImageTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/svg+xml', 'image/x-icon', 'image/vnd.microsoft.icon', 'image/webp', 'image/avif', 'image/heif', 'image/heic', 'image/mpo'];
 const knownMediaTypes = ['video/mp4', 'video/webm', 'video/ogg', 'audio/mpeg', 'audio/vnd.wav', 'audio/wave', 'audio/wav', 'audio/x-wav', 'audio/ogg', 'audio/mp4', 'audio/x-m4a'];
 const knownFileTypes = ['application/pdf', 'application/json', 'application/ld+json', 'application/vnd.oasis.opendocument.presentation', 'application/vnd.oasis.opendocument.spreadsheet', 'application/vnd.oasis.opendocument.text', 'application/vnd.ms-powerpoint', 'application/vnd.openxmlformats-officedocument.presentationml.presentation', 'application/rtf', 'text/plain', 'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/xml', 'application/atom+xml'];
 
@@ -183,9 +183,15 @@ const downloadFile = async (url, tmpDir) => {
         contentType = 'image/jpeg';
     }
 
+    // MPO is essentially a multi-frame JPEG; the first frame is a standard JPEG
+    if (mime === 'image/mpo') {
+        contentType = 'image/jpeg';
+    }
+
     const urlPath = new URL(url).pathname;
     const origExt = path.extname(urlPath) || '.bin';
-    const ext = (mime === 'image/heic' || mime === 'image/heif') ? '.jpg' : origExt;
+    const convertedToJpg = mime === 'image/heic' || mime === 'image/heif' || mime === 'image/mpo';
+    const ext = convertedToJpg ? '.jpg' : origExt;
     const basename = path.basename(urlPath, origExt) || 'file';
     const filename = `${basename}-${Date.now()}${ext}`;
     const filePath = path.join(tmpDir, filename);
