@@ -400,6 +400,16 @@ const getFullTaskList = (options) => {
                             // Deduplicate, filter out media already on the Ghost site,
                             // and filter by asset domain if specified
                             mediaUrls = [...new Set(mediaUrls)].filter((url) => {
+                                // Skip malformed URLs (e.g. concatenated URLs like "https://site.comhttps://other.com/...")
+                                try {
+                                    const parsed = new URL(url);
+                                    if (parsed.hostname.includes('http') || (url.match(/https?:\/\//g) || []).length > 1) {
+                                        return false;
+                                    }
+                                } catch (e) {
+                                    return false;
+                                }
+
                                 if (url.startsWith(ctx.siteUrl)) {
                                     return false;
                                 }
