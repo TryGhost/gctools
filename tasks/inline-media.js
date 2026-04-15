@@ -600,9 +600,10 @@ const getFullTaskList = (options) => {
                                     error.message = error.context || error.statusCode || String(error);
                                 }
                                 error.resource = {
-                                    title: post.title
+                                    title: post.title,
+                                    url: post.url
                                 };
-                                ctx.errors.push(error);
+                                ctx.errors.push(`Failed to update post "${post.title}" (${post.url}): ${error.message}`);
                                 throw error;
                             }
                         }
