@@ -73,6 +73,7 @@ Available tools include:
 * [`set-featured-images`](#set-featured-images)
 * [`clean-slugs`](#clean-slugs)
 * [`set-podcast`](#set-podcast)
+* [`update-posts-from-json`](#update-posts-from-json)
 
 Each of the tools also has a traditional CLI counterpart with more options, detailed below.
 
@@ -1007,6 +1008,40 @@ gctools set-podcast <apiURL> <adminAPIKey> --delayBetweenCalls 100
 This command automatically finds the first audio element in post content and uses its source URL to populate the Facebook description field, which is useful for Ghost's [podcast workaround](https://ghost.org/tutorials/custom-rss-feed)
 
 **Available options:**
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
+### update-posts-from-json
+
+Update live Ghost posts using data from a Ghost export JSON file. Posts are matched by slug, and you choose which fields to update. Only posts with actual changes are modified — unchanged posts are skipped. Changed posts are tagged with an internal `#edited-<timestamp>` tag for easy identification.
+
+```sh
+# See all available options
+gctools update-posts-from-json --help
+
+# Dry run to preview what would change
+gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'title,lexical' --dryRun
+
+# Update title and lexical content from the JSON file
+gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'title,lexical'
+
+# Update multiple metadata fields
+gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'meta_title,meta_description,og_title,og_description'
+
+# Update feature images
+gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'feature_image,feature_image_alt,feature_image_caption'
+
+# Custom delay between API calls
+gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'title' --delayBetweenCalls 100
+```
+
+The JSON file should be in the standard Ghost export format (`{db: [{data: {posts: [...]}}]}`).
+
+**Available fields:** `title`, `slug`, `lexical`, `feature_image`, `feature_image_alt`, `feature_image_caption`, `custom_excerpt`, `meta_title`, `meta_description`, `og_title`, `og_description`, `og_image`, `twitter_title`, `twitter_description`, `twitter_image`, `status`, `visibility`, `canonical_url`, `codeinjection_head`, `codeinjection_foot`
+
+**Available options:**
+- `--fields`: Comma-separated list of fields to update (required)
+- `--dryRun`: Preview what would be changed without making any updates
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
 
