@@ -112,6 +112,10 @@ const run = async () => {
                 name: tasks.inlineMedia.choice.name,
                 value: tasks.inlineMedia.choice.value
             },
+            {
+                name: tasks.updatePostsFromJson.choice.name,
+                value: tasks.updatePostsFromJson.choice.value
+            },
             new inquirer.Separator('--- Members API Utilities ---------'),
             {
                 name: tasks.addMemberCompSubscription.choice.name,
