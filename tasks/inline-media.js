@@ -2,10 +2,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import os from 'node:os';
 import axios from 'axios';
+import {fileTypeFromBuffer} from 'file-type';
 import heicConvert from 'heic-convert';
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import errors from '@tryghost/errors';
 import _ from 'lodash';
 import {transformToCommaString} from '../lib/utils.js';
 import {discover} from '../lib/batch-ghost-discover.js';
@@ -163,9 +165,35 @@ const replaceUrlsInMobiledoc = (cards, urlMap) => {
     }
 };
 
+// Map MIME types to file extensions
+const mimeToExt = {
+    'image/jpeg': '.jpg',
+    'image/jpg': '.jpg',
+    'image/png': '.png',
+    'image/gif': '.gif',
+    'image/webp': '.webp',
+    'image/svg+xml': '.svg',
+    'image/avif': '.avif',
+    'image/x-icon': '.ico',
+    'image/vnd.microsoft.icon': '.ico',
+    'video/mp4': '.mp4',
+    'video/webm': '.webm',
+    'video/ogg': '.ogv',
+    'audio/mpeg': '.mp3',
+    'audio/ogg': '.ogg',
+    'audio/wav': '.wav',
+    'audio/vnd.wav': '.wav',
+    'audio/wave': '.wav',
+    'audio/x-wav': '.wav',
+    'audio/mp4': '.m4a',
+    'audio/x-m4a': '.m4a',
+    'application/pdf': '.pdf'
+};
+
 /**
  * Download a file to a temp directory, returning the file path and content type.
  * HEIC/HEIF images are converted to JPEG before saving.
+ * The file is always saved with an extension derived from the content type.
  */
 const downloadFile = async (url, tmpDir) => {
     const response = await axios.get(url, {
@@ -176,13 +204,20 @@ const downloadFile = async (url, tmpDir) => {
             Accept: '*/*'
         }
     });
-    let contentType = response.headers['content-type'] || '';
     let data = Buffer.from(response.data);
 
-    const mime = contentType.split(';')[0].trim();
+    // Detect the actual file type from the bytes, fall back to the server's content-type header
+    const detected = await fileTypeFromBuffer(data);
+    let contentType = detected ? detected.mime : (response.headers['content-type'] || '').split(';')[0].trim();
+
+    // Reject responses that aren't a known media type (e.g. HTML error pages from CDNs)
+    const allKnownTypes = [...knownImageTypes, ...knownMediaTypes, ...knownFileTypes];
+    if (!allKnownTypes.includes(contentType)) {
+        throw new errors.ValidationError({message: `Unsupported file type: ${contentType}`});
+    }
 
     // Convert HEIC/HEIF to JPEG
-    if (mime === 'image/heic' || mime === 'image/heif') {
+    if (contentType === 'image/heic' || contentType === 'image/heif') {
         data = Buffer.from(await heicConvert({
             buffer: data,
             format: 'JPEG',
@@ -192,16 +227,18 @@ const downloadFile = async (url, tmpDir) => {
     }
 
     // MPO is essentially a multi-frame JPEG; the first frame is a standard JPEG
-    if (mime === 'image/mpo') {
+    if (contentType === 'image/mpo') {
         contentType = 'image/jpeg';
     }
 
+    const ext = mimeToExt[contentType] || `.${detected?.ext || 'bin'}`;
+
+    // Use the URL path for a readable basename, but strip any bogus extension
     const urlPath = new URL(url).pathname;
-    const origExt = path.extname(urlPath) || '.bin';
-    const convertedToJpg = mime === 'image/heic' || mime === 'image/heif' || mime === 'image/mpo';
-    const ext = convertedToJpg ? '.jpg' : origExt;
-    const basename = path.basename(urlPath, origExt) || 'file';
-    const filename = `${basename}-${Date.now()}${ext}`;
+    const urlBasename = path.basename(urlPath, path.extname(urlPath)) || 'file';
+    // Sanitise basename to remove characters that could cause issues
+    const safeName = urlBasename.replace(/[^a-zA-Z0-9_-]/g, '_');
+    const filename = `${safeName}-${Date.now()}${ext}`;
     const filePath = path.join(tmpDir, filename);
 
     fs.writeFileSync(filePath, data);
@@ -528,7 +565,7 @@ const getFullTaskList = (options) => {
                                 }
                             } catch (e) {
                                 const reason = e.message || e.context || e.statusCode || String(e);
-                                ctx.errors.push(`Failed to upload ${mediaUrl}: ${reason}`);
+                                ctx.errors.push(`Failed to upload ${mediaUrl} (${filePath}): ${reason}`);
                             }
                         }
                     });
