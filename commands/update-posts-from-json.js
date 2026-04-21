@@ -36,6 +36,14 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Preview what would be changed without making any updates'
     });
+    sywac.boolean('--insertMissing', {
+        defaultValue: false,
+        desc: 'Create posts from JSON that do not exist in Ghost (matched by slug). New posts default to draft status.'
+    });
+    sywac.boolean('--skipExisting', {
+        defaultValue: false,
+        desc: 'Skip updating posts that already exist in Ghost. Typically paired with --insertMissing.'
+    });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'
@@ -47,23 +55,28 @@ const run = async (argv) => {
     let timer = Date.now();
     let context = {errors: []};
 
-    if (!argv.fields) {
+    if (!argv.fields && !argv.insertMissing) {
         ui.log.error(`Please provide --fields. Available fields: ${validFieldValues.join(', ')}`);
         return;
     }
 
-    // Parse and validate fields
-    let fields = argv.fields.split(',').map(f => f.trim()).filter(Boolean);
-    let invalidFields = fields.filter(f => !validFieldValues.includes(f));
+    let fields;
+    if (argv.fields) {
+        fields = argv.fields.split(',').map(f => f.trim()).filter(Boolean);
+        let invalidFields = fields.filter(f => !validFieldValues.includes(f));
 
-    if (invalidFields.length > 0) {
-        ui.log.error(`Invalid fields: ${invalidFields.join(', ')}. Available fields: ${validFieldValues.join(', ')}`);
-        return;
-    }
+        if (invalidFields.length > 0) {
+            ui.log.error(`Invalid fields: ${invalidFields.join(', ')}. Available fields: ${validFieldValues.join(', ')}`);
+            return;
+        }
 
-    if (fields.length === 0) {
-        ui.log.error(`No valid fields provided. Available fields: ${validFieldValues.join(', ')}`);
-        return;
+        if (fields.length === 0) {
+            ui.log.error(`No valid fields provided. Available fields: ${validFieldValues.join(', ')}`);
+            return;
+        }
+    } else {
+        // --insertMissing with no --fields: default to all updatable fields for inserts
+        fields = validFieldValues;
     }
 
     argv.fields = fields;
@@ -80,6 +93,10 @@ const run = async (argv) => {
     }
 
     ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
+
+    if (context.created && context.created.length > 0) {
+        ui.log.ok(`Created ${context.created.length} new posts.`);
+    }
 };
 
 export default {

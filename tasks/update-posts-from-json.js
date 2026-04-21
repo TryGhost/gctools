@@ -57,12 +57,15 @@ const initialise = (options) => {
             ctx.jsonPosts = [];
             ctx.ghostPosts = [];
             ctx.matched = [];
+            ctx.unmatched = [];
             ctx.updated = [];
+            ctx.created = [];
             ctx.skipped = [];
 
             // Generate tag once for the entire batch
             let timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
             ctx.editTag = `#edited-${timestamp}`;
+            ctx.addedTag = `#added-${timestamp}`;
 
             task.output = `Initialised API connection for ${options.apiURL}`;
         }
@@ -79,6 +82,51 @@ const getFullTaskList = (options) => {
                     const jsonFileData = await fs.readJson(options.jsonFile.trim());
                     const json = (jsonFileData.data) ? jsonFileData : jsonFileData.db[0];
                     ctx.jsonPosts = json.data.posts;
+
+                    // Build post-id -> author emails map from users + posts_authors join
+                    let usersById = new Map();
+                    (json.data.users || []).forEach((user) => {
+                        usersById.set(user.id, user);
+                    });
+
+                    let postAuthors = new Map();
+                    (json.data.posts_authors || [])
+                        .slice()
+                        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+                        .forEach((row) => {
+                            let user = usersById.get(row.author_id);
+                            if (!user || !user.email) {
+                                return;
+                            }
+                            if (!postAuthors.has(row.post_id)) {
+                                postAuthors.set(row.post_id, []);
+                            }
+                            postAuthors.get(row.post_id).push(user.email);
+                        });
+                    ctx.postAuthors = postAuthors;
+
+                    // Build post-id -> tags map from tags + posts_tags join
+                    let tagsById = new Map();
+                    (json.data.tags || []).forEach((tag) => {
+                        tagsById.set(tag.id, tag);
+                    });
+
+                    let postTags = new Map();
+                    (json.data.posts_tags || [])
+                        .slice()
+                        .sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0))
+                        .forEach((row) => {
+                            let tag = tagsById.get(row.tag_id);
+                            if (!tag) {
+                                return;
+                            }
+                            if (!postTags.has(row.post_id)) {
+                                postTags.set(row.post_id, []);
+                            }
+                            postTags.get(row.post_id).push(tag);
+                        });
+                    ctx.postTags = postTags;
+
                     task.output = `Found ${ctx.jsonPosts.length} posts in JSON file`;
                 } catch (error) {
                     ctx.errors.push(error);
@@ -119,6 +167,8 @@ const getFullTaskList = (options) => {
                     let ghostPost = ghostPostMap.get(jsonPost.slug);
                     if (ghostPost) {
                         ctx.matched.push({jsonPost, ghostPost});
+                    } else if (options.insertMissing) {
+                        ctx.unmatched.push(jsonPost);
                     } else {
                         ctx.errors.push({
                             message: `No matching Ghost post found for slug "${jsonPost.slug}"`
@@ -126,14 +176,14 @@ const getFullTaskList = (options) => {
                     }
                 });
 
-                let unmatched = ctx.jsonPosts.length - ctx.matched.length;
-                task.output = `Matched ${ctx.matched.length} of ${ctx.jsonPosts.length} posts (${unmatched} unmatched)`;
+                let unmatchedCount = ctx.jsonPosts.length - ctx.matched.length;
+                task.output = `Matched ${ctx.matched.length} of ${ctx.jsonPosts.length} posts (${unmatchedCount} unmatched)`;
             }
         },
         {
             title: 'Updating posts',
             skip: (ctx) => {
-                return ctx.matched.length === 0;
+                return options.skipExisting || ctx.matched.length === 0;
             },
             task: async (ctx) => {
                 let tasks = [];
@@ -186,6 +236,85 @@ const getFullTaskList = (options) => {
                             } catch (error) {
                                 error.resource = {
                                     title: ghostPost.title
+                                };
+                                ctx.errors.push(error);
+                                throw error;
+                            }
+                        }
+                    });
+                });
+
+                return makeTaskRunner(tasks, {
+                    concurrent: 1,
+                    verbose: options.verbose
+                });
+            }
+        },
+        {
+            title: 'Creating missing posts',
+            skip: (ctx) => {
+                return !options.insertMissing || ctx.unmatched.length === 0;
+            },
+            task: async (ctx) => {
+                let tasks = [];
+
+                await Promise.mapSeries(ctx.unmatched, async (jsonPost) => {
+                    tasks.push({
+                        title: jsonPost.title || jsonPost.slug,
+                        task: async (ctx, task) => { // eslint-disable-line no-shadow
+                            try {
+                                let addPayload = {
+                                    status: 'draft'
+                                };
+
+                                ctx.args.fields.forEach((field) => {
+                                    if (jsonPost[field] === undefined) {
+                                        return;
+                                    }
+                                    addPayload[field] = jsonPost[field];
+                                });
+
+                                // Always include slug so the created post matches the JSON
+                                if (jsonPost.slug) {
+                                    addPayload.slug = jsonPost.slug;
+                                }
+
+                                // Preserve original timestamps from the JSON export
+                                if (jsonPost.published_at) {
+                                    addPayload.published_at = jsonPost.published_at;
+                                }
+                                if (jsonPost.created_at) {
+                                    addPayload.created_at = jsonPost.created_at;
+                                }
+                                if (jsonPost.updated_at) {
+                                    addPayload.updated_at = jsonPost.updated_at;
+                                }
+
+                                // Map authors from JSON export by email
+                                let authorEmails = ctx.postAuthors.get(jsonPost.id) || [];
+                                if (authorEmails.length > 0) {
+                                    addPayload.authors = authorEmails.map(email => ({email}));
+                                }
+
+                                if (options.dryRun) {
+                                    task.output = `would create: ${addPayload.slug || jsonPost.title}`;
+                                    ctx.created.push(addPayload.slug || jsonPost.title);
+                                    return;
+                                }
+
+                                let postTags = ctx.postTags.get(jsonPost.id) || [];
+                                addPayload.tags = [
+                                    ...postTags.map(tag => ({name: tag.name, slug: tag.slug})),
+                                    {name: ctx.addedTag}
+                                ];
+
+                                let result = await ctx.api.posts.add(addPayload);
+
+                                ctx.created.push(result.url);
+                                return Promise.delay(options.delayBetweenCalls).return(result);
+                            } catch (error) {
+                                error.resource = {
+                                    title: jsonPost.title || jsonPost.slug
                                 };
                                 ctx.errors.push(error);
                                 throw error;
