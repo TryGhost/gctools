@@ -1876,10 +1876,10 @@
   optionalDependencies:
     sharp "^0.34.2"
 
-"@tryghost/listr-smart-renderer@0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.11.0.tgz#20916ca57ab726d2f58d7231b89d9cf3cd18f943"
-  integrity sha512-K1COGNPwtoeIzVvXcUb+KVyE8X9GH4wGt6A9f1dHsuFZuy3YSeQ+sghjjkO/NnK99Gci3uC1NuLM8DD7qoqQhw==
+"@tryghost/listr-smart-renderer@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.12.0.tgz#dcd6c4dd45820ee7d80b9f557563f07ab4e7b6ea"
+  integrity sha512-mf0NbXBqtFE5YPdfwCmG2xgrg1VmtWK/pDYqEKQXXkWBRXxaJj+xpq5n29vA7Z0mH0bqVoezqaUf5wlNwEOepg==
   dependencies:
     chalk "5.6.2"
     cli-truncate "6.0.0"
@@ -1907,15 +1907,15 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper-db@0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.9.0.tgz#7202c32f2ae7fc0a7a16618b478ba0e247d7d1b2"
-  integrity sha512-P3/RZyTsjsqOJUg0skFek1OqMzUNKGXgYjP0u5rA5fBpLtYTv1lOd8loYeB+25D2r9vdIgB42ALdggyO2n2jiQ==
+"@tryghost/mg-assetscraper-db@0.10.0":
+  version "0.10.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.10.0.tgz#b2cbd796685421ba77bdc63ad40f0511a0aeca2b"
+  integrity sha512-2+knUMp2q+x8vUThaXXgz8ymRfEsfLoqaIc3qJH57ynCe2Z2rxPnCIBs/AGhFBihkJGdFOAxt3xo0nsQumVYsg==
   dependencies:
     "@tryghost/debug" "2.0.3"
     "@tryghost/errors" "3.0.3"
-    "@tryghost/listr-smart-renderer" "0.11.0"
-    "@tryghost/mg-fs-utils" "0.22.0"
+    "@tryghost/listr-smart-renderer" "0.12.0"
+    "@tryghost/mg-fs-utils" "0.23.0"
     "@tryghost/string" "0.3.1"
     file-type "22.0.1"
     fs-extra "11.3.4"
@@ -1924,10 +1924,10 @@
     transliteration "2.6.1"
     uuid "13.0.0"
 
-"@tryghost/mg-fs-utils@0.22.0":
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.22.0.tgz#e91a351090edd552cb0e3d99931659ec00ed054f"
-  integrity sha512-DvCeGg1qsjurus/om3MiraiC03TxefLghDue458RoGjwDz+5z2jDSBV0rTO5tFyTNTW/FV5K/xew6VlhGaSACg==
+"@tryghost/mg-fs-utils@0.23.0":
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.23.0.tgz#d789486e133528e9be95eead2316d85777e2e800"
+  integrity sha512-d8gCG2B8TsP6OuOaovMhUNSqkaiVji9to9GLbogKrWn82gLFNtxBIWzLwDshCgZ+7KpxXUp1E3qCTPTQsUpBYg==
   dependencies:
     "@tryghost/errors" "3.0.3"
     "@tryghost/image-transform" "1.4.12"
@@ -1935,15 +1935,15 @@
     "@tryghost/zip" "3.0.3"
     adm-zip "0.5.17"
     csv-parse "6.2.1"
-    dotenv "17.4.1"
+    dotenv "17.4.2"
     fs-extra "11.3.4"
     sharp "0.34.5"
     transliteration "2.6.1"
 
-"@tryghost/mg-ghost-authors@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.6.0.tgz#766caa43d4ffbac1f400247438f211fb382cf9be"
-  integrity sha512-tK2ysKf55dyW7wGR0KEQi75DB6jo1hAyFDkKyd03cNs0zZ/emZbIUPc1y3sfnceQy+lveJyLb7ICZ7sGtPGXQQ==
+"@tryghost/mg-ghost-authors@0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.7.0.tgz#8a46b45b6edf384f2a36f0c3d14c3420641facf3"
+  integrity sha512-wH9hbCgBB7JUx4PXvzxrLuTU+eTbau+mlU+bje5QsEemKVDVG9h05NrJhZhubtV1oFcBLniuc/DjR06ysdbbcw==
   dependencies:
     "@tryghost/admin-api" "1.14.6"
     "@tryghost/errors" "3.0.3"
@@ -3109,10 +3109,10 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
-dotenv@17.4.1:
-  version "17.4.1"
-  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.4.1.tgz#d8e2179fe287365ef3aecb9459668454168eda88"
-  integrity sha512-k8DaKGP6r1G30Lx8V4+pCsLzKr8vLmV2paqEj1Y55GdAgJuIqpRp5FfajGF8KtwMxCz9qJc6wUIJnm053d/WCw==
+dotenv@17.4.2:
+  version "17.4.2"
+  resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-17.4.2.tgz#c07e54a746e11eba021dd9e1047ced5afdc1c034"
+  integrity sha512-nI4U3TottKAcAD9LLud4Cb7b2QztQMUEfHbvhTH09bqXTxnSie8WnjPALV/WMCrJZ6UV/qHJ6L03OqO3LcdYZw==
 
 dtrace-provider@~0.8:
   version "0.8.8"
