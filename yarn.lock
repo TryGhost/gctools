@@ -1788,12 +1788,12 @@
     form-data "4.0.5"
     jsonwebtoken "9.0.3"
 
-"@tryghost/admin-api@1.14.7":
-  version "1.14.7"
-  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.14.7.tgz#58c45c9d72a12a060d3bd9240d2f2ca4f18654da"
-  integrity sha512-0SmxuxhWFYT3qc3LKZcsM7EbKiqgVB+pkOR6ydvJS7XGxHyNxOFziTmnSCGdwTxuS+o+EB/T1KW8QGJnJJhrAA==
+"@tryghost/admin-api@1.14.8":
+  version "1.14.8"
+  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.14.8.tgz#66f9f35cd866eaa79dfc52e6cb255285bf7d19f0"
+  integrity sha512-0BZkiiFsZSNos5Iy9IJRgDo9InN3/lKDEySslqZV/hyBDBRtnZntNfDzLZjTaYDaH8h3gRuG7dCq6T95sKW+KA==
   dependencies:
-    axios "1.13.6"
+    axios "1.15.2"
     form-data "4.0.5"
     jsonwebtoken "9.0.3"
 
@@ -2424,19 +2424,19 @@ axios@1.13.5:
     form-data "^4.0.5"
     proxy-from-env "^1.1.0"
 
-axios@1.13.6:
-  version "1.13.6"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.13.6.tgz#c3f92da917dc209a15dd29936d20d5089b6b6c98"
-  integrity sha512-ChTCHMouEe2kn713WHbQGcuYrr6fXTBiu460OTwWrWob16g1bXn4vtz07Ope7ewMozJAnEquLk5lWQWtBig9DQ==
-  dependencies:
-    follow-redirects "^1.15.11"
-    form-data "^4.0.5"
-    proxy-from-env "^1.1.0"
-
 axios@1.15.1:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/axios/-/axios-1.15.1.tgz#075420b785da8adbdf545785b69f90c926b28542"
   integrity sha512-WOG+Jj8ZOvR0a3rAn+Tuf1UQJRxw5venr6DgdbJzngJE3qG7X0kL83CZGpdHMxEm+ZK3seAbvFsw4FfOfP9vxg==
+  dependencies:
+    follow-redirects "^1.15.11"
+    form-data "^4.0.5"
+    proxy-from-env "^2.1.0"
+
+axios@1.15.2:
+  version "1.15.2"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-1.15.2.tgz#eb8fb6d30349abace6ade5b4cb4d9e8a0dc23e5b"
+  integrity sha512-wLrXxPtcrPTsNlJmKjkPnNPK2Ihe0hn0wGSaTEiHRPxwjvJwT3hKmXF4dpqxmPO9SoNb2FsYXj/xEo0gHN+D5A==
   dependencies:
     follow-redirects "^1.15.11"
     form-data "^4.0.5"
