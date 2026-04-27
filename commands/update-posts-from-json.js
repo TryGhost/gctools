@@ -44,6 +44,10 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Skip updating posts that already exist in Ghost. Typically paired with --insertMissing.'
     });
+    sywac.string('--slug', {
+        defaultValue: null,
+        desc: 'Only update the post with this slug'
+    });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'

@@ -8,6 +8,7 @@ import {discover} from '../lib/batch-ghost-discover.js';
 const UPDATABLE_FIELDS = [
     {name: 'Title', value: 'title'},
     {name: 'Slug', value: 'slug'},
+    {name: 'HTML', value: 'html'},
     {name: 'Lexical', value: 'lexical'},
     {name: 'Feature Image', value: 'feature_image'},
     {name: 'Feature Image Alt', value: 'feature_image_alt'},
@@ -146,6 +147,10 @@ const getFullTaskList = (options) => {
                     fields: 'id,url,title,slug,status,visibility,updated_at,feature_image,feature_image_alt,feature_image_caption,custom_excerpt,meta_title,meta_description,og_title,og_description,og_image,twitter_title,twitter_description,twitter_image,canonical_url,codeinjection_head,codeinjection_foot'
                 };
 
+                if (options.slug) {
+                    discoveryOptions.filter = `slug:${options.slug}`;
+                }
+
                 try {
                     ctx.ghostPosts = await discover(discoveryOptions);
                     task.output = `Found ${ctx.ghostPosts.length} posts in Ghost`;
@@ -163,7 +168,12 @@ const getFullTaskList = (options) => {
                     ghostPostMap.set(post.slug, post);
                 });
 
-                ctx.jsonPosts.forEach((jsonPost) => {
+                let jsonPostsToMatch = ctx.jsonPosts;
+                if (options.slug) {
+                    jsonPostsToMatch = jsonPostsToMatch.filter(p => p.slug === options.slug);
+                }
+
+                jsonPostsToMatch.forEach((jsonPost) => {
                     let ghostPost = ghostPostMap.get(jsonPost.slug);
                     if (ghostPost) {
                         ctx.matched.push({jsonPost, ghostPost});
@@ -176,8 +186,8 @@ const getFullTaskList = (options) => {
                     }
                 });
 
-                let unmatchedCount = ctx.jsonPosts.length - ctx.matched.length;
-                task.output = `Matched ${ctx.matched.length} of ${ctx.jsonPosts.length} posts (${unmatchedCount} unmatched)`;
+                let unmatchedCount = jsonPostsToMatch.length - ctx.matched.length;
+                task.output = `Matched ${ctx.matched.length} of ${jsonPostsToMatch.length} posts (${unmatchedCount} unmatched)`;
             }
         },
         {
@@ -225,11 +235,16 @@ const getFullTaskList = (options) => {
                                     return;
                                 }
 
+                                let editOptions = {};
+                                if (changedFields.includes('html')) {
+                                    editOptions.source = 'html';
+                                }
+
                                 // Add the edit tag to existing tags
                                 let updatedTags = [...ghostPost.tags, {name: ctx.editTag}];
                                 editPayload.tags = updatedTags;
 
-                                let result = await ctx.api.posts.edit(editPayload);
+                                let result = await ctx.api.posts.edit(editPayload, editOptions);
 
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
@@ -308,7 +323,12 @@ const getFullTaskList = (options) => {
                                     {name: ctx.addedTag}
                                 ];
 
-                                let result = await ctx.api.posts.add(addPayload);
+                                let addOptions = {};
+                                if (addPayload.html) {
+                                    addOptions.source = 'html';
+                                }
+
+                                let result = await ctx.api.posts.add(addPayload, addOptions);
 
                                 ctx.created.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);

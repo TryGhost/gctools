@@ -21,6 +21,15 @@ const options = [
         }
     },
     {
+        type: 'input',
+        name: 'slug',
+        message: 'Slug to update (leave empty for all posts):',
+        default: null,
+        filter: (input) => {
+            return input && input.trim().length > 0 ? input.trim() : null;
+        }
+    },
+    {
         type: 'checkbox',
         name: 'fields',
         message: 'Select fields to update:',

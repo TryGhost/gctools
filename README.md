@@ -1025,6 +1025,9 @@ gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fie
 # Update title and lexical content from the JSON file
 gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'title,lexical'
 
+# Update only a single post by slug
+gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'title,lexical' --slug 'my-post-slug'
+
 # Update multiple metadata fields
 gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'meta_title,meta_description,og_title,og_description'
 
@@ -1037,10 +1040,11 @@ gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fie
 
 The JSON file should be in the standard Ghost export format (`{db: [{data: {posts: [...]}}]}`).
 
-**Available fields:** `title`, `slug`, `lexical`, `feature_image`, `feature_image_alt`, `feature_image_caption`, `custom_excerpt`, `meta_title`, `meta_description`, `og_title`, `og_description`, `og_image`, `twitter_title`, `twitter_description`, `twitter_image`, `status`, `visibility`, `canonical_url`, `codeinjection_head`, `codeinjection_foot`
+**Available fields:** `title`, `slug`, `html`, `lexical`, `feature_image`, `feature_image_alt`, `feature_image_caption`, `custom_excerpt`, `meta_title`, `meta_description`, `og_title`, `og_description`, `og_image`, `twitter_title`, `twitter_description`, `twitter_image`, `status`, `visibility`, `canonical_url`, `codeinjection_head`, `codeinjection_foot`
 
 **Available options:**
 - `--fields`: Comma-separated list of fields to update (required)
+- `--slug`: Only update the post with this slug (fetches just that one post from Ghost)
 - `--dryRun`: Preview what would be changed without making any updates
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
