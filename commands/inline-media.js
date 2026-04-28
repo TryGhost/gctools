@@ -43,6 +43,14 @@ const setup = (sywac) => {
         choices: ['all', 'public', 'members', 'paid'],
         desc: 'Select posts with this visibility setting'
     });
+    sywac.string('--slug', {
+        defaultValue: null,
+        desc: 'Fetch a single post by its slug'
+    });
+    sywac.string('--id', {
+        defaultValue: null,
+        desc: 'Fetch a single post by its ID'
+    });
     sywac.string('--tag', {
         defaultValue: null,
         desc: 'Select posts with these tag slugs, inside single quotes. i.e. \'existing-tag, newsletter\''

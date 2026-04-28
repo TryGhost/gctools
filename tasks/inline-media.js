@@ -304,40 +304,55 @@ const getFullTaskList = (options) => {
                 return !options.type.includes('posts') && !options.type.includes('all');
             },
             task: async (ctx, task) => {
-                let discoveryFilter = [];
-
-                if (ctx.args.status && ctx.args.status !== 'all') {
-                    discoveryFilter.push(`status:[${ctx.args.status}]`);
-                }
-
-                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
-                    discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
-                }
-
-                if (ctx.args.tag && ctx.args.tag.length > 0) {
-                    discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
-                }
-
-                if (ctx.args.author && ctx.args.author.length > 0) {
-                    discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
-                }
-
-                // Exclude content already processed
-                discoveryFilter.push('tags:-[hash-imagesuploaded]');
-
                 try {
-                    ctx.posts = await discover({
-                        api: ctx.api,
-                        type: 'posts',
-                        limit: 100,
-                        include: 'tags',
-                        formats: 'mobiledoc,lexical',
-                        filter: discoveryFilter.join('+')
-                    });
+                    if (ctx.args.id) {
+                        try {
+                            let post = await ctx.api.posts.read({id: ctx.args.id}, {include: 'tags', formats: 'mobiledoc,lexical'});
+                            post._type = 'posts';
+                            ctx.posts = [post];
+                        } catch (e) {
+                            // ID may belong to a page, not a post
+                            ctx.posts = [];
+                        }
+                    } else {
+                        let discoveryFilter = [];
 
-                    ctx.posts.forEach((post) => {
-                        post._type = 'posts';
-                    });
+                        if (ctx.args.status && ctx.args.status !== 'all') {
+                            discoveryFilter.push(`status:[${ctx.args.status}]`);
+                        }
+
+                        if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                            discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                        }
+
+                        if (ctx.args.slug) {
+                            discoveryFilter.push(`slug:${ctx.args.slug}`);
+                        }
+
+                        if (ctx.args.tag && ctx.args.tag.length > 0) {
+                            discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                        }
+
+                        if (ctx.args.author && ctx.args.author.length > 0) {
+                            discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                        }
+
+                        // Exclude content already processed
+                        discoveryFilter.push('tags:-[hash-imagesuploaded]');
+
+                        ctx.posts = await discover({
+                            api: ctx.api,
+                            type: 'posts',
+                            limit: 100,
+                            include: 'tags',
+                            formats: 'mobiledoc,lexical',
+                            filter: discoveryFilter.join('+')
+                        });
+
+                        ctx.posts.forEach((post) => {
+                            post._type = 'posts';
+                        });
+                    }
 
                     task.output = `Found ${ctx.posts.length} posts`;
                 } catch (error) {
@@ -352,35 +367,50 @@ const getFullTaskList = (options) => {
                 return !options.type.includes('pages') && !options.type.includes('all');
             },
             task: async (ctx, task) => {
-                let discoveryFilter = [];
-
-                if (ctx.args.visibility && ctx.args.visibility !== 'all') {
-                    discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
-                }
-
-                if (ctx.args.tag && ctx.args.tag.length > 0) {
-                    discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
-                }
-
-                if (ctx.args.author && ctx.args.author.length > 0) {
-                    discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
-                }
-
-                discoveryFilter.push('tags:-[hash-imagesuploaded]');
-
                 try {
-                    ctx.pages = await discover({
-                        api: ctx.api,
-                        type: 'pages',
-                        limit: 100,
-                        include: 'tags',
-                        formats: 'mobiledoc,lexical',
-                        filter: discoveryFilter.join('+')
-                    });
+                    if (ctx.args.id) {
+                        try {
+                            let page = await ctx.api.pages.read({id: ctx.args.id}, {include: 'tags', formats: 'mobiledoc,lexical'});
+                            page._type = 'pages';
+                            ctx.pages = [page];
+                        } catch (e) {
+                            // ID may belong to a post, not a page
+                            ctx.pages = [];
+                        }
+                    } else {
+                        let discoveryFilter = [];
 
-                    ctx.pages.forEach((page) => {
-                        page._type = 'pages';
-                    });
+                        if (ctx.args.visibility && ctx.args.visibility !== 'all') {
+                            discoveryFilter.push(`visibility:[${ctx.args.visibility}]`);
+                        }
+
+                        if (ctx.args.slug) {
+                            discoveryFilter.push(`slug:${ctx.args.slug}`);
+                        }
+
+                        if (ctx.args.tag && ctx.args.tag.length > 0) {
+                            discoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                        }
+
+                        if (ctx.args.author && ctx.args.author.length > 0) {
+                            discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                        }
+
+                        discoveryFilter.push('tags:-[hash-imagesuploaded]');
+
+                        ctx.pages = await discover({
+                            api: ctx.api,
+                            type: 'pages',
+                            limit: 100,
+                            include: 'tags',
+                            formats: 'mobiledoc,lexical',
+                            filter: discoveryFilter.join('+')
+                        });
+
+                        ctx.pages.forEach((page) => {
+                            page._type = 'pages';
+                        });
+                    }
 
                     task.output = `Found ${ctx.pages.length} pages`;
                 } catch (error) {

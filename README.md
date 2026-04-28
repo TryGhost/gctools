@@ -389,6 +389,10 @@ Supported file types are routed to the correct Ghost upload endpoint:
 # Inline all external media across all posts and pages
 gctools inline-media <apiURL> <adminAPIKey>
 
+# Only process a single post by slug or ID
+gctools inline-media <apiURL> <adminAPIKey> --slug 'my-post-slug'
+gctools inline-media <apiURL> <adminAPIKey> --id '69d78ee0149bd000016f2852'
+
 # Only process posts (not pages)
 gctools inline-media <apiURL> <adminAPIKey> --type posts
 

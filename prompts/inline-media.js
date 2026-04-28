@@ -15,6 +15,22 @@ const choice = {
 const options = [
     ...ghostAPICreds,
     {
+        type: 'input',
+        name: 'slug',
+        message: 'Filter by slug (leave blank for all):',
+        filter: function (val) {
+            return val.trim() || null;
+        }
+    },
+    {
+        type: 'input',
+        name: 'id',
+        message: 'Filter by post ID (leave blank for all):',
+        filter: function (val) {
+            return val.trim() || null;
+        }
+    },
+    {
         type: 'checkbox',
         name: 'type',
         message: 'Content type:',
