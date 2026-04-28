@@ -385,6 +385,8 @@ Supported file types are routed to the correct Ghost upload endpoint:
 - **Media** (`/media/upload/`): MP4, WebM, OGG, MP3, WAV, M4A
 - **Files** (`/files/upload/`): PDF, JSON, XML, RTF, Office documents, OpenDocument formats
 
+When `--assetDomains` is specified, a regex scan also catches file URLs in links (e.g. PDFs in `<a>` tags) that are not inside media cards.
+
 ```sh
 # Inline all external media across all posts and pages
 gctools inline-media <apiURL> <adminAPIKey>
@@ -396,11 +398,14 @@ gctools inline-media <apiURL> <adminAPIKey> --id '69d78ee0149bd000016f2852'
 # Only process posts (not pages)
 gctools inline-media <apiURL> <adminAPIKey> --type posts
 
-# Only process media from specific domains
+# Only process media from specific domains (also catches files in links)
 gctools inline-media <apiURL> <adminAPIKey> --assetDomains 'cdn.example.com, images.example.com'
 
 # Dry run to see what would be processed
 gctools inline-media <apiURL> <adminAPIKey> --dryRun
+
+# Dry run with verbose output to see which URLs would be inlined
+gctools inline-media <apiURL> <adminAPIKey> --dryRun -V
 
 # Only process published posts by a specific author
 gctools inline-media <apiURL> <adminAPIKey> --status published --author 'example-author'
@@ -408,6 +413,19 @@ gctools inline-media <apiURL> <adminAPIKey> --status published --author 'example
 # Only process posts with a specific tag
 gctools inline-media <apiURL> <adminAPIKey> --tag 'imported'
 ```
+
+**Available options:**
+- `--slug`: Fetch a single post by its slug
+- `--id`: Fetch a single post by its ID
+- `--type` (default: all): Content type (all, posts, pages)
+- `--status` (default: all): Post status (all, draft, published)
+- `--visibility` (default: all): Post visibility (all, public, members, paid)
+- `--tag`: Filter by tag slugs (comma separated)
+- `--author`: Filter by author slugs (comma separated)
+- `--assetDomains`: Comma separated list of domains to process media from
+- `--dryRun`: Show what would be processed without downloading or uploading
+- `-V --verbose`: Show verbose output (lists URLs found per post)
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
 
 ### add-preview

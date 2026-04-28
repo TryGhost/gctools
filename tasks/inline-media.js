@@ -431,7 +431,7 @@ const getFullTaskList = (options) => {
                 allContent.forEach((post) => {
                     tasks.push({
                         title: post.title,
-                        task: async (ctx) => { // eslint-disable-line no-shadow
+                        task: async (ctx, task) => { // eslint-disable-line no-shadow
                             let mediaUrls = [];
 
                             // Metadata image fields
@@ -461,6 +461,18 @@ const getFullTaskList = (options) => {
                                     }
                                 } catch (e) {
                                     // Invalid mobiledoc JSON, skip
+                                }
+                            }
+
+                            // Regex scan for URLs in raw content (catches links in <a> tags, etc.)
+                            const srcTerminationSymbols = `("|\\\\)|'|(?=(?:,https?))| |<|\\\\\\\\|&quot;|$)`;
+                            const rawContent = (post.lexical || '') + (post.mobiledoc || '');
+                            if (rawContent && ctx.args.assetDomains && ctx.args.assetDomains.length > 0) {
+                                for (const domain of ctx.args.assetDomains) {
+                                    const regex = new RegExp(`(https?:\\/\\/${domain.replace(/\./g, '\\.')}.*?)(${srcTerminationSymbols}`, 'igm');
+                                    for (const match of rawContent.matchAll(regex)) {
+                                        mediaUrls.push(match[1]);
+                                    }
                                 }
                             }
 
@@ -507,6 +519,10 @@ const getFullTaskList = (options) => {
 
                             if (mediaUrls.length > 0) {
                                 ctx.toProcess.push(post);
+
+                                if (ctx.args.verbose) {
+                                    task.output = mediaUrls.join('\n');
+                                }
                             }
                         }
                     });
@@ -630,7 +646,7 @@ const getFullTaskList = (options) => {
                         task: async (ctx) => { // eslint-disable-line no-shadow
                             try {
                                 const apiType = post._type || 'posts';
-                                let currentPost = await ctx.api[apiType].read({id: post.id, include: 'tags', formats: 'mobiledoc,lexical'});
+                                let currentPost = await ctx.api[apiType].read({id: post.id}, {include: 'tags', formats: 'mobiledoc,lexical'});
 
                                 let updatePayload = {
                                     id: currentPost.id,
@@ -647,7 +663,14 @@ const getFullTaskList = (options) => {
                                     try {
                                         let updatedLexical = JSON.parse(currentPost.lexical);
                                         replaceUrlsInLexical(updatedLexical.root, ctx.urlMap);
-                                        updatePayload.lexical = JSON.stringify(updatedLexical);
+                                        let lexicalStr = JSON.stringify(updatedLexical);
+
+                                        // Raw string replacement for URLs not in known card types (e.g. link nodes)
+                                        for (const [oldUrl, newUrl] of ctx.urlMap) {
+                                            lexicalStr = lexicalStr.replaceAll(oldUrl, newUrl);
+                                        }
+
+                                        updatePayload.lexical = lexicalStr;
                                     } catch (e) {
                                         // Skip if invalid JSON
                                     }
@@ -659,7 +682,14 @@ const getFullTaskList = (options) => {
                                         if (updatedMobiledoc.cards) {
                                             replaceUrlsInMobiledoc(updatedMobiledoc.cards, ctx.urlMap);
                                         }
-                                        updatePayload.mobiledoc = JSON.stringify(updatedMobiledoc);
+                                        let mobiledocStr = JSON.stringify(updatedMobiledoc);
+
+                                        // Raw string replacement for URLs not in known card types (e.g. link markups)
+                                        for (const [oldUrl, newUrl] of ctx.urlMap) {
+                                            mobiledocStr = mobiledocStr.replaceAll(oldUrl, newUrl);
+                                        }
+
+                                        updatePayload.mobiledoc = mobiledocStr;
                                     } catch (e) {
                                         // Skip if invalid JSON
                                     }
