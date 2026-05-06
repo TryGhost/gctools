@@ -53,7 +53,7 @@
     "jsonwebtoken": "9.0.3",
     "listr": "0.14.3",
     "lodash": "4.18.1",
-    "lorem-ipsum": "2.0.8",
+    "lorem-ipsum": "2.0.10",
     "superbytes": "2.0.1",
     "title-case": "4.3.2",
     "tty-table": "5.0.0"

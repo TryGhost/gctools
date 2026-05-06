@@ -4975,10 +4975,10 @@ long-timeout@^0.1.1:
   resolved "https://registry.yarnpkg.com/long-timeout/-/long-timeout-0.1.1.tgz#9721d788b47e0bcb5a24c2e2bee1a0da55dab514"
   integrity sha512-BFRuQUqc7x2NWxfJBCyUrN8iYUYznzL9JROmRz1gZ6KlOIgmoD+njPVbb+VNn2nGMKggMsK79iUNErillsrx7w==
 
-lorem-ipsum@2.0.8:
-  version "2.0.8"
-  resolved "https://registry.yarnpkg.com/lorem-ipsum/-/lorem-ipsum-2.0.8.tgz#f969a089f2ac6f19cf01b854b61beabb0e6f3cbc"
-  integrity sha512-5RIwHuCb979RASgCJH0VKERn9cQo/+NcAi2BMe9ddj+gp7hujl6BI+qdOG4nVsLDpwWEJwTVYXNKP6BGgbcoGA==
+lorem-ipsum@2.0.10:
+  version "2.0.10"
+  resolved "https://registry.yarnpkg.com/lorem-ipsum/-/lorem-ipsum-2.0.10.tgz#a8afac6d63dc18af5ae362c85339bd697c932543"
+  integrity sha512-+Vju4QAN6l2SX9tQ4Dm+mg1qgxf8IzqFh35h/dtFLofW+QHKunMjANfuhlx3vO9+LFetGRtqzvOlpw+1ysDeTw==
   dependencies:
     commander "^9.3.0"
 
