@@ -1865,10 +1865,10 @@
   optionalDependencies:
     sharp "^0.34.2"
 
-"@tryghost/listr-smart-renderer@0.12.3":
-  version "0.12.3"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.12.3.tgz#3b143ef74f228ab2268c4648f13d299089406d92"
-  integrity sha512-yWEdbxZYH4L9+wJzLrKev8jatnEJvQ4zSOxDC4JZ8zm75HiT7dIplfZ+qMgvvhy17cj2vGd3BXujuqHBTARfpg==
+"@tryghost/listr-smart-renderer@0.13.0":
+  version "0.13.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.13.0.tgz#124f6e28a984bf43eeb8fb1e91c067e3cb0e8037"
+  integrity sha512-FuJjWLFzV6n8dOru97AO04i5I/ynoo/vccRQsLswVPS45qMlzMFXnNtLbD33kM0Wz1NbIOLZJ+pgiL31yONO7w==
   dependencies:
     chalk "5.6.2"
     cli-truncate "6.0.0"
@@ -1896,24 +1896,24 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper-db@0.10.3":
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.10.3.tgz#9becd994e43f3e0881f2272622b9e704b6bea459"
-  integrity sha512-a1wOI3TCtAjcouUhdzgxeKbdJqxKIyi2QMuwWw2Eog0r8wAyijiyJEGP+hZeWx0VzvEfKhMljRd3uHbA+oCVMQ==
+"@tryghost/mg-assetscraper-db@0.11.0":
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.11.0.tgz#498a947221f8638fed6eb34fb56073b1401f5a5e"
+  integrity sha512-TqCwZJAQ2hYSHUcWuIuLGHb0LQ3HWWdz2+J4neNoBGEoTFmw1OBBB1h7yrNf++6ydSnHzeflboY11m5dOu2yvg==
   dependencies:
     "@tryghost/errors" "3.0.3"
-    "@tryghost/listr-smart-renderer" "0.12.3"
-    "@tryghost/mg-fs-utils" "0.23.3"
+    "@tryghost/listr-smart-renderer" "0.13.0"
+    "@tryghost/mg-fs-utils" "0.24.0"
     "@tryghost/string" "0.3.1"
     file-type "22.0.1"
     heic-convert "2.1.0"
     sharp "0.34.5"
     transliteration "2.6.1"
 
-"@tryghost/mg-fs-utils@0.23.3":
-  version "0.23.3"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.23.3.tgz#9f10116e0799f88c538f179fd7c718c876d014b0"
-  integrity sha512-JrTEX/yFBjHuNJ9ED1eBmwv/Nr2lbBO1k5MoZS0jiLp5IPzKIOva99KpD9sG9ossxrqfWQPMEy4SHHqALft6yg==
+"@tryghost/mg-fs-utils@0.24.0":
+  version "0.24.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.24.0.tgz#4bd7c084fac1d078f3e1a113439a08525a5cd388"
+  integrity sha512-F2Xum6Fq6ayoCxahijZDQBGaBAxKyzNaakP4U5yBGptrBCbXJtyu+0104WTNMkbb49nC0SumoDIc3unXWgzbPw==
   dependencies:
     "@tryghost/errors" "3.0.3"
     "@tryghost/image-transform" "1.4.12"
@@ -1926,10 +1926,10 @@
     sharp "0.34.5"
     transliteration "2.6.1"
 
-"@tryghost/mg-ghost-authors@0.7.3":
-  version "0.7.3"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.7.3.tgz#92a4eb86b80ba24adf4311c94b8adb5f178999f3"
-  integrity sha512-jl52im1IC05MMaybtKx3Sz0npPDnCctfPBH/R8y6l9Y5dHV1ybfx0wMsDrOB9SmdW4RGcY7X/lFZU5Iy4ZI6Cw==
+"@tryghost/mg-ghost-authors@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.8.0.tgz#91de9444acd02166b57cf4e572106d261d86e93a"
+  integrity sha512-RqnjoEhWRiydfkkRZvCULrgcSMDvxkPu2hMhCi5QEBlmXJ6pRl0S4Iu8U898FlO3AKNsNs77h0+2+EiNi7azBA==
   dependencies:
     "@tryghost/admin-api" "1.14.6"
     "@tryghost/errors" "3.0.3"
