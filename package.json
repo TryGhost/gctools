@@ -29,7 +29,7 @@
     "eslint-plugin-ghost": "3.5.0"
   },
   "dependencies": {
-    "@inquirer/confirm": "6.0.12",
+    "@inquirer/confirm": "6.0.13",
     "@tryghost/admin-api": "1.14.9",
     "@tryghost/listr-smart-renderer": "0.13.0",
     "@tryghost/logging": "2.5.5",
