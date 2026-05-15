@@ -101,6 +101,12 @@ const options = [
                 value: 'codeinjection_foot'
             }
         ]
+    },
+    {
+        type: 'confirm',
+        name: 'saveRevision',
+        message: 'Create a post revision for each edited post? (lexical posts only)',
+        default: true
     }
 ];
 
