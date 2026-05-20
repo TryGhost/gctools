@@ -30,6 +30,7 @@ import removeMemberCompSubscription from './remove-member-comp-subscription.js';
 import postTiers from './post-tiers.js';
 import getPosts from './get-posts.js';
 import setTemplate from './set-template.js';
+import setCanonicalUrl from './set-canonical-url.js';
 import commentNotifications from './comment-notifications.js';
 import memberNewsletterBackup from './member-newsletter-backup.js';
 import splitMembers from './split-members.js';
@@ -68,6 +69,7 @@ export default {
     postTiers,
     getPosts,
     setTemplate,
+    setCanonicalUrl,
     commentNotifications,
     memberNewsletterBackup,
     splitMembers,

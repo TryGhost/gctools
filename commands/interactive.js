@@ -109,6 +109,10 @@ const run = async () => {
                 value: tasks.setTemplate.choice.value
             },
             {
+                name: tasks.setCanonicalUrl.choice.name,
+                value: tasks.setCanonicalUrl.choice.value
+            },
+            {
                 name: tasks.inlineMedia.choice.name,
                 value: tasks.inlineMedia.choice.value
             },

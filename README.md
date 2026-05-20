@@ -67,6 +67,7 @@ Available tools include:
 * [`change-tags`](#change-tags)
 * [`post-tiers`](#post-tiers)
 * [`set-template`](#set-template)
+* [`set-canonical-url`](#set-canonical-url)
 * [`page-to-post`](#page-to-post)
 * [`content-stats`](#content-stats)
 * [`get-posts`](#get-posts)
@@ -906,6 +907,55 @@ gctools set-template <apiURL> <adminAPIKey> --templateSlug custom-posts-sidebar
 # Set all posts to use the template that has the filename `custom-posts-sidebar.hbs`, if it has the tag 'news'
 gctools set-template <apiURL> <adminAPIKey> --tag 'news' --templateSlug custom-posts-sidebar
 ```
+
+
+### set-canonical-url
+
+Clear or rebuild the `canonical_url` field on posts. By default the tool clears `canonical_url` (sets it to `null`), which is useful for removing custom canonical URLs that were imported from another platform. Optionally pass `--newCanonicalUrl` with a URL template — the `{slug}` placeholder is replaced with each post's slug. Posts where the value would not change are skipped automatically.
+
+```sh
+# See all available options
+gctools set-canonical-url --help
+
+# Clear canonical_url on every post (⚠️ dangerous! Run with --dryRun first)
+gctools set-canonical-url <apiURL> <adminAPIKey>
+
+# Preview which posts would have their canonical_url cleared
+gctools set-canonical-url <apiURL> <adminAPIKey> --dryRun --verbose
+
+# Clear canonical_url only on posts with a specific tag
+gctools set-canonical-url <apiURL> <adminAPIKey> --tag 'imported'
+
+# Clear canonical_url only on published posts by a specific author
+gctools set-canonical-url <apiURL> <adminAPIKey> --status published --author 'jane-doe'
+
+# Clear canonical_url on posts published in a custom date range
+gctools set-canonical-url <apiURL> <adminAPIKey> --dateRange custom --dateRangeStart 2023-01-01 --dateRangeEnd 2023-12-31
+
+# Rebuild canonical_url to point at a new domain, using {slug} as a placeholder
+gctools set-canonical-url <apiURL> <adminAPIKey> --newCanonicalUrl 'https://www.somenewsite.com/topic/{slug}/'
+
+# Rebuild canonical_url for a filtered subset
+gctools set-canonical-url <apiURL> <adminAPIKey> --tag 'news' --newCanonicalUrl 'https://www.somenewsite.com/news/{slug}/'
+```
+
+**Available options:**
+- `--dryRun`: Preview what would change without writing
+- `-V --verbose`: Show per-post old → new values (useful with `--dryRun`)
+- `--newCanonicalUrl`: URL template, e.g. `'https://example.com/topic/{slug}/'`. Omit to clear `canonical_url` to `null`.
+- `--status` (default: all): Post status (`all`, `draft`, `published`)
+- `--visibility` (default: all): Post visibility (`all`, `public`, `members`, `paid`)
+- `--tag`: Filter by tag slug(s), comma separated
+- `--author`: Filter by author slug(s), comma separated
+- `--dateRange` (default: all): `all` or `custom`. When `custom`, supply `--dateRangeStart` and `--dateRangeEnd`
+- `--dateRangeStart`: Start of date range (YYYY-MM-DD)
+- `--dateRangeEnd`: End of date range (YYYY-MM-DD)
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+**Notes:**
+- The `{slug}` placeholder in `--newCanonicalUrl` is replaced with each post's slug; you can place it anywhere in the template (path or query string).
+- Posts whose computed new value matches their current `canonical_url` are skipped — only posts that would actually change are sent to the API.
+- The interactive flow (`gctools i` → "Set canonical URL on posts") provides searchable tag/author pickers, a date range picker, and a clear/rebuild prompt.
 
 
 ### page-to-post
