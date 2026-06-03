@@ -46,7 +46,7 @@
     "fs-extra": "11.3.5",
     "glob": "13.0.6",
     "heic-convert": "2.1.0",
-    "inquirer": "13.4.3",
+    "inquirer": "14.0.2",
     "inquirer-datepicker-prompt": "0.4.3",
     "inquirer-search-checkbox": "1.0.0",
     "inquirer-search-list": "1.2.6",
