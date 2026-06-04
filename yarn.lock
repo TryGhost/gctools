@@ -1865,10 +1865,10 @@
   optionalDependencies:
     sharp "^0.34.2"
 
-"@tryghost/listr-smart-renderer@0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.13.0.tgz#124f6e28a984bf43eeb8fb1e91c067e3cb0e8037"
-  integrity sha512-FuJjWLFzV6n8dOru97AO04i5I/ynoo/vccRQsLswVPS45qMlzMFXnNtLbD33kM0Wz1NbIOLZJ+pgiL31yONO7w==
+"@tryghost/listr-smart-renderer@0.14.0":
+  version "0.14.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.14.0.tgz#e4758ce542edb06ab6e648ecfea3594f8321a452"
+  integrity sha512-e9uqfBinWOSC8KwktxJZa6CDqsm6EIb+NTesQ6XVQhZGAWHc7MD9AGKwWh4jG8ktKLilFQyB1AZVZQG8IKZrXQ==
   dependencies:
     chalk "5.6.2"
     cli-truncate "6.0.0"
@@ -1896,24 +1896,24 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper-db@0.11.0":
-  version "0.11.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.11.0.tgz#498a947221f8638fed6eb34fb56073b1401f5a5e"
-  integrity sha512-TqCwZJAQ2hYSHUcWuIuLGHb0LQ3HWWdz2+J4neNoBGEoTFmw1OBBB1h7yrNf++6ydSnHzeflboY11m5dOu2yvg==
+"@tryghost/mg-assetscraper-db@0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.12.0.tgz#222981516c9a3aaf6a281bb7d000f8d0e26e50e4"
+  integrity sha512-M2XcsJ0lss/HLDxu+nBa7qbuV36M573/wHriIZmk4q4wxmX135RLRa3VoUT+VQKp7KoH5LIkX68VGgQRs95jEw==
   dependencies:
     "@tryghost/errors" "3.0.3"
-    "@tryghost/listr-smart-renderer" "0.13.0"
-    "@tryghost/mg-fs-utils" "0.24.0"
+    "@tryghost/listr-smart-renderer" "0.14.0"
+    "@tryghost/mg-fs-utils" "0.25.0"
     "@tryghost/string" "0.3.1"
     file-type "22.0.1"
     heic-convert "2.1.0"
     sharp "0.34.5"
     transliteration "2.6.1"
 
-"@tryghost/mg-fs-utils@0.24.0":
-  version "0.24.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.24.0.tgz#4bd7c084fac1d078f3e1a113439a08525a5cd388"
-  integrity sha512-F2Xum6Fq6ayoCxahijZDQBGaBAxKyzNaakP4U5yBGptrBCbXJtyu+0104WTNMkbb49nC0SumoDIc3unXWgzbPw==
+"@tryghost/mg-fs-utils@0.25.0":
+  version "0.25.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.25.0.tgz#ac6fb17da04be52db5d1061bbb5f9fa6b7e0b717"
+  integrity sha512-yWM+xgW8oJa2FqO8jL0VXuwmHPv3Yd5/dlnkGwF544iz7G7zlZdAOoqH6szEoY6ADYiiNGf6rZ/uHaDws41bvg==
   dependencies:
     "@tryghost/errors" "3.0.3"
     "@tryghost/image-transform" "1.4.12"
@@ -1922,14 +1922,14 @@
     adm-zip "0.5.17"
     csv-parse "6.2.1"
     dotenv "17.4.2"
-    fs-extra "11.3.4"
+    fs-extra "11.3.5"
     sharp "0.34.5"
     transliteration "2.6.1"
 
-"@tryghost/mg-ghost-authors@0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.8.0.tgz#91de9444acd02166b57cf4e572106d261d86e93a"
-  integrity sha512-RqnjoEhWRiydfkkRZvCULrgcSMDvxkPu2hMhCi5QEBlmXJ6pRl0S4Iu8U898FlO3AKNsNs77h0+2+EiNi7azBA==
+"@tryghost/mg-ghost-authors@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.9.0.tgz#c10e20583c1abf9fe23c24a87340731fd6a2f196"
+  integrity sha512-eTPXVby2hqm/6oGPuiUI6nFmf1xzS930ppTq9SP4mVDg0yCxGZphDqhPOIJJ5yubLqMykIatzNHV99wYGu0l2g==
   dependencies:
     "@tryghost/admin-api" "1.14.6"
     "@tryghost/errors" "3.0.3"
@@ -3799,15 +3799,6 @@ fs-extra@11.3.3:
   version "11.3.3"
   resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.3.3.tgz#a27da23b72524e81ac6c3815cc0179b8c74c59ee"
   integrity sha512-VWSRii4t0AFm6ixFFmLLx1t7wS1gh+ckoa84aOeapGum0h+EZd1EhEumSB+ZdDLnEPuucsVB9oB7cxJHap6Afg==
-  dependencies:
-    graceful-fs "^4.2.0"
-    jsonfile "^6.0.1"
-    universalify "^2.0.0"
-
-fs-extra@11.3.4:
-  version "11.3.4"
-  resolved "https://registry.yarnpkg.com/fs-extra/-/fs-extra-11.3.4.tgz#ab6934eca8bcf6f7f6b82742e33591f86301d6fc"
-  integrity sha512-CTXd6rk/M3/ULNQj8FBqBWHYBVYybQ3VPBw0xGKFe3tuH7ytT6ACnvzpIQ3UZtB8yvUKC2cXn1a+x+5EVQLovA==
   dependencies:
     graceful-fs "^4.2.0"
     jsonfile "^6.0.1"
