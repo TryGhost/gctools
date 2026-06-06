@@ -57,6 +57,10 @@ const run = async () => {
                 value: tasks.randomPosts.choice.value
             },
             {
+                name: tasks.seedDemo.choice.name,
+                value: tasks.seedDemo.choice.value
+            },
+            {
                 name: tasks.addTags.choice.name,
                 value: tasks.addTags.choice.value
             },

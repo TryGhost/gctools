@@ -48,6 +48,7 @@ import splitMembers from '../commands/split-members.js';
 import addLabelToMembers from '../commands/add-label-to-members.js';
 import inlineMedia from '../commands/inline-media.js';
 import updatePostsFromJson from '../commands/update-posts-from-json.js';
+import seedDemo from '../commands/seed-demo.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -94,6 +95,7 @@ prettyCLI.command(splitMembers);
 prettyCLI.command(addLabelToMembers);
 prettyCLI.command(inlineMedia);
 prettyCLI.command(updatePostsFromJson);
+prettyCLI.command(seedDemo);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>'

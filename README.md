@@ -39,6 +39,7 @@ Available tools include:
 * [`dedupe-members-csv`](#dedupe-members-csv)
 * [`compare-member-csv`](#compare-member-csv)
 * [`random-posts`](#random-posts)
+* [`seed-demo`](#seed-demo)
 * [`delete-posts`](#delete-posts)
 * [`delete-pages`](#delete-pages)
 * [`add-tags`](#add-tags)
@@ -242,6 +243,74 @@ gctools random-posts <apiURL> <adminAPIKey> --count 50 --contentUnit paragraphs 
 - `--status` (default: published): Post status (published, draft, scheduled, sent)
 - `--visibility` (default: public): Post visibility (public, members, paid)
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
+### seed-demo
+
+Seed a Ghost site with rich demo content in one run: posts with feature images and in-post image cards, a distributed tag set, an `/about` page, a "golden" post at `/style-guide`, a navigation menu (Home, About, Style Guide, Author, Collection), and optionally a dummy author attributed across the content.
+
+The Style Guide doubles as a front-end theme stress test. It covers every editor card — header (dark/light/accent/image variants), image (regular/wide/full, linked, no-caption, adjacent), multi-row gallery, audio, video, file download, callout (full colour palette + no-emoji), toggle, bookmark (with thumbnail), button (center/left), product, signup, embed, code block, call-to-action, markdown, HTML and divider — plus the email-only `email` and `email-cta` cards, a full inline-formatting sampler (bold, italic, strikethrough, underline, inline code, highlight, super/subscript, links), heading levels h2–h6, nested lists, a table, and edge cases (long headings/unbroken strings). The paywall (public preview) card is included automatically when the site has members enabled. Card shapes mirror `@tryghost/kg-default-nodes`, so everything remains fully editable in Ghost Admin.
+
+Images are downloaded from [Lorem Picsum](https://picsum.photos/) and re-uploaded to the site so the result is self-contained; the Style Guide's audio and video are sourced from [lorem.media](https://lorem.media/) (all permissively licensed for commercial use). Images, audio and video are chosen at random, so do review these before using the site in public demos.
+
+```sh
+# See all available options
+gctools seed-demo --help
+
+# Seed 10 posts plus an about page, style guide, and navigation
+gctools seed-demo <apiURL> <adminAPIKey>
+
+# Seed 50 posts, feature images on half of them, no in-post image cards
+gctools seed-demo <apiURL> <adminAPIKey> --count 50 --featureImages 50% --imageCards false
+
+# Spread post dates across a range (defaults the end date to now)
+gctools seed-demo <apiURL> <adminAPIKey> --count 24 --dateStart 2025-01-01 --dateEnd 2025-12-31
+
+# Add a dummy author (requires a staff access token) as primary author on ~40% of posts
+gctools seed-demo <apiURL> <staffAccessToken> --addAuthor --authorShare 40
+
+# Seed content and also set navigation automatically (pass an owner/admin staff access token as the key)
+gctools seed-demo <apiURL> <staffAccessToken>
+
+# Preview what would be created without writing anything
+gctools seed-demo <apiURL> <adminAPIKey> --dryRun
+```
+
+> **Navigation & staff access tokens:** Updating the navigation menu writes to Ghost's settings, which integration API keys are not permitted to do. Supply an owner/admin [staff access token](https://docs.ghost.org/admin-api#staff-access-token-authentication) (found on a staff user's profile page, in the same `{id}:{secret}` format) as the `<adminAPIKey>` argument and navigation is written automatically. With an integration key everything else still runs; the navigation step is skipped and the menu JSON is printed for you to paste into Ghost Admin → Settings → Navigation.
+
+> **Dummy author & staff access tokens:** `--addAuthor` creates a placeholder staff user (with a hosted profile image and bio) and attributes it to the Style Guide (as a second author) and a random share of posts (as primary author). Creating a staff user uses Ghost's content import endpoint, which only an owner/admin [staff access token](https://docs.ghost.org/admin-api#staff-access-token-authentication) can write to — no invite email is sent. Re-runs reuse the existing author rather than duplicating it. With an integration key the step is skipped and an importable JSON file is printed for you to load via Ghost Admin → Settings → Labs → Import content. A Contributor can be a post's primary author; it just can't publish (the API key does the publishing here).
+
+**Available options:**
+- `--count` (default: 10): Number of demo posts to create
+- `--featureImages` (default: all): `all`, `none`, or a percentage like `50%`
+- `--imageCards` (default: true): Insert 0-3 in-post image cards (weighted low, never before the first paragraph)
+- `--maxImageCards` (default: 3): Maximum in-post image cards per post
+- `--tags` (default: true): Distribute the five fixed tags (lorem, ipsum, dolor, sit, amet) across posts
+- `--extraTags` (default: 0): Additional random tags to generate and distribute (max 30)
+- `--collectionTag` (default: lorem): Tag whose archive backs the "Collection" nav item
+- `--aboutPage` (default: true): Create or overwrite the `/about` page
+- `--styleGuide` (default: true): Create the Style Guide post
+- `--addAuthor` (default: false): Create a dummy author and attribute it to the Style Guide (second author) and a share of posts (primary author). Requires an owner/admin staff access token; with an integration key the step is skipped and importable JSON is printed
+- `--authorShare` (default: 30): Percentage of posts (0-100) on which the dummy author is the primary author
+- `--authorName` (default: Sam Example): Display name for the dummy author
+- `--authorEmail`: Email for the dummy author (default: derived from the name, e.g. `sam-example@example.com`)
+- `--authorRole` (default: Contributor): Role for the dummy author (`Contributor`, `Author`, `Editor`, `Administrator`)
+- `--nav` (default: true): Update the navigation menu (requires an owner/admin staff access token; with an integration key the step is skipped and the menu JSON is printed to paste manually)
+- `--authorNav` (default: true): Include the "Author" archive link
+- `--collectionNav` (default: true): Include the "Collection" archive link
+- `--status` (default: published): Status for created posts (published, draft)
+- `--visibility` (default: public): Visibility for created posts (public, members, paid)
+- `--dateStart`: Distribute post dates from this date (e.g. `2025-01-01`). Posts are spread evenly across the range with random jitter inside each slot, so they look naturally paced rather than clustered. Without it, every post is dated now. (Interactive mode offers "Past year" / "Past month" / "Custom" presets.)
+- `--dateEnd` (default: now): End of the post date range; only used with `--dateStart`
+- `--dryRun` (default: false): Preview without writing to the site
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+> **Asset licensing:** None of the seeded media requires attribution.
+> - **Images** come from [Lorem Picsum](https://picsum.photos/), drawn from an Unsplash pool collected under CC0 (public domain), so no credit is required. Note this is "CC0-era" Unsplash content — fine for placeholders and demos, but source properly-licensed originals if you need production brand imagery.
+> - **Video & photos** from [lorem.media](https://lorem.media/) use the [Pexels](https://www.pexels.com/license/) and [Pixabay](https://pixabay.com/service/license-summary/) licenses — free for commercial use, attribution not required (only appreciated).
+> - **Audio** from lorem.media comes from the Internet Archive 78rpm collection and is public domain (recordings from 1925 or earlier).
+>
+> lorem.media exposes optional per-asset attribution in its response headers (`X-Attribution`, `X-Source`, `X-Source-Url`) and via its `/v2/info/...` JSON endpoint if you ever want to surface credits, but it is not a licensing requirement. As with any random placeholder media, review the generated assets before using a site for a public demo.
 
 
 ### delete-posts
