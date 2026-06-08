@@ -1779,21 +1779,21 @@
   resolved "https://registry.yarnpkg.com/@tokenizer/token/-/token-0.3.0.tgz#fe98a93fe789247e998c75e74e9c7c63217aa276"
   integrity sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==
 
+"@tryghost/admin-api@1.14.10":
+  version "1.14.10"
+  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.14.10.tgz#2abc0dc234d33edf50c4833c380bfd96dc1e825e"
+  integrity sha512-B7Ov1Y/VhuNFsvDyN6DsNFcoqjpUccNrYFXsK5oy9sobZ/6AoRRW2kI4SHn4hrCcP89xPipVhTMcmhvoh0IhvQ==
+  dependencies:
+    axios "1.17.0"
+    form-data "4.0.5"
+    jsonwebtoken "9.0.3"
+
 "@tryghost/admin-api@1.14.6":
   version "1.14.6"
   resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.14.6.tgz#7748904acd5fd63ccef8edf1eefd444ca9f67f8c"
   integrity sha512-GZ14THA09fCUIxveB1iC50v9GyCqCy3xbvAM51Q4XVhTmycz1BZaWfH2n+X+JXnfN3nIzQQwgSjp/RxMglQ9Mg==
   dependencies:
     axios "1.13.5"
-    form-data "4.0.5"
-    jsonwebtoken "9.0.3"
-
-"@tryghost/admin-api@1.14.9":
-  version "1.14.9"
-  resolved "https://registry.yarnpkg.com/@tryghost/admin-api/-/admin-api-1.14.9.tgz#150960ae14dd1e9b964ea13d40f24d9aef97678b"
-  integrity sha512-QuE+iaTYSvqHa8fFvU6TH860E07k7ZgO1UOQ8M9U8Rd9ISvDW7scfDZ8wbAnk24VQaIfine7sUwYhep0ukZ2cw==
-  dependencies:
-    axios "1.16.0"
     form-data "4.0.5"
     jsonwebtoken "9.0.3"
 
@@ -1975,6 +1975,13 @@
   version "0.3.1"
   resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.3.1.tgz#83ba5fb48c8285915b39dbe2425c9bf76d9c16c7"
   integrity sha512-p1wyN6p5Ds6IQkoYwIJkabhQ10WIY+t8yf3/Uf/BNADTg66R0jYF8wmXgFYpBwm55rXwM/92cROwvopIbFKtYg==
+  dependencies:
+    unidecode "1.1.0"
+
+"@tryghost/string@0.3.5":
+  version "0.3.5"
+  resolved "https://registry.yarnpkg.com/@tryghost/string/-/string-0.3.5.tgz#fd33e55e3b464a05900e8363f4a72f4b615bb992"
+  integrity sha512-Ov2UYOuU5QutDo/UECtkhHR3jdT4R/aNxzKFk0iaH0yiwxLnlqEB4QBBVnYYIN8zECNAazRzkygtdFSlSkuaoA==
   dependencies:
     unidecode "1.1.0"
 
@@ -2416,15 +2423,6 @@ axios@1.13.5:
     follow-redirects "^1.15.11"
     form-data "^4.0.5"
     proxy-from-env "^1.1.0"
-
-axios@1.16.0:
-  version "1.16.0"
-  resolved "https://registry.yarnpkg.com/axios/-/axios-1.16.0.tgz#f8e5dd931cef2a5f8c32216d5784eda2f8750eb7"
-  integrity sha512-6hp5CwvTPlN2A31g5dxnwAX0orzM7pmCRDLnZSX772mv8WDqICwFjowHuPs04Mc8deIld1+ejhtaMn5vp6b+1w==
-  dependencies:
-    follow-redirects "^1.16.0"
-    form-data "^4.0.5"
-    proxy-from-env "^2.1.0"
 
 axios@1.17.0:
   version "1.17.0"
