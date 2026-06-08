@@ -19,7 +19,11 @@ const options = [
         name: 'count',
         message: 'Number of demo posts to create:',
         default: () => 10,
-        filter: val => parseInt(val, 10)
+        filter: val => parseInt(val, 10),
+        validate: (val) => {
+            const n = parseInt(val, 10);
+            return Number.isInteger(n) && n > 0 ? true : 'Enter an integer greater than 0';
+        }
     },
     {
         type: 'rawlist',
@@ -42,7 +46,11 @@ const options = [
         name: 'extraTags',
         message: 'Extra random tags to generate (0-30):',
         default: () => 0,
-        filter: val => parseInt(val, 10)
+        filter: val => parseInt(val, 10),
+        validate: (val) => {
+            const n = parseInt(val, 10);
+            return Number.isInteger(n) && n >= 0 && n <= 30 ? true : 'Enter an integer between 0 and 30';
+        }
     },
     {
         type: 'confirm',
@@ -93,6 +101,10 @@ const options = [
         message: 'Percentage of posts where the dummy author is primary (0-100):',
         default: () => 30,
         filter: val => parseInt(val, 10),
+        validate: (val) => {
+            const n = parseInt(val, 10);
+            return Number.isInteger(n) && n >= 0 && n <= 100 ? true : 'Enter an integer between 0 and 100';
+        },
         when: answers => answers.addAuthor === true
     },
     {

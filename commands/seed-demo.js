@@ -130,7 +130,8 @@ const run = async (argv) => {
         let runner = seedDemo.getTaskRunner(argv);
         await runner.run(context);
     } catch (error) {
-        ui.log.error('Done with errors', context.errors);
+        ui.log.error('Done with errors', context.errors && context.errors.length ? context.errors : [error]);
+        return;
     }
 
     // Surface any non-fatal warnings (e.g. navigation needing manual paste).

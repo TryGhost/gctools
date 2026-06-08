@@ -1,7 +1,7 @@
-import Promise from 'bluebird';
 import _ from 'lodash';
 import GhostAdminAPI from '@tryghost/admin-api';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import {sleep} from '../lib/utils.js';
 import {createAssetManager, createTmpDir, cleanupTmpDir} from '../lib/demo/assets.js';
 import {gatherSiteInfo} from '../lib/demo/ghost-site.js';
 import {buildTagPool} from '../lib/demo/tags.js';
@@ -139,7 +139,7 @@ const getFullTaskList = (options) => {
                     ctx.dummyAuthor = {name: author.name, slug: author.slug, email: author.email};
                     ctx.summary.author = true;
                     task.output = `Created author ${author.name} <${author.email}>`;
-                    return Promise.delay(ctx.args.delayBetweenCalls);
+                    await sleep(ctx.args.delayBetweenCalls);
                 } catch (error) {
                     if (error.code === AUTHOR_NO_PERMISSION) {
                         ctx.warnings.push({
@@ -170,11 +170,12 @@ const getFullTaskList = (options) => {
                 const dateRange = resolveDateRange(ctx.args);
                 const schedule = buildPublishSchedule({count: ctx.args.count, dateRange});
 
-                await Promise.mapSeries(indices, async (index) => {
+                for (const index of indices) {
                     const authors = (ctx.dummyAuthor && primaryIndices.has(index))
                         ? [ctx.dummyAuthor, ctx.site.primaryAuthor]
                         : null;
 
+                    // eslint-disable-next-line no-await-in-loop
                     const post = await buildDemoPost({
                         index,
                         args: ctx.args,
@@ -189,21 +190,23 @@ const getFullTaskList = (options) => {
                         done += 1;
                         const when = schedule[index] ? ` (${new Date(schedule[index]).toISOString().slice(0, 10)})` : '';
                         task.output = `[dry run] would create post ${done}/${ctx.args.count}: ${post.title}${when}`;
-                        return;
+                        continue;
                     }
 
                     try {
+                        // eslint-disable-next-line no-await-in-loop
                         const result = await ctx.api.posts.add(post, {});
                         ctx.inserted.push(result.url);
                         ctx.summary.posts += 1;
                         done += 1;
                         task.output = `Created post ${done}/${ctx.args.count}: ${post.title}`;
-                        return Promise.delay(ctx.args.delayBetweenCalls).return(result);
+                        // eslint-disable-next-line no-await-in-loop
+                        await sleep(ctx.args.delayBetweenCalls);
                     } catch (error) {
                         error.resource = {title: post.title};
                         ctx.errors.push(error);
                     }
-                });
+                }
             }
         },
         {
@@ -227,7 +230,7 @@ const getFullTaskList = (options) => {
                         task.output = 'Created /about page';
                     }
                     ctx.summary.aboutPage = true;
-                    return Promise.delay(ctx.args.delayBetweenCalls);
+                    await sleep(ctx.args.delayBetweenCalls);
                 } catch (error) {
                     error.resource = {title: 'About page'};
                     ctx.errors.push(error);
@@ -256,7 +259,7 @@ const getFullTaskList = (options) => {
                         task.output = 'Created Style Guide post';
                     }
                     ctx.summary.styleGuide = true;
-                    return Promise.delay(ctx.args.delayBetweenCalls);
+                    await sleep(ctx.args.delayBetweenCalls);
                 } catch (error) {
                     error.resource = {title: 'Style Guide'};
                     ctx.errors.push(error);

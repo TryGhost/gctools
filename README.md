@@ -277,7 +277,7 @@ gctools seed-demo <apiURL> <adminAPIKey> --dryRun
 ```
 
 > **Navigation & staff access tokens:** Updating the navigation menu writes to Ghost's settings, which integration API keys are not permitted to do. Supply an owner/admin [staff access token](https://docs.ghost.org/admin-api#staff-access-token-authentication) (found on a staff user's profile page, in the same `{id}:{secret}` format) as the `<adminAPIKey>` argument and navigation is written automatically. With an integration key everything else still runs; the navigation step is skipped and the menu JSON is printed for you to paste into Ghost Admin → Settings → Navigation.
-
+>
 > **Dummy author & staff access tokens:** `--addAuthor` creates a placeholder staff user (with a hosted profile image and bio) and attributes it to the Style Guide (as a second author) and a random share of posts (as primary author). Creating a staff user uses Ghost's content import endpoint, which only an owner/admin [staff access token](https://docs.ghost.org/admin-api#staff-access-token-authentication) can write to — no invite email is sent. Re-runs reuse the existing author rather than duplicating it. With an integration key the step is skipped and an importable JSON file is printed for you to load via Ghost Admin → Settings → Labs → Import content. A Contributor can be a post's primary author; it just can't publish (the API key does the publishing here).
 
 **Available options:**
