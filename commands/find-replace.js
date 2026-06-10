@@ -45,6 +45,10 @@ const setup = (sywac) => {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms'
     });
+    sywac.boolean('--saveRevision', {
+        defaultValue: true,
+        desc: 'Create a post revision for each edited post (lexical posts only)'
+    });
 };
 
 // What to do when this command is executed

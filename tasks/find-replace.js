@@ -141,7 +141,8 @@ const getFullTaskList = (options) => {
                             delete post.matchesByField;
 
                             try {
-                                let result = await ctx.api.posts.edit(post);
+                                let queryParams = ctx.args.saveRevision ? {save_revision: true} : {};
+                                let result = await ctx.api.posts.edit(post, queryParams);
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
