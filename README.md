@@ -1190,6 +1190,36 @@ The JSON file should be in the standard Ghost export format (`{db: [{data: {post
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
 
+### export-comments
+
+Export all comments from a Ghost site as a CSV file. The output is compatible with the [Ghost Comment Importer](https://github.com/TryGhost/comment-importer), making it easy to migrate comments between Ghost sites.
+
+```sh
+# See all available options
+gctools export-comments --help
+
+# Export all published comments
+gctools export-comments <apiURL> <adminAPIKey>
+
+# Export comments with a specific status
+gctools export-comments <apiURL> <adminAPIKey> --status all
+
+# Export only hidden comments
+gctools export-comments <apiURL> <adminAPIKey> --status hidden
+
+# Verbose output
+gctools export-comments <apiURL> <adminAPIKey> -V
+```
+
+The exported CSV includes the columns required by the comment importer (`id`, `name`, `email`, `created_at`, `html`, `reply_to`, `post_id`) plus additional reference columns (`post_title`, `post_slug`, `post_url`) for easier review.
+
+The tool first tries the site-wide Admin API comments endpoint (available on newer Ghost versions). If unavailable, it falls back to fetching comments per-post via the public Members API and resolving member emails through the Admin API — making it compatible with Ghost 5.
+
+**Available options:**
+- `--status` (default: `published`): Filter by comment status (`all`, `published`, `hidden`)
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
 ## Develop
 
 * `commands` handles the traditional CLI input
