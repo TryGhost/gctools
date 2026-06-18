@@ -31,6 +31,7 @@ import postTiers from './post-tiers.js';
 import getPosts from './get-posts.js';
 import setTemplate from './set-template.js';
 import setCanonicalUrl from './set-canonical-url.js';
+import cleanStaffSlugs from './clean-staff-slugs.js';
 import commentNotifications from './comment-notifications.js';
 import memberNewsletterBackup from './member-newsletter-backup.js';
 import splitMembers from './split-members.js';
@@ -71,6 +72,7 @@ export default {
     getPosts,
     setTemplate,
     setCanonicalUrl,
+    cleanStaffSlugs,
     commentNotifications,
     memberNewsletterBackup,
     splitMembers,

@@ -167,6 +167,10 @@ const run = async () => {
                 value: tasks.changeRole.choice.value
             },
             {
+                name: tasks.cleanStaffSlugs.choice.name,
+                value: tasks.cleanStaffSlugs.choice.value
+            },
+            {
                 name: tasks.commentNotifications.choice.name,
                 value: tasks.commentNotifications.choice.value
             },

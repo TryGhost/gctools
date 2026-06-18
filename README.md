@@ -57,6 +57,7 @@ Available tools include:
 * [`change-visibility-pages`](#change-visibility-pages)
 * [`change-status`](#change-status)
 * [`change-role`](#change-role)
+* [`clean-staff-slugs`](#clean-staff-slugs)
 * [`comment-notifications`](#comment-notifications)
 * [`add-member-comp-subscription`](#add-member-comp-subscription)
 * [`add-member-comp-from-csv`](#add-member-comp-from-csv)
@@ -726,6 +727,32 @@ gctools change-role <apiURL> <adminAPIKey> --newRole 'Contributor'
 # Change all staff users who are currently the Editor role to have the Author role
 gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Author'
 ```
+
+### clean-staff-slugs
+
+Find staff user slugs that end with a Ghost ID suffix, such as `first-last-6a32d1c818627a48420e689d`, and remove the suffix when the cleaned slug is safe to use.
+
+The tool fetches all staff users, checks whether the cleaned slug already exists, and only updates users where the cleaned slug is unique. If `first-last` already exists, or multiple ID-suffixed staff users would collapse to `first-last`, those users are skipped.
+
+```sh
+# See all available options
+gctools clean-staff-slugs --help
+
+# Preview what would be changed without making updates
+gctools clean-staff-slugs <apiURL> <adminAPIKey> --dry-run
+
+# Clean safe staff user slugs
+gctools clean-staff-slugs <apiURL> <adminAPIKey>
+
+# Custom delay between API calls
+gctools clean-staff-slugs <apiURL> <adminAPIKey> --delayBetweenCalls 100
+```
+
+The interactive mode also supports this tool via `gctools i` and uses the same saved/manual Ghost Admin authentication prompts as the other API tools.
+
+**Available options:**
+- `--dry-run`: Show what would be changed without making actual changes
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
 ### comment-notifications
 
