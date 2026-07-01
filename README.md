@@ -904,17 +904,31 @@ Newsletter slugs are stored as comma-separated values (e.g., `main-newsletter,we
 
 ### split-members
 
-Read a members CSV file, sort by `created_at`, and split into two evenly-distributed halves using a zipper pattern (index 0→A, 1→B, 2→A, 3→B…). This produces two balanced groups useful for segmented migrations or A/B campaigns.
+Split members into two evenly-distributed halves, and optionally bulk-label each group. Members can be **fetched live from the Ghost Admin API** (optionally filtered) or read from a **CSV file**. They are sorted by `created_at`, then split using a zipper pattern (index 0→A, 1→B, 2→A, 3→B…), producing two balanced groups useful for segmented migrations or A/B campaigns.
 
 ```sh
 # See all available options
 gctools split-members --help
 
-# Split a members CSV file
+# Split an existing members CSV file
 gctools split-members /path/to/members.csv
+
+# Fetch all members from Ghost, then split
+gctools split-members --apiURL https://example.com --adminAPIKey 1234:abcd
+
+# Fetch only the members matching a filter, then split. --filter accepts an NQL
+# filter, or a URL pasted straight from the Ghost members screen
+# (Admin → Members → set a filter → copy the browser URL)
+gctools split-members --apiURL https://example.com --adminAPIKey 1234:abcd --filter "status:free"
+gctools split-members --apiURL https://example.com --adminAPIKey 1234:abcd \
+  --filter "https://example.com/ghost/#/members?filter=created_at%3A%3C%3D%272026-06-02T03%3A59%3A59.999Z%27%2Bstatus%3Afree"
 
 # Custom output directory and filename prefix
 gctools split-members /path/to/members.csv --output ./output --baseName campaign-members
+
+# Split AND bulk-add a label to each group (labels are created if they don't exist)
+gctools split-members --apiURL https://example.com --adminAPIKey 1234:abcd --filter "status:free" \
+  --addLabels --labelA "Experiment A" --labelB "Experiment B" --chunkSize 100
 ```
 
 This produces three CSV files:
@@ -922,11 +936,26 @@ This produces three CSV files:
 - `members-a.csv` — even-index half (0, 2, 4…)
 - `members-b.csv` — odd-index half (1, 3, 5…)
 
-Interleaving A and B reconstructs the original sorted order. The CSV columns match whatever is in the input file.
+Interleaving A and B reconstructs the original sorted order. When fetching from the API, the files use Ghost's native member-export columns (`id`, `email`, `name`, `note`, `subscribed_to_emails`, `complimentary_plan`, `stripe_customer_id`, `created_at`, `deleted_at`, `labels`, `tiers`) so they can be re-imported. When reading a CSV, the columns match whatever is in the input file.
+
+With `--addLabels`, after the split the tool resolves `--labelA`/`--labelB` to label IDs (creating any that don't exist), then bulk-adds label A to group A and label B to group B via the Admin API `members/bulk/` endpoint, in chunks of `--chunkSize` members per request and rate-limited to `--requestsPerSecond` requests per second.
 
 **Available options:**
 - `--output` (default: `.`): Output directory for CSV files
 - `--baseName` (default: `members`): Filename prefix for output files
+- `--apiURL`: URL to your Ghost API (required when no CSV path is given)
+- `--adminAPIKey`: Admin API key (required when no CSV path is given)
+- `--filter`: Filter members when fetching — an NQL filter (e.g. `status:free`) or a pasted Ghost members URL
+- `--addLabels` (default: `false`): After splitting, bulk-add a label to each group
+- `--labelA`: Label name (or 24-character hex ID) to add to group A (required with `--addLabels`)
+- `--labelB`: Label name (or 24-character hex ID) to add to group B (required with `--addLabels`)
+- `--chunkSize` (default: `100`): Members per bulk label request
+- `--requestsPerSecond` (default: `5`): Maximum bulk label API requests per second
+
+**Notes:**
+- Provide **either** a CSV path **or** `--apiURL` + `--adminAPIKey`. If both are given, the CSV is used.
+- `--addLabels` always needs `--apiURL`, `--adminAPIKey`, `--labelA`, and `--labelB` — even when splitting from a CSV (which must contain a member `id` column).
+- To label an existing CSV without splitting, use [`add-label-to-members`](#add-label-to-members) instead.
 
 
 ### add-label-to-members

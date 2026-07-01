@@ -71,3 +71,6 @@ typings/
 # gctooos
 *.zip
 temp/
+members-a.csv
+members-all.csv
+members-b.csv
