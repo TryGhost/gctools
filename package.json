@@ -30,7 +30,7 @@
   },
   "dependencies": {
     "@inquirer/confirm": "6.1.1",
-    "@tryghost/admin-api": "1.14.10",
+    "@tryghost/admin-api": "1.14.11",
     "@tryghost/listr-smart-renderer": "0.15.1",
     "@tryghost/logging": "2.5.5",
     "@tryghost/mg-assetscraper-db": "0.13.1",
