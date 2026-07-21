@@ -26,7 +26,8 @@ const UPDATABLE_FIELDS = [
     {name: 'Visibility', value: 'visibility'},
     {name: 'Canonical URL', value: 'canonical_url'},
     {name: 'Codeinjection Head', value: 'codeinjection_head'},
-    {name: 'Codeinjection Foot', value: 'codeinjection_foot'}
+    {name: 'Codeinjection Foot', value: 'codeinjection_foot'},
+    {name: 'Authors', value: 'authors'}
 ];
 
 const normalizeValue = (val) => {
@@ -142,9 +143,10 @@ const getFullTaskList = (options) => {
                     api: ctx.api,
                     type: 'posts',
                     limit: 100,
-                    include: 'tags',
+                    include: 'tags,authors',
                     formats: 'lexical',
-                    fields: 'id,url,title,slug,status,visibility,updated_at,feature_image,feature_image_alt,feature_image_caption,custom_excerpt,meta_title,meta_description,og_title,og_description,og_image,twitter_title,twitter_description,twitter_image,canonical_url,codeinjection_head,codeinjection_foot'
+                    fields: 'id,url,title,slug,status,visibility,updated_at,feature_image,feature_image_alt,feature_image_caption,custom_excerpt,meta_title,meta_description,og_title,og_description,og_image,twitter_title,twitter_description,twitter_image,canonical_url,codeinjection_head,codeinjection_foot',
+                    progress: (options.verbose) ? true : false
                 };
 
                 if (options.slug) {
@@ -213,6 +215,11 @@ const getFullTaskList = (options) => {
                                 let changedFields = [];
 
                                 ctx.args.fields.forEach((field) => {
+                                    // Authors are a relation, not a scalar — handled separately below
+                                    if (field === 'authors') {
+                                        return;
+                                    }
+
                                     // Skip if the field is not present in the JSON post
                                     if (jsonPost[field] === undefined) {
                                         return;
@@ -223,6 +230,20 @@ const getFullTaskList = (options) => {
                                         changedFields.push(field);
                                     }
                                 });
+
+                                // Authors: resolve from the users + posts_authors join (keyed by the JSON post id).
+                                // posts.edit replaces the author list with whatever we send, so we send the full desired set.
+                                if (ctx.args.fields.includes('authors')) {
+                                    let desiredEmails = ctx.postAuthors.get(jsonPost.id) || [];
+                                    let currentEmails = (ghostPost.authors || []).map(author => author.email);
+
+                                    // Only update when we have authors and they differ (preserves order/primary).
+                                    // Never blank out authors if the JSON has none for this post.
+                                    if (desiredEmails.length > 0 && !_.isEqual(desiredEmails, currentEmails)) {
+                                        editPayload.authors = desiredEmails.map(email => ({email}));
+                                        changedFields.push('authors');
+                                    }
+                                }
 
                                 if (changedFields.length === 0) {
                                     ctx.skipped.push(ghostPost.title);

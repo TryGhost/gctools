@@ -1231,19 +1231,27 @@ gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fie
 # Update feature images
 gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'feature_image,feature_image_alt,feature_image_caption'
 
+# Update post authors (matched to existing Ghost users by email)
+gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'authors'
+
 # Custom delay between API calls
 gctools update-posts-from-json <apiURL> <adminAPIKey> /path/to/export.json --fields 'title' --delayBetweenCalls 100
 ```
 
 The JSON file should be in the standard Ghost export format (`{db: [{data: {posts: [...]}}]}`).
 
-**Available fields:** `title`, `slug`, `html`, `lexical`, `feature_image`, `feature_image_alt`, `feature_image_caption`, `custom_excerpt`, `meta_title`, `meta_description`, `og_title`, `og_description`, `og_image`, `twitter_title`, `twitter_description`, `twitter_image`, `status`, `visibility`, `canonical_url`, `codeinjection_head`, `codeinjection_foot`
+**Available fields:** `title`, `slug`, `html`, `lexical`, `feature_image`, `feature_image_alt`, `feature_image_caption`, `custom_excerpt`, `meta_title`, `meta_description`, `og_title`, `og_description`, `og_image`, `twitter_title`, `twitter_description`, `twitter_image`, `status`, `visibility`, `canonical_url`, `codeinjection_head`, `codeinjection_foot`, `authors`
+
+**Updating authors:** Include `authors` to set each post's author(s) from the export. Authors are resolved through the export's `posts_authors` → `users` join and matched to existing Ghost users **by email**, so the matching users must already exist on the destination site (this command does not create them) and the export must include the `users` and `posts_authors` data. Author order from the export is preserved (first author = primary), and posts that have no authors in the export are left unchanged.
 
 **Available options:**
-- `--fields`: Comma-separated list of fields to update (required)
+- `--fields`: Comma-separated list of fields to update (required, unless `--insertMissing` is set)
 - `--slug`: Only update the post with this slug (fetches just that one post from Ghost)
+- `--insertMissing`: Create posts from the JSON that don't exist in Ghost (matched by slug). New posts default to draft and are tagged `#added-<timestamp>`
+- `--skipExisting`: Skip updating posts that already exist in Ghost (typically paired with `--insertMissing`)
 - `--dryRun`: Preview what would be changed without making any updates
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+- `-V --verbose`: Show verbose output, including a progress bar while posts are fetched from Ghost
 
 
 ### export-comments
