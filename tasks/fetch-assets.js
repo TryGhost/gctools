@@ -1,3 +1,4 @@
+import {join} from 'node:path';
 import MgAssetScraperDb from '@tryghost/mg-assetscraper-db';
 import fsUtils from '@tryghost/mg-fs-utils';
 import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
@@ -36,7 +37,8 @@ const getTaskRunner = (options, logger) => {
         {
             title: 'Create JSON file',
             task: async (ctx) => {
-                await ctx.assetScraper.writeUpdatedJson(ctx.fileCache.jsonDir);
+                // `jsonDir` is a directory, so the scraper needs a file path within it to write to
+                await ctx.assetScraper.writeUpdatedJson(join(ctx.fileCache.jsonDir, 'ghost-import.json'));
             }
         },
         {
