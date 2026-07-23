@@ -504,25 +504,25 @@ gctools inline-media <apiURL> <adminAPIKey> --tag 'imported'
 Insert a public preview divider at a specific point, after the `previewPosition` number.
 
 ```sh
-# Add a divider to all posts as position 2
+# Add a divider to all posts after position 2
 gctools add-preview <apiURL> <adminAPIKey> --previewPosition 2
 
-# Add a divider to all posts as position 2, and overwrites if a divider already exists
+# Add a divider to all posts after position 2, and overwrites if a divider already exists
 gctools add-preview <apiURL> <adminAPIKey> --previewPosition 2 --overwrite
 
 # Add a divider to all posts 50% through the post
 gctools add-preview <apiURL> <adminAPIKey> --previewPosition 50%
 
-# Add a divider to all posts as position 2 for members-only posts
+# Add a divider to all posts after position 2 for members-only posts
 gctools add-preview <apiURL> <adminAPIKey> --visibility members --previewPosition 2
 
-# Add a divider to all posts as position 2 for paid posts
+# Add a divider to all posts after position 2 for paid posts
 gctools add-preview <apiURL> <adminAPIKey> --visibility paid --previewPosition 2
 
-# Add a divider to all posts as position 2 for paid posts that also have a tag of `hello`
+# Add a divider to all posts after position 2 for paid posts that also have a tag of `hello`
 gctools add-preview <apiURL> <adminAPIKey> --visibility paid --tag hello --previewPosition 2
 
-# Add a divider to all posts as position 2 for paid posts that also have a tag of `hello`, and are by written by `harry`
+# Add a divider to all posts after position 2 for paid posts that also have a tag of `hello`, and are by written by `harry`
 gctools add-preview <apiURL> <adminAPIKey> --visibility paid --tag hello --author harry --previewPosition 2
 ```
 
