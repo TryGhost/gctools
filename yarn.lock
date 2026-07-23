@@ -1999,13 +1999,13 @@
   optionalDependencies:
     sharp "^0.34.5"
 
-"@tryghost/listr-smart-renderer@0.15.1":
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.15.1.tgz#98eb64684e68771a83d0a18b66bbde80f38d5da0"
-  integrity sha512-UHTO658BxLq8cP4NFR5omHPe5rOcyTbH1A8daOHb8wLZaNN5QjHUSv9ewcpPJVpozawsEBdlwH4JgIdsfoJ11Q==
+"@tryghost/listr-smart-renderer@0.15.2":
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.15.2.tgz#4e55361fa24a3e417b257ab256e09a13c16cca8f"
+  integrity sha512-6QTmOWRqznw1Rghe3hFQlBXVixg7RqvechA3JJqncEsRXI3pisHDhDEieM3JCzRI/MKhEGYQZqctNwDM0FnPHQ==
   dependencies:
     chalk "5.6.2"
-    cli-truncate "6.0.1"
+    cli-truncate "6.1.1"
     elegant-spinner "3.0.0"
     indent-string "5.0.0"
     listr2 "10.2.2"
@@ -2030,14 +2030,14 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper-db@0.13.1":
-  version "0.13.1"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.13.1.tgz#b71691c08fbd7cc3bf40e27d35befca1245169ff"
-  integrity sha512-QFHZ3YPFRy5LofpTW8/8yTlFuTOSGo/XzVa+ESGwXeJH3j87RWBPdGLO8grp68iVKFVHWPBjCbGeRjJNquGFmw==
+"@tryghost/mg-assetscraper-db@0.13.2":
+  version "0.13.2"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.13.2.tgz#792abc7f3c33339ced15c276df1bf36778a6b39f"
+  integrity sha512-z5kdZbNOaG2O0gsPXfWBy7Iy5ZZzBlJkn3ueS27JF1ov0VE8gpmvNQqv5BAxTSGQKhxruT9/GqOe7FcWCiL42Q==
   dependencies:
     "@tryghost/errors" "3.2.4"
-    "@tryghost/listr-smart-renderer" "0.15.1"
-    "@tryghost/mg-fs-utils" "0.26.1"
+    "@tryghost/listr-smart-renderer" "0.15.2"
+    "@tryghost/mg-fs-utils" "0.26.2"
     "@tryghost/string" "0.3.5"
     escape-string-regexp "5.0.0"
     file-type "22.0.1"
@@ -2045,26 +2045,26 @@
     sharp "0.35.2"
     transliteration "2.6.1"
 
-"@tryghost/mg-fs-utils@0.26.1":
-  version "0.26.1"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.26.1.tgz#6a3558eb470d0c113dbef654cc95cb82f8914748"
-  integrity sha512-3JRO91ieG6MPEGxUBAaP+ZFsn/3SwWVvLIe2Q5y/tCnhXG6mVvQyiyzhxkDwSwVdLwhp62Y2RDq0/GEmHXKXRA==
+"@tryghost/mg-fs-utils@0.26.2":
+  version "0.26.2"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.26.2.tgz#e98ab97c593724593a4ba6d2355f4f19e3f7af66"
+  integrity sha512-vE7zqY8pA70HzltGDEZlOk15ZK0nl9PLZF1DwsY6ZfAE7OqfgIMPesxgWFs/qnfF8CHo0Ov9tvj+RGq14bTnYA==
   dependencies:
     "@tryghost/errors" "3.2.4"
     "@tryghost/image-transform" "1.4.16"
     "@tryghost/string" "0.3.5"
     "@tryghost/zip" "3.3.4"
-    adm-zip "0.5.17"
-    csv-parse "7.0.0"
+    adm-zip "0.5.18"
+    csv-parse "7.0.1"
     dotenv "17.4.2"
     fs-extra "11.3.5"
     sharp "0.35.2"
     transliteration "2.6.1"
 
-"@tryghost/mg-ghost-authors@0.10.1":
-  version "0.10.1"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.10.1.tgz#c72ff527a0d255bcf30c0565ec9efeb0e92e23ad"
-  integrity sha512-NN+sHKqHW5J+Ck7XISuah9OJEAMdo8XOWrpRSNWdrgZbEc2QEEImLFAeq3k5OawttmLE1swsxE9ePU539mhKvQ==
+"@tryghost/mg-ghost-authors@0.10.2":
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.10.2.tgz#4fce2f5a5c6cb2072bb225fae4da6b6cbd6fd700"
+  integrity sha512-AJ7hDr0/Gn8KwV7stxoF61fGWXUdw9LLku7ZkcUiNQ0X0qFqCN1anaNiUDct3zQ7ot5tyJm9MavZjdUK7gDU0w==
   dependencies:
     "@tryghost/admin-api" "1.14.10"
     "@tryghost/errors" "3.2.4"
@@ -2309,10 +2309,10 @@ acorn@^8.9.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.17.0.tgz#1785adb84faf8d8add10369b93826fc2bd08f1fe"
   integrity sha512-xRQbDb9BnwDafYNn6Vwl839DYVjqXYb1XVGtWAZ1kcDc6iwAL4hg3B1dZlRiuENFeO2H53gFG3in621AdERVAg==
 
-adm-zip@0.5.17:
-  version "0.5.17"
-  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.5.17.tgz#5c0b65f37aeec5c2a94995c024f931f62e4bbc5a"
-  integrity sha512-+Ut8d9LLqwEvHHJl1+PIHqoyDxFgVN847JTVM3Izi3xHDWPE4UtzzXysMZQs64DMcrJfBeS/uoEP4AD3HQHnQQ==
+adm-zip@0.5.18:
+  version "0.5.18"
+  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.5.18.tgz#283a05f2bf1e3fd315f0f31cde29b7a6e3c1619d"
+  integrity sha512-ufJnssQGbxzLNS1Ho9bCtX4rQKCCvoVuDLHoJyc3F9dOGDB4BkWs2Ci0kv53lqocAEQ/Cbi+I2XCsNYGqVYqng==
 
 agent-base@6:
   version "6.0.2"
@@ -2858,10 +2858,10 @@ cli-progress@3.12.0:
   dependencies:
     string-width "^4.2.3"
 
-cli-truncate@6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/cli-truncate/-/cli-truncate-6.0.1.tgz#c6a894864061266cb90414ccf597ca13068ab5f3"
-  integrity sha512-2FPVnc3JxdRLONB/9edO1RwuUFFPJ3U2c6XvyccEhjqV5xw6mS22aH27OFdD1u4IYQOEUzXsT6ZU06d1VCSu+Q==
+cli-truncate@6.1.1:
+  version "6.1.1"
+  resolved "https://registry.yarnpkg.com/cli-truncate/-/cli-truncate-6.1.1.tgz#35ae66a040eef357aedcfffd6149d847bf7a2eb1"
+  integrity sha512-06p9vyLahLa4zkGcgsGxU6iEkSOiuI4fhCH6Emhe2lPAcoUv73n72DnODsnHA+5wwXGnV0n9M9/qOQJSjYhFhw==
   dependencies:
     slice-ansi "^9.0.0"
     string-width "^8.2.0"
@@ -3040,10 +3040,10 @@ csv-generate@^3.4.3:
   resolved "https://registry.yarnpkg.com/csv-generate/-/csv-generate-3.4.3.tgz#bc42d943b45aea52afa896874291da4b9108ffff"
   integrity sha512-w/T+rqR0vwvHqWs/1ZyMDWtHHSJaN06klRqJXBEpDJaM/+dZkso0OKh1VcuuYvK3XM53KysVNq8Ko/epCK8wOw==
 
-csv-parse@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-7.0.0.tgz#ef2495b2ed6424808defc92d0f40bbe228674447"
-  integrity sha512-CSssqPAK5us09FhMI9juM0jnqXUJP+rtWeIfivTYBLNH/8rnxkQlZvoRemF6MAyfNov9XU8mN2wwF/pP68sxTA==
+csv-parse@7.0.1:
+  version "7.0.1"
+  resolved "https://registry.yarnpkg.com/csv-parse/-/csv-parse-7.0.1.tgz#77d0f216dc25af5e8006f3b7899526081dd81b07"
+  integrity sha512-+2z7Ar0APQ7Uu6fX4cn+pitRmxjZ1WPBcGmZFKmA74FCyi7Et/XZx8cjNQ5CjbZ4HCOxXCOpRBYvYH08Qa003A==
 
 csv-parse@^4.16.3:
   version "4.16.3"
