@@ -1,11 +1,19 @@
 import inquirer from 'inquirer';
 import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
+import inquirerDatepickerPrompt from 'inquirer-datepicker-prompt';
+inquirer.registerPrompt('datetime', inquirerDatepickerPrompt);
 import chalk from 'chalk';
 import {ui} from '@tryghost/pretty-cli';
 import inlineMedia from '../tasks/inline-media.js';
 import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
+
+const dateStartOfToday = new Date();
+dateStartOfToday.setUTCHours(0, 0, 0, 0);
+
+const dateEndOfToday = new Date();
+dateEndOfToday.setUTCHours(23, 59, 59, 999);
 
 const choice = {
     name: 'Inline media',
@@ -138,6 +146,56 @@ const options = [
         },
         when: function (answers) {
             return answers.filterByAuthor === 'yes';
+        }
+    },
+    {
+        type: 'select',
+        name: 'filterByAfterDate',
+        message: 'Only include posts published on or after a specific date?',
+        choices: [
+            {
+                name: 'No',
+                value: 'no'
+            },
+            {
+                name: 'Yes',
+                value: 'yes'
+            }
+        ]
+    },
+    {
+        type: 'datetime',
+        name: 'afterAndOnDate',
+        message: 'Include posts published on and after (UTC):',
+        format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
+        initial: dateStartOfToday,
+        when: function (answers) {
+            return answers.filterByAfterDate === 'yes';
+        }
+    },
+    {
+        type: 'select',
+        name: 'filterByBeforeDate',
+        message: 'Only include posts published on or before a specific date?',
+        choices: [
+            {
+                name: 'No',
+                value: 'no'
+            },
+            {
+                name: 'Yes',
+                value: 'yes'
+            }
+        ]
+    },
+    {
+        type: 'datetime',
+        name: 'beforeAndOnDate',
+        message: 'Include posts published on and before (UTC):',
+        format: ['dd', ' ', 'mmmm', ' ', 'yyyy'],
+        initial: dateEndOfToday,
+        when: function (answers) {
+            return answers.filterByBeforeDate === 'yes';
         }
     },
     {

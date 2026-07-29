@@ -263,6 +263,33 @@ const uploadToGhost = async (api, filePath, contentType) => {
     return null;
 };
 
+/**
+ * Build published_at range filters from the before/after date options.
+ *
+ * Dates are treated as UTC calendar days:
+ *   - afterAndOnDate includes everything from the start of that day (00:00:00)
+ *   - beforeAndOnDate includes everything up to the end of that day (23:59:59)
+ * so the specified date itself is always included in the selection.
+ *
+ * Accepts either a Date (from the interactive picker) or a YYYY-MM-DD string
+ * (from the CLI). Returns an array of NQL filter fragments.
+ */
+const getDateFilters = (args) => {
+    let filters = [];
+
+    if (args.afterAndOnDate) {
+        const day = new Date(args.afterAndOnDate).toISOString().substring(0, 10);
+        filters.push(`published_at:>='${day}T00:00:00.000Z'`);
+    }
+
+    if (args.beforeAndOnDate) {
+        const day = new Date(args.beforeAndOnDate).toISOString().substring(0, 10);
+        filters.push(`published_at:<='${day}T23:59:59.999Z'`);
+    }
+
+    return filters;
+};
+
 const initialise = (options) => {
     return {
         title: 'Initialising API connection',
@@ -271,6 +298,8 @@ const initialise = (options) => {
                 verbose: false,
                 tag: false,
                 author: false,
+                beforeAndOnDate: null,
+                afterAndOnDate: null,
                 delayBetweenCalls: 50
             };
 
@@ -337,6 +366,9 @@ const getFullTaskList = (options) => {
                             discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
                         }
 
+                        // Filter by published_at date range
+                        discoveryFilter.push(...getDateFilters(ctx.args));
+
                         // Exclude content already processed
                         discoveryFilter.push('tags:-[hash-imagesuploaded]');
 
@@ -395,6 +427,9 @@ const getFullTaskList = (options) => {
                         if (ctx.args.author && ctx.args.author.length > 0) {
                             discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
                         }
+
+                        // Filter by published_at date range
+                        discoveryFilter.push(...getDateFilters(ctx.args));
 
                         discoveryFilter.push('tags:-[hash-imagesuploaded]');
 
@@ -718,7 +753,7 @@ const getFullTaskList = (options) => {
                 });
 
                 let taskOptions = options;
-                taskOptions.concurrent = 5;
+                taskOptions.concurrent = 2;
                 return makeTaskRunner(tasks, taskOptions);
             }
         },

@@ -59,6 +59,14 @@ const setup = (sywac) => {
         defaultValue: null,
         desc: 'Select posts with these author slugs, inside single quotes. i.e. \'example-author\''
     });
+    sywac.string('--afterAndOnDate', {
+        defaultValue: null,
+        desc: 'Select posts published on or after this date (inclusive). Format: YYYY-MM-DD, i.e. \'2024-01-01\''
+    });
+    sywac.string('--beforeAndOnDate', {
+        defaultValue: null,
+        desc: 'Select posts published on or before this date (inclusive). Format: YYYY-MM-DD, i.e. \'2024-12-31\''
+    });
     sywac.string('--assetDomains', {
         defaultValue: null,
         desc: 'Comma separated list of domains to process media from. i.e. \'cdn.example.com, images.example.com\''
@@ -94,6 +102,14 @@ const run = async (argv) => {
         argv.assetDomains = argv.assetDomains.split(',').map((item) => {
             return item.trim();
         });
+    }
+
+    // Validate date filters are real dates in YYYY-MM-DD format
+    for (const flag of ['afterAndOnDate', 'beforeAndOnDate']) {
+        if (argv[flag] && (!/^\d{4}-\d{2}-\d{2}$/.test(argv[flag]) || isNaN(new Date(argv[flag]).getTime()))) {
+            ui.log.error(`--${flag} must be a valid date in YYYY-MM-DD format, i.e. 2024-01-01.`);
+            return;
+        }
     }
 
     try {
