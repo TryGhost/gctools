@@ -39,7 +39,7 @@
     "@tryghost/pretty-cli": "1.2.52",
     "@tryghost/string": "0.3.5",
     "@tryghost/zip": "1.1.54",
-    "axios": "1.18.1",
+    "axios": "1.19.0",
     "bluebird": "3.7.2",
     "chalk": "6.0.0",
     "cli-progress": "3.12.0",
