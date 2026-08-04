@@ -51,10 +51,13 @@ const run = async (argv) => {
             ui.log.info('Done');
         }
     } catch (error) {
-        ui.log.error('Done with errors', context.errors);
+        // `context.errors` is often empty here, so fall back to the thrown error
+        // to avoid reporting a failure with no detail at all
+        ui.log.error('Done with errors', context.errors.length ? context.errors : error);
+        return;
     }
 
-    if (argv.zip) {
+    if (argv.zip && context.outputFile) {
         ui.log.ok(`Zip file (${(context.outputFile.size / (1000 * 1000)).toFixed(2)}MB) saved at: ${context.outputFile.path}`);
     }
 
