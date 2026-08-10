@@ -1999,10 +1999,10 @@
   optionalDependencies:
     sharp "^0.34.5"
 
-"@tryghost/listr-smart-renderer@0.15.2":
-  version "0.15.2"
-  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.15.2.tgz#4e55361fa24a3e417b257ab256e09a13c16cca8f"
-  integrity sha512-6QTmOWRqznw1Rghe3hFQlBXVixg7RqvechA3JJqncEsRXI3pisHDhDEieM3JCzRI/MKhEGYQZqctNwDM0FnPHQ==
+"@tryghost/listr-smart-renderer@0.15.3":
+  version "0.15.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/listr-smart-renderer/-/listr-smart-renderer-0.15.3.tgz#80a0a552ee18bf8d6ac8f97cf8f6739e820124dd"
+  integrity sha512-MTgxgpxZgDNidjhjqBXnVaB4tw5L0aABggRAOIy0uH8fVk+gfH+6jnE8MlKcn1YnENAJ971zjy6hVkDAj7HaFQ==
   dependencies:
     chalk "5.6.2"
     cli-truncate "6.1.1"
@@ -2030,14 +2030,14 @@
     json-stringify-safe "^5.0.1"
     lodash "^4.17.21"
 
-"@tryghost/mg-assetscraper-db@0.13.2":
-  version "0.13.2"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.13.2.tgz#792abc7f3c33339ced15c276df1bf36778a6b39f"
-  integrity sha512-z5kdZbNOaG2O0gsPXfWBy7Iy5ZZzBlJkn3ueS27JF1ov0VE8gpmvNQqv5BAxTSGQKhxruT9/GqOe7FcWCiL42Q==
+"@tryghost/mg-assetscraper-db@0.13.3":
+  version "0.13.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-assetscraper-db/-/mg-assetscraper-db-0.13.3.tgz#8a83abaffab7ac5c9a1444fc498d142679b48d2f"
+  integrity sha512-+qRqEaYPIaAgTMOoFjOtCEGpY1OCOf5NeI/dlpaPPG127k7fEZ/gWqJcRPys8cfj38mUqgQ2HF/62+iYRkxe8A==
   dependencies:
     "@tryghost/errors" "3.2.4"
-    "@tryghost/listr-smart-renderer" "0.15.2"
-    "@tryghost/mg-fs-utils" "0.26.2"
+    "@tryghost/listr-smart-renderer" "0.15.3"
+    "@tryghost/mg-fs-utils" "0.26.3"
     "@tryghost/string" "0.3.5"
     escape-string-regexp "5.0.0"
     file-type "22.0.1"
@@ -2045,26 +2045,26 @@
     sharp "0.35.2"
     transliteration "2.6.1"
 
-"@tryghost/mg-fs-utils@0.26.2":
-  version "0.26.2"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.26.2.tgz#e98ab97c593724593a4ba6d2355f4f19e3f7af66"
-  integrity sha512-vE7zqY8pA70HzltGDEZlOk15ZK0nl9PLZF1DwsY6ZfAE7OqfgIMPesxgWFs/qnfF8CHo0Ov9tvj+RGq14bTnYA==
+"@tryghost/mg-fs-utils@0.26.3":
+  version "0.26.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-fs-utils/-/mg-fs-utils-0.26.3.tgz#c3f774eb7801f84a5cf6e735c12c471a963ec73e"
+  integrity sha512-nqYDFPEOt3JJb5ZqmQ2B5mam47iU/+2J+svVnx55TOxHuVnQN0IUp3hmE+ZuDHMmH2/ibkVfDtck0gXroEM6Ww==
   dependencies:
     "@tryghost/errors" "3.2.4"
     "@tryghost/image-transform" "1.4.16"
     "@tryghost/string" "0.3.5"
     "@tryghost/zip" "3.3.4"
-    adm-zip "0.5.18"
+    adm-zip "0.6.0"
     csv-parse "7.0.1"
     dotenv "17.4.2"
     fs-extra "11.3.5"
     sharp "0.35.2"
     transliteration "2.6.1"
 
-"@tryghost/mg-ghost-authors@0.10.2":
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.10.2.tgz#4fce2f5a5c6cb2072bb225fae4da6b6cbd6fd700"
-  integrity sha512-AJ7hDr0/Gn8KwV7stxoF61fGWXUdw9LLku7ZkcUiNQ0X0qFqCN1anaNiUDct3zQ7ot5tyJm9MavZjdUK7gDU0w==
+"@tryghost/mg-ghost-authors@0.10.3":
+  version "0.10.3"
+  resolved "https://registry.yarnpkg.com/@tryghost/mg-ghost-authors/-/mg-ghost-authors-0.10.3.tgz#f0ea9f00788471c011c7c803c935ec2dbcab3845"
+  integrity sha512-1WtGhRptnAhQZ0RY/dUnrzgU9GpAWPJ2wTm8zhMJEhzdK7FSQM9jqM0PjP/8mRQRzF+MWlufwxsYlRPF5kJrfg==
   dependencies:
     "@tryghost/admin-api" "1.14.10"
     "@tryghost/errors" "3.2.4"
@@ -2309,10 +2309,10 @@ acorn@^8.9.0:
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-8.18.0.tgz#4faf01b2d6d326bfeed97aea1f52220b5f4c1940"
   integrity sha512-lGq+9yr1/GuAWaVYIHRjvvySG5/4VfKIvC8EWxStPdcDh/Ka7FG3twP6v4d5BkravUilhIAsG4Qj83t02LWUPQ==
 
-adm-zip@0.5.18:
-  version "0.5.18"
-  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.5.18.tgz#283a05f2bf1e3fd315f0f31cde29b7a6e3c1619d"
-  integrity sha512-ufJnssQGbxzLNS1Ho9bCtX4rQKCCvoVuDLHoJyc3F9dOGDB4BkWs2Ci0kv53lqocAEQ/Cbi+I2XCsNYGqVYqng==
+adm-zip@0.6.0:
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/adm-zip/-/adm-zip-0.6.0.tgz#bbc5c6c333755e967a06dd98747f431e1d53a3cf"
+  integrity sha512-XleryMhbuksdKtofnWZ9Sk+4CUTbms4Mb/EU32SZwToAyZ5RgVos/ki8n+yr0LWHOGKuakbXTuuYNHLQjhddgg==
 
 agent-base@6:
   version "6.0.2"
