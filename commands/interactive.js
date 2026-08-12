@@ -222,29 +222,35 @@ const run = async () => {
         }
     };
 
-    function mainMenu() {
-        inquirer.prompt(tasksPrompt).then(async (answers) => {
+    async function mainMenu() {
+        try {
+            const answers = await inquirer.prompt(tasksPrompt);
+
             if (answers.task === 'show_saved_creds_path') {
                 ui.log.info(`Saved credentials: ${sitesJSONFile}`);
-                mainMenu();
+                await mainMenu();
             } else if (answers.task === 'abort') {
                 ui.log.info('Aborted');
                 process.exit(0);
             } else {
-                try {
-                    let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
-                    await thisTask[0].run();
+                let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
+                await thisTask[0].run();
 
-                    // When the task is run, return to the main menu
-                    mainMenu();
-                } catch (error) {
-                    ui.log.warn(`There was a problem`, error);
-                }
+                // When the task is run, return to the main menu
+                await mainMenu();
             }
-        });
+        } catch (error) {
+            // Ctrl+C in any prompt rejects with ExitPromptError - exit quietly
+            if (error.name === 'ExitPromptError') {
+                ui.log.info('Aborted');
+                process.exit(0);
+            }
+
+            ui.log.warn(`There was a problem`, error);
+        }
     }
 
-    mainMenu();
+    await mainMenu();
 };
 
 export default {
