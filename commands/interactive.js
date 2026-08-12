@@ -192,6 +192,10 @@ const run = async () => {
                 value: tasks.deleteUnusedTags.choice.value
             },
             {
+                name: tasks.keepTags.choice.name,
+                value: tasks.keepTags.choice.value
+            },
+            {
                 name: tasks.findReplace.choice.name,
                 value: tasks.findReplace.choice.value
             },

@@ -39,6 +39,7 @@ import addLabelToMembers from './add-label-to-members.js';
 import inlineMedia from './inline-media.js';
 import updatePostsFromJson from './update-posts-from-json.js';
 import seedDemo from './seed-demo.js';
+import keepTags from './keep-tags.js';
 
 export default {
     zipSplit,
@@ -79,5 +80,6 @@ export default {
     addLabelToMembers,
     inlineMedia,
     updatePostsFromJson,
-    seedDemo
+    seedDemo,
+    keepTags
 };

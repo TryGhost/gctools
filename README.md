@@ -50,6 +50,7 @@ Available tools include:
 * [`delete-tags`](#delete-tags)
 * [`delete-labels`](#delete-labels)
 * [`delete-empty-tags`](#delete-empty-tags)
+* [`keep-tags`](#keep-tags)
 * [`find-replace`](#find-replace)
 * [`change-author`](#change-author)
 * [`add-author`](#add-author)
@@ -572,6 +573,80 @@ gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 5 --delayBetween
 
 **Available options:**
 - `--maxPostCount` (default: 0): Maximum number of associated posts a tag can have to be deleted
+- `--delayBetweenCalls` (default: 50): Delay between API calls in ms
+
+
+### keep-tags
+
+Delete every tag that is *not* listed in a CSV of tags to keep. Useful for reconciling a site's tags against a canonical list.
+
+**CSV format:** only the first column is read, and the first row is always treated as a header — whatever it's called. Values are matched ignoring case and surrounding whitespace, and duplicates are collapsed.
+
+By default values are matched against the tag **slug**:
+
+```csv
+slug
+news
+how-to
+product-updates
+```
+
+Use `--matchBy name` when your list is of human-readable tag **names**:
+
+```csv
+name
+News
+How To
+Product Updates
+```
+
+Use `--matchBy either` for a list that mixes the two — each value is tried as a slug first, then as a name:
+
+```csv
+tag
+news
+How To
+product-updates
+```
+
+Since the header name doesn't matter and extra columns are ignored, a CSV exported from somewhere else works as-is, as long as the column you want to match on is first:
+
+```csv
+name,slug,post_count
+News,news,42
+How To,how-to,17
+Product Updates,product-updates,8
+```
+
+That file matches on `name`, so it needs `--matchBy name` (or `either`). Reorder the columns to match on `slug` instead.
+
+Note that a name and a slug often normalise to the same thing — `News` and `news` both become `news` — so a list of simple one-word names will match on slug without any flag. `--matchBy` only matters for tags whose name differs from its slug, like `How To` vs `how-to`.
+
+A report CSV is always written next to the input CSV, on both dry and real runs. It lists every tag with an `action` of `kept`, `kept_internal`, `would_delete`, `deleted` or `delete_failed`, plus a `not_in_ghost` row for each CSV value that matched no tag.
+
+> **Safety:** internal tags (`#internal`) are never deleted, regardless of the CSV or `--force`. The command also aborts without deleting anything if the CSV yields no values, or if not a single CSV value matches a tag — either almost always means the wrong column or the wrong `--matchBy`.
+
+```sh
+# See all available options
+gctools keep-tags --help
+
+# Report what would be deleted, without changing anything
+gctools keep-tags <apiURL> <adminAPIKey> /path/to/tags.csv --dryRun
+
+# Delete every tag whose slug is not in the CSV
+gctools keep-tags <apiURL> <adminAPIKey> /path/to/tags.csv
+
+# Match against tag names instead of slugs
+gctools keep-tags <apiURL> <adminAPIKey> /path/to/tags.csv --matchBy name
+
+# Match against either the slug or the name
+gctools keep-tags <apiURL> <adminAPIKey> /path/to/tags.csv --matchBy either
+```
+
+**Available options:**
+- `--dryRun` (default: false): Report which tags would be deleted, without deleting anything
+- `--matchBy` (default: `slug`): Match CSV values against the tag `slug`, `name`, or `either`. Note that `either` makes the "nothing matched" safety check much less likely to catch a wrong CSV
+- `--force` (default: false): Bypass the safety checks that abort when the CSV is empty or matches no tags. Internal tags are still never deleted
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 
 

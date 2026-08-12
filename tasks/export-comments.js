@@ -6,28 +6,9 @@ import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
 import {getComments, getPublicCommentsForPost, getMembersByIds} from '../lib/admin-api-call.js';
 import {discover} from '../lib/batch-ghost-discover.js';
+import {jsonToCSV} from '../lib/utils.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
-const escapeCSVField = (value) => {
-    const str = String(value ?? '');
-    if (str.includes(',') || str.includes('"') || str.includes('\n') || str.includes('\r')) {
-        return `"${str.replace(/"/g, '""')}"`;
-    }
-    return str;
-};
-
-const jsonToCSV = (data) => {
-    if (data.length === 0) {
-        return '';
-    }
-    const headers = Object.keys(data[0]);
-    const lines = [headers.join(',')];
-    for (const row of data) {
-        lines.push(headers.map(h => escapeCSVField(row[h])).join(','));
-    }
-    return lines.join('\n');
-};
 
 const extractSlugFromUrl = (url) => {
     if (!url) {
