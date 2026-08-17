@@ -20,6 +20,7 @@
     "dev": "node bin/cli.js",
     "gctools": "gctools",
     "test:only": "node --test --experimental-test-module-mocks test/*.test.js",
+    "test:file": "node --test --experimental-test-module-mocks",
     "test": "node --test --experimental-test-module-mocks test/*.test.js && pnpm lint",
     "lint": "eslint . --ext .js --cache",
     "update": "git pull origin main && pnpm install"
