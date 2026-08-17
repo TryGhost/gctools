@@ -1,0 +1,11 @@
+# Not a workspace - this file only records which dependency build scripts are
+# allowed to run. Both entries are verified to work without their install
+# script, so both stay blocked:
+#   dtrace-provider - optional bunyan dep, its install script is
+#                     `node-gyp rebuild || node suppress-error.js` and bunyan
+#                     works fine without it.
+#   sharp           - 0.33+ ships prebuilt binaries as optional dependencies,
+#                     so image transforms work without the install script.
+allowBuilds:
+  dtrace-provider: false
+  sharp: false

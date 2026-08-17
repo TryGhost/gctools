@@ -6,10 +6,11 @@ Command line utilities for working with Ghost content.
 ## Install
 
 1. `git clone` this repo & `cd` into it as usual
-2. Run `yarn` to install top-level dependencies.
-3. To make `gctools` accessible globally, run `npm link`
+2. Run `pnpm install` to install top-level dependencies.
+3. To make `gctools` accessible globally, run `pnpm add -g .`
+    - This needs pnpm's global bin directory to be on your `PATH`. If it isn't, run `pnpm setup` once and restart your shell
     - You need to run this after making changes to the codebase to update the global version
-    - If developing the code, `yarn dev ...` is a more suitable command
+    - If developing the code, `pnpm dev ...` is a more suitable command
 
 
 ## Usage
@@ -1367,10 +1368,10 @@ The tool first tries the site-wide Admin API comments endpoint (available on new
 
 ## Tests
 
-* `yarn test` to run all tests and linting
-* `yarn test:only` to only run tests
-* `yarn test:only -- ./test/my-file.test.js` to only run a specific file
-* `yarn lint` to run linting
+* `pnpm test` to run all tests and linting
+* `pnpm test:only` to only run tests
+* `pnpm test:only ./test/my-file.test.js` to only run a specific file
+* `pnpm lint` to run linting
 
 # Copyright & License
 
