@@ -113,25 +113,18 @@ const getFullTaskList = (options) => {
                             try {
                                 let postTags = ghostPost.tags;
 
-                                let newTags = [];
-
-                                // If `addAsPrimaryTag` is true, delete the tag if it exists, so it can be added as primary instead
-                                if (options.addAsPrimaryTag) {
-                                    newTags = postTags.filter((item) => {
-                                        if (tagsToAdd.includes(item.name)) {
-                                            return false;
-                                        } else {
-                                            return true;
-                                        }
-                                    });
-                                }
-
-                                newTags = postTags.filter((item) => {
+                                let newTags = postTags.filter((item) => {
                                     if (tagsToDelete.includes(item.name)) {
                                         return false;
-                                    } else {
-                                        return true;
                                     }
+
+                                    // If `addAsPrimaryTag` is true, remove the tag if it already exists,
+                                    // so it can be re-added as the primary tag instead of being duplicated
+                                    if (options.addAsPrimaryTag && tagsToAdd.includes(item.name)) {
+                                        return false;
+                                    }
+
+                                    return true;
                                 });
 
                                 tagsToAdd.forEach((item) => {
