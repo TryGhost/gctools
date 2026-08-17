@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import deletePosts from '../tasks/add-preview.js';
 
 // Internal ID in case we need one.
@@ -13,54 +13,51 @@ const flags = 'add-preview <apiURL> <adminAPIKey>';
 const desc = 'Add a public preview to posts';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.enumeration('--visibility', {
         defaultValue: 'all',
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Post visibility'
+        desc: 'Post visibility',
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Update content with this tag slug'
+        desc: 'Update content with this tag slug',
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Update content with this author slug'
+        desc: 'Update content with this author slug',
     });
     sywac.string('-pp --previewPosition', {
         defaultValue: '2',
-        desc: 'The card position index the public preview should be inserted after'
+        desc: 'The card position index the public preview should be inserted after',
     });
     sywac.boolean('-o --overwrite', {
         defaultValue: false,
-        desc: 'Overwrite the preview position if one already exists'
+        desc: 'Overwrite the preview position if one already exists',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     if (argv.author) {
         argv.author = argv.author.split(',').map((item) => {
             // This needs to be improved. The task is expecting an array of objects that each contain a `slug` value
             return {
-                slug: item.trim()
+                slug: item.trim(),
             };
         });
     }
@@ -92,5 +89,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

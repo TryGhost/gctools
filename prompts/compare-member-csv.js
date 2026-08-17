@@ -1,10 +1,10 @@
 import inquirer from 'inquirer';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import compareMemberCsv from '../tasks/compare-member-csv.js';
 
 const choice = {
     name: 'Compare member CSV files',
-    value: 'compareMemberCsv'
+    value: 'compareMemberCsv',
 };
 
 const options = [
@@ -22,7 +22,7 @@ const options = [
                 return 'Please provide a file path';
             }
             return true;
-        }
+        },
     },
     {
         type: 'input',
@@ -38,14 +38,14 @@ const options = [
                 return 'Please provide a file path';
             }
             return true;
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = compareMemberCsv.getTaskRunner(answers);
@@ -55,7 +55,9 @@ async function run() {
             ui.log.info('Summary:');
             ui.log.info(`- New members found: ${context.newMembersList.length}`);
             ui.log.info(`- Unsubscribed members found: ${context.unsubscribedList.length}`);
-            ui.log.info(`- Updated members found: ${context.updatedList ? context.updatedList.length : 0}`);
+            ui.log.info(
+                `- Updated members found: ${context.updatedList ? context.updatedList.length : 0}`,
+            );
 
             if (context.newMembersFile) {
                 ui.log.ok(`New members exported to: ${context.newMembersFile}`);
@@ -80,5 +82,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

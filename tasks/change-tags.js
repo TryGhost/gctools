@@ -1,10 +1,10 @@
 import path from 'node:path';
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {maybeStringToArray} from '../lib/utils.js';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { maybeStringToArray } from '../lib/utils.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 import fsUtils from '@tryghost/mg-fs-utils';
 
 const initialise = (options) => {
@@ -13,7 +13,7 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -21,7 +21,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -31,7 +31,7 @@ const initialise = (options) => {
             ctx.updated = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -46,7 +46,7 @@ const getFullTaskList = (options) => {
                     type: 'posts',
                     limit: 100,
                     include: 'tags',
-                    fields: 'id,title,slug,url,updated_at'
+                    fields: 'id,title,slug,url,updated_at',
                 };
 
                 try {
@@ -56,7 +56,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Read CSV file',
@@ -73,28 +73,28 @@ const getFullTaskList = (options) => {
                     item.add_tags = maybeStringToArray(item.add_tags);
                     return item;
                 });
-            }
+            },
         },
         {
             title: 'Filter content',
             task: async (ctx, task) => {
                 ctx.csvData.forEach((csvPost) => {
-                    let foundInGhost = _.find(ctx.posts, {slug: csvPost.slug});
+                    let foundInGhost = _.find(ctx.posts, { slug: csvPost.slug });
 
                     if (foundInGhost) {
                         ctx.selectedPosts.push({
                             csvData: csvPost,
-                            ghostData: foundInGhost
+                            ghostData: foundInGhost,
                         });
                     } else {
                         ctx.errors.push({
-                            message: `No live post found for ${csvPost.url}`
+                            message: `No live post found for ${csvPost.url}`,
                         });
                     }
                 });
 
                 task.output = `Found ${ctx.selectedPosts.length} posts wth the same URL in CSV and Ghost`;
-            }
+            },
         },
         {
             title: 'Changing tags',
@@ -145,28 +145,28 @@ const getFullTaskList = (options) => {
                                 let result = await ctx.api.posts.edit({
                                     id: ghostPost.id,
                                     updated_at: ghostPost.updated_at,
-                                    tags: newTags
+                                    tags: newTags,
                                 });
 
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    url: ghostPost.url
+                                    url: ghostPost.url,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 return makeTaskRunner(tasks, {
                     concurrent: 1,
-                    verbose: options.verbose
+                    verbose: options.verbose,
                 });
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -175,11 +175,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

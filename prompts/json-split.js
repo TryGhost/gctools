@@ -1,10 +1,10 @@
 import inquirer from 'inquirer';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import jsonSplit from '../tasks/json-split.js';
 
 const choice = {
     name: 'JSON split',
-    value: 'jsonSplit'
+    value: 'jsonSplit',
 };
 
 const options = [
@@ -14,7 +14,7 @@ const options = [
         message: 'Path to the large JSON file:',
         filter: function (val) {
             return val.trim();
-        }
+        },
     },
     {
         type: 'number',
@@ -22,8 +22,8 @@ const options = [
         message: 'Maximum number of posts per file:',
         default: function () {
             return 500;
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
@@ -33,7 +33,7 @@ async function run() {
         Object.assign(opts, answers);
 
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = jsonSplit.getTaskRunner(opts);
@@ -48,5 +48,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

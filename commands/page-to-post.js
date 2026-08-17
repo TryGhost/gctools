@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import pageToPost from '../tasks/page-to-post.js';
 
 // Internal ID in case we need one.
@@ -13,35 +13,32 @@ const flags = 'page-to-post <apiURL> <adminAPIKey>';
 const desc = 'Change posts to pages, and pages to posts.';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.string('--id', {
         defaultValue: null,
-        desc: 'The ID for the post or page'
+        desc: 'The ID for the post or page',
     });
     sywac.string('--tagSlug', {
         defaultValue: null,
-        desc: 'Select posts with this tag to change type'
+        desc: 'Select posts with this tag to change type',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 100,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -54,7 +51,9 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully changed ${context.updated.length} posts to pages in ${Date.now() - timer}ms.`);
+    ui.log.ok(
+        `Successfully changed ${context.updated.length} posts to pages in ${Date.now() - timer}ms.`,
+    );
 };
 
 export default {
@@ -64,5 +63,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

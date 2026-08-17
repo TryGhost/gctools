@@ -1,4 +1,4 @@
-import {describe, test} from 'node:test';
+import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
 import cleanSlugs from '../tasks/clean-slugs.js';
 
@@ -10,32 +10,32 @@ describe('Clean Slugs', function () {
                 id: 1,
                 title: 'Test Post 1',
                 slug: 'my-great-post-684a32da145d7d001be71b4f',
-                updated_at: '2023-01-01T12:00:00.000Z'
+                updated_at: '2023-01-01T12:00:00.000Z',
             },
             {
                 id: 2,
                 title: 'Test Post 2',
                 slug: 'another-post-123abc456def789012345678',
-                updated_at: '2023-01-01T12:00:00.000Z'
+                updated_at: '2023-01-01T12:00:00.000Z',
             },
             {
                 id: 3,
                 title: 'Clean Post',
                 slug: 'clean-post-without-id',
-                updated_at: '2023-01-01T12:00:00.000Z'
+                updated_at: '2023-01-01T12:00:00.000Z',
             },
             {
                 id: 4,
                 title: 'Short ID Post',
                 slug: 'post-with-short-id-123',
-                updated_at: '2023-01-01T12:00:00.000Z'
+                updated_at: '2023-01-01T12:00:00.000Z',
             },
             {
                 id: 5,
                 title: 'Mixed Case ID',
                 slug: 'mixed-case-507f1f77bcf86cd799439011',
-                updated_at: '2023-01-01T12:00:00.000Z'
-            }
+                updated_at: '2023-01-01T12:00:00.000Z',
+            },
         ];
 
         // The regex used in the actual code
@@ -94,18 +94,18 @@ describe('Clean Slugs', function () {
             {
                 input: 'my-awesome-post-684a32da145d7d001be71b4f',
                 expectedId: '684a32da145d7d001be71b4f',
-                expectedClean: 'my-awesome-post'
+                expectedClean: 'my-awesome-post',
             },
             {
                 input: 'single-word-507f1f77bcf86cd799439011',
                 expectedId: '507f1f77bcf86cd799439011',
-                expectedClean: 'single-word'
+                expectedClean: 'single-word',
             },
             {
                 input: 'a-b-c-d-e-f-123abc456def789012345678',
                 expectedId: '123abc456def789012345678',
-                expectedClean: 'a-b-c-d-e-f'
-            }
+                expectedClean: 'a-b-c-d-e-f',
+            },
         ];
 
         testCases.forEach((testCase) => {
@@ -128,7 +128,7 @@ describe('Clean Slugs', function () {
             'ends-with-dash-', // ends with dash but no ID
             'has-g-in-id-684a32da145d7d001be71b4g', // contains 'g'
             'too-short-684a32da145d7d001be71b', // 23 chars (too short)
-            'invalid-chars-684a32da145d7d001be71xyz' // contains 'x', 'y', 'z'
+            'invalid-chars-684a32da145d7d001be71xyz', // contains 'x', 'y', 'z'
         ];
 
         edgeCases.forEach((edgeCase) => {
@@ -140,10 +140,11 @@ describe('Clean Slugs', function () {
         // Use a valid Ghost API key format: {24 hex chars}:{64 hex chars}
         const options = {
             apiURL: 'https://test.ghost.io',
-            adminAPIKey: '507f1f77bcf86cd799439011:507f1f77bcf86cd7994390117bcf86cd7994390117bcf86cd7994390117bcf86cd',
+            adminAPIKey:
+                '507f1f77bcf86cd799439011:507f1f77bcf86cd7994390117bcf86cd7994390117bcf86cd7994390117bcf86cd',
             verbose: true,
             'dry-run': false,
-            delayBetweenCalls: 100
+            delayBetweenCalls: 100,
         };
 
         const initTask = cleanSlugs.initialise(options);
@@ -154,7 +155,7 @@ describe('Clean Slugs', function () {
 
         // Mock task context
         const ctx = {};
-        const task = {output: ''};
+        const task = { output: '' };
 
         // Run the initialization
         initTask.task(ctx, task);

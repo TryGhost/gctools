@@ -2,14 +2,14 @@ import inquirer from 'inquirer';
 import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import changeVisibilityPages from '../tasks/change-visibility-pages.js';
-import {getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj} from '../lib/ghost-api-choices.js';
+import { getAPIAuthorsObj, getAPITagsObj, getAPIVisibilityObj } from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Change visibility for pages',
-    value: 'changeVisibilityPages'
+    value: 'changeVisibilityPages',
 };
 
 const options = [
@@ -21,21 +21,21 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Public',
-                value: 'public'
+                value: 'public',
             },
             {
                 name: 'Members',
-                value: 'members'
+                value: 'members',
             },
             {
                 name: 'Paid',
-                value: 'paid'
-            }
-        ]
+                value: 'paid',
+            },
+        ],
     },
     {
         type: 'search-checkbox',
@@ -44,7 +44,7 @@ const options = [
         pageSize: 20,
         choices: function () {
             return getAPITagsObj();
-        }
+        },
     },
     {
         type: 'search-checkbox',
@@ -52,7 +52,7 @@ const options = [
         message: `Filter by author: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
         choices: function () {
             return getAPIAuthorsObj();
-        }
+        },
     },
     {
         type: 'select',
@@ -60,19 +60,21 @@ const options = [
         message: 'New Visibility:',
         choices: function () {
             return getAPIVisibilityObj();
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = changeVisibilityPages.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully changed ${context.changed.length} pages in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully changed ${context.changed.length} pages in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -82,5 +84,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import inlineMedia from '../tasks/inline-media.js';
 
 // Internal ID in case we need one.
@@ -13,79 +13,76 @@ const flags = 'inline-media <apiURL> <adminAPIKey>';
 const desc = 'Download external images and re-upload them to Ghost';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.boolean('--dryRun', {
         defaultValue: false,
-        desc: 'Show what would be processed without downloading or uploading'
+        desc: 'Show what would be processed without downloading or uploading',
     });
     sywac.array('--type', {
         defaultValue: 'all',
         choices: ['all', 'posts', 'pages'],
-        desc: 'Content type'
+        desc: 'Content type',
     });
     sywac.enumeration('--status', {
         defaultValue: 'all',
         choices: ['all', 'draft', 'published'],
-        desc: 'Post status'
+        desc: 'Post status',
     });
     sywac.enumeration('--visibility', {
         defaultValue: 'all',
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Select posts with this visibility setting'
+        desc: 'Select posts with this visibility setting',
     });
     sywac.string('--slug', {
         defaultValue: null,
-        desc: 'Fetch a single post by its slug'
+        desc: 'Fetch a single post by its slug',
     });
     sywac.string('--id', {
         defaultValue: null,
-        desc: 'Fetch a single post by its ID'
+        desc: 'Fetch a single post by its ID',
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Select posts with these tag slugs, inside single quotes. i.e. \'existing-tag, newsletter\''
+        desc: "Select posts with these tag slugs, inside single quotes. i.e. 'existing-tag, newsletter'",
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Select posts with these author slugs, inside single quotes. i.e. \'example-author\''
+        desc: "Select posts with these author slugs, inside single quotes. i.e. 'example-author'",
     });
     sywac.string('--afterAndOnDate', {
         defaultValue: null,
-        desc: 'Select posts published on or after this date (inclusive). Format: YYYY-MM-DD, i.e. \'2024-01-01\''
+        desc: "Select posts published on or after this date (inclusive). Format: YYYY-MM-DD, i.e. '2024-01-01'",
     });
     sywac.string('--beforeAndOnDate', {
         defaultValue: null,
-        desc: 'Select posts published on or before this date (inclusive). Format: YYYY-MM-DD, i.e. \'2024-12-31\''
+        desc: "Select posts published on or before this date (inclusive). Format: YYYY-MM-DD, i.e. '2024-12-31'",
     });
     sywac.string('--assetDomains', {
         defaultValue: null,
-        desc: 'Comma separated list of domains to process media from. i.e. \'cdn.example.com, images.example.com\''
+        desc: "Comma separated list of domains to process media from. i.e. 'cdn.example.com, images.example.com'",
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     if (argv.tag) {
         argv.tag = argv.tag.split(',').map((item) => {
             return {
-                slug: item.trim()
+                slug: item.trim(),
             };
         });
     }
@@ -93,7 +90,7 @@ const run = async (argv) => {
     if (argv.author) {
         argv.author = argv.author.split(',').map((item) => {
             return {
-                slug: item.trim()
+                slug: item.trim(),
             };
         });
     }
@@ -106,7 +103,10 @@ const run = async (argv) => {
 
     // Validate date filters are real dates in YYYY-MM-DD format
     for (const flag of ['afterAndOnDate', 'beforeAndOnDate']) {
-        if (argv[flag] && (!/^\d{4}-\d{2}-\d{2}$/.test(argv[flag]) || isNaN(new Date(argv[flag]).getTime()))) {
+        if (
+            argv[flag] &&
+            (!/^\d{4}-\d{2}-\d{2}$/.test(argv[flag]) || isNaN(new Date(argv[flag]).getTime()))
+        ) {
             ui.log.error(`--${flag} must be a valid date in YYYY-MM-DD format, i.e. 2024-01-01.`);
             return;
         }
@@ -125,7 +125,8 @@ const run = async (argv) => {
     if (context.errors.length > 0) {
         ui.log.warn(`\n${context.errors.length} errors encountered:`);
         context.errors.forEach((err) => {
-            const message = typeof err === 'string' ? err : (err.message || err.context || String(err));
+            const message =
+                typeof err === 'string' ? err : err.message || err.context || String(err);
             ui.log.warn(`  - ${message}`);
         });
         ui.log.info('');
@@ -142,5 +143,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

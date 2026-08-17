@@ -1,5 +1,5 @@
 import path from 'node:path';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import keepTags from '../tasks/keep-tags.js';
 
 // Internal ID in case we need one.
@@ -17,38 +17,38 @@ const desc = 'Delete every Ghost tag that is not listed in a CSV of tags to keep
 const paramsDesc = [
     'URL to your Ghost API',
     'Admin API key',
-    'Path to a single-column CSV of tags to keep (the first row is always treated as a header)'
+    'Path to a single-column CSV of tags to keep (the first row is always treated as a header)',
 ];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.boolean('--dryRun', {
         defaultValue: false,
-        desc: 'Report which tags would be deleted, without deleting anything'
+        desc: 'Report which tags would be deleted, without deleting anything',
     });
     sywac.enumeration('--matchBy', {
         defaultValue: 'slug',
         choices: ['slug', 'name', 'either'],
-        desc: 'Match CSV values against the tag slug, name, or either. Note that `either` makes the "nothing matched" safety check much less likely to catch a wrong CSV'
+        desc: 'Match CSV values against the tag slug, name, or either. Note that `either` makes the "nothing matched" safety check much less likely to catch a wrong CSV',
     });
     sywac.boolean('--force', {
         defaultValue: false,
-        desc: 'Bypass the safety checks that abort when the CSV is empty or matches no tags. Internal tags are still never deleted'
+        desc: 'Bypass the safety checks that abort when the CSV is empty or matches no tags. Internal tags are still never deleted',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
     const dryRun = Boolean(argv.dryRun || argv['dry-run']);
 
     try {
@@ -65,17 +65,25 @@ const run = async (argv) => {
     const keptCount = context.toKeep.length + context.toKeepInternal.length;
 
     if (context.unmatched.length > 0) {
-        ui.log.warn(`${context.unmatched.length} CSV value${context.unmatched.length === 1 ? '' : 's'} matched no Ghost tag.`);
+        ui.log.warn(
+            `${context.unmatched.length} CSV value${context.unmatched.length === 1 ? '' : 's'} matched no Ghost tag.`,
+        );
     }
 
     // Report success
     if (dryRun) {
-        ui.log.ok(`Dry run: would keep ${keptCount} and delete ${context.toDelete.length} tags in ${Date.now() - timer}ms.`);
+        ui.log.ok(
+            `Dry run: would keep ${keptCount} and delete ${context.toDelete.length} tags in ${Date.now() - timer}ms.`,
+        );
     } else {
-        ui.log.ok(`Kept ${keptCount} tags and deleted ${context.deleted.length} of ${context.toDelete.length} in ${Date.now() - timer}ms.`);
+        ui.log.ok(
+            `Kept ${keptCount} tags and deleted ${context.deleted.length} of ${context.toDelete.length} in ${Date.now() - timer}ms.`,
+        );
 
         if (context.failed.length > 0) {
-            ui.log.warn(`${context.failed.length} tag${context.failed.length === 1 ? '' : 's'} could not be deleted. See the report for details.`);
+            ui.log.warn(
+                `${context.failed.length} tag${context.failed.length === 1 ? '' : 's'} could not be deleted. See the report for details.`,
+            );
         }
     }
 
@@ -91,5 +99,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

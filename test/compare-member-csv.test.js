@@ -1,11 +1,11 @@
-import {describe, test, afterEach} from 'node:test';
+import { describe, test, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
-import {join} from 'node:path';
-import {URL} from 'node:url';
+import { join } from 'node:path';
+import { URL } from 'node:url';
 import fs from 'fs-extra';
 import fsUtils from '@tryghost/mg-fs-utils';
 import compareMemberCsv from '../tasks/compare-member-csv.js';
-import {silentRenderer} from './helpers/silent-renderer.js';
+import { silentRenderer } from './helpers/silent-renderer.js';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
@@ -24,17 +24,17 @@ describe('Compare member CSV files', function () {
         const runner = compareMemberCsv.getTaskRunner({
             ...silentRenderer,
             oldFile: oldFile,
-            newFile: newFile
+            newFile: newFile,
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
         await runner.run(context);
 
         // Check that new members were identified
         assert.strictEqual(context.newMembersList.length, 1);
 
         // Verify specific new members
-        const newEmails = context.newMembersList.map(m => m.email);
+        const newEmails = context.newMembersList.map((m) => m.email);
 
         assert.ok(newEmails.includes('user6@example.com'));
 
@@ -55,21 +55,21 @@ describe('Compare member CSV files', function () {
         const runner = compareMemberCsv.getTaskRunner({
             ...silentRenderer,
             oldFile: oldFile,
-            newFile: newFile
+            newFile: newFile,
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
         await runner.run(context);
 
         // Check that updated members were identified (user3 now has Stripe ID)
         assert.strictEqual(context.updatedList.length, 1);
 
         // Verify specific updated member
-        const updatedEmails = context.updatedList.map(m => m.email);
+        const updatedEmails = context.updatedList.map((m) => m.email);
         assert.ok(updatedEmails.includes('user3@example.com'));
 
         // Verify the updated member has the Stripe customer ID
-        const updatedUser = context.updatedList.find(m => m.email === 'user3@example.com');
+        const updatedUser = context.updatedList.find((m) => m.email === 'user3@example.com');
         assert.strictEqual(updatedUser.stripe_customer_id, 'cus_1234');
 
         // Verify the file was created
@@ -89,17 +89,17 @@ describe('Compare member CSV files', function () {
         const runner = compareMemberCsv.getTaskRunner({
             ...silentRenderer,
             oldFile: oldFile,
-            newFile: newFile
+            newFile: newFile,
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
         await runner.run(context);
 
         // Check that unsubscribed members were identified
         assert.strictEqual(context.unsubscribedList.length, 1);
 
         // Verify specific unsubscribed members
-        const unsubscribedEmails = context.unsubscribedList.map(m => m.email);
+        const unsubscribedEmails = context.unsubscribedList.map((m) => m.email);
         assert.ok(unsubscribedEmails.includes('user1@example.com'));
 
         // Verify the file was created
@@ -119,10 +119,10 @@ describe('Compare member CSV files', function () {
         const runner = compareMemberCsv.getTaskRunner({
             ...silentRenderer,
             oldFile: oldFile,
-            newFile: newFile
+            newFile: newFile,
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
         await runner.run(context);
 
         // No new, unsubscribed, or updated members
@@ -132,7 +132,9 @@ describe('Compare member CSV files', function () {
 
         // Files should not be created when there are no differences
         const newFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'new.csv'));
-        const unsubscribedFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'unsubscribed.csv'));
+        const unsubscribedFileExists = await fs.pathExists(
+            join(__dirname, 'fixtures', 'unsubscribed.csv'),
+        );
         const updatedFileExists = await fs.pathExists(join(__dirname, 'fixtures', 'updated.csv'));
         assert.strictEqual(newFileExists, false);
         assert.strictEqual(unsubscribedFileExists, false);
@@ -146,10 +148,10 @@ describe('Compare member CSV files', function () {
         const runner = compareMemberCsv.getTaskRunner({
             ...silentRenderer,
             oldFile: oldFile,
-            newFile: newFile
+            newFile: newFile,
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
         await runner.run(context);
 
         // Check that all columns are preserved in new members
@@ -169,13 +171,13 @@ describe('Compare member CSV files', function () {
         const tempNewPath = join(__dirname, 'temp-new.csv');
 
         const oldData = [
-            {email: 'Test@Example.com', subscribed_to_emails: true, labels: 'test'},
-            {email: 'another@test.com', subscribed_to_emails: true, labels: 'test'}
+            { email: 'Test@Example.com', subscribed_to_emails: true, labels: 'test' },
+            { email: 'another@test.com', subscribed_to_emails: true, labels: 'test' },
         ];
 
         const newData = [
-            {email: 'test@example.com', subscribed_to_emails: true, labels: 'test'}, // Same as first but different case
-            {email: 'newuser@test.com', subscribed_to_emails: true, labels: 'test'}
+            { email: 'test@example.com', subscribed_to_emails: true, labels: 'test' }, // Same as first but different case
+            { email: 'newuser@test.com', subscribed_to_emails: true, labels: 'test' },
         ];
 
         // Write test CSV files
@@ -186,10 +188,10 @@ describe('Compare member CSV files', function () {
             const runner = compareMemberCsv.getTaskRunner({
                 ...silentRenderer,
                 oldFile: tempOldPath,
-                newFile: tempNewPath
+                newFile: tempNewPath,
             });
 
-            const context = {errors: []};
+            const context = { errors: [] };
             await runner.run(context);
 
             // Should identify one new member (newuser@test.com)
@@ -215,16 +217,16 @@ describe('Compare member CSV files', function () {
         const tempNewPath = join(__dirname, 'temp-new-missing.csv');
 
         const oldData = [
-            {email: 'valid@example.com', subscribed_to_emails: true},
-            {email: null, subscribed_to_emails: true}, // Missing email
-            {email: '', subscribed_to_emails: true}, // Empty email
-            {email: 'another@example.com', subscribed_to_emails: true}
+            { email: 'valid@example.com', subscribed_to_emails: true },
+            { email: null, subscribed_to_emails: true }, // Missing email
+            { email: '', subscribed_to_emails: true }, // Empty email
+            { email: 'another@example.com', subscribed_to_emails: true },
         ];
 
         const newData = [
-            {email: 'valid@example.com', subscribed_to_emails: true},
-            {email: undefined, subscribed_to_emails: true}, // Missing email
-            {email: 'new@example.com', subscribed_to_emails: true}
+            { email: 'valid@example.com', subscribed_to_emails: true },
+            { email: undefined, subscribed_to_emails: true }, // Missing email
+            { email: 'new@example.com', subscribed_to_emails: true },
         ];
 
         // Write test CSV files
@@ -235,10 +237,10 @@ describe('Compare member CSV files', function () {
             const runner = compareMemberCsv.getTaskRunner({
                 ...silentRenderer,
                 oldFile: tempOldPath,
-                newFile: tempNewPath
+                newFile: tempNewPath,
             });
 
-            const context = {errors: []};
+            const context = { errors: [] };
             await runner.run(context);
 
             // Should only process entries with valid emails
@@ -261,10 +263,10 @@ describe('Compare member CSV files', function () {
         const runner = compareMemberCsv.getTaskRunner({
             ...silentRenderer,
             oldFile: '/non/existent/old.csv',
-            newFile: '/non/existent/new.csv'
+            newFile: '/non/existent/new.csv',
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
 
         await assert.rejects(runner.run(context), /Old file not found/);
     });

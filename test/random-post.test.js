@@ -1,6 +1,6 @@
-import {describe, test} from 'node:test';
+import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import {getRandomPostContent} from '../lib/random-post.js';
+import { getRandomPostContent } from '../lib/random-post.js';
 
 describe('Random post', function () {
     test('can create a random post', async function () {
@@ -10,8 +10,8 @@ describe('Random post', function () {
         let randomPost = await getRandomPostContent({
             dateRange: {
                 start: startDate,
-                end: endDate
-            }
+                end: endDate,
+            },
         });
 
         assert.strictEqual(randomPost.tags.length, 1);
@@ -47,8 +47,8 @@ describe('Random post', function () {
             contentCount: 3,
             dateRange: {
                 start: startDate,
-                end: endDate
-            }
+                end: endDate,
+            },
         });
 
         assert.strictEqual(randomPost.tags.length, 2);

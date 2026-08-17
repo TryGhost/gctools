@@ -4,9 +4,9 @@ inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import inquirerDatepickerPrompt from 'inquirer-datepicker-prompt';
 inquirer.registerPrompt('datetime', inquirerDatepickerPrompt);
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import addTags from '../tasks/add-tags.js';
-import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import { getAPIAuthorsObj, getAPITagsObj } from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const dateStartOfToday = new Date();
@@ -21,7 +21,7 @@ dateEndOfToday.setUTCSeconds(59);
 
 const choice = {
     name: 'Add tags to posts and pages',
-    value: 'addTags'
+    value: 'addTags',
 };
 
 const options = [
@@ -33,17 +33,17 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Draft',
-                value: 'draft'
+                value: 'draft',
             },
             {
                 name: 'Published',
-                value: 'published'
-            }
-        ]
+                value: 'published',
+            },
+        ],
     },
     {
         type: 'checkbox',
@@ -52,13 +52,13 @@ const options = [
         choices: [
             {
                 name: 'Posts',
-                value: 'posts'
+                value: 'posts',
             },
             {
                 name: 'Pages',
-                value: 'pages'
-            }
-        ]
+                value: 'pages',
+            },
+        ],
     },
     {
         type: 'select',
@@ -67,21 +67,21 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Public',
-                value: 'public'
+                value: 'public',
             },
             {
                 name: 'Members',
-                value: 'members'
+                value: 'members',
             },
             {
                 name: 'Paid',
-                value: 'paid'
-            }
-        ]
+                value: 'paid',
+            },
+        ],
     },
     {
         type: 'search-checkbox',
@@ -90,7 +90,7 @@ const options = [
         pageSize: 20,
         choices: function () {
             return getAPITagsObj();
-        }
+        },
     },
     {
         type: 'search-checkbox',
@@ -98,7 +98,7 @@ const options = [
         message: `Filter by author: (Leave blank for all) ${chalk.yellow('[Type to search]')}`,
         choices: function () {
             return getAPIAuthorsObj();
-        }
+        },
     },
     {
         type: 'select',
@@ -107,13 +107,13 @@ const options = [
         choices: [
             {
                 name: `No`,
-                value: 'no'
+                value: 'no',
             },
             {
                 name: `Yes`,
-                value: 'yes'
-            }
-        ]
+                value: 'yes',
+            },
+        ],
     },
     {
         type: 'datetime',
@@ -123,7 +123,7 @@ const options = [
         initial: dateStartOfToday,
         when: function (answers) {
             return answers.dateFilter === 'yes';
-        }
+        },
     },
     {
         type: 'datetime',
@@ -133,7 +133,7 @@ const options = [
         initial: dateEndOfToday,
         when: function (answers) {
             return answers.dateFilter === 'yes';
-        }
+        },
     },
     {
         type: 'input',
@@ -143,19 +143,21 @@ const options = [
             return val.split(',').map((item) => {
                 return item.trim();
             });
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = addTags.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -165,5 +167,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

@@ -104,7 +104,7 @@ prettyCLI.command(exportComments);
 prettyCLI.command(keepTags);
 
 prettyCLI.style({
-    usageCommandPlaceholder: () => '<source or utility>'
+    usageCommandPlaceholder: () => '<source or utility>',
 });
 
 prettyCLI.groupOrder([
@@ -114,7 +114,7 @@ prettyCLI.groupOrder([
     'Members:',
     'Staff:',
     'Global Options:',
-    'Beta:'
+    'Beta:',
 ]);
 
 prettyCLI.parseAndExit();

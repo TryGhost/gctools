@@ -2,14 +2,14 @@ import inquirer from 'inquirer';
 import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import deletePosts from '../tasks/delete-posts.js';
-import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import { getAPIAuthorsObj, getAPITagsObj } from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Delete posts',
-    value: 'deletePosts'
+    value: 'deletePosts',
 };
 
 const options = [
@@ -21,17 +21,17 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Draft',
-                value: 'draft'
+                value: 'draft',
             },
             {
                 name: 'Published',
-                value: 'published'
-            }
-        ]
+                value: 'published',
+            },
+        ],
     },
     {
         type: 'select',
@@ -40,13 +40,13 @@ const options = [
         choices: [
             {
                 name: 'Delete by author',
-                value: 'delete_by_author'
+                value: 'delete_by_author',
             },
             {
                 name: 'Delete by tag',
-                value: 'delete_by_tag'
-            }
-        ]
+                value: 'delete_by_tag',
+            },
+        ],
     },
     {
         type: 'search-checkbox',
@@ -65,7 +65,7 @@ const options = [
             }
 
             return true;
-        }
+        },
     },
     {
         type: 'search-checkbox',
@@ -83,19 +83,21 @@ const options = [
             }
 
             return true;
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = deletePosts.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully deleted ${context.deleted.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully deleted ${context.deleted.length} posts in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -105,5 +107,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

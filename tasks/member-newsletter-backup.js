@@ -1,12 +1,12 @@
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import fsUtils from '@tryghost/mg-fs-utils';
 import fs from 'fs-extra';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
-import {sleep} from '../lib/utils.js';
-import {dirname} from 'node:path';
+import { discover } from '../lib/batch-ghost-discover.js';
+import { sleep } from '../lib/utils.js';
+import { dirname } from 'node:path';
 import errors from '@tryghost/errors';
 
 const initialise = (options) => {
@@ -19,7 +19,7 @@ const initialise = (options) => {
                 backupPath: null,
                 restorePath: null,
                 dryRun: false,
-                label: null
+                label: null,
             };
 
             const url = options.apiURL;
@@ -27,7 +27,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.api = api;
@@ -39,7 +39,7 @@ const initialise = (options) => {
             ctx.skipped = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -51,7 +51,7 @@ const fetchNewsletters = () => {
                 ctx.newsletters = await discover({
                     api: ctx.api,
                     type: 'newsletters',
-                    limit: 100
+                    limit: 100,
                 });
 
                 if (ctx.args.verbose) {
@@ -61,7 +61,7 @@ const fetchNewsletters = () => {
                 ctx.errors.push(error);
                 throw error;
             }
-        }
+        },
     };
 };
 
@@ -82,7 +82,7 @@ const fetchMembers = (options) => {
                     type: 'members',
                     limit: 100,
                     filter: filter.length > 0 ? filter.join('+') : undefined,
-                    include: 'newsletters'
+                    include: 'newsletters',
                 });
 
                 if (ctx.args.verbose) {
@@ -92,7 +92,7 @@ const fetchMembers = (options) => {
                 ctx.errors.push(error);
                 throw error;
             }
-        }
+        },
     };
 };
 
@@ -114,14 +114,17 @@ const backupNewsletterPreferences = (options) => {
             // Build CSV data with newsletter slugs
             const csvData = ctx.members.map((member) => {
                 const newsletterSlugs = member.newsletters
-                    ? member.newsletters.map(n => newsletterIdToSlug[n.id] || n.slug || '').filter(s => s).join(',')
+                    ? member.newsletters
+                          .map((n) => newsletterIdToSlug[n.id] || n.slug || '')
+                          .filter((s) => s)
+                          .join(',')
                     : '';
 
                 return {
                     id: member.id,
                     email: member.email,
                     name: member.name || '',
-                    newsletter_slugs: newsletterSlugs
+                    newsletter_slugs: newsletterSlugs,
                 };
             });
 
@@ -135,7 +138,7 @@ const backupNewsletterPreferences = (options) => {
 
             ctx.backedUp = ctx.members.length;
             task.output = `Backed up newsletter preferences for ${ctx.backedUp} members to ${options.backupPath}`;
-        }
+        },
     };
 };
 
@@ -149,9 +152,9 @@ const restoreNewsletterPreferences = (options) => {
         },
         task: async (ctx, task) => {
             // Verify file exists
-            if (!await fs.pathExists(options.restorePath)) {
+            if (!(await fs.pathExists(options.restorePath))) {
                 throw new errors.NotFoundError({
-                    message: `Restore file not found: ${options.restorePath}`
+                    message: `Restore file not found: ${options.restorePath}`,
                 });
             }
 
@@ -187,14 +190,14 @@ const restoreNewsletterPreferences = (options) => {
                 if (!member) {
                     ctx.skipped.push({
                         email: csvMember.email,
-                        reason: 'Member not found'
+                        reason: 'Member not found',
                     });
                     continue;
                 }
 
                 // Parse newsletter slugs from CSV
                 const targetSlugs = csvMember.newsletter_slugs
-                    ? csvMember.newsletter_slugs.split(',').filter(s => s.trim())
+                    ? csvMember.newsletter_slugs.split(',').filter((s) => s.trim())
                     : [];
 
                 // Map slugs to newsletter objects
@@ -203,7 +206,7 @@ const restoreNewsletterPreferences = (options) => {
                 for (const slug of targetSlugs) {
                     const trimmedSlug = slug.trim();
                     if (newsletterMap[trimmedSlug]) {
-                        targetNewsletters.push({id: newsletterMap[trimmedSlug].id});
+                        targetNewsletters.push({ id: newsletterMap[trimmedSlug].id });
                     } else {
                         missingNewsletters.push(trimmedSlug);
                     }
@@ -212,14 +215,18 @@ const restoreNewsletterPreferences = (options) => {
                 if (missingNewsletters.length > 0) {
                     ctx.skipped.push({
                         email: csvMember.email,
-                        reason: `Newsletter(s) not found: ${missingNewsletters.join(', ')}`
+                        reason: `Newsletter(s) not found: ${missingNewsletters.join(', ')}`,
                     });
                     continue;
                 }
 
                 // Get current newsletter slugs for comparison (use ID lookup since member.newsletters may only have IDs)
                 const currentSlugs = member.newsletters
-                    ? member.newsletters.map(n => newsletterIdToSlug[n.id] || n.slug || '').filter(s => s).sort().join(',')
+                    ? member.newsletters
+                          .map((n) => newsletterIdToSlug[n.id] || n.slug || '')
+                          .filter((s) => s)
+                          .sort()
+                          .join(',')
                     : '';
                 const targetSlugsSorted = targetSlugs.sort().join(',');
 
@@ -227,7 +234,7 @@ const restoreNewsletterPreferences = (options) => {
                 if (currentSlugs === targetSlugsSorted) {
                     ctx.skipped.push({
                         email: csvMember.email,
-                        reason: 'Already at target value'
+                        reason: 'Already at target value',
                     });
                     continue;
                 }
@@ -236,8 +243,10 @@ const restoreNewsletterPreferences = (options) => {
                     // In dry-run mode, just log what would happen
                     const currentDisplay = currentSlugs || '(none)';
                     const targetDisplay = targetSlugsSorted || '(none)';
-                    ui.log.info(`[DRY RUN] ${csvMember.email}: ${currentDisplay} -> ${targetDisplay}`);
-                    ctx.restored.push({email: csvMember.email, dryRun: true});
+                    ui.log.info(
+                        `[DRY RUN] ${csvMember.email}: ${currentDisplay} -> ${targetDisplay}`,
+                    );
+                    ctx.restored.push({ email: csvMember.email, dryRun: true });
                     continue;
                 }
 
@@ -247,19 +256,19 @@ const restoreNewsletterPreferences = (options) => {
                         try {
                             let result = await ctx.api.members.edit({
                                 id: member.id,
-                                newsletters: targetNewsletters
+                                newsletters: targetNewsletters,
                             });
                             ctx.restored.push(result);
                             await sleep(ctx.args.delayBetweenCalls);
                             return result;
                         } catch (error) {
                             error.resource = {
-                                email: member.email
+                                email: member.email,
                             };
                             ctx.errors.push(error);
                             throw error;
                         }
-                    }
+                    },
                 });
             }
 
@@ -274,11 +283,11 @@ const restoreNewsletterPreferences = (options) => {
             }
 
             if (options.verbose) {
-                return makeTaskRunner(tasks, {verbose: options.verbose, concurrent: 1});
+                return makeTaskRunner(tasks, { verbose: options.verbose, concurrent: 1 });
             } else {
-                return makeTaskRunner(tasks, {concurrent: 1, renderer: 'silent', verbose: false});
+                return makeTaskRunner(tasks, { concurrent: 1, renderer: 'silent', verbose: false });
             }
-        }
+        },
     };
 };
 
@@ -288,7 +297,7 @@ const getFullTaskList = (options) => {
         fetchNewsletters(),
         fetchMembers(options),
         backupNewsletterPreferences(options),
-        restoreNewsletterPreferences(options)
+        restoreNewsletterPreferences(options),
     ];
 };
 
@@ -296,11 +305,11 @@ const getTaskRunner = (options) => {
     let tasks = getFullTaskList(options);
 
     // Configure the task runner
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

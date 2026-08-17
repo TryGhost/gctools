@@ -1,9 +1,9 @@
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {transformToCommaString} from '../lib/utils.js';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { transformToCommaString } from '../lib/utils.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -13,7 +13,7 @@ const initialise = (options) => {
                 verbose: false,
                 tag: false,
                 author: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -21,7 +21,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -31,7 +31,7 @@ const initialise = (options) => {
             ctx.updated = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -58,16 +58,24 @@ const getFullTaskList = (options) => {
                     }
 
                     if (ctx.args.tag && ctx.args.tag.length > 0) {
-                        postDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                        postDiscoveryFilter.push(
+                            `tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`,
+                        );
                     }
 
                     if (ctx.args.author && ctx.args.author.length > 0) {
-                        postDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                        postDiscoveryFilter.push(
+                            `author:[${transformToCommaString(ctx.args.author, 'slug')}]`,
+                        );
                     }
 
                     if (ctx.args.dateFilterStart && ctx.args.dateFilterEnd) {
-                        postDiscoveryFilter.push(`published_at:>='${ctx.args.dateFilterStart.toISOString()}'`);
-                        postDiscoveryFilter.push(`published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`);
+                        postDiscoveryFilter.push(
+                            `published_at:>='${ctx.args.dateFilterStart.toISOString()}'`,
+                        );
+                        postDiscoveryFilter.push(
+                            `published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`,
+                        );
                     }
                 }
 
@@ -77,7 +85,7 @@ const getFullTaskList = (options) => {
                     limit: 100,
                     include: 'tags',
                     fields: 'id,title,slug,visibility,updated_at,published_at',
-                    filter: postDiscoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
+                    filter: postDiscoveryFilter.join('+'), // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
                 try {
@@ -87,7 +95,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Fetch Page Content from Ghost API',
@@ -105,16 +113,24 @@ const getFullTaskList = (options) => {
                     }
 
                     if (ctx.args.tag && ctx.args.tag.length > 0) {
-                        pageDiscoveryFilter.push(`tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`);
+                        pageDiscoveryFilter.push(
+                            `tags:[${transformToCommaString(ctx.args.tag, 'slug')}]`,
+                        );
                     }
 
                     if (ctx.args.author && ctx.args.author.length > 0) {
-                        pageDiscoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                        pageDiscoveryFilter.push(
+                            `author:[${transformToCommaString(ctx.args.author, 'slug')}]`,
+                        );
                     }
 
                     if (ctx.args.dateFilterStart && ctx.args.dateFilterEnd) {
-                        pageDiscoveryFilter.push(`published_at:>='${ctx.args.dateFilterStart.toISOString()}'`);
-                        pageDiscoveryFilter.push(`published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`);
+                        pageDiscoveryFilter.push(
+                            `published_at:>='${ctx.args.dateFilterStart.toISOString()}'`,
+                        );
+                        pageDiscoveryFilter.push(
+                            `published_at:<='${ctx.args.dateFilterEnd.toISOString()}'`,
+                        );
                     }
                 }
 
@@ -124,7 +140,7 @@ const getFullTaskList = (options) => {
                     limit: 100,
                     include: 'tags',
                     fields: 'id,title,slug,visibility,updated_at',
-                    filter: pageDiscoveryFilter.join('+') // Combine filters, so it's pages by author AND tag, not pages by author OR tag
+                    filter: pageDiscoveryFilter.join('+'), // Combine filters, so it's pages by author AND tag, not pages by author OR tag
                 };
 
                 try {
@@ -134,7 +150,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Removing tags from posts',
@@ -151,7 +167,7 @@ const getFullTaskList = (options) => {
                             try {
                                 // Filter out the tags that need to be removed
                                 const tagsToRemove = ctx.args.remove_tags;
-                                
+
                                 let updatedTags;
                                 if (!tagsToRemove || tagsToRemove.length === 0) {
                                     // If no tags specified (leave blank for all), remove all tags
@@ -161,32 +177,34 @@ const getFullTaskList = (options) => {
                                     const tagNamesToRemove = tagsToRemove.map((tag) => {
                                         return typeof tag === 'string' ? tag : tag.name;
                                     });
-                                    updatedTags = post.tags.filter(tag => !tagNamesToRemove.includes(tag.name));
+                                    updatedTags = post.tags.filter(
+                                        (tag) => !tagNamesToRemove.includes(tag.name),
+                                    );
                                 }
 
                                 let result = await ctx.api.posts.edit({
                                     id: post.id,
                                     updated_at: post.updated_at,
-                                    tags: updatedTags
+                                    tags: updatedTags,
                                 });
 
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: post.title
+                                    title: post.title,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let postTaskOptions = options;
                 postTaskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, postTaskOptions);
-            }
+            },
         },
         {
             title: 'Removing tags from pages',
@@ -203,7 +221,7 @@ const getFullTaskList = (options) => {
                             try {
                                 // Filter out the tags that need to be removed
                                 const tagsToRemove = ctx.args.remove_tags;
-                                
+
                                 let updatedTags;
                                 if (!tagsToRemove || tagsToRemove.length === 0) {
                                     // If no tags specified (leave blank for all), remove all tags
@@ -213,33 +231,35 @@ const getFullTaskList = (options) => {
                                     const tagNamesToRemove = tagsToRemove.map((tag) => {
                                         return typeof tag === 'string' ? tag : tag.name;
                                     });
-                                    updatedTags = page.tags.filter(tag => !tagNamesToRemove.includes(tag.name));
+                                    updatedTags = page.tags.filter(
+                                        (tag) => !tagNamesToRemove.includes(tag.name),
+                                    );
                                 }
 
                                 let result = await ctx.api.pages.edit({
                                     id: page.id,
                                     updated_at: page.updated_at,
-                                    tags: updatedTags
+                                    tags: updatedTags,
                                 });
 
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: page.title
+                                    title: page.title,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let pageTaskOptions = options;
                 pageTaskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, pageTaskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -248,11 +268,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

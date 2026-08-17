@@ -9,5 +9,5 @@
 // `makeTaskRunner` overrides `renderer` whenever `verbose` is set, and some tests
 // need `verbose: true` to exercise the task's verbose output paths.
 export const silentRenderer = {
-    silentRendererCondition: true
+    silentRendererCondition: true,
 };

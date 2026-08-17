@@ -1,8 +1,8 @@
 import fsUtils from '@tryghost/mg-fs-utils';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -12,7 +12,7 @@ const initialise = (options) => {
                 verbose: false,
                 tag: false,
                 author: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -20,7 +20,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.fileCache = new fsUtils.FileCache(options.apiURL);
@@ -30,7 +30,7 @@ const initialise = (options) => {
             ctx.found = 0;
 
             task.output = `Workspace initialised at ${ctx.fileCache.cacheDir}`;
-        }
+        },
     };
 };
 
@@ -45,7 +45,7 @@ const getFullTaskList = (options) => {
                     type: 'posts',
                     limit: 100,
                     include: 'tags,authors',
-                    progress: (options.verbose) ? true : false
+                    progress: options.verbose ? true : false,
                 };
 
                 try {
@@ -55,15 +55,18 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Saving as JSON file',
             task: async (ctx) => {
-                await ctx.fileCache.saveFile(`${ctx.fileCache.tmpDir}/posts.json`, JSON.stringify({posts: ctx.posts}, null, 2));
+                await ctx.fileCache.saveFile(
+                    `${ctx.fileCache.tmpDir}/posts.json`,
+                    JSON.stringify({ posts: ctx.posts }, null, 2),
+                );
                 ctx.found = ctx.posts.length;
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -72,11 +75,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

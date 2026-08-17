@@ -13,21 +13,15 @@
   "bin": {
     "gctools": "./bin/cli.js"
   },
-  "eslintIgnore": [
-    "**/node_modules/**"
-  ],
   "scripts": {
     "dev": "node bin/cli.js",
     "gctools": "gctools",
-    "test:only": "node --test --experimental-test-module-mocks test/*.test.js",
     "test:file": "node --test --experimental-test-module-mocks",
-    "test": "node --test --experimental-test-module-mocks test/*.test.js && pnpm lint",
-    "lint": "eslint . --ext .js --cache",
+    "test": "node --test --experimental-test-module-mocks test/*.test.js",
+    "lint": "oxlint --quiet && oxfmt --check .",
+    "lint:fix": "oxlint --fix && oxfmt .",
+    "format": "oxfmt .",
     "update": "git pull origin main && pnpm install"
-  },
-  "devDependencies": {
-    "eslint": "8.57.1",
-    "eslint-plugin-ghost": "3.5.0"
   },
   "dependencies": {
     "@inquirer/confirm": "6.1.1",
@@ -61,5 +55,9 @@
     "title-case": "4.3.2",
     "tty-table": "5.0.0"
   },
-  "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621"
+  "packageManager": "pnpm@11.22.0+sha512.1ff870c4c6133dfd88fb2afc46dd13d47f09c9794b438c6fdb47ca98caf3bc16381ee0be93a091b8e3824cf01f889f46d7d9e20910fb0be1ab0fb5baa80dd621",
+  "devDependencies": {
+    "oxfmt": "^0.63.0",
+    "oxlint": "^1.78.0"
+  }
 }

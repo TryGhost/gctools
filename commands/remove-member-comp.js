@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import removeMemberCompSubscription from '../tasks/remove-member-comp-subscription.js';
 
 // Internal ID in case we need one.
@@ -13,35 +13,32 @@ const flags = 'remove-member-comp-subscription <apiURL> <adminAPIKey>';
 const desc = 'Remove member complimentary subscription';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.array('--onlyForLabelSlugs', {
         defaultValue: null,
-        desc: 'Optional label to filter members'
+        desc: 'Optional label to filter members',
     });
     sywac.string('--tierId', {
         defaultValue: null,
-        desc: 'The ID for the tier to add the subscription to'
+        desc: 'The ID for the tier to add the subscription to',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 100,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -54,7 +51,9 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully removed ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`);
+    ui.log.ok(
+        `Successfully removed ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`,
+    );
 };
 
 export default {
@@ -64,5 +63,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

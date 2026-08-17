@@ -1,33 +1,33 @@
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
 import fs from 'fs-extra';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const UPDATABLE_FIELDS = [
-    {name: 'Title', value: 'title'},
-    {name: 'Slug', value: 'slug'},
-    {name: 'HTML', value: 'html'},
-    {name: 'Lexical', value: 'lexical'},
-    {name: 'Feature Image', value: 'feature_image'},
-    {name: 'Feature Image Alt', value: 'feature_image_alt'},
-    {name: 'Feature Image Caption', value: 'feature_image_caption'},
-    {name: 'Custom Excerpt', value: 'custom_excerpt'},
-    {name: 'Meta Title', value: 'meta_title'},
-    {name: 'Meta Description', value: 'meta_description'},
-    {name: 'Open Graph Title', value: 'og_title'},
-    {name: 'Open Graph Description', value: 'og_description'},
-    {name: 'Open Graph Image', value: 'og_image'},
-    {name: 'Twitter Title', value: 'twitter_title'},
-    {name: 'Twitter Description', value: 'twitter_description'},
-    {name: 'Twitter Image', value: 'twitter_image'},
-    {name: 'Status', value: 'status'},
-    {name: 'Visibility', value: 'visibility'},
-    {name: 'Canonical URL', value: 'canonical_url'},
-    {name: 'Codeinjection Head', value: 'codeinjection_head'},
-    {name: 'Codeinjection Foot', value: 'codeinjection_foot'},
-    {name: 'Authors', value: 'authors'}
+    { name: 'Title', value: 'title' },
+    { name: 'Slug', value: 'slug' },
+    { name: 'HTML', value: 'html' },
+    { name: 'Lexical', value: 'lexical' },
+    { name: 'Feature Image', value: 'feature_image' },
+    { name: 'Feature Image Alt', value: 'feature_image_alt' },
+    { name: 'Feature Image Caption', value: 'feature_image_caption' },
+    { name: 'Custom Excerpt', value: 'custom_excerpt' },
+    { name: 'Meta Title', value: 'meta_title' },
+    { name: 'Meta Description', value: 'meta_description' },
+    { name: 'Open Graph Title', value: 'og_title' },
+    { name: 'Open Graph Description', value: 'og_description' },
+    { name: 'Open Graph Image', value: 'og_image' },
+    { name: 'Twitter Title', value: 'twitter_title' },
+    { name: 'Twitter Description', value: 'twitter_description' },
+    { name: 'Twitter Image', value: 'twitter_image' },
+    { name: 'Status', value: 'status' },
+    { name: 'Visibility', value: 'visibility' },
+    { name: 'Canonical URL', value: 'canonical_url' },
+    { name: 'Codeinjection Head', value: 'codeinjection_head' },
+    { name: 'Codeinjection Foot', value: 'codeinjection_foot' },
+    { name: 'Authors', value: 'authors' },
 ];
 
 const normalizeValue = (val) => {
@@ -43,7 +43,7 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -51,7 +51,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -70,7 +70,7 @@ const initialise = (options) => {
             ctx.addedTag = `#added-${timestamp}`;
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -82,7 +82,7 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 try {
                     const jsonFileData = await fs.readJson(options.jsonFile.trim());
-                    const json = (jsonFileData.data) ? jsonFileData : jsonFileData.db[0];
+                    const json = jsonFileData.data ? jsonFileData : jsonFileData.db[0];
                     ctx.jsonPosts = json.data.posts;
 
                     // Build post-id -> author emails map from users + posts_authors join
@@ -134,7 +134,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Fetch posts from Ghost API',
@@ -146,7 +146,7 @@ const getFullTaskList = (options) => {
                     include: 'tags,authors',
                     formats: 'lexical',
                     fields: 'id,url,title,slug,status,visibility,updated_at,feature_image,feature_image_alt,feature_image_caption,custom_excerpt,meta_title,meta_description,og_title,og_description,og_image,twitter_title,twitter_description,twitter_image,canonical_url,codeinjection_head,codeinjection_foot',
-                    progress: (options.verbose) ? true : false
+                    progress: options.verbose ? true : false,
                 };
 
                 if (options.slug) {
@@ -160,7 +160,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Matching posts by slug',
@@ -172,25 +172,25 @@ const getFullTaskList = (options) => {
 
                 let jsonPostsToMatch = ctx.jsonPosts;
                 if (options.slug) {
-                    jsonPostsToMatch = jsonPostsToMatch.filter(p => p.slug === options.slug);
+                    jsonPostsToMatch = jsonPostsToMatch.filter((p) => p.slug === options.slug);
                 }
 
                 jsonPostsToMatch.forEach((jsonPost) => {
                     let ghostPost = ghostPostMap.get(jsonPost.slug);
                     if (ghostPost) {
-                        ctx.matched.push({jsonPost, ghostPost});
+                        ctx.matched.push({ jsonPost, ghostPost });
                     } else if (options.insertMissing) {
                         ctx.unmatched.push(jsonPost);
                     } else {
                         ctx.errors.push({
-                            message: `No matching Ghost post found for slug "${jsonPost.slug}"`
+                            message: `No matching Ghost post found for slug "${jsonPost.slug}"`,
                         });
                     }
                 });
 
                 let unmatchedCount = jsonPostsToMatch.length - ctx.matched.length;
                 task.output = `Matched ${ctx.matched.length} of ${jsonPostsToMatch.length} posts (${unmatchedCount} unmatched)`;
-            }
+            },
         },
         {
             title: 'Updating posts',
@@ -201,15 +201,15 @@ const getFullTaskList = (options) => {
                 let tasks = [];
 
                 await Promise.mapSeries(ctx.matched, async (pair) => {
-                    let {jsonPost, ghostPost} = pair;
+                    let { jsonPost, ghostPost } = pair;
 
                     tasks.push({
                         title: ghostPost.title,
-                        task: async (ctx, task) => { // eslint-disable-line no-shadow
+                        task: async (ctx, task) => {
                             try {
                                 let editPayload = {
                                     id: ghostPost.id,
-                                    updated_at: ghostPost.updated_at
+                                    updated_at: ghostPost.updated_at,
                                 };
 
                                 let changedFields = [];
@@ -225,7 +225,10 @@ const getFullTaskList = (options) => {
                                         return;
                                     }
 
-                                    if (normalizeValue(jsonPost[field]) !== normalizeValue(ghostPost[field])) {
+                                    if (
+                                        normalizeValue(jsonPost[field]) !==
+                                        normalizeValue(ghostPost[field])
+                                    ) {
                                         editPayload[field] = jsonPost[field];
                                         changedFields.push(field);
                                     }
@@ -235,12 +238,19 @@ const getFullTaskList = (options) => {
                                 // posts.edit replaces the author list with whatever we send, so we send the full desired set.
                                 if (ctx.args.fields.includes('authors')) {
                                     let desiredEmails = ctx.postAuthors.get(jsonPost.id) || [];
-                                    let currentEmails = (ghostPost.authors || []).map(author => author.email);
+                                    let currentEmails = (ghostPost.authors || []).map(
+                                        (author) => author.email,
+                                    );
 
                                     // Only update when we have authors and they differ (preserves order/primary).
                                     // Never blank out authors if the JSON has none for this post.
-                                    if (desiredEmails.length > 0 && !_.isEqual(desiredEmails, currentEmails)) {
-                                        editPayload.authors = desiredEmails.map(email => ({email}));
+                                    if (
+                                        desiredEmails.length > 0 &&
+                                        !_.isEqual(desiredEmails, currentEmails)
+                                    ) {
+                                        editPayload.authors = desiredEmails.map((email) => ({
+                                            email,
+                                        }));
                                         changedFields.push('authors');
                                     }
                                 }
@@ -262,7 +272,7 @@ const getFullTaskList = (options) => {
                                 }
 
                                 // Add the edit tag to existing tags
-                                let updatedTags = [...ghostPost.tags, {name: ctx.editTag}];
+                                let updatedTags = [...ghostPost.tags, { name: ctx.editTag }];
                                 editPayload.tags = updatedTags;
 
                                 let result = await ctx.api.posts.edit(editPayload, editOptions);
@@ -271,20 +281,20 @@ const getFullTaskList = (options) => {
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: ghostPost.title
+                                    title: ghostPost.title,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 return makeTaskRunner(tasks, {
                     concurrent: 1,
-                    verbose: options.verbose
+                    verbose: options.verbose,
                 });
-            }
+            },
         },
         {
             title: 'Creating missing posts',
@@ -297,10 +307,10 @@ const getFullTaskList = (options) => {
                 await Promise.mapSeries(ctx.unmatched, async (jsonPost) => {
                     tasks.push({
                         title: jsonPost.title || jsonPost.slug,
-                        task: async (ctx, task) => { // eslint-disable-line no-shadow
+                        task: async (ctx, task) => {
                             try {
                                 let addPayload = {
-                                    status: 'draft'
+                                    status: 'draft',
                                 };
 
                                 ctx.args.fields.forEach((field) => {
@@ -329,7 +339,7 @@ const getFullTaskList = (options) => {
                                 // Map authors from JSON export by email
                                 let authorEmails = ctx.postAuthors.get(jsonPost.id) || [];
                                 if (authorEmails.length > 0) {
-                                    addPayload.authors = authorEmails.map(email => ({email}));
+                                    addPayload.authors = authorEmails.map((email) => ({ email }));
                                 }
 
                                 if (options.dryRun) {
@@ -340,8 +350,8 @@ const getFullTaskList = (options) => {
 
                                 let postTags = ctx.postTags.get(jsonPost.id) || [];
                                 addPayload.tags = [
-                                    ...postTags.map(tag => ({name: tag.name, slug: tag.slug})),
-                                    {name: ctx.addedTag}
+                                    ...postTags.map((tag) => ({ name: tag.name, slug: tag.slug })),
+                                    { name: ctx.addedTag },
                                 ];
 
                                 let addOptions = {};
@@ -355,32 +365,32 @@ const getFullTaskList = (options) => {
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: jsonPost.title || jsonPost.slug
+                                    title: jsonPost.title || jsonPost.slug,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 return makeTaskRunner(tasks, {
                     concurrent: 1,
-                    verbose: options.verbose
+                    verbose: options.verbose,
                 });
-            }
-        }
+            },
+        },
     ];
 };
 
 const getTaskRunner = (options) => {
     let tasks = getFullTaskList(options);
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
     getTaskRunner,
-    UPDATABLE_FIELDS
+    UPDATABLE_FIELDS,
 };

@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import setPodcast from '../tasks/set-podcast.js';
 
 // Internal ID in case we need one.
@@ -10,30 +10,28 @@ const group = 'Content:';
 const flags = 'set-podcast <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'Set Facebook description for podcast posts using the first audio src URL from the post content';
+const desc =
+    'Set Facebook description for podcast posts using the first audio src URL from the post content';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -56,5 +54,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
-}; 
+    run,
+};

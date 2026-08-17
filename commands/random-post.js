@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import randomPosts from '../tasks/random-posts.js';
 
 // Internal ID in case we need one.
@@ -13,82 +13,79 @@ const flags = 'random-posts <apiURL> <adminAPIKey>';
 const desc = 'Insert random posts into Ghost';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.number('-C, --count', {
         defaultValue: 10,
-        desc: 'The number of posts to add'
+        desc: 'The number of posts to add',
     });
     sywac.number('--titleMinLength', {
         defaultValue: 3,
-        desc: 'The minimum number of words in the title'
+        desc: 'The minimum number of words in the title',
     });
     sywac.number('--titleMaxLength', {
         defaultValue: 8,
-        desc: 'The maximum number of words in the title'
+        desc: 'The maximum number of words in the title',
     });
     sywac.enumeration('--contentUnit', {
         defaultValue: 'paragraphs',
         choices: ['paragraphs', 'sentences', 'words'],
-        desc: 'The type of content you want to define the size of'
+        desc: 'The type of content you want to define the size of',
     });
     sywac.number('--contentCount', {
         defaultValue: 10,
-        desc: 'The number of units for each post'
+        desc: 'The number of units for each post',
     });
     sywac.number('--paragraphLowerBound', {
         defaultValue: 3,
-        desc: 'Min. number of sentences per paragraph'
+        desc: 'Min. number of sentences per paragraph',
     });
     sywac.number('--paragraphUpperBound', {
         defaultValue: 7,
-        desc: 'Max. number of sentences per paragraph'
+        desc: 'Max. number of sentences per paragraph',
     });
     sywac.number('--sentenceLowerBound', {
         defaultValue: 3,
-        desc: 'Min. number of words per sentence'
+        desc: 'Min. number of words per sentence',
     });
     sywac.number('--sentenceUpperBound', {
         defaultValue: 15,
-        desc: 'Max. number of words per sentence'
+        desc: 'Max. number of words per sentence',
     });
     sywac.string('--author', {
         defaultValue: false,
-        desc: 'The assigned author email address. Defaults to who created the API key'
+        desc: 'The assigned author email address. Defaults to who created the API key',
     });
     sywac.string('--tag', {
         defaultValue: '#gctools',
-        desc: 'Comma separated list of tags'
+        desc: 'Comma separated list of tags',
     });
     sywac.enumeration('--status', {
         defaultValue: 'published',
         choices: ['published', 'draft', 'scheduled', 'sent'],
-        desc: 'Post status'
+        desc: 'Post status',
     });
     sywac.enumeration('--visibility', {
         defaultValue: 'public',
         choices: ['public', 'members', 'paid'],
-        desc: 'Post visibility'
+        desc: 'Post visibility',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -111,5 +108,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

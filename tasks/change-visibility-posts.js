@@ -1,9 +1,9 @@
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {transformToCommaString} from '../lib/utils.js';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { transformToCommaString } from '../lib/utils.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -12,7 +12,7 @@ const initialise = (options) => {
             let defaults = {
                 verbose: false,
                 author: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -20,7 +20,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -29,7 +29,7 @@ const initialise = (options) => {
             ctx.changed = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -50,7 +50,9 @@ const getFullTaskList = (options) => {
                 }
 
                 if (ctx.args.author && ctx.args.author.length > 0) {
-                    discoveryFilter.push(`author:[${transformToCommaString(ctx.args.author, 'slug')}]`);
+                    discoveryFilter.push(
+                        `author:[${transformToCommaString(ctx.args.author, 'slug')}]`,
+                    );
                 }
 
                 let discoveryOptions = {
@@ -58,7 +60,7 @@ const getFullTaskList = (options) => {
                     type: 'posts',
                     fields: 'id,name,title,slug,url,status,visibility,updated_at',
                     limit: 50,
-                    filter: discoveryFilter.join('+') // Combine filters, so it's posts by author AND tag, not posts by author OR tag
+                    filter: discoveryFilter.join('+'), // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
                 try {
@@ -68,7 +70,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Updating visibility',
@@ -85,7 +87,7 @@ const getFullTaskList = (options) => {
                                 let slimPost = {
                                     visibility: ctx.args.new_visibility,
                                     id: post.id,
-                                    updated_at: post.updated_at
+                                    updated_at: post.updated_at,
                                 };
 
                                 let result = await ctx.api.posts.edit(slimPost);
@@ -93,20 +95,20 @@ const getFullTaskList = (options) => {
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: post.title
+                                    title: post.title,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = options;
                 taskOptions.concurrent = 3;
                 return makeTaskRunner(tasks, taskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -115,11 +117,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

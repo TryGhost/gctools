@@ -5,15 +5,15 @@ import inquirerDatepickerPrompt from 'inquirer-datepicker-prompt';
 inquirer.registerPrompt('datetime', inquirerDatepickerPrompt);
 import chalk from 'chalk';
 import randomPosts from '../tasks/random-posts.js';
-import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import { getAPIAuthorsObj, getAPITagsObj } from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 
 const dateToday = new Date();
 
 const choice = {
     name: 'Add random posts',
-    value: 'randomPosts'
+    value: 'randomPosts',
 };
 
 const options = [
@@ -24,7 +24,7 @@ const options = [
         message: 'Number of posts to create:',
         default: function () {
             return 10;
-        }
+        },
     },
     {
         type: 'rawlist',
@@ -33,13 +33,13 @@ const options = [
         choices: [
             {
                 name: 'Published',
-                value: 'published'
+                value: 'published',
             },
             {
                 name: 'Draft',
-                value: 'draft'
-            }
-        ]
+                value: 'draft',
+            },
+        ],
     },
     {
         type: 'rawlist',
@@ -48,17 +48,17 @@ const options = [
         choices: [
             {
                 name: 'Public',
-                value: 'public'
+                value: 'public',
             },
             {
                 name: 'Members',
-                value: 'members'
+                value: 'members',
             },
             {
                 name: 'Paid',
-                value: 'paid'
-            }
-        ]
+                value: 'paid',
+            },
+        ],
     },
     {
         type: 'search-checkbox',
@@ -67,9 +67,9 @@ const options = [
         choices: function () {
             return getAPITagsObj({
                 name: 'Custom tag',
-                value: 'gctools_new_tag'
+                value: 'gctools_new_tag',
             });
-        }
+        },
     },
     {
         type: 'input',
@@ -77,7 +77,7 @@ const options = [
         message: 'Custom tag (comma separated list):',
         when: function (answers) {
             return answers.tag.includes('gctools_new_tag');
-        }
+        },
     },
     {
         type: 'search-checkbox',
@@ -85,7 +85,7 @@ const options = [
         message: `Author: ${chalk.yellow('[Type to search]')}`,
         choices: function () {
             return getAPIAuthorsObj();
-        }
+        },
     },
     {
         type: 'select',
@@ -95,22 +95,30 @@ const options = [
             {
                 name: `Past year`,
                 value: {
-                    start: new Date(dateToday.getFullYear() - 1, dateToday.getMonth(), dateToday.getDate()),
-                    end: dateToday
-                }
+                    start: new Date(
+                        dateToday.getFullYear() - 1,
+                        dateToday.getMonth(),
+                        dateToday.getDate(),
+                    ),
+                    end: dateToday,
+                },
             },
             {
                 name: `Past month`,
                 value: {
-                    start: new Date(dateToday.getFullYear(), dateToday.getMonth() - 1, dateToday.getDate()),
-                    end: dateToday
-                }
+                    start: new Date(
+                        dateToday.getFullYear(),
+                        dateToday.getMonth() - 1,
+                        dateToday.getDate(),
+                    ),
+                    end: dateToday,
+                },
             },
             {
                 name: `Custom`,
-                value: 'custom'
-            }
-        ]
+                value: 'custom',
+            },
+        ],
     },
     {
         type: 'datetime',
@@ -120,7 +128,7 @@ const options = [
         initial: new Date(dateToday.getFullYear(), dateToday.getMonth() - 6, dateToday.getDate()),
         when: function (answers) {
             return answers.dateRange === 'custom';
-        }
+        },
     },
     {
         type: 'datetime',
@@ -130,8 +138,8 @@ const options = [
         initial: dateToday,
         when: function (answers) {
             return answers.dateRange === 'custom';
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
@@ -139,7 +147,7 @@ async function run() {
         // Handle the case where a new tag is wanted
         if (answers.new_tag) {
             let newTagsArray = answers.new_tag.split(',').map(function (item) {
-                return {name: item.trim()};
+                return { name: item.trim() };
             });
             answers.tag.pop();
             answers.tag.push(...newTagsArray);
@@ -149,7 +157,7 @@ async function run() {
         if (answers.dateRange === 'custom' && answers.dateRangeStart && answers.dateRangeEnd) {
             answers.dateRange = {
                 start: answers.dateRangeStart,
-                end: answers.dateRangeEnd
+                end: answers.dateRangeEnd,
             };
 
             // We don't need these anymore
@@ -158,12 +166,14 @@ async function run() {
         }
 
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = randomPosts.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully added ${context.inserted.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully added ${context.inserted.length} posts in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -173,5 +183,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

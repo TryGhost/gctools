@@ -1,9 +1,9 @@
 import Promise from 'bluebird';
 import _ from 'lodash';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import {transformToCommaString} from '../lib/utils.js';
-import {getRandomPostContent} from '../lib/random-post.js';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
+import { transformToCommaString } from '../lib/utils.js';
+import { getRandomPostContent } from '../lib/random-post.js';
 
 const initialise = (options) => {
     return {
@@ -25,7 +25,7 @@ const initialise = (options) => {
                 status: 'published',
                 visibility: 'public',
                 dateRange: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -33,7 +33,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -42,7 +42,7 @@ const initialise = (options) => {
             ctx.inserted = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -64,7 +64,7 @@ const getFullTaskList = (options) => {
                     let post = getRandomPostContent(ctx.args);
                     ctx.posts.push(post);
                 });
-            }
+            },
         },
         {
             title: 'Inserting posts into Ghost',
@@ -77,26 +77,26 @@ const getFullTaskList = (options) => {
                         task: async () => {
                             try {
                                 let result = await ctx.api.posts.add(post, {
-                                    source: 'html'
+                                    source: 'html',
                                 });
                                 ctx.inserted.push(result.url);
                                 return Promise.delay(ctx.args.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: post.title
+                                    title: post.title,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = ctx.args;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -105,11 +105,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

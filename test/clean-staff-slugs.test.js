@@ -1,9 +1,6 @@
-import {describe, test} from 'node:test';
+import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import cleanStaffSlugs, {
-    getSlugCleanupPlan,
-    idSuffixRegex
-} from '../tasks/clean-staff-slugs.js';
+import cleanStaffSlugs, { getSlugCleanupPlan, idSuffixRegex } from '../tasks/clean-staff-slugs.js';
 
 describe('Clean Staff Slugs', function () {
     test('identifies staff users with Ghost ID suffixes', function () {
@@ -11,18 +8,18 @@ describe('Clean Staff Slugs', function () {
             {
                 id: 'user-1',
                 name: 'First Last',
-                slug: 'first-last-6a32d1c818627a48420e689d'
+                slug: 'first-last-6a32d1c818627a48420e689d',
             },
             {
                 id: 'user-2',
                 name: 'Clean User',
-                slug: 'clean-user'
+                slug: 'clean-user',
             },
             {
                 id: 'user-3',
                 name: 'Short Suffix',
-                slug: 'short-suffix-123'
-            }
+                slug: 'short-suffix-123',
+            },
         ];
 
         const plan = getSlugCleanupPlan(users);
@@ -49,13 +46,13 @@ describe('Clean Staff Slugs', function () {
             {
                 id: 'user-1',
                 name: 'First Last',
-                slug: 'first-last-6a32d1c818627a48420e689d'
+                slug: 'first-last-6a32d1c818627a48420e689d',
             },
             {
                 id: 'user-2',
                 name: 'Existing First Last',
-                slug: 'first-last'
-            }
+                slug: 'first-last',
+            },
         ];
 
         const plan = getSlugCleanupPlan(users);
@@ -72,13 +69,13 @@ describe('Clean Staff Slugs', function () {
             {
                 id: 'user-1',
                 name: 'First Last One',
-                slug: 'first-last-6a32d1c818627a48420e689d'
+                slug: 'first-last-6a32d1c818627a48420e689d',
             },
             {
                 id: 'user-2',
                 name: 'First Last Two',
-                slug: 'first-last-507f1f77bcf86cd799439011'
-            }
+                slug: 'first-last-507f1f77bcf86cd799439011',
+            },
         ];
 
         const plan = getSlugCleanupPlan(users);
@@ -86,24 +83,25 @@ describe('Clean Staff Slugs', function () {
         assert.strictEqual(plan.candidates.length, 2);
         assert.strictEqual(plan.updateable.length, 0);
         assert.strictEqual(plan.skipped.length, 2);
-        assert.deepStrictEqual(plan.skipped.map(candidate => candidate.reason), [
-            'multiple-id-suffixed-users',
-            'multiple-id-suffixed-users'
-        ]);
+        assert.deepStrictEqual(
+            plan.skipped.map((candidate) => candidate.reason),
+            ['multiple-id-suffixed-users', 'multiple-id-suffixed-users'],
+        );
     });
 
     test('initialise function sets up context correctly', function () {
         const options = {
             apiURL: 'https://test.ghost.io',
-            adminAPIKey: '507f1f77bcf86cd799439011:507f1f77bcf86cd7994390117bcf86cd7994390117bcf86cd7994390117bcf86cd',
+            adminAPIKey:
+                '507f1f77bcf86cd799439011:507f1f77bcf86cd7994390117bcf86cd7994390117bcf86cd7994390117bcf86cd',
             verbose: true,
             dryRun: true,
-            delayBetweenCalls: 100
+            delayBetweenCalls: 100,
         };
 
         const initTask = cleanStaffSlugs.initialise(options);
         const ctx = {};
-        const task = {output: ''};
+        const task = { output: '' };
 
         initTask.task(ctx, task);
 

@@ -1,13 +1,13 @@
 import inquirer from 'inquirer';
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import postTiers from '../tasks/post-tiers.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
-import {getAPITiers} from '../lib/ghost-api-choices.js';
+import { getAPITiers } from '../lib/ghost-api-choices.js';
 
 const choice = {
     name: 'Add tier to post',
-    value: 'postTiers'
+    value: 'postTiers',
 };
 
 const options = [
@@ -19,13 +19,13 @@ const options = [
         choices: [
             {
                 name: 'Visibility',
-                value: 'visibility'
+                value: 'visibility',
             },
             {
                 name: 'Tier',
-                value: 'tier'
-            }
-        ]
+                value: 'tier',
+            },
+        ],
     },
     {
         type: 'select',
@@ -37,21 +37,21 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Public',
-                value: 'public'
+                value: 'public',
             },
             {
                 name: 'Members',
-                value: 'members'
+                value: 'members',
             },
             {
                 name: 'Paid',
-                value: 'paid'
-            }
-        ]
+                value: 'paid',
+            },
+        ],
     },
     {
         type: 'select',
@@ -61,7 +61,7 @@ const options = [
             return answers.tierOrVisibility === 'tier';
         },
         choices: async function () {
-            let tiers = await getAPITiers({returnKey: 'id'});
+            let tiers = await getAPITiers({ returnKey: 'id' });
 
             tiers = tiers.map((tier) => {
                 tier.value = [tier.value, 'tiers'];
@@ -69,7 +69,7 @@ const options = [
             });
 
             return tiers;
-        }
+        },
     },
     {
         type: 'select',
@@ -77,20 +77,22 @@ const options = [
         message: `Select tier to add to these posts: ${chalk.yellow('[Type to search]')}`,
         pageSize: 20,
         choices: function () {
-            return getAPITiers({returnKey: 'id'});
-        }
-    }
+            return getAPITiers({ returnKey: 'id' });
+        },
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = postTiers.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -100,5 +102,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

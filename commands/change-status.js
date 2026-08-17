@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import changeStatus from '../tasks/change-status.js';
 
 // Internal ID in case we need one.
@@ -13,50 +13,47 @@ const flags = 'change-status <apiURL> <adminAPIKey>';
 const desc = 'Switch the status for posts';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.enumeration('--status', {
         defaultValue: 'all',
         choices: ['all', 'draft', 'published'],
-        desc: 'Post visibility'
+        desc: 'Post visibility',
     });
     sywac.enumeration('--visibility', {
         defaultValue: 'all',
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Post visibility'
+        desc: 'Post visibility',
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Filter by tag'
+        desc: 'Filter by tag',
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Filter by author'
+        desc: 'Filter by author',
     });
     sywac.enumeration('--new_status', {
         choices: ['draft', 'published'],
         defaultValue: 'draft',
-        desc: 'New status'
+        desc: 'New status',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -69,7 +66,9 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully changed the visibility of ${context.changed.length} posts in ${Date.now() - timer}ms.`);
+    ui.log.ok(
+        `Successfully changed the visibility of ${context.changed.length} posts in ${Date.now() - timer}ms.`,
+    );
 };
 
 export default {
@@ -79,5 +78,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

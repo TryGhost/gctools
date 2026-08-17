@@ -1,6 +1,6 @@
-import {describe, test, mock, beforeEach} from 'node:test';
+import { describe, test, mock, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import {silentRenderer} from './helpers/silent-renderer.js';
+import { silentRenderer } from './helpers/silent-renderer.js';
 
 // Mock the Ghost Admin API
 const mockPosts = [
@@ -9,102 +9,98 @@ const mockPosts = [
         title: 'Podcast with Lexical audio',
         status: 'published',
         updated_at: '2024-03-20T12:00:00.000Z',
-        tags: [{name: 'podcast', slug: 'podcast'}],
+        tags: [{ name: 'podcast', slug: 'podcast' }],
         lexical: JSON.stringify({
             root: {
                 children: [
                     {
                         type: 'audio',
-                        src: 'https://example.com/podcast1.mp3'
-                    }
-                ]
-            }
-        })
+                        src: 'https://example.com/podcast1.mp3',
+                    },
+                ],
+            },
+        }),
     },
     {
         id: '2',
         title: 'Podcast with Lexical embed',
         status: 'published',
         updated_at: '2024-03-20T12:00:00.000Z',
-        tags: [{name: 'podcast', slug: 'podcast'}],
+        tags: [{ name: 'podcast', slug: 'podcast' }],
         lexical: JSON.stringify({
             root: {
                 children: [
                     {
                         type: 'embed',
-                        url: 'https://soundcloud.com/example/podcast-episode'
-                    }
-                ]
-            }
-        })
+                        url: 'https://soundcloud.com/example/podcast-episode',
+                    },
+                ],
+            },
+        }),
     },
     {
         id: '3',
         title: 'Podcast with Mobiledoc audio',
         status: 'published',
         updated_at: '2024-03-20T12:00:00.000Z',
-        tags: [{name: 'podcast', slug: 'podcast'}],
+        tags: [{ name: 'podcast', slug: 'podcast' }],
         mobiledoc: JSON.stringify({
-            cards: [
-                ['audio', {src: 'https://example.com/podcast2.mp3'}]
-            ]
-        })
+            cards: [['audio', { src: 'https://example.com/podcast2.mp3' }]],
+        }),
     },
     {
         id: '4',
         title: 'Podcast with Mobiledoc embed',
         status: 'published',
         updated_at: '2024-03-20T12:00:00.000Z',
-        tags: [{name: 'podcast', slug: 'podcast'}],
+        tags: [{ name: 'podcast', slug: 'podcast' }],
         mobiledoc: JSON.stringify({
-            cards: [
-                ['embed', {url: 'https://anchor.fm/example/episodes/episode-1'}]
-            ]
-        })
+            cards: [['embed', { url: 'https://anchor.fm/example/episodes/episode-1' }]],
+        }),
     },
     {
         id: '5',
         title: 'Podcast with HTML audio tag',
         status: 'published',
         updated_at: '2024-03-20T12:00:00.000Z',
-        tags: [{name: 'podcast', slug: 'podcast'}],
-        html: '<audio src="https://example.com/podcast3.mp3" controls></audio>'
+        tags: [{ name: 'podcast', slug: 'podcast' }],
+        html: '<audio src="https://example.com/podcast3.mp3" controls></audio>',
     },
     {
         id: '6',
         title: 'Podcast with iframe embed',
         status: 'published',
         updated_at: '2024-03-20T12:00:00.000Z',
-        tags: [{name: 'podcast', slug: 'podcast'}],
-        html: '<iframe src="https://spotify.com/embed/episode/123" width="100%" height="152"></iframe>'
+        tags: [{ name: 'podcast', slug: 'podcast' }],
+        html: '<iframe src="https://spotify.com/embed/episode/123" width="100%" height="152"></iframe>',
     },
     {
         id: '7',
         title: 'Podcast with no audio',
         status: 'published',
         updated_at: '2024-03-20T12:00:00.000Z',
-        tags: [{name: 'podcast', slug: 'podcast'}],
-        html: '<p>This podcast post has no audio content</p>'
-    }
+        tags: [{ name: 'podcast', slug: 'podcast' }],
+        html: '<p>This podcast post has no audio content</p>',
+    },
 ];
 
-const mockEdit = mock.fn(data => Promise.resolve(data));
+const mockEdit = mock.fn((data) => Promise.resolve(data));
 const mockBrowse = mock.fn();
 
 const mockApi = {
     posts: {
         browse: mockBrowse,
-        edit: mockEdit
-    }
+        edit: mockEdit,
+    },
 };
 
 mock.module('@tryghost/admin-api', {
     defaultExport: function GhostAdminAPI() {
         return mockApi;
-    }
+    },
 });
 mock.module('../lib/batch-ghost-discover.js', {
-    namedExports: {discover: mock.fn(() => Promise.resolve(mockPosts))}
+    namedExports: { discover: mock.fn(() => Promise.resolve(mockPosts)) },
 });
 
 describe('Set podcast', function () {
@@ -114,69 +110,67 @@ describe('Set podcast', function () {
     });
 
     test('can extract audio from Lexical content with direct audio node', async function () {
-        const {extractFirstAudioFromLexical} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromLexical } = await import('../tasks/set-podcast.js');
         const audio = extractFirstAudioFromLexical(mockPosts[0].lexical);
         assert.strictEqual(audio, 'https://example.com/podcast1.mp3');
     });
 
     test('can extract audio from Lexical content with embed node', async function () {
-        const {extractFirstAudioFromLexical} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromLexical } = await import('../tasks/set-podcast.js');
         const audio = extractFirstAudioFromLexical(mockPosts[1].lexical);
         assert.strictEqual(audio, 'https://soundcloud.com/example/podcast-episode');
     });
 
     test('can extract audio from Mobiledoc content with audio card', async function () {
-        const {extractFirstAudioFromMobiledoc} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromMobiledoc } = await import('../tasks/set-podcast.js');
         const audio = extractFirstAudioFromMobiledoc(mockPosts[2].mobiledoc);
         assert.strictEqual(audio, 'https://example.com/podcast2.mp3');
     });
 
     test('can extract audio from Mobiledoc content with embed card', async function () {
-        const {extractFirstAudioFromMobiledoc} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromMobiledoc } = await import('../tasks/set-podcast.js');
         const audio = extractFirstAudioFromMobiledoc(mockPosts[3].mobiledoc);
         assert.strictEqual(audio, 'https://anchor.fm/example/episodes/episode-1');
     });
 
     test('can extract audio from HTML content with audio tag', async function () {
-        const {extractFirstAudio} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudio } = await import('../tasks/set-podcast.js');
         const audio = extractFirstAudio(mockPosts[4].html);
         assert.strictEqual(audio, 'https://example.com/podcast3.mp3');
     });
 
     test('can extract audio from HTML content with iframe embed', async function () {
-        const {extractFirstAudio} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudio } = await import('../tasks/set-podcast.js');
         const audio = extractFirstAudio(mockPosts[5].html);
         assert.strictEqual(audio, 'https://spotify.com/embed/episode/123');
     });
 
     test('returns null when no audio is found in HTML', async function () {
-        const {extractFirstAudio} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudio } = await import('../tasks/set-podcast.js');
         const audio = extractFirstAudio(mockPosts[6].html);
         assert.strictEqual(audio, null);
     });
 
     test('returns null when no audio is found in Lexical', async function () {
-        const {extractFirstAudioFromLexical} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromLexical } = await import('../tasks/set-podcast.js');
         const lexicalWithoutAudio = JSON.stringify({
             root: {
                 children: [
                     {
                         type: 'paragraph',
-                        children: [{type: 'text', text: 'No audio here'}]
-                    }
-                ]
-            }
+                        children: [{ type: 'text', text: 'No audio here' }],
+                    },
+                ],
+            },
         });
         const audio = extractFirstAudioFromLexical(lexicalWithoutAudio);
         assert.strictEqual(audio, null);
     });
 
     test('returns null when no audio is found in Mobiledoc', async function () {
-        const {extractFirstAudioFromMobiledoc} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromMobiledoc } = await import('../tasks/set-podcast.js');
         const mobiledocWithoutAudio = JSON.stringify({
-            cards: [
-                ['paragraph', {text: 'No audio here'}]
-            ]
+            cards: [['paragraph', { text: 'No audio here' }]],
         });
         const audio = extractFirstAudioFromMobiledoc(mobiledocWithoutAudio);
         assert.strictEqual(audio, null);
@@ -188,10 +182,10 @@ describe('Set podcast', function () {
             ...silentRenderer,
             apiURL: 'https://example.com',
             adminAPIKey: 'key',
-            verbose: true
+            verbose: true,
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
         await runner.run(context);
 
         // Should have processed all posts
@@ -203,49 +197,59 @@ describe('Set podcast', function () {
 
         // Verify edit calls for each post with audio
         assert.strictEqual(mockApi.posts.edit.mock.callCount(), 6);
-        assert.ok(mockApi.posts.edit.mock.calls.some((c) => {
-            try {
-                assert.deepStrictEqual(c.arguments, [{
-                    id: '1',
-                    og_description: 'https://example.com/podcast1.mp3',
-                    title: 'Podcast with Lexical audio',
-                    status: 'published',
-                    updated_at: '2024-03-20T12:00:00.000Z'
-                }]);
-                return true;
-            } catch {
-                return false;
-            }
-        }));
-        assert.ok(mockApi.posts.edit.mock.calls.some((c) => {
-            try {
-                assert.deepStrictEqual(c.arguments, [{
-                    id: '2',
-                    og_description: 'https://soundcloud.com/example/podcast-episode',
-                    title: 'Podcast with Lexical embed',
-                    status: 'published',
-                    updated_at: '2024-03-20T12:00:00.000Z'
-                }]);
-                return true;
-            } catch {
-                return false;
-            }
-        }));
+        assert.ok(
+            mockApi.posts.edit.mock.calls.some((c) => {
+                try {
+                    assert.deepStrictEqual(c.arguments, [
+                        {
+                            id: '1',
+                            og_description: 'https://example.com/podcast1.mp3',
+                            title: 'Podcast with Lexical audio',
+                            status: 'published',
+                            updated_at: '2024-03-20T12:00:00.000Z',
+                        },
+                    ]);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }),
+        );
+        assert.ok(
+            mockApi.posts.edit.mock.calls.some((c) => {
+                try {
+                    assert.deepStrictEqual(c.arguments, [
+                        {
+                            id: '2',
+                            og_description: 'https://soundcloud.com/example/podcast-episode',
+                            title: 'Podcast with Lexical embed',
+                            status: 'published',
+                            updated_at: '2024-03-20T12:00:00.000Z',
+                        },
+                    ]);
+                    return true;
+                } catch {
+                    return false;
+                }
+            }),
+        );
     });
 
     test('handles API errors gracefully', async function () {
         // Make the edit call fail for one post
-        mockApi.posts.edit.mock.mockImplementationOnce(() => Promise.reject({message: 'API Error'}));
+        mockApi.posts.edit.mock.mockImplementationOnce(() =>
+            Promise.reject({ message: 'API Error' }),
+        );
 
         const setPodcastModule = await import('../tasks/set-podcast.js');
         const runner = setPodcastModule.default.getTaskRunner({
             ...silentRenderer,
             apiURL: 'https://example.com',
             adminAPIKey: 'key',
-            verbose: true
+            verbose: true,
         });
 
-        const context = {errors: []};
+        const context = { errors: [] };
         await runner.run(context);
 
         // Should still process remaining posts after the error
@@ -256,7 +260,8 @@ describe('Set podcast', function () {
     });
 
     test('handles invalid JSON gracefully', async function () {
-        const {extractFirstAudioFromLexical, extractFirstAudioFromMobiledoc} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromLexical, extractFirstAudioFromMobiledoc } =
+            await import('../tasks/set-podcast.js');
 
         const invalidJson = 'invalid json string';
 
@@ -265,7 +270,7 @@ describe('Set podcast', function () {
     });
 
     test('handles nested Lexical content', async function () {
-        const {extractFirstAudioFromLexical} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudioFromLexical } = await import('../tasks/set-podcast.js');
 
         const nestedLexical = JSON.stringify({
             root: {
@@ -275,12 +280,12 @@ describe('Set podcast', function () {
                         children: [
                             {
                                 type: 'audio',
-                                src: 'https://example.com/nested-audio.mp3'
-                            }
-                        ]
-                    }
-                ]
-            }
+                                src: 'https://example.com/nested-audio.mp3',
+                            },
+                        ],
+                    },
+                ],
+            },
         });
 
         const audio = extractFirstAudioFromLexical(nestedLexical);
@@ -288,7 +293,7 @@ describe('Set podcast', function () {
     });
 
     test('prioritizes audio over other podcast platforms in detection', async function () {
-        const {extractFirstAudio} = await import('../tasks/set-podcast.js');
+        const { extractFirstAudio } = await import('../tasks/set-podcast.js');
 
         const htmlWithMultiple = `
             <iframe src="https://spotify.com/embed/episode/123"></iframe>

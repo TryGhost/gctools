@@ -1,8 +1,8 @@
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -12,7 +12,7 @@ const initialise = (options) => {
                 verbose: false,
                 tag: false,
                 author: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -20,7 +20,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -29,7 +29,7 @@ const initialise = (options) => {
             ctx.updated = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -42,7 +42,7 @@ const getFullTaskList = (options) => {
                 let discoveryOptions = {
                     api: ctx.api,
                     type: 'users',
-                    limit: 50
+                    limit: 50,
                 };
 
                 try {
@@ -55,24 +55,24 @@ const getFullTaskList = (options) => {
 
                 // Filter out the owner role, as this cannot be changed
                 ctx.users = _.filter(ctx.users, (user) => {
-                    const isOwner = _.find(user.roles, {name: 'Owner'});
+                    const isOwner = _.find(user.roles, { name: 'Owner' });
 
                     if (!isOwner) {
                         return user;
                     }
                 });
-            }
+            },
         },
         {
             title: 'Filter staff roles',
             skip: () => !options.filterRole.length,
             task: (ctx, task) => {
-                const filterRoleNames = options.filterRole.map(role => role.name);
+                const filterRoleNames = options.filterRole.map((role) => role.name);
                 ctx.users = ctx.users.filter((user) => {
                     return filterRoleNames.includes(user.roles[0].name);
                 });
                 task.output = `Found ${ctx.users.length} users with specific roles`;
-            }
+            },
         },
         {
             title: 'Updating users from Ghost',
@@ -86,7 +86,7 @@ const getFullTaskList = (options) => {
                             try {
                                 let result = await ctx.api.users.edit({
                                     ...user,
-                                    roles: [ctx.args.newRole]
+                                    roles: [ctx.args.newRole],
                                 });
                                 ctx.updated.push(result);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
@@ -94,15 +94,15 @@ const getFullTaskList = (options) => {
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = options;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -111,11 +111,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

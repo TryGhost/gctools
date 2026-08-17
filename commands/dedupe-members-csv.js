@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import dedupeMembers from '../tasks/dedupe-members-csv.js';
 
 // Internal ID in case we need one.
@@ -17,25 +17,25 @@ const paramsDesc = [
     'The current members CSV',
     'New free members CSV',
     'New comp members CSV',
-    'New paid members CSV'
+    'New paid members CSV',
 ];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -48,7 +48,9 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully found ${context.combinedNewMembers.length} new members in ${Date.now() - timer}ms.`);
+    ui.log.ok(
+        `Successfully found ${context.combinedNewMembers.length} new members in ${Date.now() - timer}ms.`,
+    );
 };
 
 export default {
@@ -58,5 +60,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

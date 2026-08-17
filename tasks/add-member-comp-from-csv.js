@@ -1,10 +1,10 @@
 import Promise from 'bluebird';
 import _ from 'lodash';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import fsUtils from '@tryghost/mg-fs-utils';
-import {ui} from '@tryghost/pretty-cli';
-import {getTiers} from '../lib/admin-api-call.js';
+import { ui } from '@tryghost/pretty-cli';
+import { getTiers } from '../lib/admin-api-call.js';
 import errors from '@tryghost/errors';
 
 const initialise = (options) => {
@@ -13,7 +13,7 @@ const initialise = (options) => {
         task: async (ctx, task) => {
             let defaults = {
                 verbose: false,
-                delayBetweenCalls: 100
+                delayBetweenCalls: 100,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -21,7 +21,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -34,7 +34,7 @@ const initialise = (options) => {
             // Parse the CSV
             ctx.csvRows = await fsUtils.csv.parseCSV(options.csvPath);
             task.output = `Initialised API and loaded ${ctx.csvRows.length} CSV rows`;
-        }
+        },
     };
 };
 
@@ -47,10 +47,10 @@ const getFullTaskList = (options) => {
                 let hasErrors = false;
                 ctx.successfulRows = 0;
                 await Promise.mapSeries(ctx.csvRows, async (row, idx) => {
-                    const {email, expireAt, tierName} = row;
+                    const { email, expireAt, tierName } = row;
                     try {
                         // Find member by email
-                        const members = await ctx.api.members.browse({filter: `email:${email}`});
+                        const members = await ctx.api.members.browse({ filter: `email:${email}` });
                         if (!members.length) {
                             hasErrors = true;
                             ctx.errors.push(`Row ${idx + 1}: No member found for email: ${email}`);
@@ -60,8 +60,11 @@ const getFullTaskList = (options) => {
                         const member = members[0];
 
                         // Find tier by name using direct API call
-                        const tiers = await getTiers({apiURL: options.apiURL, adminAPIKey: options.adminAPIKey});
-                        const tier = tiers.find(t => t.name === tierName);
+                        const tiers = await getTiers({
+                            apiURL: options.apiURL,
+                            adminAPIKey: options.adminAPIKey,
+                        });
+                        const tier = tiers.find((t) => t.name === tierName);
                         if (!tier) {
                             hasErrors = true;
                             ctx.errors.push(`Row ${idx + 1}: No tier found for name: ${tierName}`);
@@ -72,14 +75,16 @@ const getFullTaskList = (options) => {
                         // Add new complimentary subscription
                         const updated = await ctx.api.members.edit({
                             id: member.id,
-                            tiers: [{id: tier.id, expiry_at: expireAt}]
+                            tiers: [{ id: tier.id, expiry_at: expireAt }],
                         });
                         ctx.updated.push(updated);
                         ctx.successfulRows = ctx.successfulRows + 1;
                         await Promise.delay(ctx.args.delayBetweenCalls);
                     } catch (error) {
                         hasErrors = true;
-                        ctx.errors.push(`Row ${idx + 1}: ${error.context || error.message} (email: ${email})`);
+                        ctx.errors.push(
+                            `Row ${idx + 1}: ${error.context || error.message} (email: ${email})`,
+                        );
                     }
                 });
 
@@ -94,10 +99,10 @@ const getFullTaskList = (options) => {
                     ui.log.ok(`  Tiers found: ${ctx.tiersFound}`);
                     ui.log.ok(`  Subscriptions updated: ${ctx.updated.length}`);
                     ui.log.warn(`  Errors: ${ctx.errors.length}`);
-                    
+
                     throw new errors.InternalServerError({
                         message: 'Failed to process some rows',
-                        context: `Processed ${ctx.csvRows.length} rows with ${ctx.errors.length} errors`
+                        context: `Processed ${ctx.csvRows.length} rows with ${ctx.errors.length} errors`,
                     });
                 }
 
@@ -110,18 +115,18 @@ const getFullTaskList = (options) => {
                 ui.log.ok(`  Tiers found: ${ctx.tiersFound}`);
                 ui.log.ok(`  Subscriptions updated: ${ctx.updated.length}`);
                 ui.log.ok('  No errors encountered.');
-            }
-        }
+            },
+        },
     ];
 };
 
 const getTaskRunner = (options) => {
     let tasks = getFullTaskList(options);
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
-}; 
+    getTaskRunner,
+};

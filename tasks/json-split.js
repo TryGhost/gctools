@@ -1,9 +1,9 @@
-import {dirname, basename} from 'node:path';
+import { dirname, basename } from 'node:path';
 import fsUtils from '@tryghost/mg-fs-utils';
 import fs from 'node:fs';
 import fse from 'fs-extra';
 import _ from 'lodash';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 
 const initialise = (options) => {
     return {
@@ -24,7 +24,7 @@ const initialise = (options) => {
             if (options.verbose) {
                 task.output = `Workspace initialised at ${ctx.fileCache.cacheDir}`;
             }
-        }
+        },
     };
 };
 
@@ -50,7 +50,7 @@ function getPostAuthors(postID, ctx) {
 
     return {
         posts_authors: thePostsAuthors,
-        users: theUsers
+        users: theUsers,
     };
 }
 
@@ -76,7 +76,7 @@ function getPostTags(postID, ctx) {
 
     return {
         posts_tags: thePostsTags,
-        tags: theTags
+        tags: theTags,
     };
 }
 
@@ -91,7 +91,7 @@ function getPostMeta(postID, ctx) {
     });
 
     return {
-        posts_meta: thePostsMeta
+        posts_meta: thePostsMeta,
     };
 }
 
@@ -108,14 +108,16 @@ const getFullTaskList = (options) => {
                 return new Promise((resolve) => {
                     let readStream = fs.createReadStream(options.jsonFile, 'utf8');
                     let data = '';
-                    readStream.on('data', (chunk) => {
-                        data += chunk;
-                    }).on('end', () => {
-                        ctx.originalJSON = JSON.parse(data);
-                        resolve();
-                    });
+                    readStream
+                        .on('data', (chunk) => {
+                            data += chunk;
+                        })
+                        .on('end', () => {
+                            ctx.originalJSON = JSON.parse(data);
+                            resolve();
+                        });
                 });
-            }
+            },
         },
         {
             title: 'Reading JSON file',
@@ -124,25 +126,31 @@ const getFullTaskList = (options) => {
                 try {
                     const jsonFileData = ctx.originalJSON;
 
-                    const json = (jsonFileData.data) ? jsonFileData : jsonFileData.db[0];
-                    ctx.jsonData = (jsonFileData.data) ? json.data : json.data;
+                    const json = jsonFileData.data ? jsonFileData : jsonFileData.db[0];
+                    ctx.jsonData = jsonFileData.data ? json.data : json.data;
 
                     ctx.args.metaVersion = json.meta.version;
                     ctx.args.metaExportedOn = json.meta.exported_on;
 
-                    const postsCount = (ctx.jsonData.posts) ? ctx.jsonData.posts.length : 0;
-                    const postsAuthorsCount = (ctx.jsonData.posts_authors) ? ctx.jsonData.posts_authors.length : 0;
-                    const postsMetaCount = (ctx.jsonData.posts_meta) ? ctx.jsonData.posts_meta.length : 0;
-                    const postsTagsCount = (ctx.jsonData.posts_tags) ? ctx.jsonData.posts_tags.length : 0;
-                    const tagsCount = (ctx.jsonData.tags) ? ctx.jsonData.tags.length : 0;
-                    const usersCount = (ctx.jsonData.users) ? ctx.jsonData.users.length : 0;
+                    const postsCount = ctx.jsonData.posts ? ctx.jsonData.posts.length : 0;
+                    const postsAuthorsCount = ctx.jsonData.posts_authors
+                        ? ctx.jsonData.posts_authors.length
+                        : 0;
+                    const postsMetaCount = ctx.jsonData.posts_meta
+                        ? ctx.jsonData.posts_meta.length
+                        : 0;
+                    const postsTagsCount = ctx.jsonData.posts_tags
+                        ? ctx.jsonData.posts_tags.length
+                        : 0;
+                    const tagsCount = ctx.jsonData.tags ? ctx.jsonData.tags.length : 0;
+                    const usersCount = ctx.jsonData.users ? ctx.jsonData.users.length : 0;
 
                     task.output = `Found ${postsCount} posts, ${postsAuthorsCount} posts_authors, ${postsMetaCount} posts_meta, ${postsTagsCount} posts_tags, ${tagsCount} tags, ${usersCount} users`;
                 } catch (error) {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Chunking posts',
@@ -154,7 +162,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Adding tags and authors to chunked posts',
@@ -169,7 +177,7 @@ const getFullTaskList = (options) => {
                         roles: ctx.jsonData.roles,
                         roles_users: ctx.jsonData.roles_users,
                         tags: [],
-                        users: []
+                        users: [],
                     };
 
                     chunk.forEach((post) => {
@@ -198,7 +206,7 @@ const getFullTaskList = (options) => {
 
                     ctx.newChunks.push(newChunk);
                 });
-            }
+            },
         },
         {
             // 4. Save each chunk as its own JSON file
@@ -209,26 +217,32 @@ const getFullTaskList = (options) => {
                 await fse.ensureDir(destination);
 
                 ctx.newChunks.forEach(async (chunk, i) => {
-                    const fileNumber = `${i}`.padStart((ctx.newChunks.length.toString().length + 1), '0');
+                    const fileNumber = `${i}`.padStart(
+                        ctx.newChunks.length.toString().length + 1,
+                        '0',
+                    );
 
                     const chunkData = {
                         db: [
                             {
                                 data: {
-                                    ...chunk
+                                    ...chunk,
                                 },
                                 meta: {
                                     exported_on: ctx.args.metaExportedOn,
-                                    version: ctx.args.metaVersion
-                                }
-                            }
-                        ]
+                                    version: ctx.args.metaVersion,
+                                },
+                            },
+                        ],
                     };
 
-                    await createChunkFile(`${destination}/${sourceBase}-posts-${fileNumber}.json`, chunkData);
+                    await createChunkFile(
+                        `${destination}/${sourceBase}-posts-${fileNumber}.json`,
+                        chunkData,
+                    );
                 });
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -238,11 +252,11 @@ const getTaskRunner = (options) => {
     tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

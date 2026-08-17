@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import jsonClean from '../tasks/json-clean.js';
 
 // Internal ID in case we need one.
@@ -19,22 +19,22 @@ const paramsDesc = ['Path to the Ghost JSON file'];
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: true,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.string('--ghostApiUrl', {
         defaultValue: null,
-        desc: 'Ghost site URL to fetch existing users (e.g. https://example.ghost.io)'
+        desc: 'Ghost site URL to fetch existing users (e.g. https://example.ghost.io)',
     });
     sywac.string('--ghostAdminKey', {
         defaultValue: null,
-        desc: 'Ghost Admin API key to authenticate with Ghost (format: id:secret)'
+        desc: 'Ghost Admin API key to authenticate with Ghost (format: id:secret)',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -61,5 +61,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

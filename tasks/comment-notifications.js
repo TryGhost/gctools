@@ -1,11 +1,11 @@
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 import fs from 'fs-extra';
 import fsUtils from '@tryghost/mg-fs-utils';
-import {dirname} from 'node:path';
-import {sleep} from '../lib/utils.js';
+import { dirname } from 'node:path';
+import { sleep } from '../lib/utils.js';
 import errors from '@tryghost/errors';
 
 const initialise = (options) => {
@@ -17,7 +17,7 @@ const initialise = (options) => {
                 delayBetweenCalls: 50,
                 value: null,
                 backupPath: null,
-                restorePath: null
+                restorePath: null,
             };
 
             const url = options.apiURL;
@@ -25,7 +25,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.api = api;
@@ -37,7 +37,7 @@ const initialise = (options) => {
             ctx.skipped = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -52,7 +52,7 @@ const backupSettings = (options) => {
         task: async (ctx, task) => {
             // Filter out Owner role users
             const usersToBackup = ctx.users.filter((user) => {
-                const isOwner = _.find(user.roles, {name: 'Owner'});
+                const isOwner = _.find(user.roles, { name: 'Owner' });
                 return !isOwner;
             });
 
@@ -63,7 +63,7 @@ const backupSettings = (options) => {
                     email: user.email,
                     name: user.name,
                     slug: user.slug,
-                    comment_notifications: user.comment_notifications
+                    comment_notifications: user.comment_notifications,
                 };
             });
 
@@ -77,7 +77,7 @@ const backupSettings = (options) => {
 
             ctx.backedUp = usersToBackup.length;
             task.output = `Backed up settings for ${ctx.backedUp} users to ${options.backupPath}`;
-        }
+        },
     };
 };
 
@@ -91,9 +91,9 @@ const restoreSettings = (options) => {
         },
         task: async (ctx, task) => {
             // Verify file exists
-            if (!await fs.pathExists(options.restorePath)) {
+            if (!(await fs.pathExists(options.restorePath))) {
                 throw new errors.NotFoundError({
-                    message: `Restore file not found: ${options.restorePath}`
+                    message: `Restore file not found: ${options.restorePath}`,
                 });
             }
 
@@ -110,37 +110,39 @@ const restoreSettings = (options) => {
 
             for (const csvUser of csvData) {
                 // Find matching user by ID in fetched users
-                const user = ctx.users.find(u => u.id === csvUser.id);
+                const user = ctx.users.find((u) => u.id === csvUser.id);
 
                 if (!user) {
                     ctx.skipped.push({
                         id: csvUser.id,
                         email: csvUser.email,
-                        reason: 'User not found'
+                        reason: 'User not found',
                     });
                     continue;
                 }
 
                 // Skip Owner role users
-                const isOwner = _.find(user.roles, {name: 'Owner'});
+                const isOwner = _.find(user.roles, { name: 'Owner' });
                 if (isOwner) {
                     ctx.skipped.push({
                         id: csvUser.id,
                         email: csvUser.email,
-                        reason: 'Owner role'
+                        reason: 'Owner role',
                     });
                     continue;
                 }
 
                 // Parse the CSV value (comes as string)
-                const targetValue = csvUser.comment_notifications === 'true' || csvUser.comment_notifications === true;
+                const targetValue =
+                    csvUser.comment_notifications === 'true' ||
+                    csvUser.comment_notifications === true;
 
                 // Skip if already at target value
                 if (user.comment_notifications === targetValue) {
                     ctx.skipped.push({
                         id: csvUser.id,
                         email: csvUser.email,
-                        reason: 'Already at target value'
+                        reason: 'Already at target value',
                     });
                     continue;
                 }
@@ -151,19 +153,19 @@ const restoreSettings = (options) => {
                         try {
                             let result = await ctx.api.users.edit({
                                 id: user.id,
-                                comment_notifications: targetValue
+                                comment_notifications: targetValue,
                             });
                             ctx.restored.push(result);
                             await sleep(ctx.args.delayBetweenCalls);
                             return result;
                         } catch (error) {
                             error.resource = {
-                                name: user.name
+                                name: user.name,
                             };
                             ctx.errors.push(error);
                             throw error;
                         }
-                    }
+                    },
                 });
             }
 
@@ -173,11 +175,11 @@ const restoreSettings = (options) => {
             }
 
             if (options.verbose) {
-                return makeTaskRunner(tasks, {verbose: options.verbose, concurrent: 1});
+                return makeTaskRunner(tasks, { verbose: options.verbose, concurrent: 1 });
             } else {
-                return makeTaskRunner(tasks, {concurrent: 1, renderer: 'silent', verbose: false});
+                return makeTaskRunner(tasks, { concurrent: 1, renderer: 'silent', verbose: false });
             }
-        }
+        },
     };
 };
 
@@ -193,8 +195,8 @@ const getFullTaskList = (options) => {
                         type: 'users',
                         limit: 50,
                         options: {
-                            include: 'roles'
-                        }
+                            include: 'roles',
+                        },
                     });
 
                     if (ctx.args.verbose) {
@@ -204,7 +206,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         backupSettings(options),
         restoreSettings(options),
@@ -215,7 +217,7 @@ const getFullTaskList = (options) => {
 
                 // Filter out Owner role users and users who are already set correctly
                 const usersToUpdate = ctx.users.filter((user) => {
-                    const isOwner = _.find(user.roles, {name: 'Owner'});
+                    const isOwner = _.find(user.roles, { name: 'Owner' });
                     const needsUpdate = user.comment_notifications !== ctx.args.value;
                     return !isOwner && needsUpdate;
                 });
@@ -227,26 +229,30 @@ const getFullTaskList = (options) => {
                             try {
                                 let result = await ctx.api.users.edit({
                                     id: user.id,
-                                    comment_notifications: ctx.args.value
+                                    comment_notifications: ctx.args.value,
                                 });
                                 ctx.updated.push(result);
                                 await sleep(ctx.args.delayBetweenCalls);
                                 return result;
                             } catch (error) {
                                 error.resource = {
-                                    name: user.name
+                                    name: user.name,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     };
                 });
 
                 if (options.verbose) {
-                    return makeTaskRunner(tasks, {verbose: options.verbose, concurrent: 1});
+                    return makeTaskRunner(tasks, { verbose: options.verbose, concurrent: 1 });
                 } else {
-                    return makeTaskRunner(tasks, {concurrent: 1, renderer: 'silent', verbose: false});
+                    return makeTaskRunner(tasks, {
+                        concurrent: 1,
+                        renderer: 'silent',
+                        verbose: false,
+                    });
                 }
             },
             skip: (ctx) => {
@@ -261,8 +267,8 @@ const getFullTaskList = (options) => {
                 if (ctx.args.value === null) {
                     return 'No value specified (backup-only mode)';
                 }
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -272,11 +278,11 @@ const getTaskRunner = (options) => {
     tasks = getFullTaskList(options);
 
     // Configure the task runner
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import deletePages from '../tasks/delete-pages.js';
 
 // Internal ID in case we need one.
@@ -13,40 +13,37 @@ const flags = 'delete-pages <apiURL> <adminAPIKey>';
 const desc = 'Delete pages in Ghost';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Delete content with this tag slug'
+        desc: 'Delete content with this tag slug',
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Delete content with this author slug'
+        desc: 'Delete content with this author slug',
     });
     sywac.enumeration('--status', {
         defaultValue: 'all',
         choices: ['all', 'draft', 'published'],
-        desc: 'Post visibility'
+        desc: 'Post visibility',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -69,5 +66,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

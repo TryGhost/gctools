@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import splitMembers from '../tasks/split-members.js';
 
 // Internal ID in case we need one.
@@ -10,76 +10,81 @@ export const group = 'Members:';
 export const flags = 'split-members [csvPath]';
 
 // Description for the top level command
-export const desc = 'Split members into two zipper-balanced halves, fetched from the Ghost API or read from a CSV';
+export const desc =
+    'Split members into two zipper-balanced halves, fetched from the Ghost API or read from a CSV';
 
 // Descriptions for the individual params
-export const paramsDesc = ['Optional path to a members CSV file (omit to fetch from the Ghost API with --apiURL & --adminAPIKey)'];
+export const paramsDesc = [
+    'Optional path to a members CSV file (omit to fetch from the Ghost API with --apiURL & --adminAPIKey)',
+];
 
 // Configure all the options
 export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
 
     sywac.string('--apiURL', {
         defaultValue: null,
-        desc: 'URL to your Ghost API (required when no CSV path is given)'
+        desc: 'URL to your Ghost API (required when no CSV path is given)',
     });
 
     sywac.string('--adminAPIKey', {
         defaultValue: null,
-        desc: 'Admin API key (required when no CSV path is given)'
+        desc: 'Admin API key (required when no CSV path is given)',
     });
 
     sywac.string('--filter', {
         defaultValue: null,
-        desc: 'Filter members when fetching — paste a Ghost members URL or an NQL filter (e.g. "status:free")'
+        desc: 'Filter members when fetching — paste a Ghost members URL or an NQL filter (e.g. "status:free")',
     });
 
     sywac.string('--output', {
         defaultValue: '.',
-        desc: 'Output directory for CSV files'
+        desc: 'Output directory for CSV files',
     });
 
     sywac.string('--baseName', {
         defaultValue: 'members',
-        desc: 'Base filename prefix for output files'
+        desc: 'Base filename prefix for output files',
     });
 
     sywac.boolean('--addLabels', {
         defaultValue: false,
-        desc: 'After splitting, bulk-add a label to each group (needs --apiURL, --adminAPIKey, --labelA & --labelB)'
+        desc: 'After splitting, bulk-add a label to each group (needs --apiURL, --adminAPIKey, --labelA & --labelB)',
     });
 
     sywac.string('--labelA', {
         defaultValue: null,
-        desc: 'Label name (or ID) to add to group A members'
+        desc: 'Label name (or ID) to add to group A members',
     });
 
     sywac.string('--labelB', {
         defaultValue: null,
-        desc: 'Label name (or ID) to add to group B members'
+        desc: 'Label name (or ID) to add to group B members',
     });
 
     sywac.number('--chunkSize', {
         defaultValue: 100,
-        desc: 'Members per bulk label request'
+        desc: 'Members per bulk label request',
     });
 
     sywac.number('--requestsPerSecond', {
         defaultValue: 5,
-        desc: 'Max bulk label API requests per second'
+        desc: 'Max bulk label API requests per second',
     });
 };
 
 // What to do when this command is executed
 export const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     if (!argv.csvPath && (!argv.apiURL || !argv.adminAPIKey)) {
-        ui.log.error('Provide either a CSV path, or both --apiURL and --adminAPIKey to fetch members from Ghost.');
+        ui.log.error(
+            'Provide either a CSV path, or both --apiURL and --adminAPIKey to fetch members from Ghost.',
+        );
         return;
     }
 
@@ -105,7 +110,9 @@ export const run = async (argv) => {
     const aCount = context.membersA ? context.membersA.length : 0;
     const bCount = context.membersB ? context.membersB.length : 0;
 
-    ui.log.ok(`Split ${total} members into A (${aCount}) and B (${bCount}) in ${Date.now() - timer}ms.`);
+    ui.log.ok(
+        `Split ${total} members into A (${aCount}) and B (${bCount}) in ${Date.now() - timer}ms.`,
+    );
     ui.log.info(`Source: ${context.source || (argv.csvPath ? argv.csvPath : 'Ghost Admin API')}`);
     ui.log.info(`Files written to: ${argv.output || '.'}`);
     ui.log.info(`  ${argv.baseName || 'members'}-all.csv (${total} members)`);
@@ -129,5 +136,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

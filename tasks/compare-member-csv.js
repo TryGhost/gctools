@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import fsUtils from '@tryghost/mg-fs-utils';
 import fs from 'fs-extra';
 import path from 'node:path';
@@ -10,7 +10,7 @@ const initialise = (options) => {
         title: 'Initialising and reading CSV files',
         task: async (ctx, task) => {
             let defaults = {
-                verbose: false
+                verbose: false,
             };
 
             ctx.args = _.mergeWith(defaults, options);
@@ -20,15 +20,15 @@ const initialise = (options) => {
             ctx.updatedList = [];
 
             // Validate file paths
-            if (!await fs.pathExists(options.oldFile)) {
+            if (!(await fs.pathExists(options.oldFile))) {
                 throw new errors.NotFoundError({
-                    message: `Old file not found: ${options.oldFile}`
+                    message: `Old file not found: ${options.oldFile}`,
                 });
             }
 
-            if (!await fs.pathExists(options.newFile)) {
+            if (!(await fs.pathExists(options.newFile))) {
                 throw new errors.NotFoundError({
-                    message: `New file not found: ${options.newFile}`
+                    message: `New file not found: ${options.newFile}`,
                 });
             }
 
@@ -47,10 +47,10 @@ const initialise = (options) => {
                 task.output = `Loaded ${ctx.oldMembers.length} members from old file and ${ctx.newMembers.length} members from new file`;
             } catch (error) {
                 throw new errors.ValidationError({
-                    message: `Failed to parse CSV files: ${error.message}`
+                    message: `Failed to parse CSV files: ${error.message}`,
                 });
             }
-        }
+        },
     };
 };
 
@@ -61,7 +61,7 @@ const compareMembers = () => {
             // Ensure we have the data
             if (!ctx.oldMembers || !ctx.newMembers) {
                 throw new errors.ValidationError({
-                    message: 'CSV data not loaded properly'
+                    message: 'CSV data not loaded properly',
                 });
             }
 
@@ -81,10 +81,14 @@ const compareMembers = () => {
             });
 
             // Find new members (in new file but not in old)
-            ctx.newMembersList = ctx.newMembers.filter(member => member.email && !oldMembersByEmail.has(member.email.toLowerCase()));
+            ctx.newMembersList = ctx.newMembers.filter(
+                (member) => member.email && !oldMembersByEmail.has(member.email.toLowerCase()),
+            );
 
             // Find unsubscribed members (in old file but not in new)
-            ctx.unsubscribedList = ctx.oldMembers.filter(member => member.email && !newMembersByEmail.has(member.email.toLowerCase()));
+            ctx.unsubscribedList = ctx.oldMembers.filter(
+                (member) => member.email && !newMembersByEmail.has(member.email.toLowerCase()),
+            );
 
             // Find updated members (present in both but with changes)
             ctx.updatedList = [];
@@ -92,23 +96,31 @@ const compareMembers = () => {
                 const oldMember = oldMembersByEmail.get(email);
                 if (oldMember) {
                     // Check if there are meaningful changes
-                    const hasStripeChanges = (!oldMember.stripe_customer_id && newMember.stripe_customer_id) ||
-                                           (oldMember.stripe_customer_id !== newMember.stripe_customer_id);
+                    const hasStripeChanges =
+                        (!oldMember.stripe_customer_id && newMember.stripe_customer_id) ||
+                        oldMember.stripe_customer_id !== newMember.stripe_customer_id;
 
-                    const hasSubscriptionChanges = oldMember.subscribed_to_emails !== newMember.subscribed_to_emails;
+                    const hasSubscriptionChanges =
+                        oldMember.subscribed_to_emails !== newMember.subscribed_to_emails;
 
-                    const hasComplimentaryChanges = oldMember.complimentary_plan !== newMember.complimentary_plan;
+                    const hasComplimentaryChanges =
+                        oldMember.complimentary_plan !== newMember.complimentary_plan;
 
                     const hasLabelChanges = oldMember.labels !== newMember.labels;
 
-                    if (hasStripeChanges || hasSubscriptionChanges || hasComplimentaryChanges || hasLabelChanges) {
+                    if (
+                        hasStripeChanges ||
+                        hasSubscriptionChanges ||
+                        hasComplimentaryChanges ||
+                        hasLabelChanges
+                    ) {
                         ctx.updatedList.push(newMember);
                     }
                 }
             });
 
             task.output = `Found ${ctx.newMembersList.length} new, ${ctx.unsubscribedList.length} unsubscribed, and ${ctx.updatedList.length} updated members`;
-        }
+        },
     };
 };
 
@@ -149,23 +161,19 @@ const exportResults = () => {
                 ctx.updatedFile = updatedPath;
                 task.output = `Exported ${ctx.updatedList.length} updated members to updated.csv`;
             }
-        }
+        },
     };
 };
 
 const getFullTaskList = (options) => {
-    return [
-        initialise(options),
-        compareMembers(),
-        exportResults()
-    ];
+    return [initialise(options), compareMembers(), exportResults()];
 };
 
 const getTaskRunner = (options) => {
     let tasks = getFullTaskList(options);
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
-    getTaskRunner
+    getTaskRunner,
 };

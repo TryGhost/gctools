@@ -1,10 +1,10 @@
 import inquirer from 'inquirer';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import zipSplit from '../tasks/zip-split.js';
 
 const choice = {
     name: 'Zip split',
-    value: 'zipSplit'
+    value: 'zipSplit',
 };
 
 const options = [
@@ -14,7 +14,7 @@ const options = [
         message: 'Path to zip file (drag file into this window):',
         filter: function (val) {
             return val.trim();
-        }
+        },
     },
     {
         type: 'number',
@@ -22,8 +22,8 @@ const options = [
         message: 'Maximum zip size (in MB):',
         default: function () {
             return 50;
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
@@ -33,7 +33,7 @@ async function run() {
         Object.assign(opts, answers);
 
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = zipSplit.getTaskRunner(opts);
@@ -48,5 +48,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

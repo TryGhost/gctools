@@ -1,79 +1,89 @@
 import inquirer from 'inquirer';
 import confirm from '@inquirer/confirm';
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
-import {adminClient} from '../lib/ghost-api-creds.js';
-import {getLabels} from '../questions/get-labels.js';
+import { ui } from '@tryghost/pretty-cli';
+import { adminClient } from '../lib/ghost-api-creds.js';
+import { getLabels } from '../questions/get-labels.js';
 import memberNewsletterBackup from '../tasks/member-newsletter-backup.js';
 
 const choice = {
     name: 'Backup/restore member newsletter preferences',
-    value: 'member-newsletter-backup'
+    value: 'member-newsletter-backup',
 };
 
 async function run() {
-    let context = {errors: []};
+    let context = { errors: [] };
 
     // 1. Ensure we have site creds first & create a client
     const clientCreds = await adminClient();
 
     // 2. Ask whether to backup or restore
-    const modeAnswer = await inquirer.prompt([{
-        type: 'select',
-        name: 'mode',
-        message: 'What would you like to do?',
-        choices: [
-            {name: 'Backup newsletter preferences to CSV', value: 'backup'},
-            {name: 'Restore newsletter preferences from CSV', value: 'restore'}
-        ]
-    }]);
+    const modeAnswer = await inquirer.prompt([
+        {
+            type: 'select',
+            name: 'mode',
+            message: 'What would you like to do?',
+            choices: [
+                { name: 'Backup newsletter preferences to CSV', value: 'backup' },
+                { name: 'Restore newsletter preferences from CSV', value: 'restore' },
+            ],
+        },
+    ]);
 
     let options = {
         apiURL: clientCreds.apiURL,
         adminAPIKey: clientCreds.adminAPIKey,
         verbose: false,
-        delayBetweenCalls: 50
+        delayBetweenCalls: 50,
     };
 
     if (modeAnswer.mode === 'backup') {
         // 3a. Get backup path
-        const pathAnswer = await inquirer.prompt([{
-            type: 'input',
-            name: 'backupPath',
-            message: 'Path to save backup CSV:',
-            default: './member-newsletter-backup.csv'
-        }]);
+        const pathAnswer = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'backupPath',
+                message: 'Path to save backup CSV:',
+                default: './member-newsletter-backup.csv',
+            },
+        ]);
 
         // 4a. Optionally filter by labels
         const labels = await getLabels({
-            message: `Filter by labels: ${chalk.reset.grey('(Leave blank for all members)')}`
+            message: `Filter by labels: ${chalk.reset.grey('(Leave blank for all members)')}`,
         });
 
         options.backupPath = pathAnswer.backupPath;
-        options.label = labels && labels.length > 0 ? labels.map(l => l.slug) : null;
+        options.label = labels && labels.length > 0 ? labels.map((l) => l.slug) : null;
 
-        ui.log.info(`Backing up newsletter preferences to ${chalk.bold.blue(pathAnswer.backupPath)}`);
+        ui.log.info(
+            `Backing up newsletter preferences to ${chalk.bold.blue(pathAnswer.backupPath)}`,
+        );
         if (options.label && options.label.length > 0) {
             ui.log.info(`Filtering by labels: ${chalk.bold.yellow(options.label.join(', '))}`);
         }
     } else {
         // 3b. Get restore path
-        const pathAnswer = await inquirer.prompt([{
-            type: 'input',
-            name: 'restorePath',
-            message: 'Path to CSV file to restore from:'
-        }]);
+        const pathAnswer = await inquirer.prompt([
+            {
+                type: 'input',
+                name: 'restorePath',
+                message: 'Path to CSV file to restore from:',
+            },
+        ]);
 
         // 4b. Ask about dry run
         const dryRun = await confirm({
             message: 'Do a dry run first? (shows changes without applying them)',
-            default: true
+            default: true,
         });
 
         options.restorePath = pathAnswer.restorePath;
         options.dryRun = dryRun;
 
-        ui.log.info(`Restoring newsletter preferences from ${chalk.bold.blue(pathAnswer.restorePath)}`);
+        ui.log.info(
+            `Restoring newsletter preferences from ${chalk.bold.blue(pathAnswer.restorePath)}`,
+        );
         if (dryRun) {
             ui.log.info(chalk.yellow('Dry run mode - no changes will be made'));
         }
@@ -82,7 +92,7 @@ async function run() {
     // 5. Confirm and run
     const runTask = await confirm({
         message: chalk.bold(`Proceed?`),
-        default: true
+        default: true,
     });
 
     if (!runTask) {
@@ -120,5 +130,5 @@ async function run() {
 
 export default {
     choice,
-    run
+    run,
 };

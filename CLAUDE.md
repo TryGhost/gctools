@@ -205,7 +205,8 @@ return makeTaskRunner(tasks, {concurrent: 1});
 ## Testing
 
 ```bash
-pnpm test  # Runs node --test + ESLint
+pnpm test  # Runs node --test
+pnpm lint  # Runs oxlint + oxfmt --check
 ```
 
 Tests are in `test/` directory. Mock the Ghost API client for unit tests.

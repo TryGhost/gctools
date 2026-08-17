@@ -4,9 +4,9 @@ inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import inquirerDatepickerPrompt from 'inquirer-datepicker-prompt';
 inquirer.registerPrompt('datetime', inquirerDatepickerPrompt);
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import inlineMedia from '../tasks/inline-media.js';
-import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import { getAPIAuthorsObj, getAPITagsObj } from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const dateStartOfToday = new Date();
@@ -17,7 +17,7 @@ dateEndOfToday.setUTCHours(23, 59, 59, 999);
 
 const choice = {
     name: 'Inline media',
-    value: 'inlineMedia'
+    value: 'inlineMedia',
 };
 
 const options = [
@@ -28,7 +28,7 @@ const options = [
         message: 'Filter by slug (leave blank for all):',
         filter: function (val) {
             return val.trim() || null;
-        }
+        },
     },
     {
         type: 'input',
@@ -36,7 +36,7 @@ const options = [
         message: 'Filter by post ID (leave blank for all):',
         filter: function (val) {
             return val.trim() || null;
-        }
+        },
     },
     {
         type: 'checkbox',
@@ -45,13 +45,13 @@ const options = [
         choices: [
             {
                 name: 'Posts',
-                value: 'posts'
+                value: 'posts',
             },
             {
                 name: 'Pages',
-                value: 'pages'
-            }
-        ]
+                value: 'pages',
+            },
+        ],
     },
     {
         type: 'select',
@@ -60,17 +60,17 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Draft',
-                value: 'draft'
+                value: 'draft',
             },
             {
                 name: 'Published',
-                value: 'published'
-            }
-        ]
+                value: 'published',
+            },
+        ],
     },
     {
         type: 'select',
@@ -79,21 +79,21 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Public',
-                value: 'public'
+                value: 'public',
             },
             {
                 name: 'Members',
-                value: 'members'
+                value: 'members',
             },
             {
                 name: 'Paid',
-                value: 'paid'
-            }
-        ]
+                value: 'paid',
+            },
+        ],
     },
     {
         type: 'select',
@@ -102,13 +102,13 @@ const options = [
         choices: [
             {
                 name: 'No',
-                value: 'no'
+                value: 'no',
             },
             {
                 name: 'Yes',
-                value: 'yes'
-            }
-        ]
+                value: 'yes',
+            },
+        ],
     },
     {
         type: 'search-checkbox',
@@ -120,7 +120,7 @@ const options = [
         },
         when: function (answers) {
             return answers.filterByTag === 'yes';
-        }
+        },
     },
     {
         type: 'select',
@@ -129,13 +129,13 @@ const options = [
         choices: [
             {
                 name: 'No',
-                value: 'no'
+                value: 'no',
             },
             {
                 name: 'Yes',
-                value: 'yes'
-            }
-        ]
+                value: 'yes',
+            },
+        ],
     },
     {
         type: 'search-checkbox',
@@ -146,7 +146,7 @@ const options = [
         },
         when: function (answers) {
             return answers.filterByAuthor === 'yes';
-        }
+        },
     },
     {
         type: 'select',
@@ -155,13 +155,13 @@ const options = [
         choices: [
             {
                 name: 'No',
-                value: 'no'
+                value: 'no',
             },
             {
                 name: 'Yes',
-                value: 'yes'
-            }
-        ]
+                value: 'yes',
+            },
+        ],
     },
     {
         type: 'datetime',
@@ -171,7 +171,7 @@ const options = [
         initial: dateStartOfToday,
         when: function (answers) {
             return answers.filterByAfterDate === 'yes';
-        }
+        },
     },
     {
         type: 'select',
@@ -180,13 +180,13 @@ const options = [
         choices: [
             {
                 name: 'No',
-                value: 'no'
+                value: 'no',
             },
             {
                 name: 'Yes',
-                value: 'yes'
-            }
-        ]
+                value: 'yes',
+            },
+        ],
     },
     {
         type: 'datetime',
@@ -196,7 +196,7 @@ const options = [
         initial: dateEndOfToday,
         when: function (answers) {
             return answers.filterByBeforeDate === 'yes';
-        }
+        },
     },
     {
         type: 'input',
@@ -210,7 +210,7 @@ const options = [
             return trimmed.split(',').map((item) => {
                 return item.trim();
             });
-        }
+        },
     },
     {
         type: 'select',
@@ -219,20 +219,20 @@ const options = [
         choices: [
             {
                 name: 'No',
-                value: false
+                value: false,
             },
             {
                 name: 'Yes',
-                value: true
-            }
-        ]
-    }
+                value: true,
+            },
+        ],
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = inlineMedia.getTaskRunner(answers);
@@ -244,18 +244,21 @@ async function run() {
         if (context.errors.length > 0) {
             ui.log.warn(`\n${context.errors.length} errors encountered:`);
             context.errors.forEach((err) => {
-                const message = typeof err === 'string' ? err : (err.message || err.context || String(err));
+                const message =
+                    typeof err === 'string' ? err : err.message || err.context || String(err);
                 ui.log.warn(`  - ${message}`);
             });
             ui.log.info('');
         }
 
-        ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
+        ui.log.ok(
+            `Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`,
+        );
     });
 }
 
 export default {
     choice,
     options,
-    run
+    run,
 };

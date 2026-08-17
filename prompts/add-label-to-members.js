@@ -1,17 +1,17 @@
 import inquirer from 'inquirer';
 import confirm from '@inquirer/confirm';
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import addLabelToMembers from '../tasks/add-label-to-members.js';
-import {adminClient} from '../lib/ghost-api-creds.js';
+import { adminClient } from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Add label to members from CSV',
-    value: 'addLabelToMembers'
+    value: 'addLabelToMembers',
 };
 
 async function run() {
-    let context = {errors: []};
+    let context = { errors: [] };
 
     const clientCreds = await adminClient();
 
@@ -20,16 +20,16 @@ async function run() {
             type: 'input',
             name: 'csvPath',
             message: 'Path to members CSV file:',
-            filter: val => val.trim(),
-            validate: input => input.trim().length > 0 || 'Please provide a path to a CSV file'
+            filter: (val) => val.trim(),
+            validate: (input) => input.trim().length > 0 || 'Please provide a path to a CSV file',
         },
         {
             type: 'input',
             name: 'label',
             message: 'Label name to add:',
-            filter: val => val.trim(),
-            validate: input => input.trim().length > 0 || 'Please provide a label name'
-        }
+            filter: (val) => val.trim(),
+            validate: (input) => input.trim().length > 0 || 'Please provide a label name',
+        },
     ]);
 
     const opts = Object.assign({}, clientCreds, answers);
@@ -39,7 +39,7 @@ async function run() {
 
     const runTask = await confirm({
         message: chalk.bold('Proceed?'),
-        default: true
+        default: true,
     });
 
     if (!runTask) {
@@ -62,5 +62,5 @@ async function run() {
 
 export default {
     choice,
-    run
+    run,
 };

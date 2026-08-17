@@ -1,10 +1,10 @@
 import inquirer from 'inquirer';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import fetchAssets from '../tasks/fetch-assets.js';
 
 const choice = {
     name: 'Fetch assets',
-    value: 'fetchAssets'
+    value: 'fetchAssets',
 };
 
 const options = [
@@ -14,7 +14,7 @@ const options = [
         message: 'Path to JSON file (drag file into this window):',
         filter: function (val) {
             return val.trim();
-        }
+        },
     },
     {
         type: 'input',
@@ -22,7 +22,7 @@ const options = [
         message: 'Provide a base URL (without trailing slash) to resolve relative asset URLs:',
         filter: function (val) {
             return val.trim();
-        }
+        },
     },
     {
         type: 'number',
@@ -30,14 +30,14 @@ const options = [
         message: 'Maximum asset size in MB (Larger files will be skipped):',
         default: function () {
             return null;
-        }
+        },
     },
     {
         type: 'confirm',
         name: 'zip',
         message: 'Create a zip file (set to false to skip)',
-        default: true
-    }
+        default: true,
+    },
 ];
 
 async function run() {
@@ -47,7 +47,7 @@ async function run() {
         Object.assign(opts, answers);
 
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = fetchAssets.getTaskRunner(opts);
@@ -55,7 +55,9 @@ async function run() {
             ui.log.ok(`Successfully fetched assets in ${Date.now() - timer}ms.`);
 
             if (opts.zip) {
-                ui.log.ok(`Zip file (${(context.outputFile.size / (1000 * 1000)).toFixed(2)}MB) saved at: ${context.outputFile.path}`);
+                ui.log.ok(
+                    `Zip file (${(context.outputFile.size / (1000 * 1000)).toFixed(2)}MB) saved at: ${context.outputFile.path}`,
+                );
             }
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
@@ -66,5 +68,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

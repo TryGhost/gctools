@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import findReplace from '../tasks/find-replace.js';
 
 // Internal ID in case we need one.
@@ -13,54 +13,86 @@ const flags = 'find-replace <apiURL> <adminAPIKey>';
 const desc = 'Find & replace text in Ghost';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.string('--find', {
         defaultValue: null,
-        desc: 'Find'
+        desc: 'Find',
     });
     sywac.string('--replace', {
         defaultValue: null,
-        desc: 'Replace with (omit to do a dry run)'
+        desc: 'Replace with (omit to do a dry run)',
     });
     sywac.array('--where', {
         defaultValue: 'mobiledoc',
-        choices: ['all', 'mobiledoc', 'html', 'lexical', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'feature_image', 'codeinjection_head', 'codeinjection_foot'],
-        desc: 'Where to perform the find & replace (comma separated, eg: mobiledoc,title,meta_title)'
+        choices: [
+            'all',
+            'mobiledoc',
+            'html',
+            'lexical',
+            'title',
+            'slug',
+            'custom_excerpt',
+            'meta_title',
+            'meta_description',
+            'twitter_title',
+            'twitter_description',
+            'og_title',
+            'og_description',
+            'feature_image',
+            'codeinjection_head',
+            'codeinjection_foot',
+        ],
+        desc: 'Where to perform the find & replace (comma separated, eg: mobiledoc,title,meta_title)',
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Filter by tag (slug, comma separated for multiple, eg: world-news,weather-reports)'
+        desc: 'Filter by tag (slug, comma separated for multiple, eg: world-news,weather-reports)',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     // Validate --replace: if the flag is present but has no argument,
     // sywac may coerce it to a non-string value (e.g. boolean true).
     if (argv.replace !== null && typeof argv.replace !== 'string') {
-        ui.log.error(`--replace requires an argument. Provide '' to replace text with an empty string.`);
+        ui.log.error(
+            `--replace requires an argument. Provide '' to replace text with an empty string.`,
+        );
         return;
     }
 
     if (argv.where.includes('all')) {
-        argv.where = ['mobiledoc', 'html', 'lexical', 'title', 'slug', 'custom_excerpt', 'meta_title', 'meta_description', 'twitter_title', 'twitter_description', 'og_title', 'og_description', 'feature_image', 'codeinjection_head', 'codeinjection_foot'];
+        argv.where = [
+            'mobiledoc',
+            'html',
+            'lexical',
+            'title',
+            'slug',
+            'custom_excerpt',
+            'meta_title',
+            'meta_description',
+            'twitter_title',
+            'twitter_description',
+            'og_title',
+            'og_description',
+            'feature_image',
+            'codeinjection_head',
+            'codeinjection_foot',
+        ];
     }
 
     try {
@@ -75,7 +107,9 @@ const run = async (argv) => {
 
     if (argv.replace !== null) {
         // Report success for replace mode
-        ui.log.ok(`Successfully updated ${context.updated.length} strings in ${Date.now() - timer}ms.`);
+        ui.log.ok(
+            `Successfully updated ${context.updated.length} strings in ${Date.now() - timer}ms.`,
+        );
     }
 };
 
@@ -86,5 +120,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

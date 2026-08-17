@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import addMemberNewsletterSubscription from '../tasks/add-member-newsletter-subscription.js';
 
 // Internal ID in case we need one.
@@ -13,32 +13,28 @@ const flags = 'add-member-newsletter-subscription <apiURL> <adminAPIKey> <newsle
 const desc = 'Add member newsletter subscription';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key',
-    'Newsletter ID to be subscribed to'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key', 'Newsletter ID to be subscribed to'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.array('--onlyForLabelSlugs', {
         defaultValue: null,
-        desc: 'Optional label to filter members'
+        desc: 'Optional label to filter members',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 100,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -51,7 +47,9 @@ const run = async (argv) => {
     }
 
     // Report success
-    ui.log.ok(`Successfully added ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`);
+    ui.log.ok(
+        `Successfully added ${context.updated.length} subscriptions in ${Date.now() - timer}ms.`,
+    );
 };
 
 export default {
@@ -61,5 +59,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

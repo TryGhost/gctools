@@ -1,12 +1,12 @@
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import fsUtils from '@tryghost/mg-fs-utils';
 import fs from 'fs-extra';
 import axios from 'axios';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
-import {apiAuthTokenHeaders, getMemberLabels} from '../lib/admin-api-call.js';
-import {sleep} from '../lib/utils.js';
+import { discover } from '../lib/batch-ghost-discover.js';
+import { apiAuthTokenHeaders, getMemberLabels } from '../lib/admin-api-call.js';
+import { sleep } from '../lib/utils.js';
 
 // Accepts either a plain NQL filter (e.g. `status:free`) or a full Ghost Admin
 // URL pasted straight from the members screen, e.g.
@@ -48,8 +48,8 @@ const mapMemberToRow = (member) => {
         stripe_customer_id: member.subscriptions?.[0]?.customer?.id || '',
         created_at: member.created_at,
         deleted_at: '',
-        labels: member.labels ? member.labels.map(label => label.name).join(', ') : '',
-        tiers: member.tiers ? member.tiers.map(tier => tier.name).join(', ') : ''
+        labels: member.labels ? member.labels.map((label) => label.name).join(', ') : '',
+        tiers: member.tiers ? member.tiers.map((tier) => tier.name).join(', ') : '',
     };
 };
 
@@ -72,7 +72,7 @@ const loadMembers = (options) => {
             const api = new GhostAdminAPI({
                 url: options.apiURL.replace('localhost', '127.0.0.1'),
                 key: options.adminAPIKey,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             const filter = parseFilter(options.filter);
@@ -85,14 +85,14 @@ const loadMembers = (options) => {
                 include: 'newsletters,tiers',
                 // Show a progress bar while downloading, but only in verbose mode —
                 // otherwise it fights the listr spinner for the same line
-                progress: options.verbose
+                progress: options.verbose,
             });
 
             ctx.members = members.map(mapMemberToRow);
             ctx.source = 'Ghost Admin API';
             ctx.filter = filter;
             task.output = `Fetched ${ctx.members.length} members${filter ? ` matching "${filter}"` : ''}`;
-        }
+        },
     };
 };
 
@@ -106,7 +106,7 @@ const sortAndSplit = () => {
             ctx.membersB = ctx.members.filter((member, i) => i % 2 === 1);
 
             task.output = `Split ${ctx.members.length} members into A (${ctx.membersA.length}) and B (${ctx.membersB.length})`;
-        }
+        },
     };
 };
 
@@ -127,10 +127,10 @@ const writeCSVFiles = (options) => {
             await fs.writeFile(aPath, fsUtils.csv.jsonToCSV(ctx.membersA));
             await fs.writeFile(bPath, fsUtils.csv.jsonToCSV(ctx.membersB));
 
-            ctx.outputFiles = {all: allPath, a: aPath, b: bPath};
+            ctx.outputFiles = { all: allPath, a: aPath, b: bPath };
 
             task.output = `Wrote ${allPath}, ${aPath}, ${bPath}`;
-        }
+        },
     };
 };
 
@@ -143,7 +143,7 @@ const resolveLabels = (options) => {
             ctx.errors = ctx.errors || [];
 
             const apiURL = options.apiURL.replace('localhost', '127.0.0.1');
-            const labelOptions = {...options, apiURL};
+            const labelOptions = { ...options, apiURL };
             const headers = apiAuthTokenHeaders(labelOptions);
 
             // Fetch the existing labels once and resolve both groups against it
@@ -155,16 +155,20 @@ const resolveLabels = (options) => {
                     return labelValue;
                 }
 
-                const found = existingLabels.find(label => label.name === labelValue);
+                const found = existingLabels.find((label) => label.name === labelValue);
                 if (found) {
                     return found.id;
                 }
 
-                const response = await axios.post(`${apiURL}/ghost/api/admin/labels/`, {
-                    labels: [{name: labelValue}]
-                }, {
-                    headers: {...headers, 'content-type': 'application/json'}
-                });
+                const response = await axios.post(
+                    `${apiURL}/ghost/api/admin/labels/`,
+                    {
+                        labels: [{ name: labelValue }],
+                    },
+                    {
+                        headers: { ...headers, 'content-type': 'application/json' },
+                    },
+                );
                 const created = response.data.labels[0];
                 existingLabels.push(created); // in case both groups share a label
                 return created.id;
@@ -174,7 +178,7 @@ const resolveLabels = (options) => {
             ctx.labelBId = await resolve(options.labelB);
 
             task.output = `A: "${options.labelA}" → ${ctx.labelAId} · B: "${options.labelB}" → ${ctx.labelBId}`;
-        }
+        },
     };
 };
 
@@ -201,17 +205,29 @@ const addLabelsToGroups = (options) => {
                 lastRequestAt = Date.now();
             };
 
-            ctx.labelled = {a: 0, b: 0};
+            ctx.labelled = { a: 0, b: 0 };
 
             let groups = [
-                {key: 'a', name: 'A', members: ctx.membersA, labelId: ctx.labelAId, labelName: options.labelA},
-                {key: 'b', name: 'B', members: ctx.membersB, labelId: ctx.labelBId, labelName: options.labelB}
+                {
+                    key: 'a',
+                    name: 'A',
+                    members: ctx.membersA,
+                    labelId: ctx.labelAId,
+                    labelName: options.labelA,
+                },
+                {
+                    key: 'b',
+                    name: 'B',
+                    members: ctx.membersB,
+                    labelId: ctx.labelBId,
+                    labelName: options.labelB,
+                },
             ];
 
             let tasks = [];
 
             for (const group of groups) {
-                const ids = group.members.map(member => member.id).filter(Boolean);
+                const ids = group.members.map((member) => member.id).filter(Boolean);
                 let batches = _.chunk(ids, chunkSize);
 
                 batches.forEach((batch, i) => {
@@ -221,31 +237,37 @@ const addLabelsToGroups = (options) => {
                             await throttle();
 
                             const headers = apiAuthTokenHeaders(options);
-                            const filter = `id:[${batch.map(id => `'${id}'`).join(',')}]`;
+                            const filter = `id:[${batch.map((id) => `'${id}'`).join(',')}]`;
                             const url = `${apiURL}/ghost/api/admin/members/bulk/?filter=${encodeURIComponent(filter)}`;
 
                             try {
-                                const response = await axios.put(url, {
-                                    bulk: {
-                                        action: 'addLabel',
-                                        meta: {
-                                            label: {
-                                                id: group.labelId
-                                            }
-                                        }
-                                    }
-                                }, {
-                                    headers: {...headers, 'content-type': 'application/json'}
-                                });
+                                const response = await axios.put(
+                                    url,
+                                    {
+                                        bulk: {
+                                            action: 'addLabel',
+                                            meta: {
+                                                label: {
+                                                    id: group.labelId,
+                                                },
+                                            },
+                                        },
+                                    },
+                                    {
+                                        headers: { ...headers, 'content-type': 'application/json' },
+                                    },
+                                );
 
-                                const successful = response.data?.bulk?.meta?.stats?.successful ?? batch.length;
+                                const successful =
+                                    response.data?.bulk?.meta?.stats?.successful ?? batch.length;
                                 ctx.labelled[group.key] += successful;
                             } catch (error) {
-                                const message = error.response?.data?.errors?.[0]?.message || error.message;
+                                const message =
+                                    error.response?.data?.errors?.[0]?.message || error.message;
                                 ctx.errors.push(`Group ${group.name} batch ${i + 1}: ${message}`);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
             }
@@ -255,17 +277,13 @@ const addLabelsToGroups = (options) => {
                 return;
             }
 
-            return makeTaskRunner(tasks, {concurrent: 1});
-        }
+            return makeTaskRunner(tasks, { concurrent: 1 });
+        },
     };
 };
 
 const getFullTaskList = (options) => {
-    const tasks = [
-        loadMembers(options),
-        sortAndSplit(),
-        writeCSVFiles(options)
-    ];
+    const tasks = [loadMembers(options), sortAndSplit(), writeCSVFiles(options)];
 
     // Optional, off by default: tag each split group with its own label
     if (options.addLabels) {
@@ -278,7 +296,7 @@ const getFullTaskList = (options) => {
 
 const getTaskRunner = (options) => {
     let tasks = getFullTaskList(options);
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
@@ -288,5 +306,5 @@ export default {
     resolveLabels,
     addLabelsToGroups,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

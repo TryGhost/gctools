@@ -1,9 +1,9 @@
 import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import errors from '@tryghost/errors';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -11,7 +11,7 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -19,7 +19,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -28,7 +28,7 @@ const initialise = (options) => {
             ctx.updated = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -41,27 +41,31 @@ const getFullTaskList = (options) => {
                 try {
                     ctx.tags = await discover({
                         api: ctx.api,
-                        type: 'tags'
+                        type: 'tags',
                     });
                     task.output = `Found ${ctx.tags.length} tags`;
                 } catch (error) {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Fetch posts with Tag B',
             task: async (ctx, task) => {
                 // Resolve tagA and tagB - they could be slug strings (CLI) or objects (interactive)
-                const tagASlug = typeof ctx.args.tagA === 'string' ? ctx.args.tagA : ctx.args.tagA.slug;
-                const tagBSlug = typeof ctx.args.tagB === 'string' ? ctx.args.tagB : ctx.args.tagB.slug;
+                const tagASlug =
+                    typeof ctx.args.tagA === 'string' ? ctx.args.tagA : ctx.args.tagA.slug;
+                const tagBSlug =
+                    typeof ctx.args.tagB === 'string' ? ctx.args.tagB : ctx.args.tagB.slug;
 
-                ctx.tagAObject = _.find(ctx.tags, {slug: tagASlug});
+                ctx.tagAObject = _.find(ctx.tags, { slug: tagASlug });
                 ctx.tagBSlug = tagBSlug;
 
                 if (!ctx.tagAObject) {
-                    throw new errors.NotFoundError({message: `Tag with slug '${tagASlug}' not found`});
+                    throw new errors.NotFoundError({
+                        message: `Tag with slug '${tagASlug}' not found`,
+                    });
                 }
 
                 let postDiscoveryOptions = {
@@ -70,7 +74,7 @@ const getFullTaskList = (options) => {
                     limit: 100,
                     include: 'tags',
                     fields: 'id,title,slug,visibility,updated_at',
-                    filter: `tags:[${tagBSlug}]`
+                    filter: `tags:[${tagBSlug}]`,
                 };
 
                 try {
@@ -80,7 +84,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Merging tags on posts',
@@ -96,7 +100,10 @@ const getFullTaskList = (options) => {
                         task: async () => {
                             try {
                                 // Re-read post for latest updated_at and current tags
-                                let currentPost = await ctx.api.posts.read({id: post.id, include: 'tags'});
+                                let currentPost = await ctx.api.posts.read({
+                                    id: post.id,
+                                    include: 'tags',
+                                });
 
                                 let updatedTags = [...currentPost.tags];
                                 const tagBIndex = updatedTags.findIndex((t) => {
@@ -119,27 +126,27 @@ const getFullTaskList = (options) => {
                                 let result = await ctx.api.posts.edit({
                                     id: post.id,
                                     updated_at: currentPost.updated_at,
-                                    tags: updatedTags
+                                    tags: updatedTags,
                                 });
 
                                 ctx.updated.push(result.url);
                                 return Promise.delay(options.delayBetweenCalls).return(result);
                             } catch (error) {
                                 error.resource = {
-                                    title: post.title
+                                    title: post.title,
                                 };
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = options;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -148,11 +155,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

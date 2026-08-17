@@ -2,14 +2,14 @@ import inquirer from 'inquirer';
 import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import findReplace from '../tasks/find-replace.js';
-import {getAPITagsObj} from '../lib/ghost-api-choices.js';
+import { getAPITagsObj } from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Find & Replace',
-    value: 'findReplace'
+    value: 'findReplace',
 };
 
 const options = [
@@ -21,17 +21,17 @@ const options = [
         pageSize: 20,
         choices: function () {
             return getAPITagsObj();
-        }
+        },
     },
     {
         type: 'input',
         name: 'find',
-        message: 'Find:'
+        message: 'Find:',
     },
     {
         type: 'input',
         name: 'replace',
-        message: 'Replace with:'
+        message: 'Replace with:',
     },
     {
         type: 'checkbox',
@@ -42,66 +42,66 @@ const options = [
             {
                 name: 'Mobiledoc',
                 value: 'mobiledoc',
-                checked: true
+                checked: true,
             },
             {
                 name: 'HTML',
-                value: 'html'
+                value: 'html',
             },
             {
                 name: 'Lexical',
-                value: 'lexical'
+                value: 'lexical',
             },
             {
                 name: 'Title',
-                value: 'title'
+                value: 'title',
             },
             {
                 name: 'Slug',
-                value: 'slug'
+                value: 'slug',
             },
             {
                 name: 'Custom Excerpt',
-                value: 'custom_excerpt'
+                value: 'custom_excerpt',
             },
             {
                 name: 'Meta Title',
-                value: 'meta_title'
+                value: 'meta_title',
             },
             {
                 name: 'Meta Description',
-                value: 'meta_description'
+                value: 'meta_description',
             },
             {
                 name: 'Twitter Title',
-                value: 'twitter_title'
+                value: 'twitter_title',
             },
             {
                 name: 'Twitter Description',
-                value: 'twitter_description'
+                value: 'twitter_description',
             },
             {
                 name: 'Open Graph Title',
-                value: 'og_title'
+                value: 'og_title',
             },
             {
                 name: 'Open Graph Description',
-                value: 'og_description'
+                value: 'og_description',
             },
             {
                 name: 'Feature Image',
-                value: 'feature_image'
+                value: 'feature_image',
             },
             {
                 name: 'Codeinjection Head',
-                value: 'codeinjection_head'
+                value: 'codeinjection_head',
             },
             {
                 name: 'Codeinjection Foot',
-                value: 'codeinjection_foot'
-            }
-        ]
-    }
+                value: 'codeinjection_foot',
+            },
+        ],
+    },
 ];
 
 async function run() {
@@ -109,12 +109,14 @@ async function run() {
 
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = findReplace.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -124,5 +126,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

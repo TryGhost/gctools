@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import changeTags from '../tasks/change-tags.js';
 
 // Internal ID in case we need one.
@@ -13,32 +13,28 @@ const flags = 'change-tags <apiURL> <adminAPIKey> <csvFile>';
 const desc = 'Combine tags in Ghost';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key',
-    'Path to CSV file'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key', 'Path to CSV file'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.boolean('--addAsPrimaryTag', {
         defaultValue: false,
-        desc: 'If enabled, newly added tags will be the primary tag. If not, they will be added last in the list'
+        desc: 'If enabled, newly added tags will be the primary tag. If not, they will be added last in the list',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -61,5 +57,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

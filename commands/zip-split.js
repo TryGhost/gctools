@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import zipSplit from '../tasks/zip-split.js';
 
 // Internal ID in case we need one.
@@ -19,18 +19,18 @@ const paramsDesc = ['Path to the large zip file'];
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.number('-M, --maxSize', {
         defaultValue: 100,
-        desc: 'Max zip size, in MB'
+        desc: 'Max zip size, in MB',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -58,5 +58,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

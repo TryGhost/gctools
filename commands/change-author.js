@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import changeAuthor from '../tasks/change-author.js';
 
 // Internal ID in case we need one.
@@ -13,39 +13,36 @@ const flags = 'change-author <apiURL> <adminAPIKey>';
 const desc = 'Change the author of posts';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Current author slug'
+        desc: 'Current author slug',
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Select posts with these tag slugs, inside single quotes. i.e. \'existing-tag, newsletter\''
+        desc: "Select posts with these tag slugs, inside single quotes. i.e. 'existing-tag, newsletter'",
     });
     sywac.string('--new_author', {
         defaultValue: null,
-        desc: 'New author slug'
+        desc: 'New author slug',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -68,5 +65,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

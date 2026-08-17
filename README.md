@@ -1368,10 +1368,11 @@ The tool first tries the site-wide Admin API comments endpoint (available on new
 
 ## Tests
 
-* `pnpm test` to run all tests and linting
-* `pnpm test:only` to only run tests
+* `pnpm test` to run all tests
 * `pnpm test:file ./test/my-file.test.js` to only run a specific file
-* `pnpm lint` to run linting
+* `pnpm lint` to check linting and formatting
+* `pnpm lint:fix` to fix what can be fixed automatically
+* `pnpm format` to format the code
 
 # Copyright & License
 

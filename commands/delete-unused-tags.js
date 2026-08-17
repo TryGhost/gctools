@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import deleteEmptyTags from '../tasks/delete-unused-tags.js';
 
 // Internal ID in case we need one.
@@ -13,31 +13,28 @@ const flags = 'delete-empty-tags <apiURL> <adminAPIKey>';
 const desc = 'Delete tags in Ghost with no associated posts';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.number('--maxPostCount', {
         defaultValue: 0,
-        desc: 'Maximum number of associated posts a tag can have for it to be deleted (i.e. `2` will select tags with 2 or less associated posts)'
+        desc: 'Maximum number of associated posts a tag can have for it to be deleted (i.e. `2` will select tags with 2 or less associated posts)',
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -60,5 +57,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

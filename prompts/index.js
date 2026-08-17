@@ -1,5 +1,3 @@
-/* eslint-disable max-lines */
-
 import zipSplit from './zip-split.js';
 import zipCreate from './zip-create.js';
 import jsonSplit from './json-split.js';
@@ -81,5 +79,5 @@ export default {
     inlineMedia,
     updatePostsFromJson,
     seedDemo,
-    keepTags
+    keepTags,
 };

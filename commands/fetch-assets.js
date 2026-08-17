@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import fetchImages from '../tasks/fetch-assets.js';
 
 // Internal ID in case we need one.
@@ -19,26 +19,26 @@ const paramsDesc = ['Path to the Ghost JSON file'];
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.string('--url', {
         defaultValue: null,
-        desc: 'Provide a base URL (without trailing slash) to resolve relative asset URLs'
+        desc: 'Provide a base URL (without trailing slash) to resolve relative asset URLs',
     });
     sywac.number('--sizeLimit', {
         defaultValue: false,
-        desc: 'Assets larger than this size (defined in MB) will be ignored'
+        desc: 'Assets larger than this size (defined in MB) will be ignored',
     });
     sywac.boolean('--zip', {
         defaultValue: true,
-        desc: 'Create a zip file (set to false to skip)'
+        desc: 'Create a zip file (set to false to skip)',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Fetch the tasks, configured correctly according to the options passed in
@@ -55,7 +55,9 @@ const run = async (argv) => {
     }
 
     if (argv.zip) {
-        ui.log.ok(`Zip file (${(context.outputFile.size / (1000 * 1000)).toFixed(2)}MB) saved at: ${context.outputFile.path}`);
+        ui.log.ok(
+            `Zip file (${(context.outputFile.size / (1000 * 1000)).toFixed(2)}MB) saved at: ${context.outputFile.path}`,
+        );
     }
 
     // Report success
@@ -69,5 +71,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

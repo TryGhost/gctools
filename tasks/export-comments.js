@@ -1,12 +1,12 @@
-import {writeFileSync} from 'node:fs';
-import {join, dirname} from 'node:path';
-import {fileURLToPath} from 'node:url';
+import { writeFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {getComments, getPublicCommentsForPost, getMembersByIds} from '../lib/admin-api-call.js';
-import {discover} from '../lib/batch-ghost-discover.js';
-import {jsonToCSV} from '../lib/utils.js';
+import { getComments, getPublicCommentsForPost, getMembersByIds } from '../lib/admin-api-call.js';
+import { discover } from '../lib/batch-ghost-discover.js';
+import { jsonToCSV } from '../lib/utils.js';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -22,7 +22,7 @@ const flattenComments = (comments, post) => {
     let flat = [];
 
     for (const comment of comments) {
-        const {replies, ...rest} = comment;
+        const { replies, ...rest } = comment;
         rest._post = post;
         flat.push(rest);
 
@@ -45,7 +45,7 @@ const initialise = (options) => {
             let defaults = {
                 verbose: false,
                 status: 'published',
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -53,7 +53,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -63,7 +63,7 @@ const initialise = (options) => {
             ctx.found = [];
 
             task.output = `Initialised for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -75,7 +75,7 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 let fetchOptions = {
                     apiURL: ctx.args.apiURL,
-                    adminAPIKey: ctx.args.adminAPIKey
+                    adminAPIKey: ctx.args.adminAPIKey,
                 };
 
                 if (ctx.args.status && ctx.args.status !== 'all') {
@@ -97,7 +97,7 @@ const getFullTaskList = (options) => {
                     type: 'posts',
                     limit: 100,
                     fields: 'id,title,slug,url',
-                    progress: ctx.args.verbose
+                    progress: ctx.args.verbose,
                 });
 
                 task.output = `Found ${posts.length} posts, fetching comments for each...`;
@@ -117,16 +117,12 @@ const getFullTaskList = (options) => {
 
                 // The public Members API doesn't include member emails,
                 // so look them up via the Admin API
-                let memberIds = [...new Set(
-                    allComments
-                        .map(c => c.member?.id)
-                        .filter(Boolean)
-                )];
+                let memberIds = [...new Set(allComments.map((c) => c.member?.id).filter(Boolean))];
 
                 if (memberIds.length > 0) {
                     task.output = `Fetching email addresses for ${memberIds.length} members...`;
                     let members = await getMembersByIds(fetchOptions, memberIds);
-                    let emailMap = new Map(members.map(m => [m.id, m.email]));
+                    let emailMap = new Map(members.map((m) => [m.id, m.email]));
 
                     for (const comment of allComments) {
                         if (comment.member?.id && emailMap.has(comment.member.id)) {
@@ -137,7 +133,7 @@ const getFullTaskList = (options) => {
 
                 ctx.comments = allComments;
                 task.output = `Found ${ctx.comments.length} comments across ${posts.length} posts`;
-            }
+            },
         },
         {
             title: 'Saving as CSV file',
@@ -163,7 +159,7 @@ const getFullTaskList = (options) => {
                         post_id: post.id || comment.post_id || '',
                         post_title: post.title || '',
                         post_slug: postSlug,
-                        post_url: postUrl
+                        post_url: postUrl,
                     };
                 });
 
@@ -175,18 +171,18 @@ const getFullTaskList = (options) => {
                 ctx.found = csvData;
 
                 task.output = `Exported ${csvData.length} comments to ${fileName}`;
-            }
-        }
+            },
+        },
     ];
 };
 
 const getTaskRunner = (options) => {
     let tasks = getFullTaskList(options);
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

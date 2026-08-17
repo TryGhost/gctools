@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import deletePosts from '../tasks/add-tags.js';
 
 // Internal ID in case we need one.
@@ -13,63 +13,60 @@ const flags = 'add-tags <apiURL> <adminAPIKey>';
 const desc = 'Add tags to posts and pages in Ghost';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.enumeration('--status', {
         defaultValue: 'all',
         choices: ['all', 'draft', 'published'],
-        desc: 'Post visibility'
+        desc: 'Post visibility',
     });
     sywac.array('--type', {
         defaultValue: 'all',
         choices: ['all', 'posts', 'pages'],
-        desc: 'Content type'
+        desc: 'Content type',
     });
     sywac.enumeration('--visibility', {
         defaultValue: 'all',
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Select posts with this visibility setting'
+        desc: 'Select posts with this visibility setting',
     });
     sywac.string('--tag', {
         defaultValue: null,
-        desc: 'Select posts with these tag slugs, inside single quotes. i.e. \'existing-tag, newsletter\''
+        desc: "Select posts with these tag slugs, inside single quotes. i.e. 'existing-tag, newsletter'",
     });
     sywac.string('--author', {
         defaultValue: null,
-        desc: 'Select posts with these author slugs, inside single quotes. i.e. \'example-author\''
+        desc: "Select posts with these author slugs, inside single quotes. i.e. 'example-author'",
     });
     sywac.string('--customFilter', {
         defaultValue: null,
-        desc: 'Custom Ghost filter query'
+        desc: 'Custom Ghost filter query',
     });
     sywac.string('--new_tags', {
-        desc: 'Comma separated list of tag names to add (not slugs), inside single quotes. i.e. \'New Tag, Podcast\''
+        desc: "Comma separated list of tag names to add (not slugs), inside single quotes. i.e. 'New Tag, Podcast'",
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     if (argv.author) {
         argv.author = argv.author.split(',').map((item) => {
             // This needs to be improved. The task is expecting an array of objects that each contain a `slug` value
             return {
-                slug: item.trim()
+                slug: item.trim(),
             };
         });
     }
@@ -101,5 +98,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

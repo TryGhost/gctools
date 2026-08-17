@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import compareMemberCsv from '../tasks/compare-member-csv.js';
 
 const id = 'compare-member-csv';
@@ -7,19 +7,19 @@ const flags = 'compare-member-csv <oldFile> <newFile>';
 const desc = 'Compare two member CSV files and export differences';
 const paramsDesc = [
     'Path to the old/existing members CSV file',
-    'Path to the new members CSV file'
+    'Path to the new members CSV file',
 ];
 
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
 };
 
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     try {
         // Validate that both file paths are provided
@@ -31,7 +31,7 @@ const run = async (argv) => {
         let runner = compareMemberCsv.getTaskRunner({
             oldFile: argv.oldFile,
             newFile: argv.newFile,
-            verbose: argv.verbose
+            verbose: argv.verbose,
         });
 
         await runner.run(context);
@@ -40,7 +40,9 @@ const run = async (argv) => {
         ui.log.info('Summary:');
         ui.log.info(`- New members found: ${context.newMembersList.length}`);
         ui.log.info(`- Unsubscribed members found: ${context.unsubscribedList.length}`);
-        ui.log.info(`- Updated members found: ${context.updatedList ? context.updatedList.length : 0}`);
+        ui.log.info(
+            `- Updated members found: ${context.updatedList ? context.updatedList.length : 0}`,
+        );
 
         if (context.newMembersFile) {
             ui.log.ok(`New members exported to: ${context.newMembersFile}`);
@@ -68,5 +70,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

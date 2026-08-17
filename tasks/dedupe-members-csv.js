@@ -1,13 +1,13 @@
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {join, dirname} from 'node:path';
+import { join, dirname } from 'node:path';
 import fs from 'fs-extra';
 import fsUtils from '@tryghost/mg-fs-utils';
 
 const determineIfUpdated = (ctx) => {
     ctx.newCombined.forEach((member) => {
         let foundExistingMember = _.find(ctx.existingMembers, {
-            email: member.email
+            email: member.email,
         });
 
         if (foundExistingMember) {
@@ -33,17 +33,17 @@ const determineIfUpdated = (ctx) => {
 const splitByStatus = (ctx) => {
     ctx.combinedNewMembers.forEach((member) => {
         if (member.complimentary_plan === 'false' && member.stripe_customer_id === '') {
-        // if (member.complimentary_plan === false && member.stripe_customer_id === '') {
+            // if (member.complimentary_plan === false && member.stripe_customer_id === '') {
             ctx.newFreeMembers.push(member);
         } else if (member.complimentary_plan === 'true') {
-        // } else if (member.complimentary_plan === true) {
+            // } else if (member.complimentary_plan === true) {
             ctx.newCompMembers.push(member);
         } else if (member.stripe_customer_id !== '') {
             ctx.newPaidMembers.push(member);
         } else {
             ctx.errors.push({
                 title: 'Unhandled member',
-                member: member
+                member: member,
             });
             throw 'Unhandled member';
         }
@@ -73,7 +73,7 @@ const initialise = (options) => {
             ctx.newPaidMembers = [];
 
             task.output = `Initialised`;
-        }
+        },
     };
 };
 
@@ -86,7 +86,7 @@ const getFullTaskList = (options) => {
                 ctx = this.determineIfUpdated(ctx);
 
                 task.output = `Found ${ctx.combinedNewMembers.length} new members`;
-            }
+            },
         },
         {
             title: 'Create separate free, comp, & paid objects',
@@ -94,7 +94,7 @@ const getFullTaskList = (options) => {
                 ctx = this.splitByStatus(ctx);
 
                 task.output = `Free: ${ctx.newFreeMembers.length}, Comp: ${ctx.newCompMembers.length}, Paid: ${ctx.newPaidMembers.length}`;
-            }
+            },
         },
         {
             title: 'Write new CSVs',
@@ -103,18 +103,18 @@ const getFullTaskList = (options) => {
                     {
                         name: 'Free members',
                         fileName: 'deduped-free-members.csv',
-                        data: fsUtils.csv.jsonToCSV(ctx.newFreeMembers)
+                        data: fsUtils.csv.jsonToCSV(ctx.newFreeMembers),
                     },
                     {
                         name: 'Comp members',
                         fileName: 'deduped-comp-members.csv',
-                        data: fsUtils.csv.jsonToCSV(ctx.newCompMembers)
+                        data: fsUtils.csv.jsonToCSV(ctx.newCompMembers),
                     },
                     {
                         name: 'Paid members',
                         fileName: 'deduped-paid-members.csv',
-                        data: fsUtils.csv.jsonToCSV(ctx.newPaidMembers)
-                    }
+                        data: fsUtils.csv.jsonToCSV(ctx.newPaidMembers),
+                    },
                 ];
 
                 let tasks = [];
@@ -130,15 +130,15 @@ const getFullTaskList = (options) => {
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = options;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -147,7 +147,7 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
@@ -155,5 +155,5 @@ export default {
     splitByStatus,
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

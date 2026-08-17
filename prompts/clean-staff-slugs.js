@@ -1,11 +1,11 @@
 import inquirer from 'inquirer';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import cleanStaffSlugs from '../tasks/clean-staff-slugs.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Clean staff user slugs with Ghost ID suffixes',
-    value: 'cleanStaffSlugs'
+    value: 'cleanStaffSlugs',
 };
 
 const options = [
@@ -17,27 +17,27 @@ const options = [
         choices: [
             {
                 name: 'Preview changes only',
-                value: true
+                value: true,
             },
             {
                 name: 'Update safe staff slugs',
-                value: false
-            }
+                value: false,
+            },
         ],
-        default: true
+        default: true,
     },
     {
         type: 'number',
         name: 'delayBetweenCalls',
         message: 'The delay between API calls, in ms:',
-        default: 50
-    }
+        default: 50,
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = cleanStaffSlugs.getTaskRunner(answers);
@@ -50,11 +50,17 @@ async function run() {
             const skippedText = skippedCount > 0 ? `, skipped ${skippedCount}` : '';
 
             if (answers.dryRun) {
-                ui.log.ok(`Dry run complete: ${updateableCount} of ${candidateCount} candidate staff slugs would be updated${skippedText} in ${Date.now() - timer}ms.`);
+                ui.log.ok(
+                    `Dry run complete: ${updateableCount} of ${candidateCount} candidate staff slugs would be updated${skippedText} in ${Date.now() - timer}ms.`,
+                );
             } else if (updatedCount > 0) {
-                ui.log.ok(`Successfully updated ${updatedCount} staff slug${updatedCount === 1 ? '' : 's'}${skippedText} in ${Date.now() - timer}ms.`);
+                ui.log.ok(
+                    `Successfully updated ${updatedCount} staff slug${updatedCount === 1 ? '' : 's'}${skippedText} in ${Date.now() - timer}ms.`,
+                );
             } else if (candidateCount > 0) {
-                ui.log.ok(`No staff slugs were updated; ${skippedCount} candidate${skippedCount === 1 ? '' : 's'} would not be unique in ${Date.now() - timer}ms.`);
+                ui.log.ok(
+                    `No staff slugs were updated; ${skippedCount} candidate${skippedCount === 1 ? '' : 's'} would not be unique in ${Date.now() - timer}ms.`,
+                );
             } else {
                 ui.log.ok(`No staff slugs needed cleaning in ${Date.now() - timer}ms.`);
             }
@@ -67,5 +73,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

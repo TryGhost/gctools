@@ -1,7 +1,13 @@
-import {describe, test} from 'node:test';
+import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import {createRequire} from 'node:module';
-import {transformToCommaString, maybeStringToArray, maybeArrayToString, SlugFromStringArrayOrObject, maybeObjectToArray} from '../lib/utils.js';
+import { createRequire } from 'node:module';
+import {
+    transformToCommaString,
+    maybeStringToArray,
+    maybeArrayToString,
+    SlugFromStringArrayOrObject,
+    maybeObjectToArray,
+} from '../lib/utils.js';
 
 const require = createRequire(import.meta.url);
 const tagsObject = require('./fixtures/tags.json');
@@ -19,7 +25,10 @@ describe('Utils (transformToCommaString)', function () {
 
     test('can extract `url` values from object', function () {
         let tagURLs = transformToCommaString(tagsObject, 'url');
-        assert.deepStrictEqual(tagURLs, 'http://localhost:2368/tag/lorem-ipsum/,http://localhost:2368/tag/dolor-simet/');
+        assert.deepStrictEqual(
+            tagURLs,
+            'http://localhost:2368/tag/lorem-ipsum/,http://localhost:2368/tag/dolor-simet/',
+        );
     });
 
     test('will not transform a string', function () {

@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import commentNotifications from '../tasks/comment-notifications.js';
 
 // Internal ID in case we need one.
@@ -18,39 +18,41 @@ export const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
 
     sywac.enumeration('--value', {
         defaultValue: null,
         choices: ['true', 'false'],
-        desc: 'Enable (true) or disable (false) comment notifications'
+        desc: 'Enable (true) or disable (false) comment notifications',
     });
 
     sywac.number('--delayBetweenCalls', {
         defaultValue: 1000,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 
     sywac.string('--backup', {
         defaultValue: null,
-        desc: 'Path to save backup CSV before making changes'
+        desc: 'Path to save backup CSV before making changes',
     });
 
     sywac.string('--restore', {
         defaultValue: null,
-        desc: 'Path to CSV file to restore settings from'
+        desc: 'Path to CSV file to restore settings from',
     });
 };
 
 // What to do when this command is executed
 export const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     // Validate that at least one action is specified
     if (!argv.backup && !argv.restore && argv.value === null) {
-        ui.log.error('No action specified. Please provide at least one of: --backup, --restore, or --value');
+        ui.log.error(
+            'No action specified. Please provide at least one of: --backup, --restore, or --value',
+        );
         ui.log.info('See the README for usage examples, or run with --help for available options.');
         return;
     }
@@ -69,7 +71,7 @@ export const run = async (argv) => {
         ...argv,
         value,
         backupPath: argv.backup,
-        restorePath: argv.restore
+        restorePath: argv.restore,
     };
 
     if (argv.verbose) {
@@ -125,5 +127,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

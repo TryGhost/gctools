@@ -1,5 +1,5 @@
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import Table from 'tty-table';
 
 const initialise = (options) => {
@@ -11,61 +11,61 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.api = api;
 
             ctx.stats = {
                 posts: {
-                    count: null
+                    count: null,
                 },
                 posts_drafts: {
-                    count: null
+                    count: null,
                 },
                 posts_sent: {
-                    count: null
+                    count: null,
                 },
                 posts_published: {
-                    count: null
+                    count: null,
                 },
                 public_posts: {
-                    count: null
+                    count: null,
                 },
                 members_posts: {
-                    count: null
+                    count: null,
                 },
                 paid_posts: {
-                    count: null
+                    count: null,
                 },
                 tiers_posts: {
-                    count: null
+                    count: null,
                 },
                 pages: {
-                    count: null
+                    count: null,
                 },
                 tags: {
-                    count: null
+                    count: null,
                 },
                 users: {
                     count: null,
-                    roles: []
+                    roles: [],
                 },
                 members: {
-                    count: null
+                    count: null,
                 },
-                emptyAuthors: []
+                emptyAuthors: [],
             };
 
             ctx.tables = {
                 stats: null,
                 users: null,
                 staffPosts: null,
-                emptyAuthors: null
+                emptyAuthors: null,
             };
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -75,72 +75,87 @@ const getFullTaskList = (options) => {
         {
             title: 'Counting posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 100});
+                const postsData = await ctx.api.posts.browse({ limit: 100 });
                 ctx.stats.posts.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting public posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:public'});
+                const postsData = await ctx.api.posts.browse({
+                    limit: 1,
+                    filter: 'visibility:public',
+                });
                 ctx.stats.public_posts.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting sent posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:sent'});
+                const postsData = await ctx.api.posts.browse({ limit: 1, filter: 'status:sent' });
                 ctx.stats.posts_sent.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting draft posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:draft'});
+                const postsData = await ctx.api.posts.browse({ limit: 1, filter: 'status:draft' });
                 ctx.stats.posts_drafts.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting published posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'status:published'});
+                const postsData = await ctx.api.posts.browse({
+                    limit: 1,
+                    filter: 'status:published',
+                });
                 ctx.stats.posts_published.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting member posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:members'});
+                const postsData = await ctx.api.posts.browse({
+                    limit: 1,
+                    filter: 'visibility:members',
+                });
                 ctx.stats.members_posts.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting paid posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:paid'});
+                const postsData = await ctx.api.posts.browse({
+                    limit: 1,
+                    filter: 'visibility:paid',
+                });
                 ctx.stats.paid_posts.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting tiers posts',
             task: async (ctx) => {
-                const postsData = await ctx.api.posts.browse({limit: 1, filter: 'visibility:tiers'});
+                const postsData = await ctx.api.posts.browse({
+                    limit: 1,
+                    filter: 'visibility:tiers',
+                });
                 ctx.stats.tiers_posts.count = postsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting pages',
             task: async (ctx) => {
-                const pagesData = await ctx.api.pages.browse({limit: 1});
+                const pagesData = await ctx.api.pages.browse({ limit: 1 });
                 ctx.stats.pages.count = pagesData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting tags',
             task: async (ctx) => {
-                const tagsData = await ctx.api.tags.browse({limit: 1});
+                const tagsData = await ctx.api.tags.browse({ limit: 1 });
                 ctx.stats.tags.count = tagsData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Counting staff',
@@ -150,7 +165,11 @@ const getFullTaskList = (options) => {
                 let lastResponse;
 
                 do {
-                    lastResponse = await ctx.api.users.browse({limit: 100, page, include: 'roles,count.posts'});
+                    lastResponse = await ctx.api.users.browse({
+                        limit: 100,
+                        page,
+                        include: 'roles,count.posts',
+                    });
                     usersData = usersData.concat(lastResponse);
                     page = lastResponse.meta.pagination.next;
                 } while (lastResponse.meta.pagination.next);
@@ -158,19 +177,23 @@ const getFullTaskList = (options) => {
                 usersData.meta = lastResponse.meta;
                 ctx.usersData = usersData;
 
-                const staffOwner = usersData.filter(word => word.roles[0].name === 'Owner');
-                const staffAdministrator = usersData.filter(word => word.roles[0].name === 'Administrator');
-                const staffEditor = usersData.filter(word => word.roles[0].name === 'Editor');
-                const staffAuthor = usersData.filter(word => word.roles[0].name === 'Author');
-                const staffContributor = usersData.filter(word => word.roles[0].name === 'Contributor');
+                const staffOwner = usersData.filter((word) => word.roles[0].name === 'Owner');
+                const staffAdministrator = usersData.filter(
+                    (word) => word.roles[0].name === 'Administrator',
+                );
+                const staffEditor = usersData.filter((word) => word.roles[0].name === 'Editor');
+                const staffAuthor = usersData.filter((word) => word.roles[0].name === 'Author');
+                const staffContributor = usersData.filter(
+                    (word) => word.roles[0].name === 'Contributor',
+                );
 
                 ctx.stats.users.count = usersData.meta.pagination.total;
                 ctx.stats.users.roles = {
-                    owner: {count: staffOwner.length},
-                    administrator: {count: staffAdministrator.length},
-                    editor: {count: staffEditor.length},
-                    author: {count: staffAuthor.length},
-                    contributor: {count: staffContributor.length}
+                    owner: { count: staffOwner.length },
+                    administrator: { count: staffAdministrator.length },
+                    editor: { count: staffEditor.length },
+                    author: { count: staffAuthor.length },
+                    contributor: { count: staffContributor.length },
                 };
 
                 if (options?.listEmptyAuthors) {
@@ -178,39 +201,41 @@ const getFullTaskList = (options) => {
                         if (user.count.posts === 0) {
                             ctx.stats.emptyAuthors.push([
                                 user.name,
-                                `${options.apiURL}/ghost/#/settings/staff/${user.slug}`
+                                `${options.apiURL}/ghost/#/settings/staff/${user.slug}`,
                             ]);
                         }
                     });
                 }
-            }
+            },
         },
         {
             title: 'Counting members',
             task: async (ctx) => {
                 const membersData = await ctx.api.members.browse();
                 ctx.stats.members.count = membersData.meta.pagination.total;
-            }
+            },
         },
         {
             title: 'Build stats',
             task: (ctx) => {
-                const statsHeader = [{
-                    value: 'Resource',
-                    headerColor: 'cyan',
-                    color: 'white',
-                    headerAlign: 'left',
-                    align: 'left',
-                    width: 20
-                },
-                {
-                    value: 'Count',
-                    headerColor: 'cyan',
-                    color: 'white',
-                    headerAlign: 'left',
-                    align: 'left',
-                    width: 10
-                }];
+                const statsHeader = [
+                    {
+                        value: 'Resource',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left',
+                        width: 20,
+                    },
+                    {
+                        value: 'Count',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left',
+                        width: 10,
+                    },
+                ];
 
                 const statsRows = [
                     ['Posts', ctx.stats.posts.count],
@@ -224,37 +249,39 @@ const getFullTaskList = (options) => {
                     ['Pages', ctx.stats.pages.count],
                     ['Tags', ctx.stats.tags.count],
                     ['Users', ctx.stats.users.count],
-                    ['Members', ctx.stats.members.count]
+                    ['Members', ctx.stats.members.count],
                 ];
 
-                ctx.tables.stats = Table(statsHeader, statsRows, {compact: true}).render();
+                ctx.tables.stats = Table(statsHeader, statsRows, { compact: true }).render();
 
-                const usersHeader = [{
-                    value: 'Role',
-                    headerColor: 'cyan',
-                    color: 'white',
-                    headerAlign: 'left',
-                    align: 'left',
-                    width: 20
-                },
-                {
-                    value: 'Count',
-                    headerColor: 'cyan',
-                    color: 'white',
-                    headerAlign: 'left',
-                    align: 'left',
-                    width: 10
-                }];
+                const usersHeader = [
+                    {
+                        value: 'Role',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left',
+                        width: 20,
+                    },
+                    {
+                        value: 'Count',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left',
+                        width: 10,
+                    },
+                ];
 
                 const usersRows = [
                     ['Owner', ctx.stats.users.roles.owner.count],
                     ['Administrator', ctx.stats.users.roles.administrator.count],
                     ['Editor', ctx.stats.users.roles.editor.count],
                     ['Author', ctx.stats.users.roles.author.count],
-                    ['Contributor', ctx.stats.users.roles.contributor.count]
+                    ['Contributor', ctx.stats.users.roles.contributor.count],
                 ];
 
-                ctx.tables.users = Table(usersHeader, usersRows, {compact: true}).render();
+                ctx.tables.users = Table(usersHeader, usersRows, { compact: true }).render();
 
                 const roleOrder = ['Owner', 'Administrator', 'Editor', 'Author', 'Contributor'];
 
@@ -267,56 +294,64 @@ const getFullTaskList = (options) => {
                     return b.count.posts - a.count.posts;
                 });
 
-                const staffPostsHeader = [{
-                    value: 'Role',
-                    headerColor: 'cyan',
-                    color: 'white',
-                    headerAlign: 'left',
-                    align: 'left',
-                    width: 20
-                },
-                {
-                    value: 'Name',
-                    headerColor: 'cyan',
-                    color: 'white',
-                    headerAlign: 'left',
-                    align: 'left'
-                },
-                {
-                    value: 'Posts',
-                    headerColor: 'cyan',
-                    color: 'white',
-                    headerAlign: 'left',
-                    align: 'left',
-                    width: 10
-                }];
+                const staffPostsHeader = [
+                    {
+                        value: 'Role',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left',
+                        width: 20,
+                    },
+                    {
+                        value: 'Name',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left',
+                    },
+                    {
+                        value: 'Posts',
+                        headerColor: 'cyan',
+                        color: 'white',
+                        headerAlign: 'left',
+                        align: 'left',
+                        width: 10,
+                    },
+                ];
 
                 const staffPostsRows = sortedUsers.map((user) => {
                     return [user.roles[0].name, user.name, user.count.posts];
                 });
 
-                ctx.tables.staffPosts = Table(staffPostsHeader, staffPostsRows, {compact: true}).render();
+                ctx.tables.staffPosts = Table(staffPostsHeader, staffPostsRows, {
+                    compact: true,
+                }).render();
 
                 if (options?.listEmptyAuthors && ctx.stats.emptyAuthors.length > 0) {
-                    const authorsHeader = [{
-                        value: 'Name',
-                        headerColor: 'cyan',
-                        color: 'white',
-                        headerAlign: 'left',
-                        align: 'left'
-                    },
-                    {
-                        value: 'URL',
-                        headerColor: 'cyan',
-                        color: 'white',
-                        headerAlign: 'left',
-                        align: 'left'
-                    }];
+                    const authorsHeader = [
+                        {
+                            value: 'Name',
+                            headerColor: 'cyan',
+                            color: 'white',
+                            headerAlign: 'left',
+                            align: 'left',
+                        },
+                        {
+                            value: 'URL',
+                            headerColor: 'cyan',
+                            color: 'white',
+                            headerAlign: 'left',
+                            align: 'left',
+                        },
+                    ];
 
-                    ctx.tables.emptyAuthors = Table(authorsHeader, ctx.stats.emptyAuthors, {compact: true}).render();
+                    ctx.tables.emptyAuthors = Table(authorsHeader, ctx.stats.emptyAuthors, {
+                        compact: true,
+                    }).render();
                 }
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -325,11 +360,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

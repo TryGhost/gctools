@@ -1,13 +1,13 @@
 import inquirer from 'inquirer';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import updatePostsFromJson from '../tasks/update-posts-from-json.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
-const {UPDATABLE_FIELDS} = updatePostsFromJson;
+const { UPDATABLE_FIELDS } = updatePostsFromJson;
 
 const choice = {
     name: 'Update posts from JSON file',
-    value: 'updatePostsFromJson'
+    value: 'updatePostsFromJson',
 };
 
 const options = [
@@ -18,7 +18,7 @@ const options = [
         message: 'Path to Ghost export JSON file:',
         validate: (input) => {
             return input.trim().length > 0 ? true : 'Please provide a file path';
-        }
+        },
     },
     {
         type: 'input',
@@ -27,34 +27,34 @@ const options = [
         default: null,
         filter: (input) => {
             return input && input.trim().length > 0 ? input.trim() : null;
-        }
+        },
     },
     {
         type: 'checkbox',
         name: 'fields',
         message: 'Select fields to update:',
         pageSize: 20,
-        choices: UPDATABLE_FIELDS.map(f => ({
+        choices: UPDATABLE_FIELDS.map((f) => ({
             name: f.name,
             value: f.value,
-            checked: false
+            checked: false,
         })),
         validate: (input) => {
             return input.length > 0 ? true : 'Please select at least one field';
-        }
+        },
     },
     {
         type: 'confirm',
         name: 'dryRun',
         message: 'Dry run? (preview changes without updating)',
-        default: false
-    }
+        default: false,
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = updatePostsFromJson.getTaskRunner(answers);
@@ -67,12 +67,14 @@ async function run() {
             ui.log.warn(`Skipped ${context.skipped.length} posts with no changes.`);
         }
 
-        ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
+        ui.log.ok(
+            `Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`,
+        );
     });
 }
 
 export default {
     choice,
     options,
-    run
+    run,
 };

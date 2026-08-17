@@ -1,13 +1,13 @@
-import {describe, test, mock, before, beforeEach} from 'node:test';
+import { describe, test, mock, before, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
-import {silentRenderer} from './helpers/silent-renderer.js';
+import { silentRenderer } from './helpers/silent-renderer.js';
 
 // Shared mockApi object
 const mockApi = {
     members: {
         browse: mock.fn(),
-        edit: mock.fn()
-    }
+        edit: mock.fn(),
+    },
 };
 
 const mockParseCSV = mock.fn();
@@ -23,39 +23,39 @@ NativePromise.mapSeries = async (arr, fn) => {
     }
     return results;
 };
-NativePromise.delay = ms => new NativePromise(resolve => setTimeout(resolve, ms));
+NativePromise.delay = (ms) => new NativePromise((resolve) => setTimeout(resolve, ms));
 mock.module('bluebird', {
-    defaultExport: NativePromise
+    defaultExport: NativePromise,
 });
 
 mock.module('@tryghost/mg-fs-utils', {
     defaultExport: {
         csv: {
-            parseCSV: mockParseCSV
-        }
-    }
+            parseCSV: mockParseCSV,
+        },
+    },
 });
 
 mock.module('@tryghost/admin-api', {
     defaultExport: function GhostAdminAPI() {
         return mockApi;
-    }
+    },
 });
 
 mock.module('../lib/admin-api-call.js', {
-    namedExports: {getTiers: mockGetTiers}
+    namedExports: { getTiers: mockGetTiers },
 });
 
 // Mock @tryghost/errors to avoid serialization issues with custom error classes
 // in the node:test child process IPC
 class MockInternalServerError extends Error {
-    constructor({message, context}) {
+    constructor({ message, context }) {
         super(message);
         this.context = context;
     }
 }
 mock.module('@tryghost/errors', {
-    defaultExport: {InternalServerError: MockInternalServerError}
+    defaultExport: { InternalServerError: MockInternalServerError },
 });
 
 describe('add-member-comp-from-csv', () => {
@@ -74,32 +74,34 @@ describe('add-member-comp-from-csv', () => {
 
     test('should successfully process valid CSV rows', async () => {
         const csvData = [
-            {email: 'test1@example.com', expireAt: '2024-12-31', tierName: 'Premium'},
-            {email: 'test2@example.com', expireAt: '2024-12-31', tierName: 'Basic'}
+            { email: 'test1@example.com', expireAt: '2024-12-31', tierName: 'Premium' },
+            { email: 'test2@example.com', expireAt: '2024-12-31', tierName: 'Basic' },
         ];
         mockParseCSV.mock.mockImplementation(() => Promise.resolve(csvData));
 
-        mockApi.members.browse.mock.mockImplementation(({filter}) => {
+        mockApi.members.browse.mock.mockImplementation(({ filter }) => {
             if (filter === 'email:test1@example.com') {
-                return Promise.resolve([{id: '1', email: 'test1@example.com'}]);
+                return Promise.resolve([{ id: '1', email: 'test1@example.com' }]);
             }
             if (filter === 'email:test2@example.com') {
-                return Promise.resolve([{id: '2', email: 'test2@example.com'}]);
+                return Promise.resolve([{ id: '2', email: 'test2@example.com' }]);
             }
             return Promise.resolve([]);
         });
 
         const tiers = [
-            {id: 'tier1', name: 'Premium'},
-            {id: 'tier2', name: 'Basic'}
+            { id: 'tier1', name: 'Premium' },
+            { id: 'tier2', name: 'Basic' },
         ];
         mockGetTiers.mock.mockImplementation(() => Promise.resolve(tiers));
 
-        mockApi.members.edit.mock.mockImplementation(({id}) => {
+        mockApi.members.edit.mock.mockImplementation(({ id }) => {
             return Promise.resolve({
                 id,
                 email: id === '1' ? 'test1@example.com' : 'test2@example.com',
-                tiers: [{id: id === '1' ? 'tier1' : 'tier2', name: id === '1' ? 'Premium' : 'Basic'}]
+                tiers: [
+                    { id: id === '1' ? 'tier1' : 'tier2', name: id === '1' ? 'Premium' : 'Basic' },
+                ],
             });
         });
 
@@ -107,7 +109,7 @@ describe('add-member-comp-from-csv', () => {
             ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
-            csvPath: 'test.csv'
+            csvPath: 'test.csv',
         });
 
         await task.run();
@@ -118,7 +120,7 @@ describe('add-member-comp-from-csv', () => {
 
     test('should handle missing members', async () => {
         const csvData = [
-            {email: 'nonexistent@example.com', expireAt: '2024-12-31', tierName: 'Premium'}
+            { email: 'nonexistent@example.com', expireAt: '2024-12-31', tierName: 'Premium' },
         ];
         mockParseCSV.mock.mockImplementation(() => Promise.resolve(csvData));
 
@@ -128,7 +130,7 @@ describe('add-member-comp-from-csv', () => {
             ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
-            csvPath: 'test.csv'
+            csvPath: 'test.csv',
         });
 
         await assert.rejects(task.run(), /Failed to process some rows/);
@@ -136,20 +138,22 @@ describe('add-member-comp-from-csv', () => {
 
     test('should handle missing tiers', async () => {
         const csvData = [
-            {email: 'test@example.com', expireAt: '2024-12-31', tierName: 'NonexistentTier'}
+            { email: 'test@example.com', expireAt: '2024-12-31', tierName: 'NonexistentTier' },
         ];
         mockParseCSV.mock.mockImplementation(() => Promise.resolve(csvData));
 
-        mockApi.members.browse.mock.mockImplementation(() => Promise.resolve([{id: '1', email: 'test@example.com'}]));
+        mockApi.members.browse.mock.mockImplementation(() =>
+            Promise.resolve([{ id: '1', email: 'test@example.com' }]),
+        );
 
-        const tiers = [{id: 'tier1', name: 'Premium'}];
+        const tiers = [{ id: 'tier1', name: 'Premium' }];
         mockGetTiers.mock.mockImplementation(() => Promise.resolve(tiers));
 
         const task = addMemberCompFromCsv.getTaskRunner({
             ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
-            csvPath: 'test.csv'
+            csvPath: 'test.csv',
         });
 
         await assert.rejects(task.run(), /Failed to process some rows/);
@@ -157,18 +161,20 @@ describe('add-member-comp-from-csv', () => {
 
     test('should handle API errors', async () => {
         const csvData = [
-            {email: 'test@example.com', expireAt: '2024-12-31', tierName: 'Premium'}
+            { email: 'test@example.com', expireAt: '2024-12-31', tierName: 'Premium' },
         ];
         mockParseCSV.mock.mockImplementation(() => Promise.resolve(csvData));
 
-        mockApi.members.browse.mock.mockImplementation(() => Promise.resolve([{id: '1', email: 'test@example.com'}]));
+        mockApi.members.browse.mock.mockImplementation(() =>
+            Promise.resolve([{ id: '1', email: 'test@example.com' }]),
+        );
 
-        const tiers = [{id: 'tier1', name: 'Premium'}];
+        const tiers = [{ id: 'tier1', name: 'Premium' }];
         mockGetTiers.mock.mockImplementation(() => Promise.resolve(tiers));
 
         const validationError = new MockInternalServerError({
             message: 'Invalid data',
-            context: 'The provided data is invalid'
+            context: 'The provided data is invalid',
         });
         mockApi.members.edit.mock.mockImplementation(() => Promise.reject(validationError));
 
@@ -176,7 +182,7 @@ describe('add-member-comp-from-csv', () => {
             ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
-            csvPath: 'test.csv'
+            csvPath: 'test.csv',
         });
 
         await assert.rejects(task.run(), /Failed to process some rows/);

@@ -2,14 +2,14 @@ import inquirer from 'inquirer';
 import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import changeAuthor from '../tasks/change-author.js';
-import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import { getAPIAuthorsObj, getAPITagsObj } from '../lib/ghost-api-choices.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 const choice = {
     name: 'Change author',
-    value: 'changeAuthor'
+    value: 'changeAuthor',
 };
 
 const options = [
@@ -21,7 +21,7 @@ const options = [
         pageSize: 20,
         choices: function () {
             return getAPIAuthorsObj();
-        }
+        },
     },
     {
         type: 'search-checkbox',
@@ -30,7 +30,7 @@ const options = [
         pageSize: 20,
         choices: function () {
             return getAPITagsObj();
-        }
+        },
     },
     {
         type: 'select',
@@ -39,19 +39,21 @@ const options = [
         pageSize: 20,
         choices: function () {
             return getAPIAuthorsObj();
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = changeAuthor.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully changed ${context.changed.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully changed ${context.changed.length} posts in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -61,5 +63,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

@@ -1,8 +1,8 @@
 import Promise from 'bluebird';
 import _ from 'lodash';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -10,7 +10,7 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -18,7 +18,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -27,7 +27,7 @@ const initialise = (options) => {
             ctx.fromTo = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -40,17 +40,17 @@ const getFullTaskList = (options) => {
                 let thePages = null;
 
                 if (ctx.args.id) {
-                    thePages = await ctx.api.pages.browse({id: ctx.args.id});
+                    thePages = await ctx.api.pages.browse({ id: ctx.args.id });
                 } else if (ctx.args.tagSlug) {
                     thePages = await discover({
                         api: ctx.api,
                         type: 'pages',
-                        filter: `tag:[${ctx.args.tagSlug}]`
+                        filter: `tag:[${ctx.args.tagSlug}]`,
                     });
                 } else {
                     thePages = await discover({
                         api: ctx.api,
-                        type: 'pages'
+                        type: 'pages',
                     });
                 }
 
@@ -61,10 +61,10 @@ const getFullTaskList = (options) => {
 
                     ctx.fromTo.push({
                         id: pageId,
-                        data: page
+                        data: page,
                     });
                 });
-            }
+            },
         },
         {
             title: 'Convert pages into posts',
@@ -83,35 +83,37 @@ const getFullTaskList = (options) => {
                                 let result = await ctx.api.posts.add(item.data);
 
                                 if (result.id) {
-                                    await ctx.api.pages.delete({id: item.id});
+                                    await ctx.api.pages.delete({ id: item.id });
 
                                     let updateResult = await ctx.api.posts.edit({
                                         id: result.id,
                                         updated_at: item.data.updated_at,
-                                        slug: item.data.slug
+                                        slug: item.data.slug,
                                     });
 
                                     ctx.updated.push(updateResult);
 
-                                    return Promise.delay(options.delayBetweenCalls).return(updateResult);
+                                    return Promise.delay(options.delayBetweenCalls).return(
+                                        updateResult,
+                                    );
                                 } else {
                                     ctx.errors.push({
-                                        message: 'Failed to create post'
+                                        message: 'Failed to create post',
                                     });
                                 }
                             } catch (error) {
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = options;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -120,11 +122,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

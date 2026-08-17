@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import memberNewsletterBackup from '../tasks/member-newsletter-backup.js';
 
 // Internal ID in case we need one.
@@ -18,46 +18,50 @@ export const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 export const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
 
     sywac.string('--backup', {
         defaultValue: null,
-        desc: 'Path to save backup CSV'
+        desc: 'Path to save backup CSV',
     });
 
     sywac.string('--restore', {
         defaultValue: null,
-        desc: 'Path to CSV file to restore from'
+        desc: 'Path to CSV file to restore from',
     });
 
     sywac.boolean('--dry-run', {
         defaultValue: false,
-        desc: 'Show what would be changed without making changes (restore only)'
+        desc: 'Show what would be changed without making changes (restore only)',
     });
 
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 
     sywac.array('--label', {
         defaultValue: null,
-        desc: 'Filter members by label slug (backup only, can specify multiple)'
+        desc: 'Filter members by label slug (backup only, can specify multiple)',
     });
 };
 
 // What to do when this command is executed
 export const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     // Validate that at least one action is specified
     if (!argv.backup && !argv.restore) {
         ui.log.error('No action specified. Please provide either --backup or --restore');
         ui.log.info('Examples:');
-        ui.log.info('  Backup:  gctools member-newsletter-backup <url> <key> --backup ./backup.csv');
-        ui.log.info('  Restore: gctools member-newsletter-backup <url> <key> --restore ./backup.csv');
+        ui.log.info(
+            '  Backup:  gctools member-newsletter-backup <url> <key> --backup ./backup.csv',
+        );
+        ui.log.info(
+            '  Restore: gctools member-newsletter-backup <url> <key> --restore ./backup.csv',
+        );
         return;
     }
 
@@ -84,12 +88,14 @@ export const run = async (argv) => {
         ...argv,
         backupPath: argv.backup,
         restorePath: argv.restore,
-        dryRun: argv.dryRun
+        dryRun: argv.dryRun,
     };
 
     if (argv.verbose) {
         if (argv.restore) {
-            ui.log.info(`Restoring newsletter preferences from ${argv.restore}${argv.dryRun ? ' (dry run)' : ''}`);
+            ui.log.info(
+                `Restoring newsletter preferences from ${argv.restore}${argv.dryRun ? ' (dry run)' : ''}`,
+            );
         } else if (argv.backup) {
             ui.log.info(`Backing up newsletter preferences to ${argv.backup}`);
             if (argv.label && argv.label.length > 0) {
@@ -149,5 +155,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

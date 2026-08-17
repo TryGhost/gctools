@@ -1,8 +1,8 @@
 import Promise from 'bluebird';
 import _ from 'lodash';
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -10,7 +10,7 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -18,7 +18,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -26,7 +26,7 @@ const initialise = (options) => {
             ctx.updated = [];
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -45,7 +45,7 @@ const getFullTaskList = (options) => {
                 let discoveryOptions = {
                     api: ctx.api,
                     type: 'members',
-                    filter: discoveryFilter.join('+')
+                    filter: discoveryFilter.join('+'),
                 };
 
                 try {
@@ -55,7 +55,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Updating members',
@@ -71,9 +71,9 @@ const getFullTaskList = (options) => {
                                 tiers: [
                                     {
                                         id: options.tierId,
-                                        expiry_at: options.expireAt
-                                    }
-                                ]
+                                        expiry_at: options.expireAt,
+                                    },
+                                ],
                             };
 
                             try {
@@ -84,15 +84,15 @@ const getFullTaskList = (options) => {
                                 ctx.errors.push(error);
                                 throw error;
                             }
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = options;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -101,11 +101,11 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

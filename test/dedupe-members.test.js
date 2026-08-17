@@ -1,25 +1,29 @@
-import {describe, test} from 'node:test';
+import { describe, test } from 'node:test';
 import assert from 'node:assert/strict';
-import {join} from 'node:path';
-import {URL} from 'node:url';
+import { join } from 'node:path';
+import { URL } from 'node:url';
 import fsUtils from '@tryghost/mg-fs-utils';
 import dedupeMembers from '../tasks/dedupe-members-csv.js';
-const {determineIfUpdated, splitByStatus} = dedupeMembers;
+const { determineIfUpdated, splitByStatus } = dedupeMembers;
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
 describe('Deduplicate posts', function () {
     test('determines if members have been updated', async function () {
-        const existingMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'existing-members.csv'));
-        const updatedMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'updated-members.csv'));
+        const existingMembers = await fsUtils.csv.parseCSV(
+            join(__dirname, './', 'fixtures', 'existing-members.csv'),
+        );
+        const updatedMembers = await fsUtils.csv.parseCSV(
+            join(__dirname, './', 'fixtures', 'updated-members.csv'),
+        );
 
         let ctx = {
             existingMembers: existingMembers,
             newCombined: updatedMembers,
-            combinedNewMembers: []
+            combinedNewMembers: [],
         };
 
-        const {combinedNewMembers} = determineIfUpdated(ctx);
+        const { combinedNewMembers } = determineIfUpdated(ctx);
 
         assert.strictEqual(combinedNewMembers.length, 13);
 
@@ -32,8 +36,12 @@ describe('Deduplicate posts', function () {
     });
 
     test('splits members by status', async function () {
-        const existingMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'existing-members.csv'));
-        const updatedMembers = await fsUtils.csv.parseCSV(join(__dirname, './', 'fixtures', 'updated-members.csv'));
+        const existingMembers = await fsUtils.csv.parseCSV(
+            join(__dirname, './', 'fixtures', 'existing-members.csv'),
+        );
+        const updatedMembers = await fsUtils.csv.parseCSV(
+            join(__dirname, './', 'fixtures', 'updated-members.csv'),
+        );
 
         let ctx = {
             existingMembers: existingMembers,
@@ -41,7 +49,7 @@ describe('Deduplicate posts', function () {
             combinedNewMembers: [],
             newFreeMembers: [],
             newCompMembers: [],
-            newPaidMembers: []
+            newPaidMembers: [],
         };
 
         // Find new members

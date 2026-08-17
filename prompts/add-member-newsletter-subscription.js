@@ -1,17 +1,17 @@
 import confirm from '@inquirer/confirm';
 import chalk from 'chalk';
-import {ui} from '@tryghost/pretty-cli';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import {transformToCommaString, sleep} from '../lib/utils.js';
-import {adminClient} from '../lib/ghost-api-creds.js';
-import {discover, discoverInfo} from '../lib/batch-ghost-discover.js';
-import {filterBuilder} from '../lib/filter-builder.js';
-import {getNewsletters} from '../questions/get-newsletters.js';
-import {getLabels} from '../questions/get-labels.js';
+import { ui } from '@tryghost/pretty-cli';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
+import { transformToCommaString, sleep } from '../lib/utils.js';
+import { adminClient } from '../lib/ghost-api-creds.js';
+import { discover, discoverInfo } from '../lib/batch-ghost-discover.js';
+import { filterBuilder } from '../lib/filter-builder.js';
+import { getNewsletters } from '../questions/get-newsletters.js';
+import { getLabels } from '../questions/get-labels.js';
 
 const choice = {
     name: 'Add member newsletter subscription',
-    value: 'add-member-newsletter-subscription'
+    value: 'add-member-newsletter-subscription',
 };
 
 async function run() {
@@ -23,12 +23,12 @@ async function run() {
 
     // 2. Get the ID of the newsletter to be subscribed to
     const newsletter = await getNewsletters({
-        message: 'Newsletter to be subscribed to:'
+        message: 'Newsletter to be subscribed to:',
     });
 
     // 3. Get the label slugs of the people who should be subbed
     const labels = await getLabels({
-        message: `Select members with these labels: ${chalk.reset.grey('(Leave blank for all)')}`
+        message: `Select members with these labels: ${chalk.reset.grey('(Leave blank for all)')}`,
     });
 
     // 4. Build discovery options object
@@ -37,15 +37,18 @@ async function run() {
         type: 'members',
         filter: filterBuilder({
             notNewsletters: newsletter,
-            labels: labels
+            labels: labels,
         }),
-        progress: true
+        progress: true,
     };
 
     // 5. Check how many members will be downloaded and prompt to continue
     // This is a nice-to-have if there's many thousands of members
     const checkMembersCount = await discoverInfo(discoveryOptions);
-    const downloadMembers = await confirm({message: `Start downloading ${checkMembersCount} members?`, default: false});
+    const downloadMembers = await confirm({
+        message: `Start downloading ${checkMembersCount} members?`,
+        default: false,
+    });
     if (!downloadMembers) {
         return false;
     }
@@ -60,10 +63,15 @@ async function run() {
         const labelNames = transformToCommaString(labels, 'name', ', ');
         messageParts.push(`that have the labels ${chalk.bold.yellow(`[${labelNames}]`)}`);
     }
-    messageParts.push(`to newsletter ${chalk.bold.blue(`${newsletter[0].name} (${newsletter[0].slug})`)}`);
+    messageParts.push(
+        `to newsletter ${chalk.bold.blue(`${newsletter[0].name} (${newsletter[0].slug})`)}`,
+    );
     ui.log(messageParts.join(' '));
 
-    const runTask = await confirm({message: chalk.red.bold(`Do you want to do this?`), default: false});
+    const runTask = await confirm({
+        message: chalk.red.bold(`Do you want to do this?`),
+        default: false,
+    });
 
     // 8. If all is well, run the task
     if (runTask) {
@@ -75,7 +83,7 @@ async function run() {
                 task: async () => {
                     let newMemberObject = {
                         id: member.id,
-                        newsletters: member.newsletters || []
+                        newsletters: member.newsletters || [],
                     };
 
                     newMemberObject.newsletters.push(newsletter[0]);
@@ -88,12 +96,12 @@ async function run() {
                         errors.push(error);
                         throw error;
                     }
-                }
+                },
             });
         });
 
         let runner = makeTaskRunner(tasks, {
-            concurrent: 1
+            concurrent: 1,
         });
 
         await runner.run();
@@ -109,5 +117,5 @@ async function run() {
 
 export default {
     choice,
-    run
+    run,
 };

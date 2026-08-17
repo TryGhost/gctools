@@ -1,15 +1,15 @@
 import inquirer from 'inquirer';
 import inquirerSearchCheckbox from 'inquirer-search-checkbox';
 inquirer.registerPrompt('search-checkbox', inquirerSearchCheckbox);
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import chalk from 'chalk';
 import setTemplate from '../tasks/set-template.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
-import {getAPIAuthorsObj, getAPITagsObj} from '../lib/ghost-api-choices.js';
+import { getAPIAuthorsObj, getAPITagsObj } from '../lib/ghost-api-choices.js';
 
 const choice = {
     name: 'Set posts template',
-    value: 'setTemplate'
+    value: 'setTemplate',
 };
 
 const options = [
@@ -21,17 +21,17 @@ const options = [
         choices: [
             {
                 name: 'All',
-                value: 'all'
+                value: 'all',
             },
             {
                 name: 'Draft',
-                value: 'draft'
+                value: 'draft',
             },
             {
                 name: 'Published',
-                value: 'published'
-            }
-        ]
+                value: 'published',
+            },
+        ],
     },
     {
         type: 'select',
@@ -40,17 +40,17 @@ const options = [
         choices: [
             {
                 name: 'No filtering',
-                value: false
+                value: false,
             },
             {
                 name: 'Filter by author',
-                value: 'filter_by_author'
+                value: 'filter_by_author',
             },
             {
                 name: 'Filter by tag',
-                value: 'filter_by_tag'
-            }
-        ]
+                value: 'filter_by_tag',
+            },
+        ],
     },
     {
         type: 'search-checkbox',
@@ -62,7 +62,7 @@ const options = [
         },
         when: function (answers) {
             return answers.filter_by === 'filter_by_tag';
-        }
+        },
     },
     {
         type: 'search-checkbox',
@@ -73,7 +73,7 @@ const options = [
         },
         when: function (answers) {
             return answers.filter_by === 'filter_by_author';
-        }
+        },
     },
     {
         type: 'input',
@@ -96,19 +96,21 @@ const options = [
             }
 
             return true;
-        }
-    }
+        },
+    },
 ];
 
 async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         try {
             let runner = setTemplate.getTaskRunner(answers);
             await runner.run(context);
-            ui.log.ok(`Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`);
+            ui.log.ok(
+                `Successfully updated ${context.updated.length} posts in ${Date.now() - timer}ms.`,
+            );
         } catch (error) {
             ui.log.error('Done with errors', context.errors);
         }
@@ -118,5 +120,5 @@ async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

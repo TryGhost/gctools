@@ -1,17 +1,19 @@
 import inquirer from 'inquirer';
-import {getAPINewslettersObj} from '../lib/ghost-api-choices.js';
+import { getAPINewslettersObj } from '../lib/ghost-api-choices.js';
 
 const getNewsletters = async (args = {}) => {
     const message = args?.message ?? 'Pick newsletter:';
 
-    let prompts = [{
-        type: 'select',
-        name: 'newsletter',
-        message,
-        choices: () => {
-            return getAPINewslettersObj({returnKey: false});
-        }
-    }];
+    let prompts = [
+        {
+            type: 'select',
+            name: 'newsletter',
+            message,
+            choices: () => {
+                return getAPINewslettersObj({ returnKey: false });
+            },
+        },
+    ];
 
     let result = await inquirer.prompt(prompts).then(async (answers) => {
         return answers.newsletter;
@@ -24,6 +26,4 @@ const getNewsletters = async (args = {}) => {
     }
 };
 
-export {
-    getNewsletters
-};
+export { getNewsletters };

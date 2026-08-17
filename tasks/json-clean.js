@@ -1,10 +1,10 @@
-import {dirname, basename} from 'node:path';
+import { dirname, basename } from 'node:path';
 import fsUtils from '@tryghost/mg-fs-utils';
 import fs from 'fs-extra';
 import inquirer from 'inquirer';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {fetchGhostUsers} from '@tryghost/mg-ghost-authors';
+import { fetchGhostUsers } from '@tryghost/mg-ghost-authors';
 
 const initialise = (options) => {
     return {
@@ -20,7 +20,7 @@ const initialise = (options) => {
             if (options.verbose) {
                 task.output = `Workspace initialised at ${ctx.fileCache.cacheDir}`;
             }
-        }
+        },
     };
 };
 
@@ -33,14 +33,14 @@ const getFullTaskList = (options) => {
                 // 1. Read JSON file and store data
                 try {
                     const jsonFileData = await fs.readJson(options.jsonFile);
-                    const json = (jsonFileData.data) ? jsonFileData : jsonFileData.db[0];
+                    const json = jsonFileData.data ? jsonFileData : jsonFileData.db[0];
 
                     ctx.args.fileNameNoExt = basename(options.jsonFile, '.json');
 
                     ctx.args.metaVersion = json.meta.version;
                     ctx.args.metaExportedOn = json.meta.exported_on;
 
-                    ctx.jsonData = (jsonFileData.data) ? json.data : json.data;
+                    ctx.jsonData = jsonFileData.data ? json.data : json.data;
 
                     ctx.usersWithNoPosts = [];
                     ctx.usersToUpdate = [];
@@ -48,7 +48,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Removing unwanted items',
@@ -65,7 +65,7 @@ const getFullTaskList = (options) => {
                 delete ctx.jsonData.stripe_products;
                 delete ctx.jsonData.stripe_prices;
                 delete ctx.jsonData.snippets;
-            }
+            },
         },
         {
             title: 'Keep posts and pages?',
@@ -80,26 +80,26 @@ const getFullTaskList = (options) => {
                             {
                                 name: 'Posts',
                                 value: 'post',
-                                checked: true
+                                checked: true,
                             },
                             {
                                 name: 'Pages',
                                 value: 'page',
-                                checked: true
-                            }
-                        ]
-                    }
+                                checked: true,
+                            },
+                        ],
+                    },
                 ];
 
                 await inquirer.prompt(promptOptions).then(async (answers) => {
                     ctx.postsAndPages = answers.postspages;
                     task.output = `Selected tp keep ${answers.postspages.join(', ')}`;
                 });
-            }
+            },
         },
         {
             title: 'Removing unwanted content types',
-            skip: ctx => !ctx.postsAndPages.length,
+            skip: (ctx) => !ctx.postsAndPages.length,
             task: async (ctx) => {
                 // ctx.postsAndPages
 
@@ -140,7 +140,7 @@ const getFullTaskList = (options) => {
                         return item;
                     }
                 });
-            }
+            },
         },
         {
             title: 'Add temporary user ID to users without one',
@@ -151,7 +151,7 @@ const getFullTaskList = (options) => {
                         user.id = `temp-id-${Math.random().toString(36).substring(2, 15)}`;
                     }
                 });
-            }
+            },
         },
         {
             title: 'Remove users with no posts',
@@ -159,12 +159,12 @@ const getFullTaskList = (options) => {
                 let siteUsers = [];
 
                 ctx.jsonData.users.forEach((user) => {
-                    let hasPosts = _.find(ctx.jsonData.posts_authors, {author_id: user.id});
+                    let hasPosts = _.find(ctx.jsonData.posts_authors, { author_id: user.id });
 
                     if (!hasPosts) {
                         siteUsers.push({
                             name: `${user.name} - ${user.slug} - ${user.id}`,
-                            value: user
+                            value: user,
                         });
                     }
                 });
@@ -183,15 +183,15 @@ const getFullTaskList = (options) => {
                         name: 'users',
                         message: 'Select users to delete:',
                         pageSize: 20,
-                        choices: siteUsers
-                    }
+                        choices: siteUsers,
+                    },
                 ];
 
                 await inquirer.prompt(promptOptions).then(async (answers) => {
                     ctx.usersWithNoPosts = answers.users;
                     task.output = `Selected ${answers.users.length} of ${ctx.jsonData.users.length} users to delete`;
                 });
-            }
+            },
         },
         {
             title: 'Deleting users',
@@ -200,10 +200,12 @@ const getFullTaskList = (options) => {
             },
             task: async (ctx) => {
                 ctx.usersWithNoPosts.forEach((user) => {
-                    ctx.jsonData.users = _.reject(ctx.jsonData.users, {id: user.id});
-                    ctx.jsonData.roles_users = _.reject(ctx.jsonData.roles_users, {user_id: user.id});
+                    ctx.jsonData.users = _.reject(ctx.jsonData.users, { id: user.id });
+                    ctx.jsonData.roles_users = _.reject(ctx.jsonData.roles_users, {
+                        user_id: user.id,
+                    });
                 });
-            }
+            },
         },
         {
             title: 'Fetch Ghost users and auto-update matches',
@@ -211,7 +213,7 @@ const getFullTaskList = (options) => {
             task: async (ctx, task) => {
                 const ghostUsers = await fetchGhostUsers({
                     apiUrl: options.ghostApiUrl,
-                    adminKey: options.ghostAdminKey
+                    adminKey: options.ghostAdminKey,
                 });
 
                 task.output = `Fetched ${ghostUsers.length} Ghost users`;
@@ -224,8 +226,10 @@ const getFullTaskList = (options) => {
                     }
 
                     const matchedGhostUser = ghostUsers.find((ghostUser) => {
-                        return ghostUser.email &&
-                            ghostUser.email.toLowerCase() === jsonUser.email.toLowerCase();
+                        return (
+                            ghostUser.email &&
+                            ghostUser.email.toLowerCase() === jsonUser.email.toLowerCase()
+                        );
                     });
 
                     if (matchedGhostUser) {
@@ -236,15 +240,15 @@ const getFullTaskList = (options) => {
                                 id: matchedGhostUser.id,
                                 name: matchedGhostUser.name,
                                 slug: matchedGhostUser.slug,
-                                email: matchedGhostUser.email
-                            }
+                                email: matchedGhostUser.email,
+                            },
                         });
                         ctx.autoMatchedUserIds.add(jsonUser.id);
                     }
                 });
 
                 task.output = `Matched ${ctx.usersToUpdate.length} of ${ctx.jsonData.users.length} users to Ghost users`;
-            }
+            },
         },
         {
             title: 'Select users to update',
@@ -257,13 +261,13 @@ const getFullTaskList = (options) => {
                         return;
                     }
 
-                    let allPosts = _.filter(ctx.jsonData.posts_authors, {author_id: user.id});
+                    let allPosts = _.filter(ctx.jsonData.posts_authors, { author_id: user.id });
 
                     siteUsers.push({
                         name: `${user.name} - ${user.slug} - ID: ${user.id} - Post Count: ${allPosts.length}`,
                         value: {
-                            originalData: user
-                        }
+                            originalData: user,
+                        },
                     });
                 });
 
@@ -280,21 +284,21 @@ const getFullTaskList = (options) => {
                         name: 'users',
                         message: 'Select users:',
                         pageSize: 20,
-                        choices: siteUsers
-                    }
+                        choices: siteUsers,
+                    },
                 ];
 
                 await inquirer.prompt(promptOptions).then(async (answers) => {
                     ctx.usersToUpdate = ctx.usersToUpdate.concat(answers.users);
                     task.output = `Selected ${answers.users.length} of ${siteUsers.length} remaining users to update`;
                 });
-            }
+            },
         },
         {
             title: 'Update users data',
             skip: (ctx) => {
                 // Only run for manually-selected users (those without newData already set)
-                return !ctx.usersToUpdate.some(u => !u.newData);
+                return !ctx.usersToUpdate.some((u) => !u.newData);
             },
             task: async (ctx) => {
                 let tasks = [];
@@ -326,7 +330,7 @@ const getFullTaskList = (options) => {
                                         } else {
                                             return 'Please provide an ID';
                                         }
-                                    }
+                                    },
                                 },
                                 {
                                     type: 'input',
@@ -342,7 +346,7 @@ const getFullTaskList = (options) => {
                                         } else {
                                             return 'Please provide a name';
                                         }
-                                    }
+                                    },
                                 },
                                 {
                                     type: 'input',
@@ -358,7 +362,7 @@ const getFullTaskList = (options) => {
                                         } else {
                                             return 'Please provide a slug';
                                         }
-                                    }
+                                    },
                                 },
                                 {
                                     type: 'input',
@@ -374,8 +378,8 @@ const getFullTaskList = (options) => {
                                         } else {
                                             return 'Please provide an email address';
                                         }
-                                    }
-                                }
+                                    },
+                                },
                             ];
 
                             await inquirer.prompt(promptOptions).then(async (answers) => {
@@ -388,14 +392,14 @@ const getFullTaskList = (options) => {
                                 // Add the new data to the user object
                                 user.newData = theData;
                             });
-                        }
+                        },
                     });
                 });
 
                 let taskOptions = options;
                 taskOptions.concurrent = 1;
                 return makeTaskRunner(tasks, taskOptions);
-            }
+            },
         },
         {
             title: 'Update posts objects',
@@ -407,7 +411,7 @@ const getFullTaskList = (options) => {
                         }
                     });
                 });
-            }
+            },
         },
         {
             title: 'Update posts_authors objects',
@@ -419,7 +423,7 @@ const getFullTaskList = (options) => {
                         }
                     });
                 });
-            }
+            },
         },
         {
             title: 'Update users objects',
@@ -434,7 +438,7 @@ const getFullTaskList = (options) => {
                         }
                     });
                 });
-            }
+            },
         },
         {
             title: 'Saving file',
@@ -443,19 +447,22 @@ const getFullTaskList = (options) => {
                     db: [
                         {
                             data: {
-                                ...ctx.jsonData
+                                ...ctx.jsonData,
                             },
                             meta: {
                                 exported_on: ctx.args.metaExportedOn,
-                                version: ctx.args.metaVersion
-                            }
-                        }
-                    ]
+                                version: ctx.args.metaVersion,
+                            },
+                        },
+                    ],
                 };
 
-                await fs.writeFile(`${ctx.args.destDir}/${ctx.args.fileNameNoExt}_clean.json`, JSON.stringify(theData, null, 4));
-            }
-        }
+                await fs.writeFile(
+                    `${ctx.args.destDir}/${ctx.args.fileNameNoExt}_clean.json`,
+                    JSON.stringify(theData, null, 4),
+                );
+            },
+        },
     ];
 };
 
@@ -465,11 +472,11 @@ const getTaskRunner = (options) => {
     tasks = getFullTaskList(options);
 
     // Configure a new Listr task manager, we can use different renderers for different configs
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };

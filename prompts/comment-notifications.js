@@ -1,11 +1,11 @@
 import inquirer from 'inquirer';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import commentNotifications from '../tasks/comment-notifications.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 export const choice = {
     name: 'Set comment notifications for all staff users',
-    value: 'commentNotifications'
+    value: 'commentNotifications',
 };
 
 const modeOptions = [
@@ -17,23 +17,23 @@ const modeOptions = [
         choices: [
             {
                 name: 'Set notifications (enable/disable for all staff)',
-                value: 'set'
+                value: 'set',
             },
             {
                 name: 'Backup current settings to CSV',
-                value: 'backup'
+                value: 'backup',
             },
             {
                 name: 'Backup settings, then disable notifications',
-                value: 'backupAndDisable'
+                value: 'backupAndDisable',
             },
             {
                 name: 'Restore settings from CSV backup',
-                value: 'restore'
-            }
+                value: 'restore',
+            },
         ],
-        default: 'set'
-    }
+        default: 'set',
+    },
 ];
 
 const setOptions = [
@@ -44,16 +44,16 @@ const setOptions = [
         choices: [
             {
                 name: 'Disable (false)',
-                value: false
+                value: false,
             },
             {
                 name: 'Enable (true)',
-                value: true
-            }
+                value: true,
+            },
         ],
         default: false,
-        when: answers => answers.mode === 'set'
-    }
+        when: (answers) => answers.mode === 'set',
+    },
 ];
 
 const backupOptions = [
@@ -62,8 +62,8 @@ const backupOptions = [
         name: 'backupPath',
         message: 'Path to save backup CSV:',
         default: './comment-notifications-backup.csv',
-        when: answers => answers.mode === 'backup' || answers.mode === 'backupAndDisable'
-    }
+        when: (answers) => answers.mode === 'backup' || answers.mode === 'backupAndDisable',
+    },
 ];
 
 const restoreOptions = [
@@ -72,8 +72,8 @@ const restoreOptions = [
         name: 'restorePath',
         message: 'Path to CSV file to restore from:',
         default: './comment-notifications-backup.csv',
-        when: answers => answers.mode === 'restore'
-    }
+        when: (answers) => answers.mode === 'restore',
+    },
 ];
 
 const delayOptions = [
@@ -81,8 +81,8 @@ const delayOptions = [
         type: 'number',
         name: 'delayBetweenCalls',
         message: 'The delay between API calls, in ms:',
-        default: 200
-    }
+        default: 200,
+    },
 ];
 
 export const options = [
@@ -90,20 +90,20 @@ export const options = [
     ...setOptions,
     ...backupOptions,
     ...restoreOptions,
-    ...delayOptions
+    ...delayOptions,
 ];
 
 export async function run() {
     await inquirer.prompt(options).then(async (answers) => {
         let timer = Date.now();
-        let context = {errors: []};
+        let context = { errors: [] };
 
         // Map mode to task options
         const taskOptions = {
             ...answers,
             backupPath: null,
             restorePath: null,
-            value: null
+            value: null,
         };
 
         if (answers.mode === 'set') {
@@ -156,5 +156,5 @@ export async function run() {
 export default {
     choice,
     options,
-    run
+    run,
 };

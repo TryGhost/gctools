@@ -1,7 +1,7 @@
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
+import { discover } from '../lib/batch-ghost-discover.js';
 
 const initialise = (options) => {
     return {
@@ -9,7 +9,7 @@ const initialise = (options) => {
         task: (ctx, task) => {
             let defaults = {
                 verbose: false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -17,7 +17,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -27,7 +27,7 @@ const initialise = (options) => {
             ctx.errors = [];
 
             task.output = 'API connection initialised';
-        }
+        },
     };
 };
 
@@ -43,21 +43,22 @@ const extractFirstAudio = (html) => {
     if (audioMatch) {
         return audioMatch[1];
     }
-    
+
     // Look for audio cards (common pattern in Ghost)
     const audioCardRegex = /<div[^>]*class="[^"]*audio[^"]*"[^>]*>[\s\S]*?src="([^">]+)"/i;
     const audioCardMatch = html.match(audioCardRegex);
     if (audioCardMatch) {
         return audioCardMatch[1];
     }
-    
+
     // Look for iframe with audio content (like SoundCloud, Spotify, etc.)
-    const iframeRegex = /<iframe[^>]+src="([^">]*(?:soundcloud|spotify|anchor|buzzsprout|simplecast|libsyn)[^">]*)"/i;
+    const iframeRegex =
+        /<iframe[^>]+src="([^">]*(?:soundcloud|spotify|anchor|buzzsprout|simplecast|libsyn)[^">]*)"/i;
     const iframeMatch = html.match(iframeRegex);
     if (iframeMatch) {
         return iframeMatch[1];
     }
-    
+
     return null;
 };
 
@@ -69,26 +70,28 @@ const extractFirstAudio = (html) => {
 const extractFirstAudioFromLexical = (lexical) => {
     try {
         const content = JSON.parse(lexical);
-        
+
         // Look for audio nodes in Lexical content
         const findAudioInNodes = (nodes) => {
             for (const node of nodes) {
                 if (node.type === 'audio' && node.src) {
                     return node.src;
                 }
-                
+
                 // Check for embed nodes with audio content
                 if (node.type === 'embed' && node.url) {
-                    if (node.url.includes('soundcloud') || 
-                        node.url.includes('spotify') || 
+                    if (
+                        node.url.includes('soundcloud') ||
+                        node.url.includes('spotify') ||
                         node.url.includes('anchor') ||
                         node.url.includes('buzzsprout') ||
                         node.url.includes('simplecast') ||
-                        node.url.includes('libsyn')) {
+                        node.url.includes('libsyn')
+                    ) {
                         return node.url;
                     }
                 }
-                
+
                 // Recursively check children
                 if (node.children && Array.isArray(node.children)) {
                     const childAudio = findAudioInNodes(node.children);
@@ -99,7 +102,7 @@ const extractFirstAudioFromLexical = (lexical) => {
             }
             return null;
         };
-        
+
         return findAudioInNodes(content.root.children);
     } catch (error) {
         return null;
@@ -114,40 +117,40 @@ const extractFirstAudioFromLexical = (lexical) => {
 const extractFirstAudioFromMobiledoc = (mobiledoc) => {
     try {
         const content = JSON.parse(mobiledoc);
-        
+
         // Look for audio cards in Mobiledoc
         const audioCard = content.cards.find((card) => {
-            return card[0] === 'audio' || 
-                   card[0] === 'embed' || 
-                   card[0] === 'html';
+            return card[0] === 'audio' || card[0] === 'embed' || card[0] === 'html';
         });
-        
+
         if (audioCard) {
             const cardData = audioCard[1];
-            
+
             // Direct audio card
             if (audioCard[0] === 'audio' && cardData.src) {
                 return cardData.src;
             }
-            
+
             // Embed card with audio content
             if (audioCard[0] === 'embed' && cardData.url) {
-                if (cardData.url.includes('soundcloud') || 
-                    cardData.url.includes('spotify') || 
+                if (
+                    cardData.url.includes('soundcloud') ||
+                    cardData.url.includes('spotify') ||
                     cardData.url.includes('anchor') ||
                     cardData.url.includes('buzzsprout') ||
                     cardData.url.includes('simplecast') ||
-                    cardData.url.includes('libsyn')) {
+                    cardData.url.includes('libsyn')
+                ) {
                     return cardData.url;
                 }
             }
-            
+
             // HTML card with audio content
             if (audioCard[0] === 'html' && cardData.html) {
                 return extractFirstAudio(cardData.html);
             }
         }
-        
+
         return null;
     } catch (error) {
         return null;
@@ -166,7 +169,7 @@ const getFullTaskList = (options) => {
                     limit: 100,
                     include: 'tags,authors',
                     filter: 'tag:[podcast]',
-                    progress: (options.verbose) ? true : false
+                    progress: options.verbose ? true : false,
                 };
 
                 try {
@@ -176,7 +179,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Processing posts and setting Facebook descriptions',
@@ -186,9 +189,9 @@ const getFullTaskList = (options) => {
                         if (options.verbose) {
                             task.output = `Processing post "${post.title}"`;
                         }
-                        
+
                         let firstAudio = null;
-                        
+
                         // Try Lexical first
                         if (post.lexical) {
                             firstAudio = extractFirstAudioFromLexical(post.lexical);
@@ -196,7 +199,7 @@ const getFullTaskList = (options) => {
                                 task.output = `Found audio in Lexical content: ${firstAudio}`;
                             }
                         }
-                        
+
                         // If no audio found in Lexical, try Mobiledoc
                         if (!firstAudio && post.mobiledoc) {
                             firstAudio = extractFirstAudioFromMobiledoc(post.mobiledoc);
@@ -204,7 +207,7 @@ const getFullTaskList = (options) => {
                                 task.output = `Found audio in Mobiledoc content: ${firstAudio}`;
                             }
                         }
-                        
+
                         // If still no audio, try HTML as fallback
                         if (!firstAudio && post.html) {
                             firstAudio = extractFirstAudio(post.html);
@@ -212,30 +215,30 @@ const getFullTaskList = (options) => {
                                 task.output = `Found audio in HTML content: ${firstAudio}`;
                             }
                         }
-                        
+
                         if (firstAudio) {
                             if (options.verbose) {
                                 task.output = `Updating post "${post.title}" with Facebook description: ${firstAudio}`;
                             }
-                            
+
                             await ctx.api.posts.edit({
                                 id: post.id,
                                 og_description: firstAudio,
                                 title: post.title,
                                 status: post.status,
-                                updated_at: post.updated_at
+                                updated_at: post.updated_at,
                             });
                             ctx.updated = ctx.updated + 1;
-                            
+
                             if (options.verbose) {
                                 task.output = `Successfully updated post "${post.title}" with Facebook description: ${firstAudio}`;
                             }
                         } else if (options.verbose) {
                             task.output = `No audio found in post "${post.title}"`;
                         }
-                        
+
                         ctx.processed = ctx.processed + 1;
-                        
+
                         // Add delay between API calls
                         if (ctx.args.delayBetweenCalls > 0) {
                             await new Promise((resolve) => {
@@ -249,27 +252,23 @@ const getFullTaskList = (options) => {
                         }
                     }
                 }
-                
+
                 task.output = `Processed ${ctx.processed} posts, updated ${ctx.updated} with Facebook descriptions`;
-            }
-        }
+            },
+        },
     ];
 };
 
 const getTaskRunner = (options) => {
     let tasks = [];
     tasks = getFullTaskList(options);
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
-export {
-    extractFirstAudio,
-    extractFirstAudioFromLexical,
-    extractFirstAudioFromMobiledoc
-};
+export { extractFirstAudio, extractFirstAudioFromLexical, extractFirstAudioFromMobiledoc };
 
 export default {
     initialise,
     getFullTaskList,
-    getTaskRunner
-}; 
+    getTaskRunner,
+};

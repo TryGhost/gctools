@@ -1,4 +1,4 @@
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import postTiers from '../tasks/post-tiers.js';
 
 // Internal ID in case we need one.
@@ -13,44 +13,41 @@ const flags = 'post-tiers <apiURL> <adminAPIKey>';
 const desc = 'Add extra tier to post with tiers';
 
 // Descriptions for the individual params
-const paramsDesc = [
-    'URL to your Ghost API',
-    'Admin API key'
-];
+const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
 
 // Configure all the options
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
     sywac.enumeration('--visibility', {
         defaultValue: null,
         choices: ['all', 'public', 'members', 'paid'],
-        desc: 'Select posts with this visibility setting'
+        desc: 'Select posts with this visibility setting',
     });
     sywac.enumeration('--filterTierId', {
         defaultValue: null,
-        desc: 'Select posts with this tier. i.e. \'123456abcd7890efa123bc12\''
+        desc: "Select posts with this tier. i.e. '123456abcd7890efa123bc12'",
     });
     sywac.string('--addTierId', {
         defaultValue: null,
         required: true,
-        desc: 'The tier ID that will be added to these posts. i.e. \'903456abcd7890efa123bc12\''
+        desc: "The tier ID that will be added to these posts. i.e. '903456abcd7890efa123bc12'",
     });
     sywac.number('--delayBetweenCalls', {
         defaultValue: 50,
-        desc: 'The delay between API calls, in ms'
+        desc: 'The delay between API calls, in ms',
     });
 };
 
 // What to do when this command is executed
 const run = async (argv) => {
     let timer = Date.now();
-    let context = {errors: []};
+    let context = { errors: [] };
 
     if (argv.visibility && argv.filterTierId) {
-        console.log('Cannot use --visibility and --filterTierId together. Please use only one.'); // eslint-disable-line no-console
+        console.log('Cannot use --visibility and --filterTierId together. Please use only one.'); // oxlint-disable-line no-console
         process.exit(1);
     }
 
@@ -80,5 +77,5 @@ export default {
     desc,
     paramsDesc,
     setup,
-    run
+    run,
 };

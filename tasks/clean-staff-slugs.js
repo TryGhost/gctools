@@ -1,9 +1,9 @@
 import GhostAdminAPI from '@tryghost/admin-api';
-import {makeTaskRunner} from '@tryghost/listr-smart-renderer';
-import {ui} from '@tryghost/pretty-cli';
+import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
+import { ui } from '@tryghost/pretty-cli';
 import _ from 'lodash';
-import {discover} from '../lib/batch-ghost-discover.js';
-import {sleep} from '../lib/utils.js';
+import { discover } from '../lib/batch-ghost-discover.js';
+import { sleep } from '../lib/utils.js';
 
 const idSuffixRegex = /-([a-f0-9]{24})$/i;
 
@@ -40,7 +40,7 @@ const getSlugCleanupPlan = (users, regex = idSuffixRegex) => {
             email: user.email,
             slug: user.slug,
             cleanSlug: user.slug.replace(regex, ''),
-            extractedId: match[1]
+            extractedId: match[1],
         });
 
         return result;
@@ -64,7 +64,7 @@ const getSlugCleanupPlan = (users, regex = idSuffixRegex) => {
             skipped.push({
                 ...candidate,
                 reason: 'duplicate-clean-slug',
-                duplicateUsers: existingDuplicateUsers
+                duplicateUsers: existingDuplicateUsers,
             });
             return;
         }
@@ -74,8 +74,12 @@ const getSlugCleanupPlan = (users, regex = idSuffixRegex) => {
                 ...candidate,
                 reason: 'multiple-id-suffixed-users',
                 duplicateUsers: candidates
-                    .filter(otherCandidate => otherCandidate.id !== candidate.id && otherCandidate.cleanSlug === candidate.cleanSlug)
-                    .map(otherCandidate => otherCandidate.user)
+                    .filter(
+                        (otherCandidate) =>
+                            otherCandidate.id !== candidate.id &&
+                            otherCandidate.cleanSlug === candidate.cleanSlug,
+                    )
+                    .map((otherCandidate) => otherCandidate.user),
             });
             return;
         }
@@ -86,11 +90,11 @@ const getSlugCleanupPlan = (users, regex = idSuffixRegex) => {
     return {
         candidates,
         updateable,
-        skipped
+        skipped,
     };
 };
 
-const isDryRun = options => Boolean(options.dryRun || options['dry-run']);
+const isDryRun = (options) => Boolean(options.dryRun || options['dry-run']);
 
 const initialise = (options) => {
     return {
@@ -100,7 +104,7 @@ const initialise = (options) => {
                 verbose: false,
                 dryRun: false,
                 'dry-run': false,
-                delayBetweenCalls: 50
+                delayBetweenCalls: 50,
             };
 
             const url = options.apiURL.replace(/\/$/, '');
@@ -108,7 +112,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0'
+                version: 'v5.0',
             });
 
             ctx.args = _.mergeWith(defaults, options);
@@ -121,7 +125,7 @@ const initialise = (options) => {
             ctx.idRegex = idSuffixRegex;
 
             task.output = `Initialised API connection for ${options.apiURL}`;
-        }
+        },
     };
 };
 
@@ -136,7 +140,7 @@ const getFullTaskList = (options) => {
                         api: ctx.api,
                         type: 'users',
                         limit: 50,
-                        include: 'roles'
+                        include: 'roles',
                     });
 
                     task.output = `Found ${ctx.users.length} staff users`;
@@ -144,7 +148,7 @@ const getFullTaskList = (options) => {
                     ctx.errors.push(error);
                     throw error;
                 }
-            }
+            },
         },
         {
             title: 'Find staff slugs with ID suffixes',
@@ -169,25 +173,35 @@ const getFullTaskList = (options) => {
                         ui.log.info(`    Clean slug: ${candidate.cleanSlug}`);
                     });
                 } else {
-                    ui.log.info(`\nFound ${ctx.usersWithIdSuffix.length} candidate staff slugs. Use --verbose to see the full list.`);
+                    ui.log.info(
+                        `\nFound ${ctx.usersWithIdSuffix.length} candidate staff slugs. Use --verbose to see the full list.`,
+                    );
                     ui.log.info('\nFirst 5 examples:');
 
                     ctx.usersWithIdSuffix.slice(0, 5).forEach((candidate) => {
-                        ui.log.info(`  - ${candidate.name || candidate.email || candidate.id}: ${candidate.slug} -> ${candidate.cleanSlug}`);
+                        ui.log.info(
+                            `  - ${candidate.name || candidate.email || candidate.id}: ${candidate.slug} -> ${candidate.cleanSlug}`,
+                        );
                     });
                 }
 
                 if (ctx.skipped.length > 0) {
-                    ui.log.warn(`Skipping ${ctx.skipped.length} staff slug${ctx.skipped.length === 1 ? '' : 's'} because the clean slug would not be unique.`);
+                    ui.log.warn(
+                        `Skipping ${ctx.skipped.length} staff slug${ctx.skipped.length === 1 ? '' : 's'} because the clean slug would not be unique.`,
+                    );
 
                     if (ctx.args.verbose || ctx.skipped.length <= 20) {
                         ctx.skipped.forEach((candidate) => {
-                            const duplicateSlugs = candidate.duplicateUsers.map(user => user.slug).join(', ');
-                            ui.log.warn(`  - ${candidate.slug} -> ${candidate.cleanSlug} (${candidate.reason}: ${duplicateSlugs})`);
+                            const duplicateSlugs = candidate.duplicateUsers
+                                .map((user) => user.slug)
+                                .join(', ');
+                            ui.log.warn(
+                                `  - ${candidate.slug} -> ${candidate.cleanSlug} (${candidate.reason}: ${duplicateSlugs})`,
+                            );
                         });
                     }
                 }
-            }
+            },
         },
         {
             title: 'Clean staff user slugs',
@@ -200,18 +214,20 @@ const getFullTaskList = (options) => {
                 if (isDryRun(ctx.args)) {
                     ui.log.info('\n[DRY RUN] Would update the following staff slugs:');
                     ctx.usersToUpdate.forEach((candidate) => {
-                        ui.log.info(`  - ${candidate.name || candidate.email || candidate.id}: ${candidate.slug} -> ${candidate.cleanSlug}`);
+                        ui.log.info(
+                            `  - ${candidate.name || candidate.email || candidate.id}: ${candidate.slug} -> ${candidate.cleanSlug}`,
+                        );
                     });
                     return;
                 }
 
-                const tasks = ctx.usersToUpdate.map(candidate => ({
+                const tasks = ctx.usersToUpdate.map((candidate) => ({
                     title: `Updating ${candidate.slug} -> ${candidate.cleanSlug}`,
                     task: async () => {
                         try {
                             const result = await ctx.api.users.edit({
                                 id: candidate.id,
-                                slug: candidate.cleanSlug
+                                slug: candidate.cleanSlug,
                             });
 
                             ctx.updated.push(result);
@@ -220,20 +236,20 @@ const getFullTaskList = (options) => {
                         } catch (error) {
                             error.resource = {
                                 name: candidate.name,
-                                slug: candidate.slug
+                                slug: candidate.slug,
                             };
                             ctx.errors.push(error);
                             throw error;
                         }
-                    }
+                    },
                 }));
 
                 return makeTaskRunner(tasks, {
                     ...options,
-                    concurrent: 1
+                    concurrent: 1,
                 });
-            }
-        }
+            },
+        },
     ];
 };
 
@@ -242,7 +258,7 @@ const getTaskRunner = (options) => {
 
     tasks = getFullTaskList(options);
 
-    return makeTaskRunner(tasks, Object.assign({topLevel: true}, options));
+    return makeTaskRunner(tasks, Object.assign({ topLevel: true }, options));
 };
 
 export default {
@@ -250,13 +266,7 @@ export default {
     getSlugCleanupPlan,
     initialise,
     getFullTaskList,
-    getTaskRunner
+    getTaskRunner,
 };
 
-export {
-    idSuffixRegex,
-    getSlugCleanupPlan,
-    initialise,
-    getFullTaskList,
-    getTaskRunner
-};
+export { idSuffixRegex, getSlugCleanupPlan, initialise, getFullTaskList, getTaskRunner };

@@ -1,8 +1,8 @@
-import {join} from 'node:path';
-import {homedir} from 'node:os';
+import { join } from 'node:path';
+import { homedir } from 'node:os';
 import inquirer from 'inquirer';
 import _ from 'lodash';
-import {ui} from '@tryghost/pretty-cli';
+import { ui } from '@tryghost/pretty-cli';
 import tasks from '../prompts/index.js';
 
 const sitesJSONFile = join(homedir(), '.gctools', 'gctools_sites.json');
@@ -22,7 +22,7 @@ const desc = 'An interactive tool to work with Ghost content';
 const setup = (sywac) => {
     sywac.boolean('-V --verbose', {
         defaultValue: false,
-        desc: 'Show verbose output'
+        desc: 'Show verbose output',
     });
 };
 
@@ -32,177 +32,177 @@ const run = async () => {
         new inquirer.Separator('--- File Utilities ----------------'),
         {
             name: tasks.zipSplit.choice.name,
-            value: tasks.zipSplit.choice.value
+            value: tasks.zipSplit.choice.value,
         },
         {
             name: tasks.zipCreate.choice.name,
-            value: tasks.zipCreate.choice.value
+            value: tasks.zipCreate.choice.value,
         },
         {
             name: tasks.jsonSplit.choice.name,
-            value: tasks.jsonSplit.choice.value
+            value: tasks.jsonSplit.choice.value,
         },
         {
             name: tasks.fetchAssets.choice.name,
-            value: tasks.fetchAssets.choice.value
+            value: tasks.fetchAssets.choice.value,
         },
         new inquirer.Separator('--- Post API Utilities ------------'),
         {
             name: tasks.randomPosts.choice.name,
-            value: tasks.randomPosts.choice.value
+            value: tasks.randomPosts.choice.value,
         },
         {
             name: tasks.seedDemo.choice.name,
-            value: tasks.seedDemo.choice.value
+            value: tasks.seedDemo.choice.value,
         },
         {
             name: tasks.addTags.choice.name,
-            value: tasks.addTags.choice.value
+            value: tasks.addTags.choice.value,
         },
         {
             name: tasks.removeTags.choice.name,
-            value: tasks.removeTags.choice.value
+            value: tasks.removeTags.choice.value,
         },
         {
             name: tasks.combineTags.choice.name,
-            value: tasks.combineTags.choice.value
+            value: tasks.combineTags.choice.value,
         },
         {
             name: tasks.addPreview.choice.name,
-            value: tasks.addPreview.choice.value
+            value: tasks.addPreview.choice.value,
         },
         {
             name: tasks.changeAuthor.choice.name,
-            value: tasks.changeAuthor.choice.value
+            value: tasks.changeAuthor.choice.value,
         },
         {
             name: tasks.addAuthor.choice.name,
-            value: tasks.addAuthor.choice.value
+            value: tasks.addAuthor.choice.value,
         },
         {
             name: tasks.changeVisibilityPosts.choice.name,
-            value: tasks.changeVisibilityPosts.choice.value
+            value: tasks.changeVisibilityPosts.choice.value,
         },
         {
             name: tasks.changeVisibilityPages.choice.name,
-            value: tasks.changeVisibilityPages.choice.value
+            value: tasks.changeVisibilityPages.choice.value,
         },
         {
             name: tasks.changeStatus.choice.name,
-            value: tasks.changeStatus.choice.value
+            value: tasks.changeStatus.choice.value,
         },
         {
             name: tasks.contentStats.choice.name,
-            value: tasks.contentStats.choice.value
+            value: tasks.contentStats.choice.value,
         },
         {
             name: tasks.postTiers.choice.name,
-            value: tasks.postTiers.choice.value
+            value: tasks.postTiers.choice.value,
         },
         {
             name: tasks.getPosts.choice.name,
-            value: tasks.getPosts.choice.value
+            value: tasks.getPosts.choice.value,
         },
         {
             name: tasks.setTemplate.choice.name,
-            value: tasks.setTemplate.choice.value
+            value: tasks.setTemplate.choice.value,
         },
         {
             name: tasks.setCanonicalUrl.choice.name,
-            value: tasks.setCanonicalUrl.choice.value
+            value: tasks.setCanonicalUrl.choice.value,
         },
         {
             name: tasks.inlineMedia.choice.name,
-            value: tasks.inlineMedia.choice.value
+            value: tasks.inlineMedia.choice.value,
         },
         {
             name: tasks.updatePostsFromJson.choice.name,
-            value: tasks.updatePostsFromJson.choice.value
+            value: tasks.updatePostsFromJson.choice.value,
         },
         new inquirer.Separator('--- Members API Utilities ---------'),
         {
             name: tasks.addMemberCompSubscription.choice.name,
-            value: tasks.addMemberCompSubscription.choice.value
+            value: tasks.addMemberCompSubscription.choice.value,
         },
         {
             name: tasks.removeMemberCompSubscription.choice.name,
-            value: tasks.removeMemberCompSubscription.choice.value
+            value: tasks.removeMemberCompSubscription.choice.value,
         },
         {
             name: tasks.addMemberNewsletterSubscription.choice.name,
-            value: tasks.addMemberNewsletterSubscription.choice.value
+            value: tasks.addMemberNewsletterSubscription.choice.value,
         },
         {
             name: tasks.memberNewsletterBackup.choice.name,
-            value: tasks.memberNewsletterBackup.choice.value
+            value: tasks.memberNewsletterBackup.choice.value,
         },
         {
             name: tasks.splitMembers.choice.name,
-            value: tasks.splitMembers.choice.value
+            value: tasks.splitMembers.choice.value,
         },
         {
             name: tasks.addLabelToMembers.choice.name,
-            value: tasks.addLabelToMembers.choice.value
+            value: tasks.addLabelToMembers.choice.value,
         },
         {
             name: tasks.dedupeMembersCsv.choice.name,
-            value: tasks.dedupeMembersCsv.choice.value
+            value: tasks.dedupeMembersCsv.choice.value,
         },
         {
             name: tasks.compareMemberCsv.choice.name,
-            value: tasks.compareMemberCsv.choice.value
+            value: tasks.compareMemberCsv.choice.value,
         },
         {
             name: tasks.deleteLabels.choice.name,
-            value: tasks.deleteLabels.choice.value
+            value: tasks.deleteLabels.choice.value,
         },
         new inquirer.Separator('--- Staff API Utilities ---------'),
         {
             name: tasks.changeRole.choice.name,
-            value: tasks.changeRole.choice.value
+            value: tasks.changeRole.choice.value,
         },
         {
             name: tasks.cleanStaffSlugs.choice.name,
-            value: tasks.cleanStaffSlugs.choice.value
+            value: tasks.cleanStaffSlugs.choice.value,
         },
         {
             name: tasks.commentNotifications.choice.name,
-            value: tasks.commentNotifications.choice.value
+            value: tasks.commentNotifications.choice.value,
         },
         new inquirer.Separator('--- Dangerous API Utilities -------'),
         {
             name: tasks.deletePosts.choice.name,
-            value: tasks.deletePosts.choice.value
+            value: tasks.deletePosts.choice.value,
         },
         {
             name: tasks.deletePages.choice.name,
-            value: tasks.deletePages.choice.value
+            value: tasks.deletePages.choice.value,
         },
         {
             name: tasks.deleteTags.choice.name,
-            value: tasks.deleteTags.choice.value
+            value: tasks.deleteTags.choice.value,
         },
         {
             name: tasks.deleteUnusedTags.choice.name,
-            value: tasks.deleteUnusedTags.choice.value
+            value: tasks.deleteUnusedTags.choice.value,
         },
         {
             name: tasks.keepTags.choice.name,
-            value: tasks.keepTags.choice.value
+            value: tasks.keepTags.choice.value,
         },
         {
             name: tasks.findReplace.choice.name,
-            value: tasks.findReplace.choice.value
+            value: tasks.findReplace.choice.value,
         },
         new inquirer.Separator('--- Settings ----------------------'),
         {
             name: 'Show saved credentials path',
-            value: 'show_saved_creds_path'
+            value: 'show_saved_creds_path',
         },
         {
             name: 'Abort',
-            value: 'abort'
-        }
+            value: 'abort',
+        },
     ];
 
     let tasksPrompt = {
@@ -219,7 +219,7 @@ const run = async () => {
             return menuChoices.filter((choice) => {
                 return choice.name && choice.name.toLowerCase().includes(needle);
             });
-        }
+        },
     };
 
     async function mainMenu() {
@@ -233,7 +233,7 @@ const run = async () => {
                 ui.log.info('Aborted');
                 process.exit(0);
             } else {
-                let thisTask = _.filter(tasks, x => x.choice.value === answers.task);
+                let thisTask = _.filter(tasks, (x) => x.choice.value === answers.task);
                 await thisTask[0].run();
 
                 // When the task is run, return to the main menu
@@ -259,5 +259,5 @@ export default {
     flags,
     desc,
     setup,
-    run
+    run,
 };
