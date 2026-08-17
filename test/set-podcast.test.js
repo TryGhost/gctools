@@ -1,5 +1,6 @@
 import {describe, test, mock, beforeEach} from 'node:test';
 import assert from 'node:assert/strict';
+import {silentRenderer} from './helpers/silent-renderer.js';
 
 // Mock the Ghost Admin API
 const mockPosts = [
@@ -184,6 +185,7 @@ describe('Set podcast', function () {
     test('can process posts and set Facebook descriptions', async function () {
         const setPodcastModule = await import('../tasks/set-podcast.js');
         const runner = setPodcastModule.default.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'https://example.com',
             adminAPIKey: 'key',
             verbose: true
@@ -237,6 +239,7 @@ describe('Set podcast', function () {
 
         const setPodcastModule = await import('../tasks/set-podcast.js');
         const runner = setPodcastModule.default.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'https://example.com',
             adminAPIKey: 'key',
             verbose: true

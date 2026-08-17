@@ -5,6 +5,7 @@ import {URL} from 'node:url';
 import fs from 'fs-extra';
 import fsUtils from '@tryghost/mg-fs-utils';
 import compareMemberCsv from '../tasks/compare-member-csv.js';
+import {silentRenderer} from './helpers/silent-renderer.js';
 
 const __dirname = new URL('.', import.meta.url).pathname;
 
@@ -21,6 +22,7 @@ describe('Compare member CSV files', function () {
         const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
 
         const runner = compareMemberCsv.getTaskRunner({
+            ...silentRenderer,
             oldFile: oldFile,
             newFile: newFile
         });
@@ -51,6 +53,7 @@ describe('Compare member CSV files', function () {
         const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
 
         const runner = compareMemberCsv.getTaskRunner({
+            ...silentRenderer,
             oldFile: oldFile,
             newFile: newFile
         });
@@ -84,6 +87,7 @@ describe('Compare member CSV files', function () {
         const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
 
         const runner = compareMemberCsv.getTaskRunner({
+            ...silentRenderer,
             oldFile: oldFile,
             newFile: newFile
         });
@@ -113,6 +117,7 @@ describe('Compare member CSV files', function () {
         const newFile = join(__dirname, 'fixtures', 'members-csv-old.csv'); // Same file
 
         const runner = compareMemberCsv.getTaskRunner({
+            ...silentRenderer,
             oldFile: oldFile,
             newFile: newFile
         });
@@ -139,6 +144,7 @@ describe('Compare member CSV files', function () {
         const newFile = join(__dirname, 'fixtures', 'members-csv-new.csv');
 
         const runner = compareMemberCsv.getTaskRunner({
+            ...silentRenderer,
             oldFile: oldFile,
             newFile: newFile
         });
@@ -178,6 +184,7 @@ describe('Compare member CSV files', function () {
 
         try {
             const runner = compareMemberCsv.getTaskRunner({
+                ...silentRenderer,
                 oldFile: tempOldPath,
                 newFile: tempNewPath
             });
@@ -226,6 +233,7 @@ describe('Compare member CSV files', function () {
 
         try {
             const runner = compareMemberCsv.getTaskRunner({
+                ...silentRenderer,
                 oldFile: tempOldPath,
                 newFile: tempNewPath
             });
@@ -251,6 +259,7 @@ describe('Compare member CSV files', function () {
 
     test('throws error for non-existent files', async function () {
         const runner = compareMemberCsv.getTaskRunner({
+            ...silentRenderer,
             oldFile: '/non/existent/old.csv',
             newFile: '/non/existent/new.csv'
         });

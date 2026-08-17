@@ -1,5 +1,6 @@
 import {describe, test, mock, beforeEach} from 'node:test';
 import assert from 'node:assert/strict';
+import {silentRenderer} from './helpers/silent-renderer.js';
 
 // Mock the Ghost Admin API
 const mockPosts = [
@@ -98,6 +99,7 @@ describe('Set featured images', function () {
     test('can process posts and set featured images', async function () {
         const setFeaturedImagesModule = await import('../tasks/set-featured-images.js');
         const runner = setFeaturedImagesModule.default.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'https://example.com',
             adminAPIKey: 'key',
             verbose: true
@@ -137,6 +139,7 @@ describe('Set featured images', function () {
 
         const setFeaturedImagesModule = await import('../tasks/set-featured-images.js');
         const runner = setFeaturedImagesModule.default.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'https://example.com',
             adminAPIKey: 'key',
             verbose: true

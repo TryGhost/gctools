@@ -1,5 +1,6 @@
 import {describe, test, mock, before, beforeEach} from 'node:test';
 import assert from 'node:assert/strict';
+import {silentRenderer} from './helpers/silent-renderer.js';
 
 // Shared mockApi object
 const mockApi = {
@@ -103,6 +104,7 @@ describe('add-member-comp-from-csv', () => {
         });
 
         const task = addMemberCompFromCsv.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
             csvPath: 'test.csv'
@@ -123,6 +125,7 @@ describe('add-member-comp-from-csv', () => {
         mockApi.members.browse.mock.mockImplementation(() => Promise.resolve([]));
 
         const task = addMemberCompFromCsv.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
             csvPath: 'test.csv'
@@ -143,6 +146,7 @@ describe('add-member-comp-from-csv', () => {
         mockGetTiers.mock.mockImplementation(() => Promise.resolve(tiers));
 
         const task = addMemberCompFromCsv.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
             csvPath: 'test.csv'
@@ -169,6 +173,7 @@ describe('add-member-comp-from-csv', () => {
         mockApi.members.edit.mock.mockImplementation(() => Promise.reject(validationError));
 
         const task = addMemberCompFromCsv.getTaskRunner({
+            ...silentRenderer,
             apiURL: 'http://localhost:2368',
             adminAPIKey: 'test-key',
             csvPath: 'test.csv'

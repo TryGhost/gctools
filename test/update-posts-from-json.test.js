@@ -1,6 +1,7 @@
 import {describe, test, mock, beforeEach} from 'node:test';
 import assert from 'node:assert/strict';
 import {fileURLToPath} from 'node:url';
+import {silentRenderer} from './helpers/silent-renderer.js';
 
 // Path to the fixture Ghost export (read by the real fs-extra)
 const fixturePath = fileURLToPath(new URL('./fixtures/update-posts-from-json.json', import.meta.url));
@@ -57,6 +58,7 @@ mock.module('@tryghost/admin-api', {
 });
 
 const baseOptions = () => ({
+    ...silentRenderer,
     apiURL: 'https://example.com',
     adminAPIKey: 'key',
     jsonFile: fixturePath,
