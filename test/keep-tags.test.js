@@ -5,6 +5,7 @@ import path from 'node:path';
 import fs from 'fs-extra';
 import fsUtils from '@tryghost/mg-fs-utils';
 import errors from '@tryghost/errors';
+import {silentRenderer} from './helpers/silent-renderer.js';
 
 // Tags as they exist in Ghost. `hash-internal` is an internal tag and must survive every run,
 // `Hello, "World"` exercises CSV escaping in the report, and `How To` / `Hello, "World"` both
@@ -59,6 +60,7 @@ const writeCSV = (contents, name = 'keep.csv') => {
 };
 
 const baseOptions = overrides => ({
+    ...silentRenderer,
     apiURL: 'https://example.com',
     adminAPIKey: 'key',
     delayBetweenCalls: 0,
