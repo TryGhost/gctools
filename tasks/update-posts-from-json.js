@@ -146,7 +146,7 @@ const getFullTaskList = (options) => {
                     include: 'tags,authors',
                     formats: 'lexical',
                     fields: 'id,url,title,slug,status,visibility,updated_at,feature_image,feature_image_alt,feature_image_caption,custom_excerpt,meta_title,meta_description,og_title,og_description,og_image,twitter_title,twitter_description,twitter_image,canonical_url,codeinjection_head,codeinjection_foot',
-                    progress: options.verbose ? true : false,
+                    progress: Boolean(options.verbose),
                 };
 
                 if (options.slug) {

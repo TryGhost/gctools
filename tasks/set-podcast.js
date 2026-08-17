@@ -169,7 +169,7 @@ const getFullTaskList = (options) => {
                     limit: 100,
                     include: 'tags,authors',
                     filter: 'tag:[podcast]',
-                    progress: options.verbose ? true : false,
+                    progress: Boolean(options.verbose),
                 };
 
                 try {

@@ -45,7 +45,7 @@ const getFullTaskList = (options) => {
                     type: 'posts',
                     limit: 100,
                     include: 'tags,authors',
-                    progress: options.verbose ? true : false,
+                    progress: Boolean(options.verbose),
                 };
 
                 try {

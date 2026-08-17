@@ -10,6 +10,7 @@
     },
     "rules": {
         "no-console": "error",
-        "no-unused-vars": ["error", {"caughtErrors": "none"}]
+        "no-unused-vars": ["error", {"caughtErrors": "none"}],
+        "no-underscore-dangle": ["warn", {"allow": ["__dirname", "_post", "_type"]}]
     }
 }
