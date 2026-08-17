@@ -26,7 +26,7 @@
     "update": "git pull origin main && pnpm install"
   },
   "devDependencies": {
-    "eslint": "8.57.1",
+    "eslint": "10.8.1",
     "eslint-plugin-ghost": "3.5.0"
   },
   "dependencies": {
