@@ -2,7 +2,7 @@
 
 CLI utilities for working with Ghost CMS content via the Admin API.
 
-**Use `yarn` (not npm) for running scripts and installing dependencies.**
+**Use `pnpm` (not npm or yarn) for running scripts and installing dependencies.**
 
 ## Architecture Overview
 
@@ -205,7 +205,7 @@ return makeTaskRunner(tasks, {concurrent: 1});
 ## Testing
 
 ```bash
-yarn test  # Runs Jest + ESLint
+pnpm test  # Runs node --test + ESLint
 ```
 
 Tests are in `test/` directory. Mock the Ghost API client for unit tests.
