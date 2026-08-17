@@ -100,10 +100,10 @@ importers:
         version: 5.0.0
     devDependencies:
       oxfmt:
-        specifier: ^0.63.0
+        specifier: 0.63.0
         version: 0.63.0
       oxlint:
-        specifier: ^1.78.0
+        specifier: 1.78.0
         version: 1.78.0
 
 packages:
