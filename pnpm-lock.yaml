@@ -54,8 +54,8 @@ importers:
         specifier: 3.12.0
         version: 3.12.0
       file-type:
-        specifier: 22.0.1
-        version: 22.0.1(supports-color@7.2.0)
+        specifier: 22.0.2
+        version: 22.0.2(supports-color@7.2.0)
       fs-extra:
         specifier: 11.4.0
         version: 11.4.0
@@ -2174,6 +2174,10 @@ packages:
 
   file-type@22.0.1:
     resolution: {integrity: sha512-ww5Mhre0EE+jmBvOXTmXAbEMuZE7uX4a3+oRCQFNj8w++g3ev913N6tXQz0XTXbueQ5TWQfm6BdaViEHHn8bhA==}
+    engines: {node: '>=22'}
+
+  file-type@22.0.2:
+    resolution: {integrity: sha512-0H8TsCUGBLx+V5adH3EY52hTAcyLKbV1D4gq5cIOJ6DnQAHeV9Z2Hhuc5CoBX4YmvB2oL+JIC84z0qO7JsCoNw==}
     engines: {node: '>=22'}
 
   find-root@1.1.0:
@@ -5627,6 +5631,15 @@ snapshots:
       escape-string-regexp: 1.0.5
 
   file-type@22.0.1(supports-color@7.2.0):
+    dependencies:
+      '@tokenizer/inflate': 0.4.1(supports-color@7.2.0)
+      strtok3: 10.3.5
+      token-types: 6.1.2
+      uint8array-extras: 1.5.0
+    transitivePeerDependencies:
+      - supports-color
+
+  file-type@22.0.2(supports-color@7.2.0):
     dependencies:
       '@tokenizer/inflate': 0.4.1(supports-color@7.2.0)
       strtok3: 10.3.5
