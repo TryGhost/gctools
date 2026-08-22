@@ -15,23 +15,23 @@ importers:
         specifier: 1.14.11
         version: 1.14.11(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/errors':
-        specifier: 3.3.7
-        version: 3.3.7
+        specifier: 3.3.9
+        version: 3.3.9
       '@tryghost/listr-smart-renderer':
-        specifier: 0.15.4
-        version: 0.15.4
+        specifier: 0.15.5
+        version: 0.15.5
       '@tryghost/logging':
         specifier: 2.5.5
         version: 2.5.5(supports-color@7.2.0)
       '@tryghost/mg-assetscraper-db':
-        specifier: 0.13.4
-        version: 0.13.4(@types/node@26.2.0)(supports-color@7.2.0)
+        specifier: 0.13.5
+        version: 0.13.5(@types/node@26.2.0)(supports-color@7.2.0)
       '@tryghost/mg-fs-utils':
-        specifier: 0.26.4
-        version: 0.26.4(@types/node@26.2.0)(supports-color@7.2.0)
+        specifier: 0.26.5
+        version: 0.26.5(@types/node@26.2.0)(supports-color@7.2.0)
       '@tryghost/mg-ghost-authors':
-        specifier: 0.10.4
-        version: 0.10.4(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 0.10.5
+        version: 0.10.5(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/pretty-cli':
         specifier: 1.2.52
         version: 1.2.52
@@ -1491,8 +1491,8 @@ packages:
   '@tryghost/errors@3.3.6':
     resolution: {integrity: sha512-F4eR8iyccP/UkuHEbwgVMLDYGRv8vaXsPVDsYNcNmFbOi5TaC1RmOxpwx9ggdTc5SToKuO1YL+cvqaa+EO4O7w==}
 
-  '@tryghost/errors@3.3.7':
-    resolution: {integrity: sha512-dfP7FBHxKP0vRWggvlhtYSdzaPMAtsOM6MmY7OMSh39iPRlP8Hd+Kc2IUiO9KiG8gEqg0BMXmVd1zvvneyyyKg==}
+  '@tryghost/errors@3.3.9':
+    resolution: {integrity: sha512-hcrIXQoWZV0Th8DwndC8bA5BcCcgd7Zw0anAYv6ys/SsKlDMmpzZplECC3pEL8HKI/Cz05/TXkQJiBNrTK11/Q==}
 
   '@tryghost/http-stream@0.1.42':
     resolution: {integrity: sha512-wQBwTMLaMAFmKwi0nQeRPcnRvQYFtgYp9d4dJx0b1IkHLmhRwoRGcOkxYd6ajSEGfv7w0GkaaQH4Qd2s/pzuzw==}
@@ -1500,20 +1500,20 @@ packages:
   '@tryghost/image-transform@1.4.17':
     resolution: {integrity: sha512-+WipAbQ6gTOB9hbhmTDHW7tzaB1lPIRszoN+z1qV+vlI+cR/4qO70Ux+HkSYT9gt4WpxRZJZCBCk3+x4Nm0LhQ==}
 
-  '@tryghost/listr-smart-renderer@0.15.4':
-    resolution: {integrity: sha512-YhJ80Zjc2rZIN1X4uw3FsnqwosPpk2jRnT0Ir++rI6pJvLsFXCAG7wDTrnmLK+r4Ee+hv+bTJexYUvWGeu38yw==}
+  '@tryghost/listr-smart-renderer@0.15.5':
+    resolution: {integrity: sha512-EcRujNQCKCb23Dj1WGD/v6VtWoyq/FsnqIDHH/vf0zr5UfARD5LriN4jGKsfZgUoWYwKRYY7OIlE8TI16p17rw==}
 
   '@tryghost/logging@2.5.5':
     resolution: {integrity: sha512-OILuHgDuoO5Eq1aPrwAmxSPWPRF8AZI+EfyGusZVY70kdBH3XcxNySGZAZIvc0rAtXLOgQPSdQpxPfKbbBxPAg==}
 
-  '@tryghost/mg-assetscraper-db@0.13.4':
-    resolution: {integrity: sha512-ZxPtDDaHrOr/MGfUP+M8uBUQ1vJ3PhON7V3nTAIloyR22LjqQp/N2hrBmcIhuWx8iQgSFFo4LUE249oqfEM8DA==}
+  '@tryghost/mg-assetscraper-db@0.13.5':
+    resolution: {integrity: sha512-VwfwFY6rtT4eQpbaZDXfWU8i6eVc9zNI02PKACrYEO4uh5GHYBW1TrbRHGMyUNHENEdhGJBnjJcJ8RKP8EPcJQ==}
 
-  '@tryghost/mg-fs-utils@0.26.4':
-    resolution: {integrity: sha512-Q2QMp0aXiDRAMd8RlcVlQCQlMGdkMWJzTQv1MWQsXoWR8ipGREDxrn19ghaToyVf03GWEvGTCPTr3m1CR4VYWQ==}
+  '@tryghost/mg-fs-utils@0.26.5':
+    resolution: {integrity: sha512-baZjvw9sS2/idkgOxKAtFvyW8g4OkVwxfFZV/DqinYSO4bgQX6QOJ2vXIlkNwmVAPuGn/arpoBox19K3Yi+BpQ==}
 
-  '@tryghost/mg-ghost-authors@0.10.4':
-    resolution: {integrity: sha512-qH89Xa95IO2lUWRy87NYf/6uOgTOnPfQquz/Bp48/wOVPqWq9ug48qfU5r5ICJCKSqRQccCTJllDf5OwpYOjeQ==}
+  '@tryghost/mg-ghost-authors@0.10.5':
+    resolution: {integrity: sha512-7Dx09nVnW4LyFp87QibQZGiuyan2b5Bg5Bx86AEKk1QM96uSsnji513ksTYa8/7wp1+Yyjo7Us9plNvlbWWF5Q==}
 
   '@tryghost/pretty-cli@1.2.52':
     resolution: {integrity: sha512-+DGSSeKlNHQ/zqcs167W3W0D+HYz1TzAdK7TyzTBUj4Hodqxd70GfkdcWxLMNGdggKd4d59UxGZ/6n0vjVhVSA==}
@@ -2171,10 +2171,6 @@ packages:
   figures@2.0.0:
     resolution: {integrity: sha512-Oa2M9atig69ZkfwiApY8F2Yy+tzMbazyvqv21R0NsSC8floSOC09BbT1ITWAdoMGQvJ/aZnR1KMwdx9tvHnTNA==}
     engines: {node: '>=4'}
-
-  file-type@22.0.1:
-    resolution: {integrity: sha512-ww5Mhre0EE+jmBvOXTmXAbEMuZE7uX4a3+oRCQFNj8w++g3ev913N6tXQz0XTXbueQ5TWQfm6BdaViEHHn8bhA==}
-    engines: {node: '>=22'}
 
   file-type@22.0.2:
     resolution: {integrity: sha512-0H8TsCUGBLx+V5adH3EY52hTAcyLKbV1D4gq5cIOJ6DnQAHeV9Z2Hhuc5CoBX4YmvB2oL+JIC84z0qO7JsCoNw==}
@@ -4761,7 +4757,7 @@ snapshots:
 
   '@tryghost/errors@3.3.6': {}
 
-  '@tryghost/errors@3.3.7': {}
+  '@tryghost/errors@3.3.9': {}
 
   '@tryghost/http-stream@0.1.42(supports-color@7.2.0)':
     dependencies:
@@ -4780,7 +4776,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@tryghost/listr-smart-renderer@0.15.4':
+  '@tryghost/listr-smart-renderer@0.15.5':
     dependencies:
       chalk: 6.0.0
       cli-truncate: 6.1.1
@@ -4807,14 +4803,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tryghost/mg-assetscraper-db@0.13.4(@types/node@26.2.0)(supports-color@7.2.0)':
+  '@tryghost/mg-assetscraper-db@0.13.5(@types/node@26.2.0)(supports-color@7.2.0)':
     dependencies:
       '@tryghost/errors': 3.3.6
-      '@tryghost/listr-smart-renderer': 0.15.4
-      '@tryghost/mg-fs-utils': 0.26.4(@types/node@26.2.0)(supports-color@7.2.0)
+      '@tryghost/listr-smart-renderer': 0.15.5
+      '@tryghost/mg-fs-utils': 0.26.5(@types/node@26.2.0)(supports-color@7.2.0)
       '@tryghost/string': 0.3.5
       escape-string-regexp: 5.0.0
-      file-type: 22.0.1(supports-color@7.2.0)
+      file-type: 22.0.2(supports-color@7.2.0)
       heic-convert: 2.1.0
       sharp: 0.35.3(@types/node@26.2.0)
       transliteration: 2.6.1
@@ -4825,7 +4821,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-fs-utils@0.26.4(@types/node@26.2.0)(supports-color@7.2.0)':
+  '@tryghost/mg-fs-utils@0.26.5(@types/node@26.2.0)(supports-color@7.2.0)':
     dependencies:
       '@tryghost/errors': 3.3.6
       '@tryghost/image-transform': 1.4.17(@types/node@26.2.0)(supports-color@7.2.0)
@@ -4844,7 +4840,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-ghost-authors@0.10.4(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@tryghost/mg-ghost-authors@0.10.5(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@tryghost/admin-api': 1.14.11(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/errors': 3.3.6
@@ -5629,15 +5625,6 @@ snapshots:
   figures@2.0.0:
     dependencies:
       escape-string-regexp: 1.0.5
-
-  file-type@22.0.1(supports-color@7.2.0):
-    dependencies:
-      '@tokenizer/inflate': 0.4.1(supports-color@7.2.0)
-      strtok3: 10.3.5
-      token-types: 6.1.2
-      uint8array-extras: 1.5.0
-    transitivePeerDependencies:
-      - supports-color
 
   file-type@22.0.2(supports-color@7.2.0):
     dependencies:
