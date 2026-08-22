@@ -24,7 +24,7 @@
     "update": "git pull origin main && pnpm install"
   },
   "dependencies": {
-    "@inquirer/confirm": "6.1.1",
+    "@inquirer/confirm": "6.2.0",
     "@tryghost/admin-api": "1.14.11",
     "@tryghost/errors": "3.3.9",
     "@tryghost/listr-smart-renderer": "0.15.5",
