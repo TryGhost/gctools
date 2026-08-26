@@ -18,20 +18,20 @@ importers:
         specifier: 3.3.9
         version: 3.3.9
       '@tryghost/listr-smart-renderer':
-        specifier: 0.15.5
-        version: 0.15.5
+        specifier: 0.15.6
+        version: 0.15.6
       '@tryghost/logging':
         specifier: 2.5.5
         version: 2.5.5(supports-color@7.2.0)
       '@tryghost/mg-assetscraper-db':
-        specifier: 0.13.5
-        version: 0.13.5(@types/node@26.2.0)(supports-color@7.2.0)
+        specifier: 0.13.6
+        version: 0.13.6(@types/node@26.2.0)(supports-color@7.2.0)
       '@tryghost/mg-fs-utils':
-        specifier: 0.26.5
-        version: 0.26.5(@types/node@26.2.0)(supports-color@7.2.0)
+        specifier: 0.26.6
+        version: 0.26.6(@types/node@26.2.0)(supports-color@7.2.0)
       '@tryghost/mg-ghost-authors':
-        specifier: 0.10.5
-        version: 0.10.5(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 0.10.6
+        version: 0.10.6(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/pretty-cli':
         specifier: 1.2.52
         version: 1.2.52
@@ -1500,20 +1500,20 @@ packages:
   '@tryghost/image-transform@1.4.17':
     resolution: {integrity: sha512-+WipAbQ6gTOB9hbhmTDHW7tzaB1lPIRszoN+z1qV+vlI+cR/4qO70Ux+HkSYT9gt4WpxRZJZCBCk3+x4Nm0LhQ==}
 
-  '@tryghost/listr-smart-renderer@0.15.5':
-    resolution: {integrity: sha512-EcRujNQCKCb23Dj1WGD/v6VtWoyq/FsnqIDHH/vf0zr5UfARD5LriN4jGKsfZgUoWYwKRYY7OIlE8TI16p17rw==}
+  '@tryghost/listr-smart-renderer@0.15.6':
+    resolution: {integrity: sha512-3oax2UG+RVBYE63STugEhXHFmQQpo8p+fCsOochE2H0FWgU33kYycOVB3D5pVvMpdI5YtoPS7zlcJSKT92JGfw==}
 
   '@tryghost/logging@2.5.5':
     resolution: {integrity: sha512-OILuHgDuoO5Eq1aPrwAmxSPWPRF8AZI+EfyGusZVY70kdBH3XcxNySGZAZIvc0rAtXLOgQPSdQpxPfKbbBxPAg==}
 
-  '@tryghost/mg-assetscraper-db@0.13.5':
-    resolution: {integrity: sha512-VwfwFY6rtT4eQpbaZDXfWU8i6eVc9zNI02PKACrYEO4uh5GHYBW1TrbRHGMyUNHENEdhGJBnjJcJ8RKP8EPcJQ==}
+  '@tryghost/mg-assetscraper-db@0.13.6':
+    resolution: {integrity: sha512-8lnzWy5E+JK/PSkjK04HlHGf66hC+GQkBkg+1KU+MeyBTpBdEv5LCoqdWKHpZBFek4gP0TxRFJ3PzVKZLgJ+fQ==}
 
-  '@tryghost/mg-fs-utils@0.26.5':
-    resolution: {integrity: sha512-baZjvw9sS2/idkgOxKAtFvyW8g4OkVwxfFZV/DqinYSO4bgQX6QOJ2vXIlkNwmVAPuGn/arpoBox19K3Yi+BpQ==}
+  '@tryghost/mg-fs-utils@0.26.6':
+    resolution: {integrity: sha512-2Y+wGGkLLkZmOpY1glK6tpxJc4CzVFy38n4qMtjjOKaK1yO2xIqdBGAx6J4y1C02K6Iihlerc8LOpKsYXbrhVA==}
 
-  '@tryghost/mg-ghost-authors@0.10.5':
-    resolution: {integrity: sha512-7Dx09nVnW4LyFp87QibQZGiuyan2b5Bg5Bx86AEKk1QM96uSsnji513ksTYa8/7wp1+Yyjo7Us9plNvlbWWF5Q==}
+  '@tryghost/mg-ghost-authors@0.10.6':
+    resolution: {integrity: sha512-02SFGWpos0wkPPj0+2C8eW07zoajcg0gR/Z9i43Q25HkP9YKapaVtZfYhSNUJoazx6gc8uCGp4NhK92XqRm+qw==}
 
   '@tryghost/pretty-cli@1.2.52':
     resolution: {integrity: sha512-+DGSSeKlNHQ/zqcs167W3W0D+HYz1TzAdK7TyzTBUj4Hodqxd70GfkdcWxLMNGdggKd4d59UxGZ/6n0vjVhVSA==}
@@ -4776,7 +4776,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@tryghost/listr-smart-renderer@0.15.5':
+  '@tryghost/listr-smart-renderer@0.15.6':
     dependencies:
       chalk: 6.0.0
       cli-truncate: 6.1.1
@@ -4803,11 +4803,11 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tryghost/mg-assetscraper-db@0.13.5(@types/node@26.2.0)(supports-color@7.2.0)':
+  '@tryghost/mg-assetscraper-db@0.13.6(@types/node@26.2.0)(supports-color@7.2.0)':
     dependencies:
       '@tryghost/errors': 3.3.6
-      '@tryghost/listr-smart-renderer': 0.15.5
-      '@tryghost/mg-fs-utils': 0.26.5(@types/node@26.2.0)(supports-color@7.2.0)
+      '@tryghost/listr-smart-renderer': 0.15.6
+      '@tryghost/mg-fs-utils': 0.26.6(@types/node@26.2.0)(supports-color@7.2.0)
       '@tryghost/string': 0.3.5
       escape-string-regexp: 5.0.0
       file-type: 22.0.2(supports-color@7.2.0)
@@ -4821,7 +4821,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-fs-utils@0.26.5(@types/node@26.2.0)(supports-color@7.2.0)':
+  '@tryghost/mg-fs-utils@0.26.6(@types/node@26.2.0)(supports-color@7.2.0)':
     dependencies:
       '@tryghost/errors': 3.3.6
       '@tryghost/image-transform': 1.4.17(@types/node@26.2.0)(supports-color@7.2.0)
@@ -4840,7 +4840,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-ghost-authors@0.10.5(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@tryghost/mg-ghost-authors@0.10.6(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@tryghost/admin-api': 1.14.11(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/errors': 3.3.6
