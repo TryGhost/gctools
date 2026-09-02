@@ -90,8 +90,8 @@ importers:
         specifier: 3.0.0
         version: 3.0.0
       superbytes:
-        specifier: 2.0.1
-        version: 2.0.1
+        specifier: 2.1.0
+        version: 2.1.0
       title-case:
         specifier: 4.3.2
         version: 4.3.2
@@ -3231,8 +3231,8 @@ packages:
     resolution: {integrity: sha512-ki4hZQfh5rX0QDLLkOCj+h+CVNkqmp/CMf8v8kZpkNVK6jGQooMytqzLZYUVYIZcFZ6yDB70EfD8POcFXiF5oA==}
     engines: {node: '>=18'}
 
-  superbytes@2.0.1:
-    resolution: {integrity: sha512-QjGNlCo58LYC9T0HdJNVRRHdX3/+Y+sq+tTvzDtsAjI6CUvEI5XST5/ZfZ3v2jf0GFmwF8VQBXevm0VnSLppbQ==}
+  superbytes@2.1.0:
+    resolution: {integrity: sha512-vciYxAPioQ+zR9nZFgKnppjerXOMk76Wm7M7z7kyxI0pRXMuqQDPGefueCxKRWGppUhLS+3KqW2nzdUa7IMnAQ==}
 
   supports-color@2.0.0:
     resolution: {integrity: sha512-KKNVtd6pCYgPIKU4cp2733HWYCpplQhddZLBUryaAHou723x+FRzQ5Df824Fj+IyyuiQTRoub4SnIFfIcrp70g==}
@@ -6868,7 +6868,7 @@ snapshots:
     dependencies:
       '@tokenizer/token': 0.3.0
 
-  superbytes@2.0.1: {}
+  superbytes@2.1.0: {}
 
   supports-color@2.0.0: {}
 
