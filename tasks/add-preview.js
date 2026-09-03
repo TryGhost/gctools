@@ -6,6 +6,20 @@ import { transformToCommaString } from '../lib/utils.js';
 import { discover } from '../lib/batch-ghost-discover.js';
 import errors from '@tryghost/errors';
 
+// An internal tag, stamped with the time the run was initialised, so the posts
+// touched by a given run can be found again later
+const previewAddedTagName = (date) => {
+    const pad = (value) => String(value).padStart(2, '0');
+    const parts = [
+        date.getFullYear(),
+        pad(date.getMonth() + 1),
+        pad(date.getDate()),
+        pad(date.getHours()),
+        pad(date.getMinutes()),
+    ];
+    return `#preview-added-${parts.join('-')}`;
+};
+
 const initialise = (options) => {
     return {
         title: 'Initialising API connection',
@@ -32,6 +46,7 @@ const initialise = (options) => {
 
             ctx.previewPosition = null;
             ctx.previewPositionType = null;
+            ctx.previewAddedTag = previewAddedTagName(new Date());
 
             // If options.previewPosition contains a percent character
             if (options.previewPosition.includes('%')) {
@@ -73,6 +88,7 @@ const getFullTaskList = (options) => {
                     api: ctx.api,
                     type: 'posts',
                     formats: 'mobiledoc,lexical',
+                    include: 'tags',
                     filter: discoveryFilter.join('+'), // Combine filters, so it's posts by author AND tag, not posts by author OR tag
                 };
 
@@ -147,11 +163,21 @@ const getFullTaskList = (options) => {
 
                                 updatedLexical = JSON.stringify(updatedLexical, null, 2);
 
+                                let updatedTags = post.tags ?? [];
+                                const hasPreviewAddedTag = updatedTags.some((tag) => {
+                                    return tag.name === ctx.previewAddedTag;
+                                });
+
+                                if (!hasPreviewAddedTag) {
+                                    updatedTags = [...updatedTags, { name: ctx.previewAddedTag }];
+                                }
+
                                 try {
                                     let result = await ctx.api.posts.edit({
                                         id: post.id,
                                         updated_at: post.updated_at,
                                         lexical: updatedLexical,
+                                        tags: updatedTags,
                                     });
 
                                     ctx.updated.push(result.url);
@@ -185,6 +211,7 @@ const getTaskRunner = (options) => {
 };
 
 export default {
+    previewAddedTagName,
     initialise,
     getFullTaskList,
     getTaskRunner,
