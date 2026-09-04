@@ -15,8 +15,8 @@ importers:
         specifier: 1.14.11
         version: 1.14.11(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/errors':
-        specifier: 3.3.10
-        version: 3.3.10
+        specifier: 3.3.13
+        version: 3.3.13
       '@tryghost/listr-smart-renderer':
         specifier: 0.15.6
         version: 0.15.6
@@ -1488,8 +1488,8 @@ packages:
   '@tryghost/errors@2.2.1':
     resolution: {integrity: sha512-7zR5Wu9UMalFZbWZs3nN3MzJg6mKek11W51AP8UGz5sN4fQofoeLwXHLI/AuT7nDuWiJZHsJcI1EGJg0iQHV3g==}
 
-  '@tryghost/errors@3.3.10':
-    resolution: {integrity: sha512-NM0N1Dykr7HxRPYRRFtBF51/AAaGNHnKOerM+I0nwrO6ujx3z5suoX4BvFiL+n+ZM8gLjk91yveCQLRlBLUWkg==}
+  '@tryghost/errors@3.3.13':
+    resolution: {integrity: sha512-ZJelL4irZpH+37ZATowbyA3PrSZHc9EsN2ThOXGS1ESThLnq/ETIJdrnXh38I5p/dFB9ZDH7GJfcjmRZvSM69Q==}
 
   '@tryghost/errors@3.3.6':
     resolution: {integrity: sha512-F4eR8iyccP/UkuHEbwgVMLDYGRv8vaXsPVDsYNcNmFbOi5TaC1RmOxpwx9ggdTc5SToKuO1YL+cvqaa+EO4O7w==}
@@ -4755,7 +4755,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tryghost/errors@3.3.10': {}
+  '@tryghost/errors@3.3.13': {}
 
   '@tryghost/errors@3.3.6': {}
 
