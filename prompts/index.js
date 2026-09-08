@@ -38,6 +38,7 @@ import inlineMedia from './inline-media.js';
 import updatePostsFromJson from './update-posts-from-json.js';
 import seedDemo from './seed-demo.js';
 import keepTags from './keep-tags.js';
+import deleteStaffUsers from './delete-staff-users.js';
 
 export default {
     zipSplit,
@@ -80,4 +81,5 @@ export default {
     updatePostsFromJson,
     seedDemo,
     keepTags,
+    deleteStaffUsers,
 };

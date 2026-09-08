@@ -52,6 +52,7 @@ import updatePostsFromJson from '../commands/update-posts-from-json.js';
 import seedDemo from '../commands/seed-demo.js';
 import exportComments from '../commands/export-comments.js';
 import keepTags from '../commands/keep-tags.js';
+import deleteStaffUsers from '../commands/delete-staff-users.js';
 
 prettyCLI.command(addMemberCompSubscriptionCommands);
 prettyCLI.command(removeMemberCompSubscriptionCommands);
@@ -102,6 +103,7 @@ prettyCLI.command(updatePostsFromJson);
 prettyCLI.command(seedDemo);
 prettyCLI.command(exportComments);
 prettyCLI.command(keepTags);
+prettyCLI.command(deleteStaffUsers);
 
 prettyCLI.style({
     usageCommandPlaceholder: () => '<source or utility>',

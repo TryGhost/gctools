@@ -59,6 +59,7 @@ Available tools include:
 * [`change-visibility-pages`](#change-visibility-pages)
 * [`change-status`](#change-status)
 * [`change-role`](#change-role)
+* [`delete-staff-users`](#delete-staff-users)
 * [`clean-staff-slugs`](#clean-staff-slugs)
 * [`comment-notifications`](#comment-notifications)
 * [`add-member-comp-subscription`](#add-member-comp-subscription)
@@ -803,6 +804,40 @@ gctools change-role <apiURL> <adminAPIKey> --newRole 'Contributor'
 # Change all staff users who are currently the Editor role to have the Author role
 gctools change-role <apiURL> <adminAPIKey> --filterRole 'Editor' --newRole 'Author'
 ```
+
+### delete-staff-users
+
+Permanently delete staff users in selected roles when they have no posts or pages. You can optionally limit the operation to staff whose email has an exact domain. The site owner and the staff user whose token is running the command are always protected. A [staff access token](https://docs.ghost.org/admin-api#staff-access-token-authentication) with permission to delete the selected users is required; an integration Admin API key will be rejected.
+
+The command treats Ghost's authenticated `count.posts` value as the combined post/page count. If that count is missing, the staff user is skipped. Every user is fetched and checked again immediately before deletion.
+
+```sh
+# See all available options
+gctools delete-staff-users --help
+
+# Preview content-free Contributors and Authors
+gctools delete-staff-users <apiURL> <staffAccessToken> --roles 'Contributor,Author' --dry-run
+
+# Permanently delete the eligible staff users
+gctools delete-staff-users <apiURL> <staffAccessToken> --roles 'Contributor,Author' --yes
+
+# Only delete eligible staff whose email ends with @example.com
+gctools delete-staff-users <apiURL> <staffAccessToken> --roles 'Contributor,Author' --email-domain 'example.com' --yes
+
+# Show every eligible and skipped staff user
+gctools delete-staff-users <apiURL> <staffAccessToken> --roles 'Contributor' --dry-run --verbose
+```
+
+The interactive mode also supports this tool via `gctools i`. It reuses saved/manual credentials, defaults to preview, and asks for confirmation before deletion.
+
+**Available options:**
+
+- `--roles`: Required comma-separated list of roles to delete; each value must be `Contributor`, `Author`, `Editor`, or `Administrator`
+- `--email-domain`: Only delete staff whose email ends with this exact domain; accepts `example.com` or `@example.com`
+- `--dry-run`: Preview eligible staff users without deleting anything
+- `--yes`: Confirm permanent deletion; cannot be combined with `--dry-run`
+- `--delayBetweenCalls` (default: 200): Delay between deletion attempts in ms
+- `--verbose`: Show every eligible and skipped staff user
 
 ### clean-staff-slugs
 

@@ -171,6 +171,10 @@ const run = async () => {
         },
         new inquirer.Separator('--- Dangerous API Utilities -------'),
         {
+            name: tasks.deleteStaffUsers.choice.name,
+            value: tasks.deleteStaffUsers.choice.value,
+        },
+        {
             name: tasks.deletePosts.choice.name,
             value: tasks.deletePosts.choice.value,
         },
