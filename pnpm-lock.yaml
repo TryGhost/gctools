@@ -110,8 +110,8 @@ importers:
   .:
     dependencies:
       '@inquirer/confirm':
-        specifier: 6.3.1
-        version: 6.3.1(@types/node@26.4.0)
+        specifier: 6.3.2
+        version: 6.3.2(@types/node@26.4.0)
       '@tryghost/admin-api':
         specifier: 1.14.11
         version: 1.14.11(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -411,8 +411,26 @@ packages:
       '@types/node':
         optional: true
 
+  '@inquirer/confirm@6.3.2':
+    resolution: {integrity: sha512-Xvr/0HggjddPtGppuqVmxhTw+Hr8PvsZ/k0HmOEaAqQEt80OITNkFWnsdNmyT0/eM4Ab+iJLx2R8rctlEyfSVg==}
+    engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
+    peerDependencies:
+      '@types/node': '>=18'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+
   '@inquirer/core@12.0.2':
     resolution: {integrity: sha512-9pBhkxE14uUlnHhs8lOt7qVPtS4caRY6CjADl8COejl9Mf7w8i6Uoe3DrljCqYtmYM3Iv2Q6EmPxx/oTYbvTAQ==}
+    engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
+    peerDependencies:
+      '@types/node': '>=18'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+
+  '@inquirer/core@12.0.3':
+    resolution: {integrity: sha512-wsSy0sznmXwkty+2PzZwx00Cazc/E0r0B7mAzdGROz2Ct+DFZXaK7WDjGZvgjRldxH5ZhFVfF2lgkYrqgOw2KA==}
     engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
     peerDependencies:
       '@types/node': '>=18'
@@ -3726,7 +3744,26 @@ snapshots:
     optionalDependencies:
       '@types/node': 26.4.0
 
+  '@inquirer/confirm@6.3.2(@types/node@26.4.0)':
+    dependencies:
+      '@inquirer/core': 12.0.3(@types/node@26.4.0)
+      '@inquirer/type': 4.1.1(@types/node@26.4.0)
+    optionalDependencies:
+      '@types/node': 26.4.0
+
   '@inquirer/core@12.0.2(@types/node@26.4.0)':
+    dependencies:
+      '@inquirer/ansi': 2.0.8
+      '@inquirer/figures': 2.0.9
+      '@inquirer/type': 4.1.1(@types/node@26.4.0)
+      cli-width: 4.1.0
+      fast-wrap-ansi: 0.2.2
+      mute-stream: 3.0.0
+      signal-exit: 4.1.0
+    optionalDependencies:
+      '@types/node': 26.4.0
+
+  '@inquirer/core@12.0.3(@types/node@26.4.0)':
     dependencies:
       '@inquirer/ansi': 2.0.8
       '@inquirer/figures': 2.0.9
