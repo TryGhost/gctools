@@ -170,11 +170,11 @@ importers:
         specifier: 6.3.2
         version: 6.3.2(@types/node@26.5.1)
       '@tryghost/admin-api':
-        specifier: 1.14.11
-        version: 1.14.11(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 1.14.12
+        version: 1.14.12(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/errors':
-        specifier: 3.3.13
-        version: 3.3.13
+        specifier: 3.3.14
+        version: 3.3.14
       '@tryghost/listr-smart-renderer':
         specifier: 0.15.6
         version: 0.15.6
@@ -194,8 +194,8 @@ importers:
         specifier: 1.2.52
         version: 1.2.52
       '@tryghost/string':
-        specifier: 0.3.5
-        version: 0.3.5
+        specifier: 0.3.6
+        version: 0.3.6
       '@tryghost/zip':
         specifier: 1.1.54
         version: 1.1.54(supports-color@7.2.0)
@@ -1631,6 +1631,9 @@ packages:
   '@tryghost/admin-api@1.14.11':
     resolution: {integrity: sha512-dI4buzO/oR4Hop8R9KowNgjqyVUs0wC+/j6g8vFmOOmSEtGaAT1OF22SW09f9c/Ab7eY0CXXPLIDM9bbgAZjVQ==}
 
+  '@tryghost/admin-api@1.14.12':
+    resolution: {integrity: sha512-sIq5laVcnkz+xeionkmOusA00k1n5jVGe/kBIOQ/zxouNDwgR+EbM0oGOuRgqa8Fw7CimhqiFQ+aSAKShyl2wg==}
+
   '@tryghost/bunyan-rotating-filestream@0.0.7':
     resolution: {integrity: sha512-dswM+dxG8J7WpVoSjzAdoWXqqB5Dg0C2T7Zh6eoUvl5hkA8yWWJi/fS4jNXlHF700lWQ0g8/t+leJ7SGSWd+aw==}
 
@@ -1646,8 +1649,8 @@ packages:
   '@tryghost/errors@2.2.1':
     resolution: {integrity: sha512-7zR5Wu9UMalFZbWZs3nN3MzJg6mKek11W51AP8UGz5sN4fQofoeLwXHLI/AuT7nDuWiJZHsJcI1EGJg0iQHV3g==}
 
-  '@tryghost/errors@3.3.13':
-    resolution: {integrity: sha512-ZJelL4irZpH+37ZATowbyA3PrSZHc9EsN2ThOXGS1ESThLnq/ETIJdrnXh38I5p/dFB9ZDH7GJfcjmRZvSM69Q==}
+  '@tryghost/errors@3.3.14':
+    resolution: {integrity: sha512-Z49f+Wy6benC35x+x30FAjBWDMllJN7mMg5mWrOtxK67ipAflKlcQgubT03ZTYbbPPc9J8Kx2In7fOcvyp6a5g==}
 
   '@tryghost/errors@3.3.6':
     resolution: {integrity: sha512-F4eR8iyccP/UkuHEbwgVMLDYGRv8vaXsPVDsYNcNmFbOi5TaC1RmOxpwx9ggdTc5SToKuO1YL+cvqaa+EO4O7w==}
@@ -1687,6 +1690,9 @@ packages:
 
   '@tryghost/string@0.3.5':
     resolution: {integrity: sha512-Ov2UYOuU5QutDo/UECtkhHR3jdT4R/aNxzKFk0iaH0yiwxLnlqEB4QBBVnYYIN8zECNAazRzkygtdFSlSkuaoA==}
+
+  '@tryghost/string@0.3.6':
+    resolution: {integrity: sha512-aYlvmvicb4nj3QtvkIr8JsQqKks1mphlCWJVirNMAyxzKIHY6rJC1g4FjCOlTHUCtNDhJyxxUaT6UznVndY0ZQ==}
 
   '@tryghost/tpl@0.1.40':
     resolution: {integrity: sha512-8w94lbNxXptRCIS8pe/IHjzgVFLxljxXx8+UQLO8NRFKraoEXthkPjAphN2MXKp1UGtj5ldh4Ye4D82bUWceOw==}
@@ -4884,6 +4890,15 @@ snapshots:
       - debug
       - supports-color
 
+  '@tryghost/admin-api@1.14.12(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+    dependencies:
+      axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      form-data: 4.0.6
+      jsonwebtoken: 9.0.3
+    transitivePeerDependencies:
+      - debug
+      - supports-color
+
   '@tryghost/bunyan-rotating-filestream@0.0.7':
     dependencies:
       long-timeout: 0.1.1
@@ -4917,7 +4932,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tryghost/errors@3.3.13': {}
+  '@tryghost/errors@3.3.14': {}
 
   '@tryghost/errors@3.3.6': {}
 
@@ -5038,6 +5053,10 @@ snapshots:
       find-root: 1.1.0
 
   '@tryghost/string@0.3.5':
+    dependencies:
+      unidecode: 1.1.0
+
+  '@tryghost/string@0.3.6':
     dependencies:
       unidecode: 1.1.0
 
