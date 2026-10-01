@@ -206,8 +206,8 @@ importers:
         specifier: 3.7.2
         version: 3.7.2
       chalk:
-        specifier: 6.0.0
-        version: 6.0.0
+        specifier: 6.0.1
+        version: 6.0.1
       cli-progress:
         specifier: 3.12.0
         version: 3.12.0
@@ -2011,6 +2011,10 @@ packages:
 
   chalk@6.0.0:
     resolution: {integrity: sha512-2uNTXIuTTxk7ciZgAU1BQcgnchcG0xXnrs6jzkQfj9SsRa9M2s5zE8WT96hS6KmG4MzWHSrvH43DF1m4XRkrFg==}
+    engines: {node: '>=22'}
+
+  chalk@6.0.1:
+    resolution: {integrity: sha512-/Ce6KNm3vIbWdMlNna6RVIZ/ICQxnJxCicet5LBKK9ZffBkqzDw0xh9EiKSljdRtiIQ1S1z4YgcscUUGzNCWrA==}
     engines: {node: '>=22'}
 
   chardet@0.4.2:
@@ -5345,6 +5349,8 @@ snapshots:
   chalk@5.6.2: {}
 
   chalk@6.0.0: {}
+
+  chalk@6.0.1: {}
 
   chardet@0.4.2: {}
 
