@@ -173,8 +173,8 @@ importers:
         specifier: 1.14.13
         version: 1.14.13(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/errors':
-        specifier: 3.3.14
-        version: 3.3.14
+        specifier: 3.4.1
+        version: 3.4.1
       '@tryghost/listr-smart-renderer':
         specifier: 0.15.6
         version: 0.15.6
@@ -1665,11 +1665,11 @@ packages:
   '@tryghost/errors@2.2.1':
     resolution: {integrity: sha512-7zR5Wu9UMalFZbWZs3nN3MzJg6mKek11W51AP8UGz5sN4fQofoeLwXHLI/AuT7nDuWiJZHsJcI1EGJg0iQHV3g==}
 
-  '@tryghost/errors@3.3.14':
-    resolution: {integrity: sha512-Z49f+Wy6benC35x+x30FAjBWDMllJN7mMg5mWrOtxK67ipAflKlcQgubT03ZTYbbPPc9J8Kx2In7fOcvyp6a5g==}
-
   '@tryghost/errors@3.3.6':
     resolution: {integrity: sha512-F4eR8iyccP/UkuHEbwgVMLDYGRv8vaXsPVDsYNcNmFbOi5TaC1RmOxpwx9ggdTc5SToKuO1YL+cvqaa+EO4O7w==}
+
+  '@tryghost/errors@3.4.1':
+    resolution: {integrity: sha512-kUsC+QDJC+C7z8KPhwSxR0uXwloTNxRL9yzvyV7X/XMT2Wc/tz114uQgrqUMVbEWYhyzlNa7WvlqcOsyK0wo+g==}
 
   '@tryghost/http-stream@0.1.42':
     resolution: {integrity: sha512-wQBwTMLaMAFmKwi0nQeRPcnRvQYFtgYp9d4dJx0b1IkHLmhRwoRGcOkxYd6ajSEGfv7w0GkaaQH4Qd2s/pzuzw==}
@@ -4862,9 +4862,9 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tryghost/errors@3.3.14': {}
-
   '@tryghost/errors@3.3.6': {}
+
+  '@tryghost/errors@3.4.1': {}
 
   '@tryghost/http-stream@0.1.42(supports-color@7.2.0)':
     dependencies:
