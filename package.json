@@ -53,7 +53,7 @@
     "lorem-ipsum": "3.0.0",
     "superbytes": "2.1.0",
     "title-case": "4.3.2",
-    "tty-table": "7.0.1"
+    "tty-table": "7.1.0"
   },
   "packageManager": "pnpm@12.10.1+sha512.ba40a37eb1a370d60fea8c4cf1d364c13bcccef518e98ad2bcee954f539d38da37458e58261a3fa55e06523450ea0ffff9f497b135be41f2c15c1642bacace6c",
   "devDependencies": {
