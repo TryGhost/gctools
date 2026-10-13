@@ -867,7 +867,7 @@ The interactive mode also supports this tool via `gctools i` and uses the same s
 
 ### comment-notifications
 
-Manage comment notification settings for staff users. Backup current settings to CSV, restore from a backup, or enable/disable notifications for all staff.
+Manage comment and membership notification settings for staff users. Backup current settings to CSV, restore from a backup, or enable/disable comment notifications for all staff. Bulk updates also disable free-member signup, paid-subscription cancellation, and paid-subscription start notifications.
 
 ```sh
 # See all available options
@@ -882,25 +882,26 @@ gctools comment-notifications <apiURL> <adminAPIKey> --backup ./backup.csv --val
 # Disable notifications for all staff (no backup)
 gctools comment-notifications <apiURL> <adminAPIKey> --value false
 
-# Enable notifications for all staff
+# Enable comment notifications for all staff (membership notifications remain disabled)
 gctools comment-notifications <apiURL> <adminAPIKey> --value true
 
 # Restore settings from a previous backup
 gctools comment-notifications <apiURL> <adminAPIKey> --restore ./backup.csv
 ```
 
-The backup CSV contains columns: `id`, `email`, `name`, `slug`, `comment_notifications`
+The backup CSV contains columns: `id`, `email`, `name`, `slug`, `comment_notifications`, `free_member_signup_notification`, `paid_subscription_canceled_notification`, `paid_subscription_started_notification`
 
 **Available options:**
 - `--backup`: Path to save backup CSV before making changes
 - `--restore`: Path to CSV file to restore settings from
-- `--value`: Enable (true) or disable (false) comment notifications
+- `--value`: Enable (true) or disable (false) comment notifications; the three membership notification settings are always disabled
 - `--delayBetweenCalls` (default: 1000): Delay between API calls in ms
 
 **Notes:**
 - The Owner role is always excluded from changes
 - Cannot combine `--restore` with `--value` (restore uses values from the CSV)
 - Using `--backup` without `--value` only creates a backup (no updates)
+- Backups created before the membership notification columns were added can still be restored; missing settings are left unchanged
 
 
 ### add-member-comp-subscription

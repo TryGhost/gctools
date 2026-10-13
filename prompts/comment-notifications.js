@@ -4,7 +4,7 @@ import commentNotifications from '../tasks/comment-notifications.js';
 import ghostAPICreds from '../lib/ghost-api-creds.js';
 
 export const choice = {
-    name: 'Set comment notifications for all staff users',
+    name: 'Set notification preferences for all staff users',
     value: 'commentNotifications',
 };
 
@@ -16,7 +16,7 @@ const modeOptions = [
         message: 'What would you like to do?',
         choices: [
             {
-                name: 'Set notifications (enable/disable for all staff)',
+                name: 'Set comment notifications and disable membership notifications',
                 value: 'set',
             },
             {

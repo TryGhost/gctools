@@ -9,7 +9,7 @@ export const group = 'Staff:';
 export const flags = 'comment-notifications <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-export const desc = 'Set comment notifications for all staff users';
+export const desc = 'Set notification preferences for all staff users';
 
 // Descriptions for the individual params
 export const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
@@ -24,7 +24,7 @@ export const setup = (sywac) => {
     sywac.enumeration('--value', {
         defaultValue: null,
         choices: ['true', 'false'],
-        desc: 'Enable (true) or disable (false) comment notifications',
+        desc: 'Set comment notifications; membership notifications are always disabled',
     });
 
     sywac.number('--delayBetweenCalls', {
@@ -76,11 +76,13 @@ export const run = async (argv) => {
 
     if (argv.verbose) {
         if (argv.restore) {
-            ui.log.info(`Restoring comment_notifications from ${argv.restore}`);
+            ui.log.info(`Restoring notification settings from ${argv.restore}`);
         } else if (value !== null) {
-            ui.log.info(`Setting comment_notifications to ${value}`);
+            ui.log.info(
+                `Setting comment_notifications to ${value} and disabling member signup/subscription notifications`,
+            );
         } else if (argv.backup) {
-            ui.log.info(`Backing up comment_notifications to ${argv.backup}`);
+            ui.log.info(`Backing up notification settings to ${argv.backup}`);
         }
     }
 

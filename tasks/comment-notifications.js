@@ -8,6 +8,47 @@ import { dirname } from 'node:path';
 import { sleep } from '../lib/utils.js';
 import errors from '@tryghost/errors';
 
+export const notificationSettings = [
+    'comment_notifications',
+    'free_member_signup_notification',
+    'paid_subscription_canceled_notification',
+    'paid_subscription_started_notification',
+];
+
+const additionalNotificationSettings = notificationSettings.slice(1);
+
+const getBulkTargetSettings = (commentNotifications) => {
+    return {
+        comment_notifications: commentNotifications,
+        ...Object.fromEntries(additionalNotificationSettings.map((setting) => [setting, false])),
+    };
+};
+
+const parseBoolean = (value) => {
+    if (value === true || value === 'true') {
+        return true;
+    }
+
+    if (value === false || value === 'false') {
+        return false;
+    }
+
+    return null;
+};
+
+const getRestoreTargetSettings = (csvUser) => {
+    return Object.fromEntries(
+        notificationSettings.flatMap((setting) => {
+            const value = parseBoolean(csvUser[setting]);
+            return value === null ? [] : [[setting, value]];
+        }),
+    );
+};
+
+const settingsNeedUpdate = (user, targetSettings) => {
+    return Object.entries(targetSettings).some(([setting, value]) => user[setting] !== value);
+};
+
 const initialise = (options) => {
     return {
         title: 'Initialising API connection',
@@ -63,7 +104,9 @@ const backupSettings = (options) => {
                     email: user.email,
                     name: user.name,
                     slug: user.slug,
-                    comment_notifications: user.comment_notifications,
+                    ...Object.fromEntries(
+                        notificationSettings.map((setting) => [setting, user[setting]]),
+                    ),
                 };
             });
 
@@ -132,13 +175,21 @@ const restoreSettings = (options) => {
                     continue;
                 }
 
-                // Parse the CSV value (comes as string)
-                const targetValue =
-                    csvUser.comment_notifications === 'true' ||
-                    csvUser.comment_notifications === true;
+                // Parse the CSV values (they usually come through as strings). Missing values are
+                // ignored so backups made before the additional settings were added remain safe.
+                const targetSettings = getRestoreTargetSettings(csvUser);
 
-                // Skip if already at target value
-                if (user.comment_notifications === targetValue) {
+                if (Object.keys(targetSettings).length === 0) {
+                    ctx.skipped.push({
+                        id: csvUser.id,
+                        email: csvUser.email,
+                        reason: 'No notification settings in backup',
+                    });
+                    continue;
+                }
+
+                // Skip if already at all target values
+                if (!settingsNeedUpdate(user, targetSettings)) {
                     ctx.skipped.push({
                         id: csvUser.id,
                         email: csvUser.email,
@@ -153,7 +204,7 @@ const restoreSettings = (options) => {
                         try {
                             let result = await ctx.api.users.edit({
                                 id: user.id,
-                                comment_notifications: targetValue,
+                                ...targetSettings,
                             });
                             ctx.restored.push(result);
                             await sleep(ctx.args.delayBetweenCalls);
@@ -211,14 +262,15 @@ const getFullTaskList = (options) => {
         backupSettings(options),
         restoreSettings(options),
         {
-            title: 'Updating comment notifications',
+            title: 'Updating notification settings',
             task: (ctx) => {
                 let tasks = [];
+                const targetSettings = getBulkTargetSettings(ctx.args.value);
 
                 // Filter out Owner role users and users who are already set correctly
                 const usersToUpdate = ctx.users.filter((user) => {
                     const isOwner = _.find(user.roles, { name: 'Owner' });
-                    const needsUpdate = user.comment_notifications !== ctx.args.value;
+                    const needsUpdate = settingsNeedUpdate(user, targetSettings);
                     return !isOwner && needsUpdate;
                 });
 
@@ -229,7 +281,7 @@ const getFullTaskList = (options) => {
                             try {
                                 let result = await ctx.api.users.edit({
                                     id: user.id,
-                                    comment_notifications: ctx.args.value,
+                                    ...targetSettings,
                                 });
                                 ctx.updated.push(result);
                                 await sleep(ctx.args.delayBetweenCalls);
