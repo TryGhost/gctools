@@ -147,6 +147,18 @@ describe('keep-tags', function () {
             assert.deepStrictEqual(plan.unmatched, []);
         });
 
+        test('counts a slug and a name naming the same tag as both matched', async function () {
+            const { partitionTags, getKeepValues } = await import('../tasks/keep-tags.js');
+            const keepValues = getKeepValues([{ tag: 'how-to' }, { tag: 'How To' }]);
+            const plan = partitionTags(ghostTags, keepValues, 'either');
+
+            assert.deepStrictEqual(
+                plan.toKeep.map(({ tag }) => tag.id),
+                ['t3'],
+            );
+            assert.deepStrictEqual(plan.unmatched, []);
+        });
+
         test('does not match a name when matching by slug only', async function () {
             const { partitionTags, getKeepValues } = await import('../tasks/keep-tags.js');
             const keepValues = getKeepValues([{ tag: 'How To' }]);

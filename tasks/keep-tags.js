@@ -3,10 +3,10 @@ import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import { ui } from '@tryghost/pretty-cli';
 import _ from 'lodash';
 import fs from 'fs-extra';
-import fsUtils from '@tryghost/mg-fs-utils';
 import path from 'node:path';
 import errors from '@tryghost/errors';
 import { discover } from '../lib/batch-ghost-discover.js';
+import { normalise, getKeepValues, findMatches, readKeepFile } from '../lib/keep-list.js';
 import { sleep, jsonToCSV } from '../lib/utils.js';
 
 const REPORT_COLUMNS = [
@@ -22,11 +22,6 @@ const REPORT_COLUMNS = [
 
 const isDryRun = (options) => Boolean(options.dryRun || options['dry-run']);
 
-const normalise = (value) =>
-    String(value ?? '')
-        .trim()
-        .toLowerCase();
-
 // Ghost prefixes internal tag names with `#` and their slugs with `hash-`, and sets
 // `visibility` to `internal`. Any one of those is enough to protect a tag from deletion
 const isInternalTag = (tag) => {
@@ -36,50 +31,6 @@ const isInternalTag = (tag) => {
         normalise(tag?.slug).startsWith('#') ||
         normalise(tag?.slug).startsWith('hash-')
     );
-};
-
-// Takes the parsed CSV rows and returns the deduped values of the first column.
-// The raw value is kept alongside the normalised one so the report can echo back
-// exactly what was in the file
-const getKeepValues = (rows) => {
-    if (!rows || rows.length === 0) {
-        return [];
-    }
-
-    const column = Object.keys(rows[0])[0];
-    const seen = new Set();
-    const values = [];
-
-    rows.forEach((row) => {
-        const raw = row[column];
-        const value = normalise(raw);
-
-        if (!value || seen.has(value)) {
-            return;
-        }
-
-        seen.add(value);
-        values.push({ raw: String(raw).trim(), normalised: value });
-    });
-
-    return values;
-};
-
-const findMatch = (tag, keepValues, matchBy) => {
-    const tagSlug = normalise(tag.slug);
-    const tagName = normalise(tag.name);
-
-    for (const value of keepValues) {
-        if (matchBy !== 'name' && value.normalised === tagSlug) {
-            return { matchedBy: 'slug', csvValue: value };
-        }
-
-        if (matchBy !== 'slug' && value.normalised === tagName) {
-            return { matchedBy: 'name', csvValue: value };
-        }
-    }
-
-    return null;
 };
 
 // Splits every Ghost tag into keep / keep-because-internal / delete, and reports which
@@ -92,11 +43,9 @@ const partitionTags = (tags, keepValues, matchBy = 'slug') => {
     const usedValues = new Set();
 
     tags.forEach((tag) => {
-        const match = findMatch(tag, keepValues, matchBy);
-
-        if (match) {
-            usedValues.add(match.csvValue.normalised);
-        }
+        const matches = findMatches(tag, keepValues, matchBy);
+        matches.forEach(({ csvValue }) => usedValues.add(csvValue.normalised));
+        const [match] = matches;
 
         if (isInternalTag(tag)) {
             toKeepInternal.push({
@@ -169,27 +118,14 @@ const getFullTaskList = (options) => {
         {
             title: 'Reading tags CSV',
             task: async (ctx, task) => {
-                if (!(await fs.pathExists(ctx.args.csvFile))) {
-                    const error = new errors.NotFoundError({
-                        message: `CSV file not found: ${ctx.args.csvFile}`,
-                    });
-                    ctx.errors.push(error);
-                    throw error;
-                }
-
-                let rows;
+                let column;
 
                 try {
-                    rows = await fsUtils.csv.parseCSV(ctx.args.csvFile);
-                } catch (parseError) {
-                    const error = new errors.ValidationError({
-                        message: `Failed to parse CSV file: ${parseError.message}`,
-                    });
+                    ({ column, keepValues: ctx.keepValues } = await readKeepFile(ctx.args.csvFile));
+                } catch (error) {
                     ctx.errors.push(error);
                     throw error;
                 }
-
-                ctx.keepValues = getKeepValues(rows);
 
                 // Without this guard, an empty or header-only CSV means "keep nothing",
                 // which would delete every tag on the site
@@ -202,7 +138,6 @@ const getFullTaskList = (options) => {
                     throw error;
                 }
 
-                const column = rows.length ? Object.keys(rows[0])[0] : null;
                 task.output = `Found ${ctx.keepValues.length} tags to keep in column "${column}"`;
             },
         },
