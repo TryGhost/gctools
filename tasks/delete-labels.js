@@ -419,10 +419,17 @@ const getDeleteTaskRunner = (options) => {
                     );
                 }
 
+                // Failures don't end this runner, so deletes already in flight settle and are
+                // reported; deletes that haven't started yet are skipped instead
                 return makeTaskRunner(
                     ctx.toDelete.map((label) => ({
                         title: `Delete label ${label.name}`,
                         task: async (ctx, task) => {
+                            if (ctx.failed.length > 0) {
+                                task.skip('Not attempted: an earlier delete failed');
+                                return;
+                            }
+
                             const url = `${ctx.args.apiURL}/ghost/api/admin/labels/${encodeURIComponent(label.id)}/`;
                             try {
                                 // Recheck after confirmation: a label may have gained members meanwhile.
@@ -456,8 +463,16 @@ const getDeleteTaskRunner = (options) => {
                             }
                         },
                     })),
-                    { ...options, concurrent: ctx.args.concurrency, exitOnError: true },
+                    { ...options, concurrent: ctx.args.concurrency },
                 );
+            },
+        },
+        {
+            title: 'Checking for failed deletes',
+            task: (ctx) => {
+                if (ctx.failed.length > 0) {
+                    throw ctx.failed[0].error;
+                }
             },
         },
     ];

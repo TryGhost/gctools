@@ -19,6 +19,7 @@ let freshLabels;
 let pageErrors;
 let readErrors;
 let deleteErrors;
+let deleteDelays;
 let confirmation;
 let onConfirm;
 let events;
@@ -81,6 +82,7 @@ const mockGet = mock.fn(async (url, { params }) => {
 const mockDelete = mock.fn(async (url) => {
     events.push(`DELETE ${url}`);
     const id = decodeURIComponent(url.split('/').at(-2));
+    await new Promise((resolve) => setTimeout(resolve, deleteDelays.get(id) ?? 0));
     if (deleteErrors.has(id)) {
         throw deleteErrors.get(id);
     }
@@ -143,6 +145,7 @@ describe('delete-labels', () => {
         pageErrors = new Map();
         readErrors = new Map();
         deleteErrors = new Map();
+        deleteDelays = new Map();
         confirmation = false;
         onConfirm = undefined;
         events = [];
@@ -848,6 +851,34 @@ describe('delete-labels', () => {
             confirmation = true;
             await command.run(options({ all: true, force: true, concurrency: 2 }));
             assert.deepStrictEqual(deletedIds().sort(), ['empty-a', 'empty-b', 'used']);
+        });
+
+        test('lets started deletes finish, and starts no more, after a deletion failure', async () => {
+            confirmation = true;
+            pages = [['fails', 'slow-a', 'slow-b', 'later'].map((id) => label(id, 0))];
+            deleteErrors.set('fails', new Error('Delete failed'));
+            deleteDelays = new Map([
+                ['slow-a', 20],
+                ['slow-b', 20],
+            ]);
+
+            await command.run(options({ all: true, force: true, concurrency: 3 }));
+
+            assert.deepStrictEqual(deletedIds(), ['fails', 'slow-a', 'slow-b']);
+            assert.strictEqual(
+                logs.error.mock.calls[0].arguments[0],
+                'Stopped after deleting 2 labels: Delete failed',
+            );
+            const { rows } = await readReport();
+            assert.deepStrictEqual(
+                rows.map(({ action, id }) => ({ action, id })),
+                [
+                    { action: 'delete_failed', id: 'fails' },
+                    { action: 'deleted', id: 'slow-a' },
+                    { action: 'deleted', id: 'slow-b' },
+                    { action: 'not_attempted', id: 'later' },
+                ],
+            );
         });
     });
 

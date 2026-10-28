@@ -546,7 +546,7 @@ gctools delete-tags <apiURL> <adminAPIKey> --tags hash-gctools, test 1
 
 Delete member labels: the ones you name, the ones no member has, or all of them. With `--all` or `--unused` you can pass a list of labels to keep. Labels are matched by name or slug, ignoring case.
 
-The tool fetches the labels it needs with their member counts first, and stops if any request fails. With `--labels` it asks Ghost only for the labels you named, unless a name contains a quote or backslash; with `--all` or `--unused` it fetches every label. On SQLite, a name typed in a different case from the label in Ghost may not be found, unless it matches the label's slug. It is then reported as not in Ghost, and not deleted. It then lists what it would delete and asks you to confirm (default: **No**). There is no flag to skip that prompt. With `--unused`, each label's member count is checked again just before it's deleted, and labels that have gained members are skipped. A report CSV of every deleted, kept, skipped and failed label is written to the folder of `--keepFile`, or to the current folder.
+The tool fetches the labels it needs with their member counts first, and stops if any request fails. With `--labels` it asks Ghost only for the labels you named, unless a name contains a quote or backslash; with `--all` or `--unused` it fetches every label. On SQLite, a name typed in a different case from the label in Ghost may not be found, unless it matches the label's slug. Such a label is reported as not in Ghost, and not deleted. The tool then lists what it would delete and asks you to confirm (default: **No**). There is no flag to skip that prompt. With `--unused`, each label's member count is checked again just before it's deleted, and labels that have gained members are skipped. A report CSV of every deleted, kept, skipped and failed label is written to the folder of `--keepFile`, or to the current folder.
 
 Deleting a label is expensive for Ghost: it loads and detaches the label's members and purges the site cache. Labels are therefore deleted one at a time with a delay between calls. Raise `--concurrency` with care.
 
@@ -579,7 +579,7 @@ Also available in `gctools i` as **Delete labels**.
 - `--keepFile`: Path to a single-column CSV of labels never to delete. The first row is always treated as a header
 - `--dryRun` (default: false): Report which labels would be deleted, without prompting or deleting
 - `--force` (default: false): Bypass the checks for `--all` without a keep list, and for a keep list that is empty or matches nothing
-- `--concurrency` (default: 1): How many labels to delete at once
+- `--concurrency` (default: 1): How many labels to delete at once. If a delete fails, deletes already started finish and no new ones start
 - `--timeout` (default: 60000): How long to wait for Ghost to answer each request, in ms. Raise it if deleting labels with very many members times out
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 - `-V --verbose`: List every label to delete, not just the first 20
