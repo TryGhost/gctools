@@ -145,11 +145,17 @@ gctools update-staff-bio <apiURL> <adminAPIKey> ./staff-bios.csv
 
 # Show individual row results and set the delay between updates
 gctools update-staff-bio <apiURL> <adminAPIKey> ./staff-bios.csv --verbose --delayBetweenCalls 200
+
+# Match CSV values such as t-s to staff emails such as t-s@example.com
+gctools update-staff-bio <apiURL> <adminAPIKey> ./staff-bios.csv --email-domain example.com
 ```
+
+With `--email-domain`, the CSV's `slug` column supplies the part before `@`, and matching uses the complete email address instead of the user's slug. For example, `t-s` matches `t-s@example.com` even if that user's slug is different. Email matching is case-insensitive and restricted to the exact domain: other domains and subdomains are excluded. The domain also accepts a leading `@`, as in `--email-domain @example.com`. Without this option, matching uses the exact user slug.
 
 The summary reports updated users, existing bios, overlong bios, unmatched slugs, and errors. Skipped overlong bios are exported to `bios-too-long.csv` and unmatched users to `bios-not-found.csv`, beside the input CSV. Missing slugs and API failures are reported as errors; processing continues through the remaining rows before the command exits unsuccessfully.
 
 **Available options:**
 
+- `--email-domain`: Match CSV `slug` values to email prefixes at this exact domain instead of user slugs
 - `--delayBetweenCalls` (default: 100): Delay between successful API updates in ms
 - `-V --verbose` (default: false): Show individual row results

@@ -20,6 +20,10 @@ const setup = (sywac) => {
         defaultValue: 100,
         desc: 'The delay between API calls, in ms',
     });
+    sywac.string('--email-domain', {
+        defaultValue: null,
+        desc: 'Match CSV slug values to email prefixes at this domain instead of user slugs',
+    });
 };
 
 const run = async (argv) => {

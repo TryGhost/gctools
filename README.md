@@ -106,7 +106,7 @@ Every command is documented in a per-group file under [`/docs`](docs), and `gcto
 | [`clean-staff-slugs`](docs/staff.md#clean-staff-slugs) | Find and remove Ghost ID suffixes from staff user slugs when safe |
 | [`comment-notifications`](docs/staff.md#comment-notifications) | Set notification preferences for all staff users |
 | [`delete-staff-users`](docs/staff.md#delete-staff-users) | Delete content-free staff users in selected roles (requires a staff access token) |
-| [`update-staff-bio`](docs/staff.md#update-staff-bio) | Fill empty staff bios from a CSV file, matching users by slug |
+| [`update-staff-bio`](docs/staff.md#update-staff-bio) | Fill empty staff bios from a CSV file, matching users by slug or email prefix |
 
 ### Beta
 

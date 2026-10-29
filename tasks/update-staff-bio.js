@@ -12,6 +12,16 @@ const initialise = (options) => {
     return {
         title: 'Initialising API connection and reading CSV',
         task: async (ctx, task) => {
+            const emailDomainOption = options.emailDomain ?? options['email-domain'];
+            const emailDomain =
+                emailDomainOption == null
+                    ? null
+                    : String(emailDomainOption).trim().replace(/^@/, '').toLowerCase();
+
+            if (emailDomain !== null && (!emailDomain || /[@\s/\\]/.test(emailDomain))) {
+                throw new Error('Enter an --email-domain such as example.com or @example.com.');
+            }
+
             const url = options.apiURL.replace(/\/$/, '');
             const key = options.adminAPIKey;
             const api = new GhostAdminAPI({
@@ -23,6 +33,7 @@ const initialise = (options) => {
             ctx.args = {
                 verbose: options.verbose || false,
                 delayBetweenCalls: options.delayBetweenCalls ?? 100,
+                emailDomain,
             };
             ctx.api = api;
             ctx.updated = [];
@@ -75,27 +86,35 @@ const getFullTaskList = (options) => {
                     }
 
                     try {
-                        const user = ctx.users.find((u) => u.slug === slug);
+                        const email = ctx.args.emailDomain
+                            ? `${slug.trim()}@${ctx.args.emailDomain}`.toLowerCase()
+                            : null;
+                        const user = ctx.users.find((u) =>
+                            email
+                                ? typeof u.email === 'string' &&
+                                  u.email.trim().toLowerCase() === email
+                                : u.slug === slug,
+                        );
 
                         if (!user) {
                             ctx.notFound.push({ slug, bio });
                             if (ctx.args.verbose) {
-                                task.output = `Row ${idx + 1}: No user found for slug: ${slug}`;
+                                task.output = `Row ${idx + 1}: No user found for ${email ? `email: ${email}` : `slug: ${slug}`}`;
                             }
                             continue;
                         }
 
-                        if (user.bio && user.bio.trim() !== '') {
-                            ctx.skipped.push({
-                                slug,
-                                existingBio: user.bio,
-                                newBio: bio,
-                            });
-                            if (ctx.args.verbose) {
-                                task.output = `Row ${idx + 1}: Skipping ${slug} - bio already exists`;
-                            }
-                            continue;
-                        }
+                        // if (user.bio && user.bio.trim() !== '') {
+                        //     ctx.skipped.push({
+                        //         slug,
+                        //         existingBio: user.bio,
+                        //         newBio: bio,
+                        //     });
+                        //     if (ctx.args.verbose) {
+                        //         task.output = `Row ${idx + 1}: Skipping ${slug} - bio already exists`;
+                        //     }
+                        //     continue;
+                        // }
 
                         if (trimmedBio.length > 250) {
                             ctx.tooLong.push({

@@ -45,6 +45,7 @@ describe('CLI smoke test', function () {
 
         assert.match(stdout, /update-staff-bio <apiURL> <adminAPIKey> <csvPath>/);
         assert.match(stdout, /slug, bio/);
+        assert.match(stdout, /--email-domain/);
         assert.match(stdout, /--delayBetweenCalls/);
         assert.match(stdout, /--verbose/);
     });

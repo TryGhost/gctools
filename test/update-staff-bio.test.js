@@ -191,4 +191,82 @@ describe('Update staff bios from CSV', () => {
         assert.strictEqual(mockDiscover.mock.callCount(), 0);
         assert.strictEqual(mockEdit.mock.callCount(), 0);
     });
+
+    for (const domainOption of [
+        { emailDomain: 'example.com' },
+        { 'email-domain': ' @EXAMPLE.COM ' },
+    ]) {
+        test(`matches email prefixes at the exact domain using ${Object.keys(domainOption)[0]}`, async () => {
+            discoveredUsers = [
+                { ...user('t-s'), email: 't-s@other.com' },
+                { ...user('actual-user-slug'), email: 'T-S@Example.COM' },
+                { ...user('longer-prefix'), email: 't-s-extra@example.com' },
+                { ...user('subdomain'), email: 't-s@sub.example.com' },
+                { ...user('domain-suffix'), email: 't-s@example.com.other' },
+                user('no-email'),
+            ];
+            await writeRows([{ slug: 't-s', bio: 'Matched by email' }]);
+            const context = { errors: [] };
+
+            await run(context, domainOption);
+
+            assert.strictEqual(mockEdit.mock.callCount(), 1);
+            assert.deepStrictEqual(mockEdit.mock.calls[0].arguments[0], {
+                id: 'id-actual-user-slug',
+                bio: 'Matched by email',
+                updated_at: discoveredUsers[1].updated_at,
+            });
+            assert.strictEqual(context.updated[0].slug, 'actual-user-slug');
+            assert.strictEqual(context.args.emailDomain, 'example.com');
+        });
+    }
+
+    test('matches exact slugs by default even when an email prefix also matches', async () => {
+        discoveredUsers = [
+            { ...user('different-slug'), email: 't-s@example.com' },
+            { ...user('t-s'), email: 'someone-else@example.com' },
+        ];
+        await writeRows([{ slug: 't-s', bio: 'Matched by slug' }]);
+
+        await run({ errors: [] });
+
+        assert.strictEqual(mockEdit.mock.callCount(), 1);
+        assert.strictEqual(mockEdit.mock.calls[0].arguments[0].id, 'id-t-s');
+    });
+
+    test('exports unmatched email prefixes without falling back to slugs or other domains', async () => {
+        discoveredUsers = [
+            user('t-s'),
+            { ...user('other-domain'), email: 't-s@other.com' },
+            { ...user('subdomain'), email: 't-s@sub.example.com' },
+            { ...user('domain-suffix'), email: 't-s@example.com.other' },
+            { ...user('longer-prefix'), email: 't-s-extra@example.com' },
+        ];
+        await writeRows([{ slug: 't-s', bio: 'Unmatched bio' }]);
+        const context = { errors: [] };
+
+        await run(context, { emailDomain: 'example.com', verbose: true });
+
+        assert.strictEqual(mockEdit.mock.callCount(), 0);
+        assert.deepStrictEqual(context.notFound, [{ slug: 't-s', bio: 'Unmatched bio' }]);
+        assert.deepStrictEqual(
+            await fsUtils.csv.parseCSV(join(directory, 'bios-not-found.csv')),
+            context.notFound,
+        );
+    });
+
+    test('rejects invalid email domains before fetching or updating staff', async () => {
+        for (const emailDomain of [
+            '',
+            '@',
+            't-s@example.com',
+            'example .com',
+            'https://example.com',
+        ]) {
+            await assert.rejects(run({ errors: [] }, { emailDomain }), /--email-domain/);
+        }
+
+        assert.strictEqual(mockDiscover.mock.callCount(), 0);
+        assert.strictEqual(mockEdit.mock.callCount(), 0);
+    });
 });
