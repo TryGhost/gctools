@@ -53,7 +53,9 @@ export const run = async (argv) => {
         ui.log.error(
             'No action specified. Please provide at least one of: --backup, --restore, or --value',
         );
-        ui.log.info('See the README for usage examples, or run with --help for available options.');
+        ui.log.info(
+            'Run `gctools comment-notifications --help` for usage examples and available options.',
+        );
         return;
     }
 

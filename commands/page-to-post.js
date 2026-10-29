@@ -4,7 +4,7 @@ import pageToPost from '../tasks/page-to-post.js';
 // Internal ID in case we need one.
 const id = 'page-to-post';
 
-const group = 'Members:';
+const group = 'Content:';
 
 // The command to run and any params
 const flags = 'page-to-post <apiURL> <adminAPIKey>';

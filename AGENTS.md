@@ -150,6 +150,8 @@ import featureName from '../commands/feature-name.js';
 prettyCLI.command(featureName);
 ```
 
+**Docs** - Document the command in `docs/<group>.md` (a `## <command-id>` section with usage examples and an "Available options" list matching `setup()`), and add a row to the command index table in `README.md` linking to that section.
+
 ## Key Libraries
 
 - `@tryghost/admin-api` - Ghost Admin API client
@@ -218,4 +220,5 @@ Tests are in `test/` directory. Mock the Ghost API client for unit tests.
 - `Tools:` - File utilities (zip, json splitting)
 - `Content:` - Post/page API operations
 - `Members:` - Member API operations
+- `Staff:` - Staff user API operations
 - `Beta:` - Experimental features

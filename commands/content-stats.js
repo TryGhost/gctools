@@ -10,7 +10,7 @@ const group = 'Content:';
 const flags = 'content-stats <apiURL> <adminAPIKey>';
 
 // Description for the top level command
-const desc = 'See stats on how mich content your Ghost site has';
+const desc = 'See stats on how much content your Ghost site has';
 
 // Descriptions for the individual params
 const paramsDesc = ['URL to your Ghost API', 'Admin API key'];
