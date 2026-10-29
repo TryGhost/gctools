@@ -10,7 +10,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     strategy:
       matrix:
         node: ['22.21.1']
@@ -28,7 +28,7 @@ jobs:
 
   required-checks-pass:
     name: Required checks pass
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-26.04
     needs: [build]
     if: always()
     steps:
