@@ -87,7 +87,8 @@ describe('Admin API call', function () {
             assert.match(headers.Authorization, /^Ghost /);
 
             const token = headers.Authorization.replace('Ghost ', '');
-            const decoded = jwt.decode(token, { complete: true });
+            const [, secret] = options().adminAPIKey.split(':');
+            const decoded = jwt.verify(token, Buffer.from(secret, 'hex'), { complete: true });
             assert.strictEqual(decoded.header.kid, '1234567890abcdef12345678');
             assert.strictEqual(decoded.header.alg, 'HS256');
             assert.strictEqual(decoded.payload.aud, '/admin/');

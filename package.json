@@ -18,7 +18,7 @@
     "gctools": "gctools",
     "test:file": "node --test --experimental-test-module-mocks",
     "test": "node --test --experimental-test-module-mocks test/*.test.js",
-    "test:coverage": "node --test --experimental-test-module-mocks --experimental-test-coverage --test-coverage-exclude='test/**' --test-coverage-lines=47 --test-coverage-branches=87 --test-coverage-functions=43 test/*.test.js",
+    "test:coverage": "node --test --experimental-test-module-mocks --experimental-test-coverage --test-coverage-exclude=\"test/**\" --test-coverage-lines=47 --test-coverage-branches=87 --test-coverage-functions=43 test/*.test.js",
     "lint": "oxlint --quiet && oxfmt --check .",
     "lint:fix": "oxlint --fix && oxfmt .",
     "format": "oxfmt .",
