@@ -5,7 +5,7 @@ Command line utilities for working with Ghost content.
 
 ## Install
 
-Requires Node.js `>= 22.21.1`.
+Requires Node.js `^26.13.0` (the current LTS line).
 
 1. `git clone` this repo & `cd` into it as usual
 2. Run `pnpm install` to install top-level dependencies.
