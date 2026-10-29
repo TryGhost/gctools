@@ -5,6 +5,9 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-24.04
@@ -21,4 +24,16 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: pnpm lint
-      - run: pnpm test
+      - run: pnpm test:coverage
+
+  required-checks-pass:
+    name: Required checks pass
+    runs-on: ubuntu-24.04
+    needs: [build]
+    if: always()
+    steps:
+      - name: Fail if any required check failed
+        if: contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled')
+        run: exit 1
+      - name: All required checks passed
+        run: exit 0
