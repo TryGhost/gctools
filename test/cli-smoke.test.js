@@ -22,6 +22,7 @@ describe('CLI smoke test', function () {
         assert.match(stdout, /delete-labels/, 'lists delete-labels (Members)');
         assert.match(stdout, /seed-demo/, 'lists seed-demo');
         assert.match(stdout, /update-posts-from-json/, 'lists update-posts-from-json');
+        assert.match(stdout, /update-staff-bio/, 'lists update-staff-bio (Staff)');
     });
 
     test('`node bin/cli.js --help` for a single command prints its options', async function () {
@@ -31,5 +32,20 @@ describe('CLI smoke test', function () {
 
         assert.match(stdout, /delete-labels <apiURL> <adminAPIKey>/);
         assert.match(stdout, /--dryRun/);
+    });
+
+    test('update-staff-bio help documents CSV input and update options', async function () {
+        const { stdout } = await execFileAsync(
+            'node',
+            ['bin/cli.js', 'update-staff-bio', '--help'],
+            {
+                cwd: repoRoot,
+            },
+        );
+
+        assert.match(stdout, /update-staff-bio <apiURL> <adminAPIKey> <csvPath>/);
+        assert.match(stdout, /slug, bio/);
+        assert.match(stdout, /--delayBetweenCalls/);
+        assert.match(stdout, /--verbose/);
     });
 });

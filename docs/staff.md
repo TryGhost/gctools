@@ -1,7 +1,7 @@
 # Staff commands
 
 Staff user operations via the Ghost Admin API — roles, slugs, notification
-preferences, and staff cleanup. Some of these require a staff access token.
+preferences, bios, and staff cleanup. Some of these require a staff access token.
 
 > `gctools <command> --help` is always authoritative for the current flags and defaults.
 
@@ -125,3 +125,31 @@ The interactive mode also supports this tool via `gctools i`. It reuses saved/ma
 - `--yes` (default: false): Confirm permanent deletion; cannot be combined with `--dry-run`
 - `--delayBetweenCalls` (default: 200): Delay between deletion attempts in ms
 - `-V --verbose` (default: false): Show every eligible and skipped staff user
+
+## update-staff-bio
+
+Fill empty staff bios from a CSV file with `slug` and `bio` columns. Staff are matched by their exact slug; existing non-empty bios are preserved. Blank CSV bios are ignored, and bios longer than 250 characters after trimming are skipped.
+
+```csv
+slug,bio
+jane-doe,"Writer, editor and photographer."
+john-smith,Contributor covering technology.
+```
+
+```sh
+# See all available options
+gctools update-staff-bio --help
+
+# Fill empty staff bios using the CSV
+gctools update-staff-bio <apiURL> <adminAPIKey> ./staff-bios.csv
+
+# Show individual row results and set the delay between updates
+gctools update-staff-bio <apiURL> <adminAPIKey> ./staff-bios.csv --verbose --delayBetweenCalls 200
+```
+
+The summary reports updated users, existing bios, overlong bios, unmatched slugs, and errors. Skipped overlong bios are exported to `bios-too-long.csv` and unmatched users to `bios-not-found.csv`, beside the input CSV. Missing slugs and API failures are reported as errors; processing continues through the remaining rows before the command exits unsuccessfully.
+
+**Available options:**
+
+- `--delayBetweenCalls` (default: 100): Delay between successful API updates in ms
+- `-V --verbose` (default: false): Show individual row results
