@@ -5,6 +5,8 @@ Command line utilities for working with Ghost content.
 
 ## Install
 
+Requires Node.js `>= 22.21.1`.
+
 1. `git clone` this repo & `cd` into it as usual
 2. Run `pnpm install` to install top-level dependencies.
 3. To make `gctools` accessible globally, run `pnpm add -g .`
@@ -1428,9 +1430,26 @@ The tool first tries the site-wide Admin API comments endpoint (available on new
 
 ## Develop
 
+* `bin/cli.js` is the entry point, registering all commands
 * `commands` handles the traditional CLI input
 * `prompts` handles the interactive CLI input
+* `questions` contains shared inquirer question builders used by prompts
 * `tasks` is the tasks run by both the CLI and interactive tool
+* `lib` contains shared utilities (API discovery, filters, batching)
+
+Both entry paths converge on the same task layer:
+
+```mermaid
+flowchart TD
+    cli[bin/cli.js] -->|command + flags| commands[commands/&lt;tool&gt;.js]
+    cli -->|gctools i| interactive[commands/interactive.js]
+    interactive --> prompts[prompts/&lt;tool&gt;.js]
+    prompts --> questions[questions/ shared prompts]
+    commands --> tasks[tasks/&lt;tool&gt;.js]
+    prompts --> tasks
+    tasks --> lib[lib/ helpers]
+    lib --> api[(Ghost Admin API)]
+```
 
 ## Tests
 

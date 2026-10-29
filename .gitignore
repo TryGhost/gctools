@@ -61,9 +61,10 @@ typings/
 # OSX
 .DS_Store
 
-# gctooos
+# gctools
 *.zip
 temp/
 members-a.csv
 members-all.csv
 members-b.csv
+delete-labels-report-*.csv
