@@ -4,7 +4,7 @@
   "description": "Command line utilities for working with Ghost content",
   "repository": "https://github.com/TryGhost/gctools",
   "author": "Ghost Foundation",
-  "main": "index.js",
+  "private": true,
   "type": "module",
   "engines": {
     "node": ">=22.21.1"
@@ -28,7 +28,6 @@
     "@tryghost/admin-api": "1.14.14",
     "@tryghost/errors": "3.4.4",
     "@tryghost/listr-smart-renderer": "0.15.7",
-    "@tryghost/logging": "2.5.5",
     "@tryghost/mg-assetscraper-db": "0.13.7",
     "@tryghost/mg-fs-utils": "0.26.7",
     "@tryghost/mg-ghost-authors": "0.10.7",
@@ -46,9 +45,7 @@
     "inquirer": "14.2.4",
     "inquirer-datepicker-prompt": "0.4.3",
     "inquirer-search-checkbox": "1.0.0",
-    "inquirer-search-list": "1.2.6",
     "jsonwebtoken": "9.0.3",
-    "listr": "0.14.3",
     "lodash": "4.18.1",
     "lorem-ipsum": "3.0.0",
     "superbytes": "2.1.0",
