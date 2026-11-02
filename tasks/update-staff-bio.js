@@ -104,17 +104,17 @@ const getFullTaskList = (options) => {
                             continue;
                         }
 
-                        // if (user.bio && user.bio.trim() !== '') {
-                        //     ctx.skipped.push({
-                        //         slug,
-                        //         existingBio: user.bio,
-                        //         newBio: bio,
-                        //     });
-                        //     if (ctx.args.verbose) {
-                        //         task.output = `Row ${idx + 1}: Skipping ${slug} - bio already exists`;
-                        //     }
-                        //     continue;
-                        // }
+                        if (user.bio && user.bio.trim() !== '') {
+                            ctx.skipped.push({
+                                slug,
+                                existingBio: user.bio,
+                                newBio: bio,
+                            });
+                            if (ctx.args.verbose) {
+                                task.output = `Row ${idx + 1}: Skipping ${slug} - bio already exists`;
+                            }
+                            continue;
+                        }
 
                         if (trimmedBio.length > 250) {
                             ctx.tooLong.push({
