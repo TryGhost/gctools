@@ -1,3 +1,7 @@
+# Match Renovate's release-age exemption for trusted first-party packages.
+minimumReleaseAgeExclude:
+  - "@tryghost/*"
+
 # Not a workspace - this file only records which dependency build scripts are
 # allowed to run. Both entries are verified to work without their install
 # script, so both stay blocked:
