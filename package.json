@@ -34,7 +34,7 @@
     "@tryghost/mg-ghost-authors": "0.10.7",
     "@tryghost/pretty-cli": "3.4.0",
     "@tryghost/string": "0.3.8",
-    "@tryghost/zip": "3.5.18",
+    "@tryghost/zip": "4.0.0",
     "axios": "1.21.0",
     "bluebird": "3.7.2",
     "chalk": "6.0.1",
