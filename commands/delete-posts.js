@@ -38,6 +38,10 @@ const setup = (sywac) => {
         defaultValue: 50,
         desc: 'The delay between API calls, in ms',
     });
+    sywac.string('--apiVersion', {
+        defaultValue: null,
+        desc: 'Ghost API version',
+    });
 
     // by date range
     // by visibility
