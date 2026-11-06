@@ -62,7 +62,7 @@ Every command is documented in a per-group file under [`/docs`](docs), and `gcto
 | [`change-visibility-pages`](docs/content.md#change-visibility-pages) | Switch the visibility for pages from one level to another |
 | [`combine-tags`](docs/content.md#combine-tags) | Merge one tag into another, preserving tag position |
 | [`content-stats`](docs/content.md#content-stats) | See stats on how much content your Ghost site has |
-| [`delete-empty-tags`](docs/content.md#delete-empty-tags) | Delete tags in Ghost with no associated posts |
+| [`delete-empty-tags`](docs/content.md#delete-empty-tags) | Preview or delete tags in Ghost with no or few associated posts |
 | [`delete-pages`](docs/content.md#delete-pages) | Delete pages in Ghost |
 | [`delete-posts`](docs/content.md#delete-posts) | Delete posts in Ghost |
 | [`delete-tags`](docs/content.md#delete-tags) | Delete tags in Ghost |

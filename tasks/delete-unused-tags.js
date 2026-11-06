@@ -1,8 +1,9 @@
-import Promise from 'bluebird';
 import GhostAdminAPI from '@tryghost/admin-api';
 import { makeTaskRunner } from '@tryghost/listr-smart-renderer';
 import _ from 'lodash';
+import Table from 'tty-table';
 import { discover } from '../lib/batch-ghost-discover.js';
+import { sleep } from '../lib/utils.js';
 
 const initialise = (options) => {
     return {
@@ -11,6 +12,7 @@ const initialise = (options) => {
             let defaults = {
                 verbose: false,
                 tag: false,
+                maxPostCount: 0,
                 delayBetweenCalls: 50,
             };
 
@@ -23,10 +25,12 @@ const initialise = (options) => {
             });
 
             ctx.args = _.mergeWith(defaults, options);
+            ctx.args.dryRun = Boolean(options.dryRun || options['dry-run']);
             ctx.api = api;
             ctx.tags = [];
             ctx.tagsToDelete = [];
             ctx.deleted = [];
+            ctx.previewTable = '';
 
             task.output = `Initialised API connection for ${options.apiURL}`;
         },
@@ -51,38 +55,54 @@ const getFullTaskList = (options) => {
             title: 'Finding tags with no posts',
             task: async (ctx, task) => {
                 ctx.tagsToDelete = ctx.tags.filter((item) => {
-                    return item.count.posts <= options.maxPostCount;
+                    return item.count.posts <= ctx.args.maxPostCount;
                 });
                 task.output = `Found ${ctx.tagsToDelete.length} tags with low or no posts`;
             },
         },
         {
-            title: 'Deleting tags from Ghost',
+            title:
+                options.dryRun || options['dry-run']
+                    ? 'Preparing deletion preview'
+                    : 'Deleting tags from Ghost',
             task: async (ctx) => {
-                let tasks = [];
-
-                await Promise.mapSeries(ctx.tagsToDelete, async (tag) => {
-                    tasks.push({
-                        title: `${tag.name}`,
-                        task: async () => {
-                            try {
-                                let result = await ctx.api.tags.delete({ id: tag.id });
-                                ctx.deleted.push(result.name);
-                                return Promise.delay(options.delayBetweenCalls).return(result);
-                            } catch (error) {
-                                error.resource = {
-                                    name: tag.name,
-                                };
-                                ctx.errors.push(error);
-                                throw error;
-                            }
+                if (ctx.args.dryRun) {
+                    ctx.previewTable = Table(
+                        [
+                            { value: 'Tag', width: '40%' },
+                            { value: 'Slug', width: '40%' },
+                            { value: 'Post count', width: '20%', align: 'right' },
+                        ],
+                        ctx.tagsToDelete.map((tag) => [tag.name, tag.slug, tag.count.posts]),
+                        {
+                            compact: true,
+                            align: 'left',
+                            headerAlign: 'left',
+                            truncate: false,
                         },
-                    });
-                });
+                    ).render();
+                    return;
+                }
 
-                let taskOptions = options;
-                taskOptions.concurrent = 3;
-                return makeTaskRunner(tasks, taskOptions);
+                const tasks = ctx.tagsToDelete.map((tag) => ({
+                    title: `${tag.name}`,
+                    task: async () => {
+                        try {
+                            let result = await ctx.api.tags.delete({ id: tag.id });
+                            ctx.deleted.push(result.name);
+                            await sleep(ctx.args.delayBetweenCalls);
+                            return result;
+                        } catch (error) {
+                            error.resource = {
+                                name: tag.name,
+                            };
+                            ctx.errors.push(error);
+                            throw error;
+                        }
+                    },
+                }));
+
+                return makeTaskRunner(tasks, { ...options, concurrent: 3 });
             },
         },
     ];

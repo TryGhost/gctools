@@ -49,4 +49,17 @@ describe('CLI smoke test', function () {
         assert.match(stdout, /--delayBetweenCalls/);
         assert.match(stdout, /--verbose/);
     });
+
+    test('delete-empty-tags help documents the preview and post-count threshold', async function () {
+        const { stdout } = await execFileAsync(
+            'node',
+            ['bin/cli.js', 'delete-empty-tags', '--help'],
+            {
+                cwd: repoRoot,
+            },
+        );
+
+        assert.match(stdout, /--dry-run/);
+        assert.match(stdout, /--maxPostCount/);
+    });
 });

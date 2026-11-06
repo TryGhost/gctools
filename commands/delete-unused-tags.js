@@ -21,6 +21,10 @@ const setup = (sywac) => {
         defaultValue: false,
         desc: 'Show verbose output',
     });
+    sywac.boolean('--dry-run', {
+        defaultValue: false,
+        desc: 'List tag names, slugs and post counts without deleting anything',
+    });
     sywac.number('--maxPostCount', {
         defaultValue: 0,
         desc: 'Maximum number of associated posts a tag can have for it to be deleted (i.e. `2` will select tags with 2 or less associated posts)',
@@ -43,7 +47,17 @@ const run = async (argv) => {
         // Run the migration
         await runner.run(context);
     } catch (error) {
-        ui.log.error('Done with errors', context.errors);
+        ui.log.error('Done with errors', context.errors.length ? context.errors : [error]);
+        process.exitCode = 1;
+        return;
+    }
+
+    if (argv.dryRun || argv['dry-run']) {
+        ui.log(context.previewTable);
+        ui.log.ok(
+            `Dry run complete: ${context.tagsToDelete.length} tags would be deleted in ${Date.now() - timer}ms. No tags were deleted.`,
+        );
+        return;
     }
 
     // Report success

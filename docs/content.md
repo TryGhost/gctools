@@ -292,12 +292,20 @@ This command displays:
 
 Delete tags that have no or a low number of associated posts
 
+Use `--dry-run` to preview every matching tag in a table with columns for its name, slug and associated post count, in that order, without deleting anything. All matching tags are shown, and long names and slugs wrap without truncation. The same `--maxPostCount` threshold applies to previews and deletions. Interactive mode also offers a preview option.
+
 ```sh
 # See all available options
 gctools delete-empty-tags --help
 
 # Delete tags with no associated posts
 gctools delete-empty-tags <apiURL> <adminAPIKey>
+
+# Preview tags with no associated posts
+gctools delete-empty-tags <apiURL> <adminAPIKey> --dry-run
+
+# Preview tags with 3 or fewer associated posts
+gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 3 --dry-run
 
 # Delete tags with 3 or fewer associated posts
 gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 3
@@ -307,6 +315,7 @@ gctools delete-empty-tags <apiURL> <adminAPIKey> --maxPostCount 5 --delayBetween
 ```
 
 **Available options:**
+- `--dry-run` (default: false): Show all matching tag names, slugs and post counts in a table without deleting anything
 - `--maxPostCount` (default: 0): Maximum number of associated posts a tag can have to be deleted
 - `--delayBetweenCalls` (default: 50): Delay between API calls in ms
 - `-V --verbose` (default: false): Show verbose output
