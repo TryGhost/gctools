@@ -21,7 +21,7 @@ const initialise = (options) => {
             const api = new GhostAdminAPI({
                 url: url.replace('localhost', '127.0.0.1'),
                 key,
-                version: 'v5.0',
+                version: options.apiVersion || options.version || false,
             });
 
             ctx.args = _.mergeWith(defaults, options);
