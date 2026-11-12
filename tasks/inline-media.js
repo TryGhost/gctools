@@ -571,7 +571,7 @@ const getFullTaskList = (options) => {
                             ) {
                                 for (const domain of ctx.args.assetDomains) {
                                     const regex = new RegExp(
-                                        `(https?:\\/\\/${domain.replace(/\./g, '\\.')}.*?)(${srcTerminationSymbols}`,
+                                        `(https?:\\/\\/${_.escapeRegExp(domain)}.*?)(${srcTerminationSymbols}`,
                                         'igm',
                                     );
                                     for (const match of rawContent.matchAll(regex)) {
