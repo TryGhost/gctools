@@ -164,6 +164,7 @@ settings:
 
 overrides:
   external-editor>tmp: 0.2.7
+  readdir-glob>minimatch: 11.0.5
 
 importers:
 
@@ -2456,10 +2457,6 @@ packages:
   mimic-function@5.0.1:
     resolution: {integrity: sha512-VP79XUPxV2CigYP3jWwAUFSku2aKqBH7uTAapFWCBqutsbmDo96KY5o8uh6U+/YSIn5OxJnXp73beVkpqMIGhA==}
     engines: {node: '>=18'}
-
-  minimatch@10.2.6:
-    resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
-    engines: {node: 18 || 20 || >=22}
 
   minimatch@11.0.5:
     resolution: {integrity: sha512-snPlVppFcYWfLLFQGhDxUyBcHNtMlWmn3jtj7pEaO+DP8pqL0IvAzXhMYmn1z9ASNtgmwLBdFxSf4tMUB0OTKA==}
@@ -5115,10 +5112,6 @@ snapshots:
 
   mimic-function@5.0.1: {}
 
-  minimatch@10.2.6:
-    dependencies:
-      brace-expansion: 5.0.12
-
   minimatch@11.0.5:
     dependencies:
       '@isaacs/nonrecursive-glob-match': 1.1.0
@@ -5274,7 +5267,7 @@ snapshots:
 
   readdir-glob@3.0.0:
     dependencies:
-      minimatch: 10.2.6
+      minimatch: 11.0.5
 
   require-directory@2.1.1: {}
 
