@@ -4,7 +4,7 @@ minimumReleaseAgeExclude:
 
 # The legacy Inquirer plugins pull in external-editor with an unsafe tmp version.
 overrides:
-  "external-editor>tmp": 0.2.6
+  "external-editor>tmp": 0.2.7
 
 # Not a workspace - this file only records which dependency build scripts are
 # allowed to run. Both entries are verified to work without their install
