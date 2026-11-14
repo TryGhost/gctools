@@ -219,8 +219,8 @@ importers:
         specifier: 11.4.1
         version: 11.4.1
       glob:
-        specifier: 14.0.4
-        version: 14.0.4
+        specifier: 14.0.5
+        version: 14.0.5
       heic-convert:
         specifier: 2.1.0
         version: 2.1.0
@@ -2191,8 +2191,8 @@ packages:
     resolution: {integrity: sha512-AOIgSQCepiJYwP3ARnGx+5VnTu2HBYdzbGP45eLw1vr3zB3vZLeyed1sC9hnbcOc9/SrMyM5RPQrkGz4aS9Zow==}
     engines: {node: '>= 6'}
 
-  glob@14.0.4:
-    resolution: {integrity: sha512-mMiwNKoJZ4HAIRVJxotO6LsNRReA30gQwP9E2/p94tfLv+jygCNpKDjhhSL6OLY6LE371EZm5EAf7RpYuUqlsw==}
+  glob@14.0.5:
+    resolution: {integrity: sha512-nbKW5Sl53DEM5PkmZ5Jwfeyss1ohuqcgOBjOarSjz1fp8W4ss4EOOvKADQRbApD6JmVBX+HkpZYfBez4wXbeQQ==}
     engines: {node: 18 || 20 || >=22}
 
   gopd@1.2.0:
@@ -4818,7 +4818,7 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
-  glob@14.0.4:
+  glob@14.0.5:
     dependencies:
       minimatch: 11.0.8
       minipass: 7.1.3
