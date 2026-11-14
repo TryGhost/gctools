@@ -225,8 +225,8 @@ importers:
         specifier: 2.1.0
         version: 2.1.0
       inquirer:
-        specifier: 14.2.5
-        version: 14.2.5
+        specifier: 14.3.0
+        version: 14.3.0
       inquirer-datepicker-prompt:
         specifier: 0.4.3
         version: 0.4.3
@@ -2287,9 +2287,9 @@ packages:
   inquirer-search-checkbox@1.0.0:
     resolution: {integrity: sha512-KR6kfe0+h7Zgyrj6GCBVgS4ZmmBhsXofcJoQv6EXZWxK+bpJZV9kOb2AaQ2fbjnH91G0tZWQaS5WteWygzXcmA==}
 
-  inquirer@14.2.5:
-    resolution: {integrity: sha512-s5r4MqAyAXGau1AYf9weaQbj6wbkY/wuuqROGRwyEiR3KvE4QSJ8y5OYfOfWLYyRVhoK6zU2hNmf9vbt/k+Wag==}
-    engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
+  inquirer@14.3.0:
+    resolution: {integrity: sha512-luTfZn0mTWxWrqFu6It+DPoSUpMaZaIXDHBC4OFA0lVJJqqd5vS7P693UazbrlDUK8IjlXBnmAGIThV9H2eZ2w==}
+    engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
     peerDependencies:
       '@types/node': '>=18'
     peerDependenciesMeta:
@@ -2493,10 +2493,6 @@ packages:
 
   mute-stream@0.0.7:
     resolution: {integrity: sha512-r65nCZhrbXXb6dXOACihYApHw2Q6pV0M3V0PSxd74N0+D8nzAdEAITq2oAjA1jVnKI+tGvEBUpqiMh0+rW6zDQ==}
-
-  mute-stream@3.0.0:
-    resolution: {integrity: sha512-dkEJPVvun4FryqBmZ5KhDo0K9iDXAwn08tMLDinNdRBNPcYEDiWYysLcc6k3mjTMlbP9KyylvRpd4wFtwrT9rw==}
-    engines: {node: ^20.17.0 || >=22.9.0}
 
   mute-stream@4.0.0:
     resolution: {integrity: sha512-gSrprq0fJ3EiOErzjdIZrjysVVmJ4uu1QWfCDss5LypA5OXvrMje5Ym5z6V6RLyJ2eF87lasX7t6a0AnFvZblg==}
@@ -4931,13 +4927,13 @@ snapshots:
       fuzzy: 0.1.3
       inquirer: 3.3.0
 
-  inquirer@14.2.5:
+  inquirer@14.3.0:
     dependencies:
       '@inquirer/ansi': 2.1.0
       '@inquirer/core': 12.1.0
       '@inquirer/prompts': 8.8.0
-      '@inquirer/type': 4.2.1
-      mute-stream: 3.0.0
+      '@inquirer/type': 4.3.0
+      mute-stream: 4.0.0
       run-async: 4.0.6
 
   inquirer@3.3.0:
@@ -5121,8 +5117,6 @@ snapshots:
   ms@2.1.3: {}
 
   mute-stream@0.0.7: {}
-
-  mute-stream@3.0.0: {}
 
   mute-stream@4.0.0: {}
 
