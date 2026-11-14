@@ -171,8 +171,8 @@ importers:
   .:
     dependencies:
       '@inquirer/confirm':
-        specifier: 6.3.5
-        version: 6.3.5
+        specifier: 6.4.0
+        version: 6.4.0
       '@tryghost/admin-api':
         specifier: 1.14.16
         version: 1.14.16(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -448,15 +448,6 @@ packages:
       '@types/node':
         optional: true
 
-  '@inquirer/confirm@6.3.5':
-    resolution: {integrity: sha512-BJ59BOyURiZiAxdr9AuRu38/k+rV+DcTIM2fUF/c/BXrab6H8zMZTTOl3LgkSJH96Xob2vOJxDiBkHiz32Xx2w==}
-    engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
-    peerDependencies:
-      '@types/node': '>=18'
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-
   '@inquirer/confirm@6.4.0':
     resolution: {integrity: sha512-+DCZxrOF01Q/1SzTQkgycAQPS/Jf+Yol0h1P/MVmopukTsxGOu1h/LKqf30y0eHKFZYYrgUMVhGDhEbPmSPi9A==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
@@ -563,15 +554,6 @@ packages:
   '@inquirer/select@5.3.0':
     resolution: {integrity: sha512-Fmgfl0qjqCQo+/tjQpgnRXKh5N7/VpYcJh+AlYU2eHmHZLMGUBDzo+Gwc2ODzWJfXNRZmgaMhz4qULcO/C/rXg==}
     engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
-    peerDependencies:
-      '@types/node': '>=18'
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-
-  '@inquirer/type@4.2.1':
-    resolution: {integrity: sha512-lDkPsnv5M5CcYB2T1qTc3dobNTPkVr4DU3Ic2Q6SW8/qVRHgvzdRdmVZ6YqG9Ag1aJTeMsLU0s0WPRh3CZWDQQ==}
-    engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
     peerDependencies:
       '@types/node': '>=18'
     peerDependenciesMeta:
@@ -3077,11 +3059,6 @@ snapshots:
       '@inquirer/figures': 2.1.0
       '@inquirer/type': 4.3.0
 
-  '@inquirer/confirm@6.3.5':
-    dependencies:
-      '@inquirer/core': 12.1.0
-      '@inquirer/type': 4.2.1
-
   '@inquirer/confirm@6.4.0':
     dependencies:
       '@inquirer/core': 12.1.0
@@ -3161,8 +3138,6 @@ snapshots:
       '@inquirer/core': 12.1.0
       '@inquirer/figures': 2.1.0
       '@inquirer/type': 4.3.0
-
-  '@inquirer/type@4.2.1': {}
 
   '@inquirer/type@4.3.0': {}
 
