@@ -1,11 +1,10 @@
-# Match Renovate's release-age exemption for trusted first-party packages.
 minimumReleaseAgeExclude:
   - "@tryghost/*"
 
 # Keep transitive dependencies on patched versions.
 overrides:
   "external-editor>tmp": 0.2.7
-  "readdir-glob>minimatch": 11.0.5
+  "readdir-glob>minimatch": 11.0.8
 
 # Not a workspace - this file only records which dependency build scripts are
 # allowed to run. Both entries are verified to work without their install
