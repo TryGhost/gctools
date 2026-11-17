@@ -189,17 +189,17 @@ importers:
         specifier: 3.4.8
         version: 3.4.8
       '@tryghost/listr-smart-renderer':
-        specifier: 0.16.0-0
-        version: 0.16.0-0
+        specifier: 0.16.1
+        version: 0.16.1
       '@tryghost/mg-assetscraper-db':
-        specifier: 0.14.0-0
-        version: 0.14.0-0(bare-buffer@3.7.1)(supports-color@7.2.0)
+        specifier: 0.14.1
+        version: 0.14.1(bare-buffer@3.7.1)(supports-color@7.2.0)
       '@tryghost/mg-fs-utils':
-        specifier: 0.27.0-0
-        version: 0.27.0-0(bare-buffer@3.7.1)(supports-color@7.2.0)
+        specifier: 0.27.1
+        version: 0.27.1(bare-buffer@3.7.1)(supports-color@7.2.0)
       '@tryghost/mg-ghost-authors':
-        specifier: 0.11.0-0
-        version: 0.11.0-0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 0.11.1
+        version: 0.11.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/pretty-cli':
         specifier: 3.4.4
         version: 3.4.4
@@ -207,8 +207,8 @@ importers:
         specifier: 0.3.10
         version: 0.3.10
       '@tryghost/zip':
-        specifier: 4.0.3
-        version: 4.0.3(bare-buffer@3.7.1)
+        specifier: 4.1.0
+        version: 4.1.0(bare-buffer@3.7.1)
       axios:
         specifier: 1.21.1
         version: 1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -1629,17 +1629,11 @@ packages:
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
 
-  '@tryghost/admin-api@1.14.14':
-    resolution: {integrity: sha512-w1kWh9MCd3ghOIyHkm5yKT6y+c7r/sO/qRTd5Ghpudyc7OnHnRu2xCN7SQwr7R2+Rrt31ix4CJCgsxmuLvx7Vg==}
-
   '@tryghost/admin-api@1.14.16':
     resolution: {integrity: sha512-VUZDJgVEquXrKm3SpXKACUq9DqsOUNN7aZG9F4G6k/2D9bNI8/KSZGaVUXxXMEFbLh4PfeamxgLJ6ozvVyyfPQ==}
 
   '@tryghost/errors@2.2.1':
     resolution: {integrity: sha512-7zR5Wu9UMalFZbWZs3nN3MzJg6mKek11W51AP8UGz5sN4fQofoeLwXHLI/AuT7nDuWiJZHsJcI1EGJg0iQHV3g==}
-
-  '@tryghost/errors@3.4.6':
-    resolution: {integrity: sha512-ASkzjp0gZrJ0KBEDdzFwU2CMiNjVv35gDhMjPHrE3HM+tOPLjCGKVyJTAESd+5dGg4oVnvbLa0JMy0GlcS3GGQ==}
 
   '@tryghost/errors@3.4.8':
     resolution: {integrity: sha512-wRQPjb0TuTW6ROexYKEevbePGHQTY443pTJO3/3EDZlxzWLizdP64EkL0pVh+9Y9E/wfRdyqIjzECc5+rxhTDQ==}
@@ -1647,17 +1641,17 @@ packages:
   '@tryghost/image-transform@1.4.19':
     resolution: {integrity: sha512-5n14MnrfviTZ0TV9mVQbNZquT+cgvMKJ+iW8o0BxOXMITy6FjJH7vbCvYZGlkaV0S6XaHeI4lU6SkrDXKWHiCQ==}
 
-  '@tryghost/listr-smart-renderer@0.16.0-0':
-    resolution: {integrity: sha512-ro7Ae4Y7SzB2sxW4BCMP8eqMT1WTa5x5SWo/5Xnqr5D7w2OwXJeBCLL/gIF2KyTxr27mWAmvQ2PS3H5wRIW5GQ==}
+  '@tryghost/listr-smart-renderer@0.16.1':
+    resolution: {integrity: sha512-NKK4VBGz/HUSCfElkxSo38BlKWXNm5dhcrCRS0+wDFpEho/piqdhhC3RCnMCZFT6JLnEewZZhvofMtL/k1sboA==}
 
-  '@tryghost/mg-assetscraper-db@0.14.0-0':
-    resolution: {integrity: sha512-mPZJptjhkQQYzrEMS6CPTrObmI60zVaMcRqKAwqGKjeUCmAWXoeoG2IIziGgs5XSGY2jFr9aPUCvQ4mKcOzASw==}
+  '@tryghost/mg-assetscraper-db@0.14.1':
+    resolution: {integrity: sha512-MOuAsQngC4D3j3f0F6tEm9jBTf3+E5rckWHoFwjCxTC8nB8WnoUcYdYfRqrSEifGylTWCObwcrI6HD0CboDMuA==}
 
-  '@tryghost/mg-fs-utils@0.27.0-0':
-    resolution: {integrity: sha512-KIBcRYTCsbJQ7ErA2kCNl1cDx/Tmxvzs9ba2yTZPofzp1nxOjKckKs/U/9BI74f7c+4H+dR9yrTsabVZWhZ5yg==}
+  '@tryghost/mg-fs-utils@0.27.1':
+    resolution: {integrity: sha512-+GAsV7A3TlzJrATm42QhKQvAK26WWMSnPSUorguXqAHIWUVBo9zGi5UPSqBNRWk/BfJj9RGTYA4pgEr07U6wXg==}
 
-  '@tryghost/mg-ghost-authors@0.11.0-0':
-    resolution: {integrity: sha512-j1qi85MhCTjx6W2Xbhj3GCGzsCgCpqiINOPMvND4ofIz/0yQ0CJto/vp/MeurpeUfqfhuT0+JNyqjs9a5gVTnA==}
+  '@tryghost/mg-ghost-authors@0.11.1':
+    resolution: {integrity: sha512-jqBDFuwXxhJV3nb0j/tQGc+S4FX/1PfhIngp9KQ/USNPV4MZJjEiPT9lO/FM7+FILPc/gga8eujqOY3LlAenIA==}
 
   '@tryghost/pretty-cli@3.4.4':
     resolution: {integrity: sha512-COVOD//rFUpwDqZEeToDZzKrtvT8nTI96Ai8OMN0Tow8qoHDlSia93pYaMDMrWFMg65hWKlBKf8v0K9YQAq0fw==}
@@ -1665,14 +1659,11 @@ packages:
   '@tryghost/string@0.3.10':
     resolution: {integrity: sha512-bXf8EWBujR0Vvz3DwWK61VfDG7XcIq0j4++mTLnKjS05HgojeqYyM3g7iF3YvFjkytPaVVfNS7jmdpZL3LTn0Q==}
 
-  '@tryghost/string@0.3.8':
-    resolution: {integrity: sha512-Q73QaW9mTgfeuL3554SnUvu9gM1ISowKb683knajTamy1zZsuk3AjDSiEiEGi9BfzjW2RxBQ4rKnlFD9S2oqLg==}
-
-  '@tryghost/zip@4.0.1':
-    resolution: {integrity: sha512-xj+r/pEchwAK8YZzJvSn977S03J2RoiXGQn6qmZakWAd7VOEncUvvTlsp6k+QVYgmhHoE+AvhpItcuYBuduTvg==}
-
   '@tryghost/zip@4.0.3':
     resolution: {integrity: sha512-BeDDlOgG+XJmHC2NzxBE8cNnVT2fCE0z5WLaXS8zJspIsHlO6iW35NU5vViBFmoUrZPftRPLmL0RamYRxVGHbQ==}
+
+  '@tryghost/zip@4.1.0':
+    resolution: {integrity: sha512-i+Vhe4Ay2LSziyZxx8Pj4X/J55XBzCU2A17/y5Vcq6jp2j+34ug/8VBitpsdndVI6Rd8cjfwwMv7owFqhGXhXw==}
 
   abort-controller@3.0.0:
     resolution: {integrity: sha512-h8lQ8tacZYnR3vNQTgibj+tODHI5/+l06Au2Pcriv/Gmet0eaj4TwWH41sO9wnHDiQsEj19q0drzdWdeAHtweg==}
@@ -1746,9 +1737,6 @@ packages:
 
   asynckit@0.4.0:
     resolution: {integrity: sha512-Oei9OH4tRh0YqU3GxhX79dM/mwVgvbZJaSNaRk+bshkj0S5cfHcgYakreBjrHwatXKbz+IoIdYLxrKim2MjW0Q==}
-
-  axios@1.20.0:
-    resolution: {integrity: sha512-r8aOh8j9cGKpgQAqpzrUHnSIc6a59Y3Xf/cv8sy1DrHCkZHzQGEuoq1tARk6qSyDdtQGSDgpb9kFlruzPvrgwg==}
 
   axios@1.21.1:
     resolution: {integrity: sha512-6eI5Q/Y4u/Um9dDlsRoq5pY2rxnUTv+L4PpLitnbk/i4jb3MxLZ5CsN5Ih3IysbeRYK4pR+P7qfMsOQl9fwwFQ==}
@@ -2005,8 +1993,8 @@ packages:
     resolution: {integrity: sha512-Btj2BOOO83o3WyH59e8MgXsxEQVcarkUOpEYrubB0urwnN10yQ364rsiByU11nZlqWYZm05i/of7io4mzihBtQ==}
     engines: {node: '>=8'}
 
-  dotenv@18.0.9:
-    resolution: {integrity: sha512-3fVOW4cB02R066PUSwn8O4TJyz9NckQl7F81blIbaq9jKBm2tSmOKky7ZHIXzGvkVPXCSn6jkpziBPZdGFs8Tw==}
+  dotenv@18.0.10:
+    resolution: {integrity: sha512-89FAA1xchzK2mxVWdr5F/0rldwiueXs6zJM86rO66EzekR1iBdiXRthyG+m5GvkJaFH3C2LESzamTkgndmLT2A==}
     engines: {node: '>=12'}
     hasBin: true
 
@@ -2376,8 +2364,8 @@ packages:
     resolution: {integrity: sha512-umXZPthnWZtF3iG/5mQG+AZ2V6i0UeYpo3z2CkggTEgL8dKmIIwJT6TDuAMuabXa1yTW8uJ1ZAgR+CxNTklYYw==}
     engines: {node: '>=8.0.0'}
 
-  listr2@11.4.0:
-    resolution: {integrity: sha512-N6jpS9lEmqGcWqJqryuOfjPUTn7mcDvG5ndsTlZk4Aohwfywc7deqjscI9lm7K+FHS6anZmazE8/IQxQfVTHZg==}
+  listr2@11.4.1:
+    resolution: {integrity: sha512-Mc8GEdPxl6b7bxFNwUJPOuGlrLSbnudPqF6F2EkgNr9dZQWezIrCfwywoGhy4eIdQvfJgbT7/rITN9S7uX89gQ==}
     engines: {node: '>=22.13.0'}
 
   lodash.includes@4.3.0:
@@ -4156,15 +4144,6 @@ snapshots:
 
   '@tokenizer/token@0.3.0': {}
 
-  '@tryghost/admin-api@1.14.14(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
-    dependencies:
-      axios: 1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      form-data: 4.0.6
-      jsonwebtoken: 9.0.3
-    transitivePeerDependencies:
-      - debug
-      - supports-color
-
   '@tryghost/admin-api@1.14.16(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       axios: 1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -4181,8 +4160,6 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@tryghost/errors@3.4.6': {}
-
   '@tryghost/errors@3.4.8': {}
 
   '@tryghost/image-transform@1.4.19(supports-color@7.2.0)':
@@ -4195,23 +4172,23 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@tryghost/listr-smart-renderer@0.16.0-0':
+  '@tryghost/listr-smart-renderer@0.16.1':
     dependencies:
       chalk: 6.0.1
       cli-truncate: 6.2.0
       elegant-spinner: 3.0.0
       indent-string: 5.0.0
-      listr2: 11.4.0
+      listr2: 11.4.1
       log-symbols: 7.0.1
       log-update: 8.0.0
       strip-ansi: 7.2.0
 
-  '@tryghost/mg-assetscraper-db@0.14.0-0(bare-buffer@3.7.1)(supports-color@7.2.0)':
+  '@tryghost/mg-assetscraper-db@0.14.1(bare-buffer@3.7.1)(supports-color@7.2.0)':
     dependencies:
-      '@tryghost/errors': 3.4.6
-      '@tryghost/listr-smart-renderer': 0.16.0-0
-      '@tryghost/mg-fs-utils': 0.27.0-0(bare-buffer@3.7.1)(supports-color@7.2.0)
-      '@tryghost/string': 0.3.8
+      '@tryghost/errors': 3.4.8
+      '@tryghost/listr-smart-renderer': 0.16.1
+      '@tryghost/mg-fs-utils': 0.27.1(bare-buffer@3.7.1)(supports-color@7.2.0)
+      '@tryghost/string': 0.3.10
       escape-string-regexp: 5.0.0
       file-type: 22.3.0(supports-color@7.2.0)
       heic-convert: 2.1.0
@@ -4224,15 +4201,15 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-fs-utils@0.27.0-0(bare-buffer@3.7.1)(supports-color@7.2.0)':
+  '@tryghost/mg-fs-utils@0.27.1(bare-buffer@3.7.1)(supports-color@7.2.0)':
     dependencies:
-      '@tryghost/errors': 3.4.6
+      '@tryghost/errors': 3.4.8
       '@tryghost/image-transform': 1.4.19(supports-color@7.2.0)
-      '@tryghost/string': 0.3.8
-      '@tryghost/zip': 4.0.1(bare-buffer@3.7.1)
+      '@tryghost/string': 0.3.10
+      '@tryghost/zip': 4.0.3(bare-buffer@3.7.1)
       adm-zip: 0.6.1
       csv-parse: 7.0.3
-      dotenv: 18.0.9
+      dotenv: 18.0.10
       fast-glob: 3.3.3
       fs-extra: 11.4.1
       sharp: 0.35.5
@@ -4245,10 +4222,10 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-ghost-authors@0.11.0-0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@tryghost/mg-ghost-authors@0.11.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
-      '@tryghost/admin-api': 1.14.14(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
-      '@tryghost/errors': 3.4.6
+      '@tryghost/admin-api': 1.14.16(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+      '@tryghost/errors': 3.4.8
     transitivePeerDependencies:
       - debug
       - supports-color
@@ -4262,11 +4239,7 @@ snapshots:
     dependencies:
       unidecode: 1.1.0
 
-  '@tryghost/string@0.3.8':
-    dependencies:
-      unidecode: 1.1.0
-
-  '@tryghost/zip@4.0.1(bare-buffer@3.7.1)':
+  '@tryghost/zip@4.0.3(bare-buffer@3.7.1)':
     dependencies:
       '@tryghost/errors': 3.4.8
       archiver: 8.0.0(bare-buffer@3.7.1)
@@ -4276,7 +4249,7 @@ snapshots:
       - bare-buffer
       - react-native-b4a
 
-  '@tryghost/zip@4.0.3(bare-buffer@3.7.1)':
+  '@tryghost/zip@4.1.0(bare-buffer@3.7.1)':
     dependencies:
       '@tryghost/errors': 3.4.8
       archiver: 8.0.0(bare-buffer@3.7.1)
@@ -4357,16 +4330,6 @@ snapshots:
   async@3.2.6: {}
 
   asynckit@0.4.0: {}
-
-  axios@1.20.0(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
-    dependencies:
-      follow-redirects: 1.16.3(debug@4.4.3(supports-color@7.2.0))
-      form-data: 4.0.6
-      https-proxy-agent: 5.0.1(supports-color@7.2.0)
-      proxy-from-env: 2.1.0
-    transitivePeerDependencies:
-      - debug
-      - supports-color
 
   axios@1.21.1(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0):
     dependencies:
@@ -4599,7 +4562,7 @@ snapshots:
 
   detect-libc@2.1.2: {}
 
-  dotenv@18.0.9: {}
+  dotenv@18.0.10: {}
 
   dunder-proto@1.0.1:
     dependencies:
@@ -5011,7 +4974,7 @@ snapshots:
 
   libheif-js@1.23.5: {}
 
-  listr2@11.4.0:
+  listr2@11.4.1:
     dependencies:
       cli-truncate: 6.2.0
       log-update: 8.0.0
