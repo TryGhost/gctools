@@ -189,17 +189,17 @@ importers:
         specifier: 3.4.8
         version: 3.4.8
       '@tryghost/listr-smart-renderer':
-        specifier: 0.16.5
-        version: 0.16.5
+        specifier: 0.16.6
+        version: 0.16.6
       '@tryghost/mg-assetscraper-db':
-        specifier: 0.14.5
-        version: 0.14.5(bare-buffer@3.7.3)(supports-color@7.2.0)
+        specifier: 0.14.6
+        version: 0.14.6(bare-buffer@3.7.3)(supports-color@7.2.0)
       '@tryghost/mg-fs-utils':
-        specifier: 0.27.5
-        version: 0.27.5(bare-buffer@3.7.3)(supports-color@7.2.0)
+        specifier: 0.27.6
+        version: 0.27.6(bare-buffer@3.7.3)(supports-color@7.2.0)
       '@tryghost/mg-ghost-authors':
-        specifier: 0.11.5
-        version: 0.11.5(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
+        specifier: 0.11.6
+        version: 0.11.6(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/pretty-cli':
         specifier: 3.4.4
         version: 3.4.4
@@ -1647,17 +1647,17 @@ packages:
   '@tryghost/image-transform@1.4.19':
     resolution: {integrity: sha512-5n14MnrfviTZ0TV9mVQbNZquT+cgvMKJ+iW8o0BxOXMITy6FjJH7vbCvYZGlkaV0S6XaHeI4lU6SkrDXKWHiCQ==}
 
-  '@tryghost/listr-smart-renderer@0.16.5':
-    resolution: {integrity: sha512-9wc+MforUMKkxh2skmiucWmISORxu/yt8PnxWGquhT7NzpN34pE1Nl7UmvAuRN7Pn9OlBUkcjs/05H/K1VYyAg==}
+  '@tryghost/listr-smart-renderer@0.16.6':
+    resolution: {integrity: sha512-sbgr7DwsF4Mb1vUh5BJFhYcqU0FDlZJvOIUeFCI3WemrMfuXFpUrdvUmTf/G/nuFu7r88uiR95hlQ3CLKA3j1g==}
 
-  '@tryghost/mg-assetscraper-db@0.14.5':
-    resolution: {integrity: sha512-NxWiAqUL2NcbxImENE7lirOUnii8fpzzNzDbjMx/LWMtt1s2Do3KROskorX2HMN3c66Snk2GD/MnxZCsPtI4Fg==}
+  '@tryghost/mg-assetscraper-db@0.14.6':
+    resolution: {integrity: sha512-ZdHYxCaG3wMPKEAK3zRC4avSJKLXQVeO0Bwc5jb4D9aYANm2jpJn+kcTsvKXUwgIY3S/6LH/44V1fM13ZBiXIw==}
 
-  '@tryghost/mg-fs-utils@0.27.5':
-    resolution: {integrity: sha512-1DMM/smv27m0LuRcRZsIbuDW497cwuKYm/kTvjBQ+cxPCi3vMnXa3jwm+7hyRuz44HHi1PqbmrL6CWO35nhCfA==}
+  '@tryghost/mg-fs-utils@0.27.6':
+    resolution: {integrity: sha512-xF/OpnaEBItUe4GlQQQ/8Tcs7NYKxH//I3SuG9LBnpHt3mgji57hZbCYmify0VV6I/TV1QOZYW8HYX+7ws5zSQ==}
 
-  '@tryghost/mg-ghost-authors@0.11.5':
-    resolution: {integrity: sha512-FYmPYl5TlseXxJSgg1qCSVxZI1KLmoPB1k89g29J8JtQ6pbXDC4TX8eQoCmH8gC66J1xVm9wR13dkLdPoNxj9A==}
+  '@tryghost/mg-ghost-authors@0.11.6':
+    resolution: {integrity: sha512-NznlddrKRFmmZiLe+P0JrvoWubw9a+v7+wF41PFJUtegdd2c8OmBGpPn8P6/bvo8mY8cDmpjjqSmXmxzMrQPJw==}
 
   '@tryghost/pretty-cli@3.4.4':
     resolution: {integrity: sha512-COVOD//rFUpwDqZEeToDZzKrtvT8nTI96Ai8OMN0Tow8qoHDlSia93pYaMDMrWFMg65hWKlBKf8v0K9YQAq0fw==}
@@ -4118,7 +4118,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@tryghost/listr-smart-renderer@0.16.5':
+  '@tryghost/listr-smart-renderer@0.16.6':
     dependencies:
       chalk: 6.0.1
       cli-truncate: 6.2.0
@@ -4129,11 +4129,11 @@ snapshots:
       log-update: 8.0.0
       strip-ansi: 7.2.0
 
-  '@tryghost/mg-assetscraper-db@0.14.5(bare-buffer@3.7.3)(supports-color@7.2.0)':
+  '@tryghost/mg-assetscraper-db@0.14.6(bare-buffer@3.7.3)(supports-color@7.2.0)':
     dependencies:
       '@tryghost/errors': 3.4.8
-      '@tryghost/listr-smart-renderer': 0.16.5
-      '@tryghost/mg-fs-utils': 0.27.5(bare-buffer@3.7.3)(supports-color@7.2.0)
+      '@tryghost/listr-smart-renderer': 0.16.6
+      '@tryghost/mg-fs-utils': 0.27.6(bare-buffer@3.7.3)(supports-color@7.2.0)
       '@tryghost/string': 0.3.10
       escape-string-regexp: 5.0.0
       file-type: 22.3.0(supports-color@7.2.0)
@@ -4147,7 +4147,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-fs-utils@0.27.5(bare-buffer@3.7.3)(supports-color@7.2.0)':
+  '@tryghost/mg-fs-utils@0.27.6(bare-buffer@3.7.3)(supports-color@7.2.0)':
     dependencies:
       '@tryghost/errors': 3.4.8
       '@tryghost/image-transform': 1.4.19(supports-color@7.2.0)
@@ -4167,7 +4167,7 @@ snapshots:
       - react-native-b4a
       - supports-color
 
-  '@tryghost/mg-ghost-authors@0.11.5(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
+  '@tryghost/mg-ghost-authors@0.11.6(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)':
     dependencies:
       '@tryghost/admin-api': 1.14.16(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
       '@tryghost/errors': 3.4.8
