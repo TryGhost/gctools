@@ -180,8 +180,8 @@ importers:
   .:
     dependencies:
       '@inquirer/confirm':
-        specifier: 6.4.0
-        version: 6.4.0
+        specifier: 6.4.1
+        version: 6.4.1
       '@tryghost/admin-api':
         specifier: 1.14.16
         version: 1.14.16(debug@4.4.3(supports-color@7.2.0))(supports-color@7.2.0)
@@ -451,15 +451,6 @@ packages:
   '@inquirer/checkbox@5.3.1':
     resolution: {integrity: sha512-AWb8O1kl/olRQt0fReEIlu8iCn8qaQ0OEIffeFsMrfhIlVSz/ud1EeeBhWnm057xhRqD+kYVD7Fk2X9Bk/oW6w==}
     engines: {node: '>=23.5.0 || ^22.13.0 || ^20.17.0'}
-    peerDependencies:
-      '@types/node': '>=18'
-    peerDependenciesMeta:
-      '@types/node':
-        optional: true
-
-  '@inquirer/confirm@6.4.0':
-    resolution: {integrity: sha512-+DCZxrOF01Q/1SzTQkgycAQPS/Jf+Yol0h1P/MVmopukTsxGOu1h/LKqf30y0eHKFZYYrgUMVhGDhEbPmSPi9A==}
-    engines: {node: ^22.22.2 || ^24.15.0 || >=26.0.0}
     peerDependencies:
       '@types/node': '>=18'
     peerDependenciesMeta:
@@ -3001,11 +2992,6 @@ snapshots:
       '@inquirer/core': 12.1.1
       '@inquirer/figures': 2.1.1
       '@inquirer/type': 4.3.1
-
-  '@inquirer/confirm@6.4.0':
-    dependencies:
-      '@inquirer/core': 12.1.1
-      '@inquirer/type': 4.3.0
 
   '@inquirer/confirm@6.4.1':
     dependencies:
