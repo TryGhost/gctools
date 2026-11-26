@@ -7,6 +7,8 @@ import {
     maybeArrayToString,
     SlugFromStringArrayOrObject,
     maybeObjectToArray,
+    validateApiUrl,
+    normalizeApiUrl,
 } from '../lib/utils.js';
 
 const require = createRequire(import.meta.url);
@@ -113,5 +115,68 @@ describe('Utils (SlugFromStringArrayOrObject)', function () {
         assert.strictEqual(tagSlugs.length, 2);
         assert.deepStrictEqual(tagSlugs[0], 'lorem-ipsum');
         assert.deepStrictEqual(tagSlugs[1], 'dolor-simet');
+    });
+});
+
+describe('Utils (normalizeApiUrl)', function () {
+    test('normalizes URL by removing trailing slashes', function () {
+        assert.strictEqual(normalizeApiUrl('https://demo.ghost.io/'), 'https://demo.ghost.io');
+        assert.strictEqual(normalizeApiUrl('https://demo.ghost.io///'), 'https://demo.ghost.io');
+        assert.strictEqual(normalizeApiUrl('http://localhost:2368/'), 'http://localhost:2368');
+    });
+
+    test('returns null for invalid inputs', function () {
+        assert.strictEqual(normalizeApiUrl(''), null);
+        assert.strictEqual(normalizeApiUrl(null), null);
+        assert.strictEqual(normalizeApiUrl('ftp://example.com'), null);
+    });
+});
+
+describe('Utils (validateApiUrl)', function () {
+    test('accepts valid https URL', function () {
+        assert.strictEqual(validateApiUrl('https://demo.ghost.io'), true);
+    });
+
+    test('accepts valid http URL with port', function () {
+        assert.strictEqual(validateApiUrl('http://localhost:2368'), true);
+    });
+
+    test('accepts valid URL with trailing slash', function () {
+        assert.strictEqual(validateApiUrl('https://my-blog.com/'), true);
+    });
+
+    test('accepts valid subpaths containing ghost in segment name', function () {
+        assert.strictEqual(validateApiUrl('https://example.com/ghost-blog'), true);
+        assert.strictEqual(validateApiUrl('https://example.com/ghostly'), true);
+        assert.strictEqual(validateApiUrl('https://example.com/my-ghost/site'), true);
+    });
+
+    test('rejects empty input', function () {
+        assert.strictEqual(typeof validateApiUrl(''), 'string');
+        assert.strictEqual(typeof validateApiUrl(null), 'string');
+    });
+
+    test('rejects invalid URL without protocol', function () {
+        const result = validateApiUrl('not-a-valid-url');
+        assert.strictEqual(typeof result, 'string');
+        assert.match(result, /Invalid URL/);
+    });
+
+    test('rejects non-http/https protocol', function () {
+        const result = validateApiUrl('ftp://example.com');
+        assert.strictEqual(typeof result, 'string');
+        assert.match(result, /protocol/);
+    });
+
+    test('rejects URL containing /ghost path', function () {
+        const result = validateApiUrl('https://demo.ghost.io/ghost');
+        assert.strictEqual(typeof result, 'string');
+        assert.match(result, /base site URL/);
+    });
+
+    test('rejects URL containing /ghost/api/admin', function () {
+        const result = validateApiUrl('https://demo.ghost.io/ghost/api/admin');
+        assert.strictEqual(typeof result, 'string');
+        assert.match(result, /base site URL/);
     });
 });
